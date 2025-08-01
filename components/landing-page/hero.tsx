@@ -2,9 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Icon } from "@iconify/react";
-import DashboardSceenshot from "@/public/images/landing-page/dashboard-screenshot.png";
 import CarImage from "@/public/images/landing-page/car.webp";
 
 const Hero = () => {

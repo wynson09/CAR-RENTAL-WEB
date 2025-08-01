@@ -6,6 +6,7 @@ import { Icon } from "@iconify/react";
 import { carRentalServices } from "./data";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 const ServiceButtonsPremium = () => {
   const [hoveredService, setHoveredService] = useState<string>(carRentalServices[0].id);
@@ -16,7 +17,7 @@ const ServiceButtonsPremium = () => {
   return (
     <div className="relative">
       {/* Service Buttons */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8 max-w-3xl mx-auto">
         {carRentalServices.map((service) => (
           <div
             key={service.id}
@@ -25,22 +26,22 @@ const ServiceButtonsPremium = () => {
             onMouseLeave={() => setHoveredService(carRentalServices[0].id)}
           >
             <div className={cn(
-              "relative overflow-hidden rounded-2xl p-6 text-center cursor-pointer transition-all duration-500",
+              "relative overflow-hidden rounded-xl p-4 text-center cursor-pointer transition-all duration-500",
               "bg-gradient-to-br from-background to-background/50 border-2 border-primary/20",
-              "hover:border-primary hover:shadow-2xl hover:shadow-primary/20",
+              "hover:border-primary hover:shadow-lg hover:shadow-primary/20",
               "group-hover:bg-gradient-to-br group-hover:from-primary/5 group-hover:to-primary/10",
               hoveredService === service.id && "border-primary bg-gradient-to-br from-primary/10 to-primary/5"
             )}>
               {/* Main Icon */}
               <div className={cn(
-                "w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center transition-all duration-300",
+                "w-12 h-12 mx-auto mb-3 rounded-full flex items-center justify-center transition-all duration-300",
                 "bg-gradient-to-br from-primary/10 to-primary/20 border border-primary/20",
                 "group-hover:from-primary/20 group-hover:to-primary/30 group-hover:border-primary/40"
               )}>
                 <Icon 
                   icon={service.icon} 
                   className={cn(
-                    "w-8 h-8 text-primary transition-all duration-300",
+                    "w-6 h-6 text-primary transition-all duration-300",
                     "group-hover:scale-110"
                   )} 
                 />
@@ -48,7 +49,7 @@ const ServiceButtonsPremium = () => {
 
               {/* Title */}
               <h3 className={cn(
-                "font-bold text-sm text-default-900 transition-colors duration-300",
+                "font-bold text-xs text-default-900 transition-colors duration-300",
                 "group-hover:text-primary"
               )}>
                 {service.title}
@@ -65,39 +66,30 @@ const ServiceButtonsPremium = () => {
       </div>
 
       {/* Display Area - Image Left, Content Right */}
-      <Card className="border-2 border-primary/20 shadow-xl bg-background overflow-hidden max-w-6xl">
+      <Card className="border-2 border-primary/20 shadow-xl bg-background overflow-hidden max-w-7xl mx-auto">
         <CardContent className="p-0">
           <div className="flex flex-col lg:flex-row">
             {/* Image Section - Left */}
-            <div className="w-full lg:w-2/5 bg-gradient-to-br from-primary/10 via-primary/5 to-background relative overflow-hidden min-h-[300px] lg:min-h-[400px]">
-              <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent"></div>
-              
+            <div className="w-full lg:w-2/5 relative overflow-hidden min-h-[300px] lg:min-h-[400px] bg-gray-100">
               <AnimatePresence mode="wait">
                 <motion.div 
                   key={currentService.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="relative z-10 h-full flex flex-col items-center justify-center p-8"
+                  className="relative h-full w-full"
                 >
-                  {/* Large Service Icon */}
-                  <motion.div 
-                    className="w-32 h-32 bg-gradient-to-br from-primary/20 to-primary/10 rounded-3xl flex items-center justify-center mb-6 shadow-2xl"
-                    whileHover={{ scale: 1.05, rotate: 5 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    <Icon icon={currentService.icon} className="w-16 h-16 text-primary" />
-                  </motion.div>
-                  
-                  <div className="text-center">
-                    <h3 className="text-primary font-bold text-2xl lg:text-3xl mb-2">
-                      {currentService.title}
-                    </h3>
-                    <div className="text-primary/70 text-sm font-medium">
-                      Premium Car Rental Service
-                    </div>
-                  </div>
+                  <Image
+                    src={currentService.image}
+                    alt={`${currentService.title} Service`}
+                    width={600}
+                    height={400}
+                    className="w-full h-full object-cover rounded-l-lg"
+                    quality={100}
+                    priority={true}
+                    unoptimized={false}
+                  />
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -123,25 +115,27 @@ const ServiceButtonsPremium = () => {
                     {currentService.description}
                   </p>
                   
-                  {/* Features List */}
-                  <div className="space-y-4 mb-8">
-                    <div className="text-sm font-semibold text-default-500 uppercase tracking-wider mb-4">
+                  {/* Features List - 2 Columns */}
+                  <div className="mb-8">
+                    <div className="text-sm font-semibold text-default-500 uppercase tracking-wider mb-6">
                       Key Features & Benefits
                     </div>
-                    {currentService.features.map((feature, index) => (
-                      <motion.div 
-                        key={index} 
-                        className="flex items-center text-default-700"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                      >
-                        <div className="w-8 h-8 bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
-                          <Icon icon="heroicons:check" className="w-4 h-4 text-primary" />
-                        </div>
-                        <span className="text-base">{feature}</span>
-                      </motion.div>
-                    ))}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {currentService.features.map((feature, index) => (
+                        <motion.div 
+                          key={index} 
+                          className="flex items-center text-default-700"
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                        >
+                          <div className="w-8 h-8 bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                            <Icon icon="heroicons:check" className="w-4 h-4 text-primary" />
+                          </div>
+                          <span className="text-base">{feature}</span>
+                        </motion.div>
+                      ))}
+                    </div>
                   </div>
 
                   {/* Call to Action */}

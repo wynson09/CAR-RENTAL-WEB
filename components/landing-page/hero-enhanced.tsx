@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Icon } from "@iconify/react";
-import DashboardSceenshot from "@/public/images/landing-page/dashboard-screenshot.png";
 import CarImage from "@/public/images/landing-page/car.webp";
 
 const HeroEnhanced = () => {
@@ -16,9 +15,9 @@ const HeroEnhanced = () => {
   ];
 
   const keyFeatures = [
-    { icon: "heroicons:shield-check", title: "Fully Insured", desc: "All vehicles covered" },
-    { icon: "heroicons:banknotes", title: "Best Prices", desc: "Competitive rates" },
-    { icon: "heroicons:map-pin", title: "GPS Included", desc: "Never get lost" }
+    { icon: "fluent:calendar-chat-24-regular", title: "Easy Booking", desc: "Fast and simple process" },
+    { icon: "heroicons:banknotes", title: "Budget Friendly", desc: "Affordable, premium service" },
+    { icon: "heroicons:hand-thumb-up", title: "Clean Cars", desc: "Always fresh, always clean" }
   ];
 
   return (
@@ -89,14 +88,17 @@ const HeroEnhanced = () => {
                     key={feature.title}
                     whileHover={{ y: -5, scale: 1.02 }}
                     transition={{ type: "spring", stiffness: 300 }}
+                    className="h-full"
                   >
-                    <Card className="border border-primary/20 bg-background/80 backdrop-blur-sm hover:border-primary/40 transition-colors">
-                      <CardContent className="p-4 text-center">
-                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-2">
-                          <Icon icon={feature.icon} className="w-5 h-5 text-primary" />
+                    <Card className="border border-primary/20 bg-background/80 backdrop-blur-sm hover:border-primary/40 transition-colors h-full">
+                      <CardContent className="p-3 sm:p-4 text-center h-full flex flex-col justify-between min-h-[120px] sm:min-h-[140px]">
+                        <div className="flex flex-col items-center flex-1">
+                          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                            <Icon icon={feature.icon} className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                          </div>
+                          <h4 className="font-semibold text-xs sm:text-sm text-default-900 mb-1 leading-tight">{feature.title}</h4>
+                          <p className="text-xs text-default-600 leading-tight flex-1 flex items-center">{feature.desc}</p>
                         </div>
-                        <h4 className="font-semibold text-sm text-default-900 mb-1">{feature.title}</h4>
-                        <p className="text-xs text-default-600">{feature.desc}</p>
                       </CardContent>
                     </Card>
                   </motion.div>
@@ -157,28 +159,28 @@ const HeroEnhanced = () => {
             >
               {/* Floating Elements */}
               <motion.div
-                className="absolute top-32 left-5 bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-xl border border-primary/20"
+                className="absolute sm:top-32 top-0 sm:left-5 left-0 bg-white/90 backdrop-blur-sm rounded-2xl sm:p-4 p-2 shadow-xl border border-primary/20"
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center sm:gap-2 gap-1">
                   <Icon icon="heroicons:gift" className="w-5 h-5 text-orange-500" />
                   <div>
-                    <p className="text-sm font-semibold text-default-900">Promo</p>
+                    <p className="text-sm font-semibold text-primary">Promo</p>
                     <p className="text-xs text-default-600">Special offers</p>
                   </div>
                 </div>
               </motion.div>
 
               <motion.div
-                className="absolute bottom-32 right-5 bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-xl border border-primary/20"
+                className="absolute sm:bottom-32 bottom-[-40px] sm:right-5 right-0 bg-white/90 backdrop-blur-sm rounded-2xl sm:p-4 p-2 shadow-xl border border-primary/20"
                 animate={{ y: [0, 10, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }}
               >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center sm:gap-2 gap-1">
                   <Icon icon="heroicons:receipt-percent" className="w-5 h-5 text-green-500" />
                   <div>
-                    <p className="text-sm font-semibold text-default-900">Discounts</p>
+                    <p className="text-sm font-semibold text-primary">Discounts</p>
                     <p className="text-xs text-default-600">Great savings</p>
                   </div>
                 </div>
@@ -202,7 +204,7 @@ const HeroEnhanced = () => {
               
               {/* Enhanced Car Image */}
               <motion.div
-                className="relative z-10 w-full max-w-2xl"
+                className="relative z-10 w-full max-w-[20rem] sm:max-w-2xl"
                 initial={{ scale: 1.1 }}
                 animate={{
                   y: [0, -8, 0],
