@@ -24,15 +24,7 @@ const AllComponents = () => {
     "Discover More"
   ]
   return (
-    <section className="relative " id="features">
-      {/* <div className="max-w-[670px] mx-auto">
-        <h2 className="text-center text-xl md:text-2xl lg:text-3xl leading-[46px] font-semibold text-default-900 mb-1 lg:mb-3">
-          Component <span className="text-primary">Collection</span>
-        </h2>
-        <p className="text-base xl:leading-7 text-center text-default-700 ">
-          DashTail Admin Template offers a variety of carefully designed components, perfect for creating advanced reusable components,
-          pages,dashboard etc.</p>
-      </div> */}
+    <section className="relative mb-10" id="features">
       <div className="space-y-6">
         <Swiper
           spaceBetween={8}

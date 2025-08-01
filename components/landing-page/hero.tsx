@@ -3,39 +3,37 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import DashboardSceenshot from "@/public/images/landing-page/dashboard-screenshot.png";
-
 import CarImage from "@/public/images/landing-page/car.webp";
-import AllComponents from "./all-components";
 
 const Hero = () => {
   return (
     <section
-      className="bg-[url(https://dashboi-one.vercel.app/images/home/hero-bg.png)] bg-cover bg-no-repeat relative"
+      className="bg-[url(https://dashboi-one.vercel.app/images/home/hero-bg.png)] bg-cover bg-no-repeat relative mb-10 lg:mb-0"
       id="home"
     >
       <div className="bg-gradient-to-b from-primary/30 to-[#fff] dark:from-primary/20 dark:to-[#0F172A]">
-        <div className="container mx-auto min-h-screen">
+        <div className="container mx-auto min-h-[88vh]">
           <div className="grid lg:grid-cols-2 gap-8 items-center justify-center relative z-10">
             {/* Left Content - Text */}
             <div className="pt-32 md:pt-48 lg:pt-20">
-              <h1 className="text-xl md:text-4xl xl:text-5xl xl:leading-[52px] font-bold text-default-900">
+              <h1 className="text-3xl text-center lg:text-left md:text-4xl xl:text-5xl xl:leading-[52px] font-bold text-default-900">
                 <p>ACCOMPANY YOUR </p>
                 <p>JOURNEY WITH COMFORT </p>
               </h1>
-              <p className="text-base leading-7 md:text-lg md:leading-8 text-default-700 mt-5">
+              <p className="text-base text-center lg:text-left leading-7 md:text-lg md:leading-8 text-default-700 mt-5">
                 Experience the freedom to explore Pagadian and beyond
                 with <span className="text-primary">Nacs Car Rental.</span> Choose 
                 from a wide selection of reliable vehicles—perfect for every journey, 
                 whether it’s business, adventure, or family fun.
               </p>
-              <p className="text-base leading-7 md:text-lg md:leading-8 text-default-700 mt-5">
+              <p className="text-base text-center lg:text-left leading-7 md:text-lg md:leading-8 text-default-700 mt-5">
               Discover the wonders of the Philippines at your own pace. With Nacs Car Rental, 
               you get unbeatable prices, top-notch service, and the flexibility to travel wherever your heart desires.
               </p>
-              <p className="text-base leading-7 md:text-lg md:leading-8 text-default-700 mt-5">
+              <p className="text-base text-center lg:text-left leading-7 md:text-lg md:leading-8 text-default-700 mt-5">
                 Reserve your car today and make every journey unforgettable!
               </p>
-              <div className="flex mt-9 gap-4 lg:gap-8">
+              <div className="flex mt-9 gap-4 lg:gap-8 justify-center lg:justify-start">
                 <Button asChild size="xl">
                   <Link href="/dashboard">Get Started</Link>
                 </Button>
@@ -87,14 +85,6 @@ const Hero = () => {
               </motion.div>
             </div>
           </div>
-          <AllComponents />
-
-          {/* Mobile fallback */}
-          <Image
-            src={DashboardSceenshot}
-            className="relative lg:hidden mt-10" priority={true}
-            alt="screenshot"
-          />
         </div>
       </div>
     </section>

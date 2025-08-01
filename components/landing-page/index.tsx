@@ -26,7 +26,7 @@ const LandingPageView = () => {
       <Header />
       <Hero />
       {/* <Stats /> */}
-      {/* <AllComponents /> */}
+      <AllComponents />
       <ShowCase />
       <ColorSchemas />
       <ProjectTools />
