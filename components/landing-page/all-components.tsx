@@ -2,6 +2,8 @@
 import { Button } from "@/components/ui/button"
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from 'swiper/modules';
+import { Badge } from "../ui/badge";
+import { Star } from "lucide-react";
 const AllComponents = () => {
 
   const data = [
@@ -36,7 +38,7 @@ const AllComponents = () => {
           spaceBetween={8}
           slidesPerView='auto'
           centeredSlides={true}
-          speed={2000}
+          speed={3000}
           loop={true}
           modules={[Autoplay]}
           grabCursor={true}
@@ -53,12 +55,7 @@ const AllComponents = () => {
               key={`menu-${index}`}
               className="w-28 flex justify-center "
             >
-              <Button
-                variant="outline"
-                className="rounded-full capitalize border-default-500 text-default-600"
-              >
-                {item}
-              </Button>
+              <Button variant="soft">{item}</Button>
             </SwiperSlide>
           ))
           }
@@ -86,12 +83,7 @@ const AllComponents = () => {
               key={`menu-${index}`}
               className="w-28 flex justify-center "
             >
-              <Button
-                variant="outline"
-                className="rounded-full capitalize border-default-500 text-default-600"
-              >
-                {item}
-              </Button>
+              <Button variant="soft">{item}</Button>
             </SwiperSlide>
           ))
           }

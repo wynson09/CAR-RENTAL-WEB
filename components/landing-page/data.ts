@@ -487,3 +487,52 @@ export const menus = [
   },
 ];
 export type Menu = typeof menus[number];
+
+// Car Rental Services Data
+export const carRentalServices = [
+  {
+    id: "self-drive",
+    title: "Self Drive",
+    description: "Explore at your own pace with our premium fleet of well-maintained vehicles. Perfect for adventurous travelers who prefer the freedom of driving themselves.",
+    features: ["GPS Navigation", "24/7 Support", "Insurance Included", "Flexible Booking"],
+    icon: "heroicons:truck",
+    image: "/images/services/self-drive.jpg", // You'll need to add these images
+    buttonColor: "primary"
+  },
+  {
+    id: "motorcycle",
+    title: "Motorcycle",
+    description: "Rent a motorcycle for an exhilarating ride—pick your bike, hit the open road, and feel the freedom!",
+    features: ["Helmet Provided", "Safety Gear", "Route Planning", "Emergency Support"],
+    icon: "heroicons:bolt",
+    image: "/images/services/motorcycle.jpg",
+    buttonColor: "primary"
+  },
+  {
+    id: "with-driver",
+    title: "With Driver",
+    description: "Relax and enjoy the journey with our professional, experienced drivers who know the local routes and attractions.",
+    features: ["Professional Drivers", "Local Knowledge", "Comfortable Vehicles", "Tour Guide Service"],
+    icon: "heroicons:user-circle",
+    image: "/images/services/with-driver.jpg",
+    buttonColor: "primary"
+  },
+  {
+    id: "leasing",
+    title: "Leasing",
+    description: "Long-term vehicle solutions for businesses and individuals with flexible lease terms and maintenance packages.",
+    features: ["Long-term Options", "Maintenance Included", "Fleet Management", "Corporate Rates"],
+    icon: "heroicons:document-text",
+    image: "/images/services/leasing.jpg",
+    buttonColor: "primary"
+  },
+  {
+    id: "tours",
+    title: "Tours",
+    description: "Discover the beauty of the Philippines with our guided tours and customized travel packages.",
+    features: ["Guided Tours", "Custom Packages", "Multiple Destinations", "All-Inclusive Options"],
+    icon: "heroicons:map-pin",
+    image: "/images/services/tours.jpg",
+    buttonColor: "primary"
+  }
+];

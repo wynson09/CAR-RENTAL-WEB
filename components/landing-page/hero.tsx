@@ -48,7 +48,7 @@ const Hero = () => {
             </div>
 
             {/* Right Content - Car with Blue Background */}
-            <div className="relative lg:h-[700px] flex items-center justify-center">
+            <div className="relative lg:h-[800px] flex items-center justify-center">
               {/* Custom SVG background shape - adapts to image size */}
               <div className="absolute lg:top-1/4 top-[20%] right-0 lg:w-[100%] w-[100%] lg:h-[60%] h-[80%] transform -rotate-6 scale-x-[-1]">
                 <svg fill="none" viewBox="0 0 342 175" className="w-full h-full absolute inset-0" xmlns="http://www.w3.org/2000/svg">
