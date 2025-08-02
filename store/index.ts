@@ -96,3 +96,76 @@ export const useSidebar = create<SidebarState>()(
       storage: createJSONStorage(() => localStorage), },
     ),
 )
+
+// User Data Types
+export interface KycRecord {
+  birthDate: string;
+  gender: string;
+  nationality: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  phoneNumber: string;
+  governmentId: string;
+  governmentIdType: string;
+  governmentIdFrontImage: string;
+  governmentIdBackImage: string;
+  status: 'pending' | 'approved' | 'rejected';
+  statusMessage: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface UserData {
+  uid: string;
+  firstName: string;
+  lastName: string;
+  name: string;
+  email: string;
+  image?: string;
+  role: 'user' | 'admin' | 'moderator';
+  userViolation: string[];
+  isVerified: boolean;
+  kycRecord: KycRecord;
+  provider: 'credentials' | 'google' | 'facebook' | 'github';
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface UserStoreState {
+  user: UserData | null;
+  isLoading: boolean;
+  setUser: (user: UserData | null) => void;
+  setLoading: (loading: boolean) => void;
+  updateUser: (updates: Partial<UserData>) => void;
+  clearUser: () => void;
+}
+
+export const useUserStore = create<UserStoreState>()(
+  persist(
+    (set, get) => ({
+      user: null,
+      isLoading: false,
+      setUser: (user) => set({ user, isLoading: false }),
+      setLoading: (loading) => set({ isLoading: loading }),
+      updateUser: (updates) => {
+        const currentUser = get().user;
+        if (currentUser) {
+          set({ 
+            user: { 
+              ...currentUser, 
+              ...updates, 
+              updatedAt: new Date() 
+            } 
+          });
+        }
+      },
+      clearUser: () => set({ user: null, isLoading: false }),
+    }),
+    {
+      name: "user-store",
+      storage: createJSONStorage(() => localStorage),
+    },
+  ),
+)

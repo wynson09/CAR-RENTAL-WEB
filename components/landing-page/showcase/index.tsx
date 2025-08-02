@@ -2,7 +2,7 @@ import ServiceButtonsPremium from "../service-buttons-premium";
 
 const ShowCase = () => {
   return (
-    <section className="py-16 2xl:py-[100px] bg-default-100" id="elements">
+    <section className="py-16 2xl:py-[100px] bg-default-100" id="services">
       <div className="container">
         <div className="max-w-4xl mx-auto mb-12">
           <h2 className="text-xl lg:text-xl 2xl:text-3xl 2xl:leading-[46px] font-semibold text-default-900 text-center mb-3">

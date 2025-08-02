@@ -445,12 +445,12 @@ export const demoMenus = [
 
 export const menus = [
   {
-    title: "Elements",
-    href: "#elements",
+    title: "Services",
+    href: "#services",
   },
   {
-    title: "Why Dash Tail",
-    href: "#whyDashTail",
+    title: "Why NCR",
+    href: "#whyNacsCarRental",
   },
   {
     title: "Pricing",

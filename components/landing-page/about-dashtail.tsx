@@ -88,7 +88,7 @@ const AboutDashtail = () => {
     }
   ]
   return (
-    <section className="py-16 2xl:py-[120px]" id="whyDashTail">
+    <section className="py-16 2xl:py-[120px]" id="whyNacsCarRental">
       <div className="container">
 
         <div className="max-w-[670px] mx-auto">
