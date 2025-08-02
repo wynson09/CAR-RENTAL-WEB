@@ -16,74 +16,74 @@ const AboutDashtail = () => {
   const data = [
     {
       id: 1,
-      title: "User Experience",
-      desc: "Crafted with the end-user in mind, ensuring a smooth, intuitive, and engaging interface that enhances overall productivity and satisfaction.",
+      title: "Outstanding Service",
+      desc: "4 Years in a row TripAdvisor Certificate of Excellence Awardee.",
       icon: icon1
     },
     {
       id: 2,
-      title: "Developer Experience",
-      desc: "Offers a seamless development workflow with well-organized code, comprehensive documentation, and tools that simplify customization.",
+      title: "Dynamic Pricing",
+      desc: "Seize the Savings by Booking Early: Your Road to Affordable Adventures",
       icon: icon2
     },
     {
       id: 3,
-      title: "Latest Framework",
-      desc: "Built on the latest versions of Next.js and Tailwind CSS, providing a cutting-edge foundation for modern, fast, and responsive web applications.",
+      title: "Quality Vehicles",
+      desc: "Only the best quality vehicle brands on our fleet.",
       icon: icon3
     },
     {
       id: 4,
-      title: "Rich Library",
-      desc: "Comes packed with a wide array of components, pages, and apps enabling developers to quickly assemble complex interfaces with minimal effort.",
+      title: "Free Insurance",
+      desc: "Worry-free travel with our Free CDW, SLI and PAI.",
       icon: icon4
     },
     {
       id: 5,
-      title: "Multiple Layouts",
-      desc: "Features a variety of layout options to accommodate different design  preferences, ensuring flexibility in presenting content.",
+      title: "Unlimited Mileage",
+      desc: "Unlock the road with Unlimited Mileage.",
       icon: icon5
     },
     {
       id: 6,
-      title: "Style Customizer",
-      desc: "Includes a dynamic style customizer, allowing for easy adjustments of themes, colors, sidebar, etc. to match your brand identity perfectly.",
+      title: "Multiple Payment Options",
+      desc: "Cash, Credit Card, and Money Transfer",
       icon: icon6
     },
     {
       id: 7,
-      title: "Starter Kit",
-      desc: "A comprehensive starter kit that gets your project off the ground quickly, equipped with essential elements and a guide to best practices.",
+      title: "24/7 Customer Support",
+      desc: "Round-the-clock assistance for all your travel needs and emergencies.",
       icon: icon7
     },
     {
       id: 8,
-      title: "Customize With Ease",
-      desc: "Designed for effortless customization, enabling you to tailor every aspect of the application to fit your specific requirements.",
+      title: "Easy Booking Process",
+      desc: "Quick and hassle-free online reservation system with instant confirmation.",
       icon: icon8
     },
     {
       id: 9,
-      title: "Value For Money",
-      desc: "Offers an unbeatable combination of advanced features, robust performance, and affordability, providing real value for your investment.",
+      title: "Flexible Rental Terms",
+      desc: "Short-term and long-term rental options to suit your travel plans.",
       icon: icon9
     },
     {
       id: 10,
-      title: "Well Documented",
-      desc: "Accompanied by  documentation that covers every feature, component, and development practice to ensure  leverage the template's capabilities.",
+      title: "Well Maintained Fleet",
+      desc: "Regular vehicle maintenance and safety inspections to ensure optimal performance and reliability.",
       icon: icon10
     },
     {
       id: 11,
-      title: "Regular Updates",
-      desc: "Continuously improved with regular updates that introduce new features, optimizations, and fixes, keeping your application modern and secure.",
+      title: "Nationwide Coverage",
+      desc: "Extensive service network across the Philippines for convenient pickup and drop-off locations.",
       icon: icon11
     },
     {
       id: 12,
-      title: "Dedicated Support",
-      desc: "Backend by a team of  knowledgeable support professionals ready to assist with any questions or challenges you might encounter.",
+      title: "Trusted by Thousands",
+      desc: "Join thousands of satisfied customers who trust us for their transportation needs throughout the Philippines.",
       icon: icon12
     }
   ]
@@ -93,10 +93,10 @@ const AboutDashtail = () => {
 
         <div className="max-w-[670px] mx-auto">
           <h2 className="text-center text-xl xl:text-3xl xl:leading-[46px] font-semibold text-default-900 mb-3">
-            Why Choose  <span className="text-primary">DashTail</span>
+            Why choose <span className="text-primary">Saferide</span>
           </h2>
           <p className="text-base xl:leading-7 text-center text-default-700 ">
-            Transform your development experience with our ultra-customizable, developer-friendly admin template: crafting exceptional user journeys made effortless.
+            Saferide Car Rental is a leading car rental in the Philippines, providing top-notch vehicles for rent at affordable prices. Our company is dedicated to providing our customers with a safe, comfortable, and convenient travel experience.
           </p>
         </div>
 

@@ -23,7 +23,6 @@ const ServiceButtonsPremium = () => {
             key={service.id}
             className="relative group"
             onMouseEnter={() => setHoveredService(service.id)}
-            onMouseLeave={() => setHoveredService(carRentalServices[0].id)}
           >
             <div className={cn(
               "relative overflow-hidden rounded-xl p-4 text-center cursor-pointer transition-all duration-500",
