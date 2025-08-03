@@ -11,6 +11,7 @@ import { Icon } from "@iconify/react";
 import { menus } from "./../data";
 import { ChevronDown, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { NCRLogo } from "@/components/ui/ncr-logo";
 const Header = () => {
 
   const [scroll, setScroll] = useState<boolean>(false);
@@ -109,15 +110,14 @@ const Header = () => {
   return (
     <div className={scroll ? "bg-card/50 backdrop-blur-lg shadow-xl z-30 dark:bg-card/70 fixed top-0 left-0 w-full py-3" : " z-30 fixed top-0 left-0 w-full py-3"}>
       <nav className="container flex justify-between">
-        <Link target="_blank" href="/dashboard" className="flex items-center gap-1">
-          <SiteLogo className="h-8 w-8  text-primary" />
-          <span className="text-primary-500 font-medium text-xl">DashTail</span>
+        <Link href="#home" className="flex items-center gap-1">
+          <NCRLogo  />
         </Link>
         <NavMenu />
         <div className="flex items-center gap-6">
           <ThemeButton />
           <Button asChild size="sm">
-            <Link href="https://1.envato.market/dashtail-regular" target="__blank" className="text-sm font-semibold">
+            <Link href="/dashboard" className="text-sm font-semibold">
               <Icon icon="heroicons:shopping-cart" className="w-4 h-4 me-1.5" />
               Buy Now
             </Link>

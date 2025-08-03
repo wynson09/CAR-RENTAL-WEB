@@ -2,7 +2,7 @@
 
 
 export const siteConfig = {
-  name: "DashTail Next js Admin Template",
+  name: "Nacs Car Rental - Vehicle Rental Platform",
   description: null,
   theme: "violet",
   layout: "vertical",

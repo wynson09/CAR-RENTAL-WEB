@@ -1,31 +1,36 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import { menusConfig } from "@/config/menus";
-import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from 'swiper/modules';
+import { Badge } from "../ui/badge";
+import { Star } from "lucide-react";
 const AllComponents = () => {
 
-
-  const menus = menusConfig.sidebarNav.modern[2]?.child?.[0]?.nested ?? [];
-  const menus2 = menusConfig.sidebarNav.modern[2]?.child?.[1]?.nested ?? [];
-  const data = [...menus, ...menus2];
+  const data = [
+    "Drive with Ease",
+    "Explore More",
+    "Ride in Style",
+    "Go Anywhere",
+    "Zoom Today",
+    "Escape Now",
+    "Feel the Freedom",
+    "Adventure Awaits",
+    "Start Your Journey",
+    "Cruise the City",
+    "Travel Smart",
+    "Unlock the Road",
+    "Move Freely",
+    "Roam Far",
+    "Discover More"
+  ]
   return (
-    <section className="py-16 2xl:py-20  relative " id="features">
-      <div className="max-w-[670px] mx-auto">
-        <h2 className="text-center text-xl md:text-2xl lg:text-3xl leading-[46px] font-semibold text-default-900 mb-1 lg:mb-3">
-          Component <span className="text-primary">Collection</span>
-        </h2>
-        <p className="text-base xl:leading-7 text-center text-default-700 ">
-          DashTail Admin Template offers a variety of carefully designed components, perfect for creating advanced reusable components,
-          pages,dashboard etc.</p>
-      </div>
-      <div className=" mt-14 space-y-6">
+    <section className="relative mb-10" id="features">
+      <div className="space-y-6">
         <Swiper
           spaceBetween={8}
           slidesPerView='auto'
           centeredSlides={true}
-          speed={2000}
+          speed={3000}
           loop={true}
           modules={[Autoplay]}
           grabCursor={true}
@@ -42,12 +47,7 @@ const AllComponents = () => {
               key={`menu-${index}`}
               className="w-28 flex justify-center "
             >
-              <Button
-                variant="outline"
-                className="rounded-full capitalize border-default-500 text-default-600"
-              >
-                <Link href={item.href as string}>{item.title}</Link>
-              </Button>
+              <Button variant="soft">{item}</Button>
             </SwiperSlide>
           ))
           }
@@ -75,12 +75,7 @@ const AllComponents = () => {
               key={`menu-${index}`}
               className="w-28 flex justify-center "
             >
-              <Button
-                variant="outline"
-                className="rounded-full capitalize border-default-500 text-default-600"
-              >
-                <Link href={item.href as string}>{item.title}</Link>
-              </Button>
+              <Button variant="soft">{item}</Button>
             </SwiperSlide>
           ))
           }

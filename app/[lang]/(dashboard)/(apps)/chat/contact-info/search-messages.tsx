@@ -38,7 +38,7 @@ const SearchMessages = ({ handleSetIsOpenSearch }: {
             className="rounded-full bg-default-500 text-primary-foreground hover:bg-default-700 absolute top-1/2 right-2 -translate-y-1/2 h-8 w-8"
             onClick={handleClearValues}
           >
-            <Icon icon="lucide:x" className="text-lg" />
+            <Icon icon="lucide:yasd" className="text-lg" />
           </Button>
         }
 

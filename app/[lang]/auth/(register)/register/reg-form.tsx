@@ -23,13 +23,15 @@ import { SiteLogo } from "@/components/svg";
 import { useMediaQuery } from "@/hooks/use-media-query";
 
 const schema = z.object({
-  name: z.string().min(3, { message: "Name must be at least 3 characters." }),
+  firstName: z.string().min(2, { message: "First name must be at least 2 characters." }),
+  lastName: z.string().min(2, { message: "Last name must be at least 2 characters." }),
   email: z.string().email({ message: "Your email is invalid." }),
-  password: z.string().min(4),
+  password: z.string().min(4, { message: "Password must be at least 4 characters." }),
 });
+
 const RegForm = () => {
   const [isPending, startTransition] = React.useTransition();
-  const [passwordType, setPasswordType] = useState<string>("password");
+  const [passwordType, setPasswordType] = useState("password");
   const isDesktop2xl = useMediaQuery("(max-width: 1530px)");
   const togglePasswordType = () => {
     if (passwordType === "text") {
@@ -58,7 +60,7 @@ const RegForm = () => {
       if (response?.status === "success") {
         toast.success(response?.message);
         reset();
-        router.push("/");
+        router.push("/auth/login");
       } else {
         toast.error(response?.message);
       }
@@ -73,29 +75,53 @@ const RegForm = () => {
         Hey, Hello 👋
       </div>
       <div className="2xl:text-lg text-base text-default-600 mt-2 leading-6">
-        Create account to start using DashTail
+        Create account to start using Nacs Car Rental
       </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-5 xl:mt-7">
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-7">
         <div className="space-y-4">
-          <div>
-            <Label htmlFor="name" className="mb-2 font-medium text-default-600">
-              Full Name{" "}
-            </Label>
-            <Input
-              disabled={isPending}
-              {...register("name")}
-              type="text"
-              id="name"
-              className={cn("", {
-                "border-destructive": errors.name,
-              })}
-              size={!isDesktop2xl ? "xl" : "lg"}
-            />
-            {errors.name && (
-              <div className=" text-destructive mt-2 mb-4">
-                {errors.name.message as string}
-              </div>
-            )}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="firstName" className="mb-2 font-medium text-default-600">
+                First Name{" "}
+              </Label>
+              <Input
+                disabled={isPending}
+                {...register("firstName")}
+                type="text"
+                id="firstName"
+                className={cn("", {
+                  "border-destructive": errors.firstName,
+                })}
+                size={!isDesktop2xl ? "xl" : "lg"}
+                placeholder="Enter your first name"
+              />
+              {errors.firstName && (
+                <div className=" text-destructive mt-2 mb-4">
+                  {errors.firstName.message as string}
+                </div>
+              )}
+            </div>
+            <div>
+              <Label htmlFor="lastName" className="mb-2 font-medium text-default-600">
+                Last Name{" "}
+              </Label>
+              <Input
+                disabled={isPending}
+                {...register("lastName")}
+                type="text"
+                id="lastName"
+                className={cn("", {
+                  "border-destructive": errors.lastName,
+                })}
+                size={!isDesktop2xl ? "xl" : "lg"}
+                placeholder="Enter your last name"
+              />
+              {errors.lastName && (
+                <div className=" text-destructive mt-2 mb-4">
+                  {errors.lastName.message as string}
+                </div>
+              )}
+            </div>
           </div>
           <div>
             <Label
@@ -162,6 +188,7 @@ const RegForm = () => {
             )}
           </div>
         </div>
+
         <div className="mt-5 flex items-center gap-1.5 mb-8">
           <Checkbox
             size="sm"
@@ -175,12 +202,10 @@ const RegForm = () => {
             You accept our Terms & Conditions
           </Label>
         </div>
-        <Button
-          className="w-full"
-          disabled={isPending}
-          size={!isDesktop2xl ? "lg" : "md"}
-        >
+
+        <Button className="w-full" disabled={isPending} size="lg">
           {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+
           {isPending ? "Registering..." : "Create an Account"}
         </Button>
       </form>
@@ -199,7 +224,7 @@ const RegForm = () => {
           variant="outline"
           className="rounded-full border-default-300 hover:bg-transparent"
         >
-          <Image src={facebook} alt="google icon" className="w-6 h-6" />
+          <Image src={facebook} alt="google icon" className="w-6 h-6" priority={true} />
         </Button>
         <Button
           type="button"
@@ -207,7 +232,7 @@ const RegForm = () => {
           variant="outline"
           className="rounded-full  border-default-300 hover:bg-transparent"
         >
-          <Image src={apple} alt="google icon" className="w-6 h-6" />
+          <Image src={apple} alt="google icon" className="w-6 h-6" priority={true} />
         </Button>
         <Button
           type="button"
@@ -215,7 +240,7 @@ const RegForm = () => {
           variant="outline"
           className="rounded-full  border-default-300 hover:bg-transparent"
         >
-          <Image src={twitter} alt="google icon" className="w-6 h-6" />
+          <Image src={twitter} alt="google icon" className="w-6 h-6" priority={true} />
         </Button>
       </div>
       <div className="mt-5 2xl:mt-8 text-center text-base text-default-600">

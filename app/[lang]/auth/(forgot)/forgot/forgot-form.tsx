@@ -11,8 +11,8 @@ import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMediaQuery } from "@/hooks/use-media-query";
 import { SiteLogo } from "@/components/svg";
+import { useMediaQuery } from "@/hooks/use-media-query";
 const schema = z.object({
   email: z.string().email({ message: "Your email is invalid." }),
 });
@@ -37,11 +37,11 @@ const ForgotForm = () => {
     startTransition(async () => {
       toast.success("Password Reset code has been sent to your email");
       reset();
-      router.push("/auth/create-password");
+      router.push("/auth/create-password5");
     });
   };
   return (
-    <div className="w-full">
+    <div className="w-full py-5 lg:py-10">
       <Link href="/dashboard" className="inline-block">
         <SiteLogo className="h-10 w-10 2xl:w-14 2xl:h-14 text-primary" />
       </Link>
@@ -51,6 +51,7 @@ const ForgotForm = () => {
       <div className="2xl:text-lg text-base text-default-600 mt-2 leading-6">
         Enter your email & instructions will be sent to you!
       </div>
+
       <form onSubmit={handleSubmit(onSubmit)} className="mt-5 xl:mt-7">
         <div>
           <Label htmlFor="email" className="mb-2 font-medium text-default-600">
@@ -78,7 +79,7 @@ const ForgotForm = () => {
       </form>
       <div className="mt-5 2xl:mt-8 text-center text-base text-default-600">
         Forget it. Send me back to{" "}
-        <Link href="/auth/login" className="text-primary">
+        <Link href="/auth/login5" className="text-primary">
           Sign In
         </Link>
       </div>

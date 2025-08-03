@@ -1,7 +1,7 @@
 "use client";
 import Header from "./header";
 import ShowCase from "./showcase";
-import Hero from "./hero";
+import HeroEnhanced from "./hero-enhanced";
 import ColorSchemas from "./color-schemas";
 import ProjectTools from "./project-tools";
 import AllComponents from "./all-components";
@@ -24,8 +24,8 @@ const LandingPageView = () => {
   return (
     <div className="bg-background">
       <Header />
-      <Hero />
-      <Stats />
+      <HeroEnhanced />
+      {/* <Stats /> */}
       <AllComponents />
       <ShowCase />
       <ColorSchemas />
