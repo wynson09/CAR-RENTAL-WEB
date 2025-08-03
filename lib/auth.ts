@@ -6,6 +6,21 @@ import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, Facebo
 import { auth, db } from "./firebase";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { createUserData, removeUndefinedFields } from "./user-utils";
+import { Session } from "next-auth";
+import { JWT } from "next-auth/jwt";
+import { Account, Profile, User } from "next-auth";
+
+// Extend the Session type to include user ID
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id?: string;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+    }
+  }
+}
 
 // Helper function to sync user data to Firestore
 const syncUserToFirestore = async (user: any) => {
@@ -110,7 +125,7 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account }: { user: User; account: Account | null; profile?: Profile }) {
       if (account?.provider === 'google' || account?.provider === 'facebook' || account?.provider === 'github') {
         try {
           // For OAuth providers, sync user data to Firestore
@@ -131,14 +146,14 @@ export const authOptions = {
       }
       return true;
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: Session; token: JWT }) {
       // Send properties to the client
       if (token && session.user) {
         session.user.id = token.sub;
       }
       return session;
     },
-    async jwt({ token, user, account }) {
+    async jwt({ token, user, account }: { token: JWT; user?: User; account?: Account | null }) {
       if (user) {
         token.provider = account?.provider;
       }
