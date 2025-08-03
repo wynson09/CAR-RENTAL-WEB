@@ -2,19 +2,19 @@
 
 
 export const siteConfig = {
-  name: "Nacs Car Rental - Vehicle Rental Platform",
-  description: null,
-  theme: "violet",
-  layout: "vertical",
+  name: process.env.NEXT_PUBLIC_SITE_NAME || "Nacs Car Rental - Vehicle Rental Platform",
+  description: process.env.NEXT_PUBLIC_SITE_DESCRIPTION || null,
+  theme: process.env.NEXT_PUBLIC_THEME || "blue",
+  layout: process.env.NEXT_PUBLIC_LAYOUT || "semi-box",
   // semi-box, horizontal, vertical
-  hideSideBar: false,
-  sidebarType: "module",
+  hideSideBar: process.env.NEXT_PUBLIC_HIDE_SIDEBAR === "true" || false,
+  sidebarType: process.env.NEXT_PUBLIC_SIDEBAR_TYPE || "module",
   // popover, classic, module
-  sidebarColor: null,
-  navbarType: "sticky",
+  sidebarColor: process.env.NEXT_PUBLIC_SIDEBAR_COLOR || null,
+  navbarType: process.env.NEXT_PUBLIC_NAVBAR_TYPE || "sticky",
   // sticky, floating, static
-  footerType: "static",
+  footerType: process.env.NEXT_PUBLIC_FOOTER_TYPE || "static",
   // sticky,  static, hidden
-  sidebarBg: "none",
-  radius: 0.5,
+  sidebarBg: process.env.NEXT_PUBLIC_SIDEBAR_BG || "none",
+  radius: parseFloat(process.env.NEXT_PUBLIC_RADIUS || "0.5"),
 };
