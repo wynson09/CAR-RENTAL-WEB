@@ -221,9 +221,9 @@ const BreadcrumbItem = React.forwardRef<HTMLSpanElement, any>(
     },
     ref
   ) => {
-    const ariaCurrent = iscurrent ? "page" : null;
-    const dataState = iscurrent ? "active" : null;
-    const dataDisabled = disabled && !iscurrent ? "true" : null;
+    const ariaCurrent = iscurrent ? "page" : undefined;
+    const dataState = iscurrent ? "active" : undefined;
+    const dataDisabled = disabled && !iscurrent ? "true" : undefined;
 
     const handleClick = () => {
       if (onAction && !iscurrent) {
@@ -242,7 +242,7 @@ const BreadcrumbItem = React.forwardRef<HTMLSpanElement, any>(
               "cursor-pointer": (!iscurrent && onAction) || !islast,
               "data-[disabled=true]:opacity-50 data-[disabled=true]:cursor-not-allowed":
                 disabled && !iscurrent,
-            }
+            },
           )}
           aria-current={ariaCurrent}
           data-state={dataState}

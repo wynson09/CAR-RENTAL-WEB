@@ -116,6 +116,7 @@ const ListItem = React.forwardRef<HTMLAnchorElement, any>(
         )}
         {...props}
         ref={forwardedRef}
+        href={props.href}
       >
         <div>{children}</div>
         <div className=" capitalize">{title}</div>
