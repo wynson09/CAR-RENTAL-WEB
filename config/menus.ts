@@ -86,14 +86,14 @@ export const userMenuConfig = {
       icon: ClipBoard,
       child: [
         {
-          title: "Active Rentals",
+          title: "Current Rentals",
           icon: ClipBoard,
-          href: "/active-rentals",
+          href: "/current-rentals",
         },
         {
-          title: "Rent History",
+          title: "Past Rentals",
           icon: ClipBoard,
-          href: "/rent-history",
+          href: "/past-rentals",
         },
       ]
     },
@@ -101,12 +101,147 @@ export const userMenuConfig = {
       title: "Chat",
       icon: Messages,
       href: "/chat",
-    },
-    {
-      title: "Messages",
-      icon: Envelope,
     }
   ],
+  sidebarNav: {
+    classic: [
+      {
+        title: "Dashboard",
+        icon: DashBoard,
+        href: "/dashboard",
+      },
+      {
+        title: "Fleet",
+        icon: Cart,
+        child: [
+          {
+            title: "Browse Cars",
+            icon: Cart,
+            href: "/cars",
+          },
+          {
+            title: "Special Offers",
+            icon: Cart,
+            href: "/special-offers",
+          },
+        ],
+      },
+      {
+        title: "Bookings",
+        icon: ClipBoard,
+        child: [
+          {
+            title: "Current Rentals",
+            icon: ClipBoard,
+            href: "/current-rentals",
+          },
+          {
+            title: "Past Rentals",
+            icon: ClipBoard,
+            href: "/past-rentals",
+          },
+        ]
+      },
+      {
+        title: "Chat",
+        icon: Messages,
+        href: "/chat",
+      }
+    ],
+  },
+};
+
+export const adminMenuConfig = {
+  mainNav: [
+    {
+      title: "Dashboard Admin",
+      icon: DashBoard,
+      href: "/dashboard",
+    },
+    {
+      title: "Fleet",
+      icon: Cart,
+      child: [
+        {
+          title: "Browse Cars",
+          icon: Cart,
+          href: "/cars",
+        },
+        {
+          title: "Special Offers",
+          icon: Cart,
+          href: "/special-offers",
+        },
+      ],
+    },
+    {
+      title: "Bookings",
+      icon: ClipBoard,
+      child: [
+        {
+          title: "Current Rentals",
+          icon: ClipBoard,
+          href: "/current-rentals",
+        },
+        {
+          title: "Past Rentals",
+          icon: ClipBoard,
+          href: "/past-rentals",
+        },
+      ]
+    },
+    {
+      title: "Chat",
+      icon: Messages,
+      href: "/chat",
+    }
+  ],
+  sidebarNav: {
+    classic: [
+      {
+        title: "Dashboard Admin",
+        icon: DashBoard,
+        href: "/dashboard",
+      },
+      {
+        title: "Fleet",
+        icon: Cart,
+        child: [
+          {
+            title: "Browse Cars",
+            icon: Cart,
+            href: "/cars",
+          },
+          {
+            title: "Special Offers",
+            icon: Cart,
+            href: "/special-offers",
+          },
+        ],
+      },
+      {
+        title: "Bookings",
+        icon: ClipBoard,
+        child: [
+          {
+            title: "Current Rentals",
+            icon: ClipBoard,
+            href: "/current-rentals",
+          },
+          {
+            title: "Past Rentals",
+            icon: ClipBoard,
+            href: "/past-rentals",
+          },
+        ]
+      },
+      {
+        title: "Chat",
+        icon: Messages,
+        href: "/chat",
+      }
+    ],
+  },
 };
 
 export const menusConfig = {
