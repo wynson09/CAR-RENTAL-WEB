@@ -128,6 +128,8 @@ export interface UserData {
   userViolation: string[];
   isVerified: boolean;
   kycRecord: KycRecord;
+  userStatus: 'Normal' | 'Suspicious' | 'Lock' | 'Restricted';
+  userStatusMessage: string;
   provider: 'credentials' | 'google' | 'facebook' | 'github';
   createdAt: Date;
   updatedAt: Date;

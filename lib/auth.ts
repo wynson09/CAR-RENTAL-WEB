@@ -40,7 +40,7 @@ const syncUserToFirestore = async (user: any) => {
         lastName,
         name: user.name,
         image: user.image,
-        isVerified: true, // OAuth users are typically verified
+        isVerified: false,
       });
 
       // Clean and save user data (remove undefined fields)

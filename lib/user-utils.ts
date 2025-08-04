@@ -14,7 +14,7 @@ export const createDefaultKycRecord = (): KycRecord => ({
   governmentIdType: '',
   governmentIdFrontImage: '',
   governmentIdBackImage: '',
-  status: 'pending',
+  status: 'pending', // pending, approved, rejected
   statusMessage: '',
   createdAt: new Date(),
   updatedAt: new Date(),
@@ -56,6 +56,8 @@ export const createUserData = (
     userViolation: [],
     isVerified: options.isVerified || false,
     kycRecord: createDefaultKycRecord(),
+    userStatus: 'Normal',
+    userStatusMessage: 'Account created successfully',
     provider,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -91,6 +93,8 @@ export const removeUndefinedFields = (obj: any): any => {
 export const convertFirestoreTimestamps = (userData: any): UserData => {
   return {
     ...userData,
+    userStatus: userData.userStatus || 'Normal',
+    userStatusMessage: userData.userStatusMessage || 'Account in good standing',
     createdAt: userData.createdAt?.toDate ? userData.createdAt.toDate() : new Date(userData.createdAt),
     updatedAt: userData.updatedAt?.toDate ? userData.updatedAt.toDate() : new Date(userData.updatedAt),
     kycRecord: {

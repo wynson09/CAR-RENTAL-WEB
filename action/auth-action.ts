@@ -13,7 +13,7 @@ export interface RegisterUserData {
 
 export const addUser = async (data: RegisterUserData) => {
   try {
-    // Create user with Firebase Auth
+    // Create user with Firebase Auths
     const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
     const user = userCredential.user;
     

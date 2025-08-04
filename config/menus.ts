@@ -58,6 +58,57 @@ export interface MenuItemProps {
   
 }
 
+export const userMenuConfig = {
+  mainNav: [
+    {
+      title: "Dashboard",
+      icon: DashBoard,
+      href: "/dashboard",
+    },
+    {
+      title: "Fleet",
+      icon: Cart,
+      child: [
+        {
+          title: "Browse Cars",
+          icon: Cart,
+          href: "/cars",
+        },
+        {
+          title: "Special Offers",
+          icon: Cart,
+          href: "/special-offers",
+        },
+      ],
+    },
+    {
+      title: "Bookings",
+      icon: ClipBoard,
+      child: [
+        {
+          title: "Active Rentals",
+          icon: ClipBoard,
+          href: "/active-rentals",
+        },
+        {
+          title: "Rent History",
+          icon: ClipBoard,
+          href: "/rent-history",
+        },
+      ]
+    },
+    {
+      title: "Chat",
+      icon: Messages,
+      href: "/chat",
+    },
+    {
+      title: "Messages",
+      icon: Envelope,
+    }
+  ],
+};
+
 export const menusConfig = {
   mainNav: [
     {
