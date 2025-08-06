@@ -70,6 +70,11 @@ export const userMenuConfig = {
       icon: Cart,
       child: [
         {
+          title: "Book Vehicle",
+          icon: Calendar,
+          href: "/fleet",
+        },
+        {
           title: "Browse Cars",
           icon: Cart,
           href: "/cars",
@@ -113,18 +118,7 @@ export const userMenuConfig = {
       {
         title: "Fleet",
         icon: Cart,
-        child: [
-          {
-            title: "Browse Cars",
-            icon: Cart,
-            href: "/cars",
-          },
-          {
-            title: "Special Offers",
-            icon: Cart,
-            href: "/special-offers",
-          },
-        ],
+        href: "/fleet",
       },
       {
         title: "Bookings",
@@ -146,100 +140,7 @@ export const userMenuConfig = {
         title: "Chat",
         icon: Messages,
         href: "/chat",
-      }
-    ],
-  },
-};
-
-export const adminMenuConfig = {
-  mainNav: [
-    {
-      title: "Dashboard Admin",
-      icon: DashBoard,
-      href: "/dashboard",
-    },
-    {
-      title: "Fleet",
-      icon: Cart,
-      child: [
-        {
-          title: "Browse Cars",
-          icon: Cart,
-          href: "/cars",
-        },
-        {
-          title: "Special Offers",
-          icon: Cart,
-          href: "/special-offers",
-        },
-      ],
-    },
-    {
-      title: "Bookings",
-      icon: ClipBoard,
-      child: [
-        {
-          title: "Current Rentals",
-          icon: ClipBoard,
-          href: "/current-rentals",
-        },
-        {
-          title: "Past Rentals",
-          icon: ClipBoard,
-          href: "/past-rentals",
-        },
-      ]
-    },
-    {
-      title: "Chat",
-      icon: Messages,
-      href: "/chat",
-    }
-  ],
-  sidebarNav: {
-    classic: [
-      {
-        title: "Dashboard Admin",
-        icon: DashBoard,
-        href: "/dashboard",
       },
-      {
-        title: "Fleet",
-        icon: Cart,
-        child: [
-          {
-            title: "Browse Cars",
-            icon: Cart,
-            href: "/cars",
-          },
-          {
-            title: "Special Offers",
-            icon: Cart,
-            href: "/special-offers",
-          },
-        ],
-      },
-      {
-        title: "Bookings",
-        icon: ClipBoard,
-        child: [
-          {
-            title: "Current Rentals",
-            icon: ClipBoard,
-            href: "/current-rentals",
-          },
-          {
-            title: "Past Rentals",
-            icon: ClipBoard,
-            href: "/past-rentals",
-          },
-        ]
-      },
-      {
-        title: "Chat",
-        icon: Messages,
-        href: "/chat",
-      }
     ],
   },
 };

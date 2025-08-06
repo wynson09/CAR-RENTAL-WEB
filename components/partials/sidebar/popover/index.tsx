@@ -3,7 +3,6 @@ import React, { useState } from "react";
 
 import { cn, isLocationMatch, getDynamicPath } from "@/lib/utils";
 import SidebarLogo from "../common/logo";
-import { adminMenuConfig, menusConfig, userMenuConfig } from "@/config/menus";
 import MenuLabel from "../common/menu-label";
 import SingleMenuItem from "./single-menu-item";
 import SubMenuHandler from "./sub-menu-handler";
@@ -13,14 +12,15 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { usePathname } from "next/navigation";
 import AddBlock from "../common/add-block";
+import { userMenuConfig } from "@/config/menus";
 
 const PopoverSidebar = ({ trans }: { trans: string }) => {
   const { collapsed, sidebarBg } = useSidebar();
   const { layout, isRtl } = useThemeStore();
   const { user } = useUserStore();
-  const userMenus = userMenuConfig?.sidebarNav?.classic || [];
-  const adminMenus = adminMenuConfig?.sidebarNav?.classic|| [];
-  const menus = user?.role === "admin" ? adminMenus : userMenus;
+  // const userMenus = userMenuConfig?.sidebarNav?.classic || [];
+  // const adminMenus = adminMenuConfig?.sidebarNav?.classic|| [];
+  const menus = userMenuConfig?.sidebarNav?.classic || [];
   const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null);
   const [activeMultiMenu, setMultiMenu] = useState<number | null>(null);
 
