@@ -11,9 +11,8 @@ export interface Car {
   image: string;
   price: string;
   category: string;
-  passengers: number;
-  bags: number;
-  doors: number;
+  passengers: string;
+  bags: string;
   transmission: string;
   features: string[];
 }
@@ -60,34 +59,34 @@ export const CarCard = ({ car, onBookNow, className }: CarCardProps) => {
         </h3>
         
         {/* Price */}
-        <div className="mb-3">
-          <span className="text-sm text-gray-600 dark:text-gray-400">Price from: </span>
-          <span className="text-xl font-bold text-blue-600 dark:text-blue-400">{car.price}</span>
+        <div>
+          <span className="text-base text-gray-600 dark:text-gray-400">Price: </span>
+          <span className="text-lg font-bold text-blue-600 dark:text-blue-400">{car.price}</span>
+        </div>
+        <div className="mb-2">
+          <span className="text-base text-gray-600 dark:text-gray-400">Discounted Price: </span>
+          <span className="text-lg font-bold text-blue-600 dark:text-blue-400">{car.price}</span>
         </div>
         
         {/* Car Specs */}
-        <div className="flex items-center gap-4 mb-4 text-sm text-gray-600 dark:text-gray-400">
+        <div className="flex justify-center items-center gap-4 mb-4 text-base text-gray-600 dark:text-gray-400 border-y border-gray-200 dark:border-gray-700 py-4">
           <div className="flex items-center gap-1">
-            <Users className="h-4 w-4" />
+            <Users className="h-5 w-5 text-primary-500" />
             <span>{car.passengers}</span>
           </div>
           <div className="flex items-center gap-1">
-            <Briefcase className="h-4 w-4" />
+            <Briefcase className="h-5 w-5 text-primary-500" />
             <span>{car.bags}</span>
           </div>
           <div className="flex items-center gap-1">
-            <Settings className="h-4 w-4" />
-            <span>{car.doors}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Zap className="h-4 w-4" />
+            <Settings  className="h-5 w-5 text-primary-500" />
             <span>{car.transmission}</span>
           </div>
         </div>
         
         {/* Features */}
         <div className="mb-4">
-          <div className="grid grid-cols-2 gap-1 text-xs text-gray-600 dark:text-gray-400">
+          <div className="grid grid-cols-2 gap-1 text-base text-gray-600 dark:text-gray-400">
             {car.features.slice(0, 8).map((feature: string, index: number) => (
               <div key={index} className="flex items-center">
                 <span className="w-1 h-1 bg-blue-500 rounded-full mr-2"></span>

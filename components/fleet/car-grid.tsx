@@ -62,7 +62,7 @@ export const CarGrid = ({
 
       {/* Cars Grid */}
       <div className={cn(
-        "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6",
+        "grid gap-6 grid-cols-[repeat(auto-fill,minmax(380px,1fr))]",
         gridClassName
       )}>
         {filteredCars.map((car) => (

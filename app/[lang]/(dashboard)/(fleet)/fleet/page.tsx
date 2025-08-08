@@ -24,14 +24,12 @@ import { CalendarIcon, Clock } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CarGrid, Car } from "@/components/fleet";
 import { fleetData } from "@/data/fleet-data";
-
 const FleetPage = () => {
   const [destination, setDestination] = useState("");
   const [pickupDate, setPickupDate] = useState<Date>();
   const [returnDate, setReturnDate] = useState<Date>();
   const [pickupTime, setPickupTime] = useState("");
   const [returnTime, setReturnTime] = useState("");
-  const [showResults, setShowResults] = useState(false);
 
   const addressOptions = [
     { value: "nacs-garage", label: "Self Pick Up @ NACS Car Rental Garage" },
@@ -42,10 +40,6 @@ const FleetPage = () => {
   const hours = Array.from({ length: 12 }, (_, i) => (i + 1).toString().padStart(2, '0'));
   const minutes = ['00', '10', '20', '30', '40', '50'];
   const periods = ['AM', 'PM'];
-
-  const handleSearch = () => {
-    setShowResults(true);
-  };
 
   const handleBookNow = (car: Car) => {
     // Handle booking logic here
@@ -342,27 +336,18 @@ const FleetPage = () => {
               />
             </div>
           </div>
-
-          {/* Submit Button */}
-          <div className="pt-4">
-            <Button className="w-full md:w-auto" onClick={handleSearch}>
-              Search Available Vehicles
-            </Button>
-          </div>
         </div>
       </Card>
 
       {/* Fleet Display Section */}
-      {showResults && (
-        <Card title="Available Vehicles">
-          <CarGrid 
-            cars={fleetData}
-            onBookNow={handleBookNow}
-            showFilter={true}
-            defaultCategory="All"
-          />
-        </Card>
-      )}
+      <Card title="Available Vehicles">
+        <CarGrid 
+          cars={fleetData}
+          onBookNow={handleBookNow}
+          showFilter={true}
+          defaultCategory="All"
+        />
+      </Card>
     </div>
   );
 };
