@@ -66,6 +66,22 @@ export const userMenuConfig = {
       href: "/dashboard",
     },
     {
+      title: "Car Management",
+      icon: Cart,
+      child: [
+        {
+          title: "Car Listings",
+          icon: Calendar,
+          href: "/car-listings",
+        },
+        {
+          title: "Owned & Partner Cars",
+          icon: Cart,
+          href: "/owned-partner-cars",
+        },
+      ],
+    },
+    {
       title: "Fleet",
       icon: Cart,
       child: [
@@ -114,6 +130,22 @@ export const userMenuConfig = {
         title: "Dashboard",
         icon: DashBoard,
         href: "/dashboard",
+      },
+      {
+        title: "Car Management",
+        icon: Cart,
+        child: [
+          {
+            title: "Car Listings",
+            icon: Calendar,
+            href: "/car-listings",
+          },
+          {
+            title: "Owned & Partner Cars",
+            icon: Cart,
+            href: "/owned-partner-cars",
+          },
+        ],
       },
       {
         title: "Fleet",
