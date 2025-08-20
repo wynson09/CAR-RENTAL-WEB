@@ -1,0 +1,16 @@
+# Ignore artifacts:
+.next
+build
+coverage
+node_modules
+public
+dist
+.vercel
+.github
+.husky
+
+# Ignore all HTML files:
+*.html
+
+# Ignore auto-generated files
+next-env.d.ts

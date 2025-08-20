@@ -53,7 +53,7 @@ export const PromoToggle = ({
                   {value ? "Promotional Car" : "Regular Car"}
                 </span>
                 {value && (
-                  <Badge variant="default" className="bg-blue-600 text-white">
+                  <Badge variant="outline" className="bg-blue-600 text-white border-blue-600">
                     <Icon icon="heroicons:sparkles" className="h-3 w-3 mr-1" />
                     Promo
                   </Badge>

@@ -83,7 +83,7 @@ export const CarDetailsDialog = ({ car, onUpdateCar }: CarDetailsDialogProps) =>
               <div>
                 <Label htmlFor="category">Category</Label>
                 <Select value={editedCar.category} onValueChange={(value) => setEditedCar({ ...editedCar, category: value })}>
-                  <SelectTrigger>
+                  <SelectTrigger id="category">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -108,7 +108,7 @@ export const CarDetailsDialog = ({ car, onUpdateCar }: CarDetailsDialogProps) =>
               <div>
                 <Label htmlFor="transmission">Transmission</Label>
                 <Select value={editedCar.transmission} onValueChange={(value) => setEditedCar({ ...editedCar, transmission: value })}>
-                  <SelectTrigger>
+                  <SelectTrigger id="transmission">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -146,7 +146,7 @@ export const CarDetailsDialog = ({ car, onUpdateCar }: CarDetailsDialogProps) =>
                   value={editedCar.priorityLevel.toString()} 
                   onValueChange={(value) => setEditedCar({ ...editedCar, priorityLevel: parseInt(value) as 1 | 2 | 3 | 4 | 5 })}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger id="priorityLevel">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -159,12 +159,13 @@ export const CarDetailsDialog = ({ car, onUpdateCar }: CarDetailsDialogProps) =>
                 </Select>
               </div>
               
-              <PromoToggle
-                value={editedCar.isPromo}
-                onChange={(checked) => setEditedCar({ ...editedCar, isPromo: checked })}
-              />
             </div>
           </div>
+
+          <PromoToggle
+            value={editedCar.isPromo}
+            onChange={(checked) => setEditedCar({ ...editedCar, isPromo: checked })}
+          />
 
           {/* Additional Information */}
           <div className="space-y-4">

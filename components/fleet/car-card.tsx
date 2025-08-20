@@ -32,16 +32,23 @@ export const CarCard = ({ car, onBookNow, className }: CarCardProps) => {
 
   return (
     <div className={cn(
-      "bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden",
+      "bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group border border-gray-200 dark:border-gray-700",
       className
     )}>
       {/* Car Image */}
-      <div className="aspect-[4/3] relative bg-gray-100 dark:bg-gray-700">
+      <div className="h-64 relative bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
+        {/* Promotional badge */}
+        {car.name.includes('🔥') && (
+          <div className="absolute top-4 left-4 z-10 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-md shadow-lg animate-promo-badge border-2 border-white">
+            PROMO
+          </div>
+        )}
+        
         <Image
           src={car.image}
           alt={car.name}
           fill
-          className="object-cover"
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
           onError={(e) => {
             // Prevent infinite loop by only setting fallback once
             if (!e.currentTarget.src.includes('placeholder')) {
@@ -55,7 +62,7 @@ export const CarCard = ({ car, onBookNow, className }: CarCardProps) => {
       <div className="p-4">
         {/* Car Name */}
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
-          {car.name}
+          {car.name.replace('🔥 ', '')}
         </h3>
         
         {/* Price */}

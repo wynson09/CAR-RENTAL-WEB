@@ -117,10 +117,10 @@ export const carListingsData: CarListing[] = [
 
 export const carCategories = [
   "All",
+  "Hatchback",
   "Sedan",
   "SUV",
-  "Hatchback",
-  "Convertible",
-  "Truck",
+  "MPV",
+  "Pickup",
   "Van"
 ];

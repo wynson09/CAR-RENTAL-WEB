@@ -104,7 +104,7 @@ export const AddCarDialog = ({ isOpen, onOpenChange, onAddCar, isLoading }: AddC
               <div>
                 <Label htmlFor="new-category">Category</Label>
                 <Select value={newCar.category} onValueChange={(value) => setNewCar({ ...newCar, category: value })}>
-                  <SelectTrigger>
+                  <SelectTrigger id="new-category">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -131,7 +131,7 @@ export const AddCarDialog = ({ isOpen, onOpenChange, onAddCar, isLoading }: AddC
               <div>
                 <Label htmlFor="new-transmission">Transmission</Label>
                 <Select value={newCar.transmission} onValueChange={(value) => setNewCar({ ...newCar, transmission: value })}>
-                  <SelectTrigger>
+                  <SelectTrigger id="new-transmission">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -173,7 +173,7 @@ export const AddCarDialog = ({ isOpen, onOpenChange, onAddCar, isLoading }: AddC
                   value={newCar.priorityLevel.toString()} 
                   onValueChange={(value) => setNewCar({ ...newCar, priorityLevel: parseInt(value) as 1 | 2 | 3 | 4 | 5 })}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger id="new-priorityLevel">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -185,13 +185,13 @@ export const AddCarDialog = ({ isOpen, onOpenChange, onAddCar, isLoading }: AddC
                   </SelectContent>
                 </Select>
               </div>
-              
-              <PromoToggle
-                value={newCar.isPromo}
-                onChange={(checked) => setNewCar({ ...newCar, isPromo: checked })}
-              />
             </div>
           </div>
+
+          <PromoToggle
+            value={newCar.isPromo}
+            onChange={(checked) => setNewCar({ ...newCar, isPromo: checked })}
+          />
 
           {/* Additional Information */}
           <div className="space-y-4">
