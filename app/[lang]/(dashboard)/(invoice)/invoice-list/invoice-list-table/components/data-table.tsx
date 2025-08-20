@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import * as React from "react";
+import * as React from 'react';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -15,7 +15,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table';
 
 import {
   Table,
@@ -24,12 +24,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 
-import { DataTablePagination } from "./data-table-pagination";
-import { DataTableToolbar } from "./data-table-toolbar";
-import { DataRow } from "../data"
-
+import { DataTablePagination } from './data-table-pagination';
+import { DataTableToolbar } from './data-table-toolbar';
+import { DataRow } from '../data';
 
 type DataTableColumnDef = ColumnDef<DataRow>;
 
@@ -38,9 +37,7 @@ interface DataTableProps {
   data: DataRow[];
 }
 
-
 export function DataTable({ columns, data }: DataTableProps) {
-
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -88,10 +85,7 @@ export function DataTable({ columns, data }: DataTableProps) {
                     >
                       {header.isPlaceholder
                         ? null
-                        : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   );
                 })}
@@ -101,29 +95,17 @@ export function DataTable({ columns, data }: DataTableProps) {
           <TableBody className="[&_tr:last-child]:border-1">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
+                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      className="text-sm text-default-600  last:text-end"
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                    <TableCell key={cell.id} className="text-sm text-default-600  last:text-end">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
+                <TableCell colSpan={columns.length} className="h-24 text-center">
                   No results.
                 </TableCell>
               </TableRow>

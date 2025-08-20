@@ -1,10 +1,10 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { getLabel, getGridConfig } from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getLabel, getGridConfig } from '@/lib/appex-chart-options';
 
 const GithubStyleCharts1 = () => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -13,7 +13,7 @@ const GithubStyleCharts1 = () => {
 
   const series = [
     {
-      name: "commits",
+      name: 'commits',
       data: [
         {
           x: 1352592000000,
@@ -1753,49 +1753,45 @@ const GithubStyleCharts1 = () => {
     },
   ];
 
-  var options:any = {
+  var options: any = {
     chart: {
-      id: "chartyear",
-      type: "area",
+      id: 'chartyear',
+      type: 'area',
       height: 170,
       toolbar: {
-        autoSelected: "selection",
+        autoSelected: 'selection',
       },
       brush: {
         enabled: true,
-        target: "chartyear",
+        target: 'chartyear',
       },
       selection: {
         enabled: true,
         xaxis: {
-          min: new Date("26 Jan 2014").getTime(),
-          max: new Date("29 Mar 2015").getTime(),
+          min: new Date('26 Jan 2014').getTime(),
+          max: new Date('29 Mar 2015').getTime(),
         },
       },
     },
-    colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success})`,
-    ],
+    colors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`],
     stroke: {
       width: 0,
-      curve: "smooth",
+      curve: 'smooth',
     },
     dataLabels: {
       enabled: false,
     },
     fill: {
       opacity: 1,
-      type: "solid",
+      type: 'solid',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
     yaxis: {
       show: false,
       tickAmount: 3,
     },
     xaxis: {
-      type: "datetime",
+      type: 'datetime',
       axisBorder: {
         show: false,
       },
@@ -1803,23 +1799,11 @@ const GithubStyleCharts1 = () => {
         show: false,
       },
       labels: getLabel(
-        `hsl(${
-          theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
     },
   };
-  return (
-      <Chart
-        options={options}
-        series={series}
-        type="area"
-        height={120}
-        width={"100%"}
-      />
-  );
+  return <Chart options={options} series={series} type="area" height={120} width={'100%'} />;
 };
 
 export default GithubStyleCharts1;

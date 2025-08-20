@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Appex Candlestick Chart",
+  title: 'Appex Candlestick Chart',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

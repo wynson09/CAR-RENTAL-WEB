@@ -1,21 +1,21 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from '@/components/ui/card';
 const ProjectDeadline = () => {
   const data = [
     {
-      label: "days",
-      value: "05",
+      label: 'days',
+      value: '05',
     },
     {
-      label: "hours",
-      value: "11",
+      label: 'hours',
+      value: '11',
     },
     {
-      label: "minutes",
-      value: "22",
+      label: 'minutes',
+      value: '22',
     },
     {
-      label: "seconds",
-      value: "44",
+      label: 'seconds',
+      value: '44',
     },
   ];
   return (
@@ -30,9 +30,7 @@ const ProjectDeadline = () => {
               <div className="text-6xl font-semibold text-primary-foreground mb-1">
                 {item.value}
               </div>
-              <div className="text-3xl font-medium text-primary-foreground/60 ">
-                {item.label}
-              </div>
+              <div className="text-3xl font-medium text-primary-foreground/60 ">{item.label}</div>
             </div>
           ))}
         </div>

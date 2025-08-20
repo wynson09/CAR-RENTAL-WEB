@@ -1,6 +1,6 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+'use client';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -8,33 +8,33 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Progress } from "@/components/ui/progress";
+} from '@/components/ui/table';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Progress } from '@/components/ui/progress';
 
 // images
-import avatar1 from "@/public/images/avatar/avatar-7.jpg";
-import avatar2 from "@/public/images/avatar/avatar-2.jpg";
-import avatar3 from "@/public/images/avatar/avatar-3.jpg";
-import avatar4 from "@/public/images/avatar/avatar-4.jpg";
-import avatar5 from "@/public/images/avatar/avatar-5.jpg";
+import avatar1 from '@/public/images/avatar/avatar-7.jpg';
+import avatar2 from '@/public/images/avatar/avatar-2.jpg';
+import avatar3 from '@/public/images/avatar/avatar-3.jpg';
+import avatar4 from '@/public/images/avatar/avatar-4.jpg';
+import avatar5 from '@/public/images/avatar/avatar-5.jpg';
 
 const columns = [
   {
-    key: "employee",
-    label: "employee",
+    key: 'employee',
+    label: 'employee',
   },
   {
-    key: "task name",
-    label: "task name",
+    key: 'task name',
+    label: 'task name',
   },
   {
-    key: "deadline",
-    label: "deadline",
+    key: 'deadline',
+    label: 'deadline',
   },
   {
-    key: "workload",
-    label: "workload",
+    key: 'workload',
+    label: 'workload',
   },
 ];
 
@@ -52,49 +52,49 @@ interface DataItem {
 const upcomingDeadlineData: DataItem[] = [
   {
     id: 1,
-    name: "Mark Dsuza",
-    task: "Admin dashboard template",
-    deadline: "21 Jan 2024",
+    name: 'Mark Dsuza',
+    task: 'Admin dashboard template',
+    deadline: '21 Jan 2024',
     workload: 50,
     avatar: avatar1,
   },
   {
     id: 2,
-    name: "Mark Dsuza",
-    task: "Admin dashboard template",
-    deadline: "21 Jan 2024",
+    name: 'Mark Dsuza',
+    task: 'Admin dashboard template',
+    deadline: '21 Jan 2024',
     workload: 40,
     avatar: avatar1,
   },
   {
     id: 3,
-    name: "Mark Dsuza",
-    task: "Admin dashboard template",
-    deadline: "21 Jan 2024",
+    name: 'Mark Dsuza',
+    task: 'Admin dashboard template',
+    deadline: '21 Jan 2024',
     workload: 70,
     avatar: avatar2,
   },
   {
     id: 4,
-    name: "Mark Dsuza",
-    task: "Admin dashboard template",
-    deadline: "21 Jan 2024",
+    name: 'Mark Dsuza',
+    task: 'Admin dashboard template',
+    deadline: '21 Jan 2024',
     workload: 80,
     avatar: avatar3,
   },
   {
     id: 5,
-    name: "Mark Dsuza",
-    task: "Admin dashboard template",
-    deadline: "21 Jan 2024",
+    name: 'Mark Dsuza',
+    task: 'Admin dashboard template',
+    deadline: '21 Jan 2024',
     workload: 60,
     avatar: avatar4,
   },
   {
     id: 6,
-    name: "Mark Dsuza",
-    task: "Admin dashboard template",
-    deadline: "21 Jan 2024",
+    name: 'Mark Dsuza',
+    task: 'Admin dashboard template',
+    deadline: '21 Jan 2024',
     workload: 90,
     avatar: avatar5,
   },
@@ -104,7 +104,7 @@ const UpcomingDeadline = () => {
     <Card>
       <CardHeader className="flex-row justify-between items-center mb-0">
         <CardTitle>Upcoming Deadlines</CardTitle>
-        <Button type="button" color="secondary" >
+        <Button type="button" color="secondary">
           View all
         </Button>
       </CardHeader>
@@ -113,10 +113,7 @@ const UpcomingDeadline = () => {
           <TableHeader className="bg-default-200">
             <TableRow>
               {columns.map((column) => (
-                <TableHead
-                  key={column.key}
-                  className="text-sm font-semibold text-default-800"
-                >
+                <TableHead key={column.key} className="text-sm font-semibold text-default-800">
                   {column.label}
                 </TableHead>
               ))}
@@ -141,11 +138,7 @@ const UpcomingDeadline = () => {
                   {item.deadline}
                 </TableCell>
                 <TableCell className="min-w-[120px] text-sm font-medium text-default-600 last:text-end py-2">
-                  <Progress
-                    value={item.workload}
-                    size="lg"
-                    showValue
-                  />
+                  <Progress value={item.workload} size="lg" showValue />
                 </TableCell>
               </TableRow>
             ))}

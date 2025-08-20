@@ -1,15 +1,21 @@
-import React from "react";
-import { cn } from "@/lib/utils";
+import React from 'react';
+import { cn } from '@/lib/utils';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
   TooltipArrow,
-} from "@/components/ui/tooltip";
-import Link from "next/link";
-import { translate } from "@/lib/utils";
-const SingleIconMenu = ({ index, activeIndex, item, locationName, trans }: {
+} from '@/components/ui/tooltip';
+import Link from 'next/link';
+import { translate } from '@/lib/utils';
+const SingleIconMenu = ({
+  index,
+  activeIndex,
+  item,
+  locationName,
+  trans,
+}: {
   index: number;
   activeIndex: number | null;
   item: any;
@@ -26,10 +32,10 @@ const SingleIconMenu = ({ index, activeIndex, item, locationName, trans }: {
               <Link
                 href={href}
                 className={cn(
-                  "h-12 w-12 mx-auto rounded-md  transition-all duration-300 flex flex-col items-center justify-center cursor-pointer relative",
+                  'h-12 w-12 mx-auto rounded-md  transition-all duration-300 flex flex-col items-center justify-center cursor-pointer relative',
                   {
-                    "bg-primary/10  text-primary": locationName === href,
-                    "text-default-500 dark:text-default-400 hover:bg-primary/10  hover:text-primary ":
+                    'bg-primary/10  text-primary': locationName === href,
+                    'text-default-500 dark:text-default-400 hover:bg-primary/10  hover:text-primary ':
                       locationName !== href,
                   }
                 )}
@@ -39,11 +45,11 @@ const SingleIconMenu = ({ index, activeIndex, item, locationName, trans }: {
             ) : (
               <button
                 className={cn(
-                  "h-12 w-12 mx-auto rounded-md transition-all duration-300 flex flex-col items-center justify-center cursor-pointer relative  ",
+                  'h-12 w-12 mx-auto rounded-md transition-all duration-300 flex flex-col items-center justify-center cursor-pointer relative  ',
                   {
-                    "bg-primary/10 dark:bg-primary dark:text-primary-foreground  text-primary data-[state=delayed-open]:bg-primary/10 ":
+                    'bg-primary/10 dark:bg-primary dark:text-primary-foreground  text-primary data-[state=delayed-open]:bg-primary/10 ':
                       activeIndex === index,
-                    " text-default-500 dark:text-default-400 data-[state=delayed-open]:bg-primary/10  data-[state=delayed-open]:text-primary":
+                    ' text-default-500 dark:text-default-400 data-[state=delayed-open]:bg-primary/10  data-[state=delayed-open]:text-primary':
                       activeIndex !== index,
                   }
                 )}

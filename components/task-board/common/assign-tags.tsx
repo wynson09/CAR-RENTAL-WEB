@@ -1,57 +1,54 @@
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Check, Plus, X } from "lucide-react";
-import * as Popover from "@radix-ui/react-popover";
-import { cn } from "@/lib/utils";
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Check, Plus, X } from 'lucide-react';
+import * as Popover from '@radix-ui/react-popover';
+import { cn } from '@/lib/utils';
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/command";
-import { updateTaskAction } from "@/action/project-action";
-import { Input } from "@/components/ui/input";
-import { CustomPopover } from "@/components/ui/popover";
-import { Badge } from "@/components/ui/badge";
-import { type Task as TaskType } from "@/app/api/tasks/data";
+} from '@/components/ui/command';
+import { updateTaskAction } from '@/action/project-action';
+import { Input } from '@/components/ui/input';
+import { CustomPopover } from '@/components/ui/popover';
+import { Badge } from '@/components/ui/badge';
+import { type Task as TaskType } from '@/app/api/tasks/data';
 
 const newtags = [
   {
-    value: "design",
-    label: "Design",
+    value: 'design',
+    label: 'Design',
   },
   {
-    value: "development",
-    label: "Development",
+    value: 'development',
+    label: 'Development',
   },
   {
-    value: "planning",
-    label: "Planning",
+    value: 'planning',
+    label: 'Planning',
   },
   {
-    value: "ui/ux",
-    label: "UI/UX",
+    value: 'ui/ux',
+    label: 'UI/UX',
   },
 ];
 const tagsColorMap: { [key: string]: string } = {
-  development: "destructive",
-  planning: "info",
-  design: "success",
+  development: 'destructive',
+  planning: 'info',
+  design: 'success',
 };
-const themeColors = ["primary", "success", "info", "warning", "destructive"];
+const themeColors = ['primary', 'success', 'info', 'warning', 'destructive'];
 
-const AssignTags = ({ task, taskId }: {
-  task: TaskType;
-  taskId: TaskType["id"];
-}) => {
+const AssignTags = ({ task, taskId }: { task: TaskType; taskId: TaskType['id'] }) => {
   const [open, setOpen] = React.useState(false);
   const [selectedValues, setSelectedValues] = React.useState(task?.tags || []);
   const [openTagColor, setOpenTagColor] = useState(false);
 
-  const [newTagName, setNewTagName] = useState("");
+  const [newTagName, setNewTagName] = useState('');
 
-  const [newTagColor, setNewTagColor] = useState("primary");
+  const [newTagColor, setNewTagColor] = useState('primary');
 
   const toggleOpenTagColor = () => setOpenTagColor(!openTagColor);
 
@@ -106,7 +103,7 @@ const AssignTags = ({ task, taskId }: {
     try {
       await updateTaskAction(taskId, newVal);
       closePopover();
-      setNewTagName("");
+      setNewTagName('');
     } catch (error) {
       console.log(error);
     }
@@ -133,9 +130,7 @@ const AssignTags = ({ task, taskId }: {
         {openTagColor ? (
           <div>
             <div className="flex items-center justify-between px-2 py-1 border-b border-default-100 bg-default-50">
-              <div className="text-sm font-medium text-default-900">
-                Create a new tag
-              </div>
+              <div className="text-sm font-medium text-default-900">Create a new tag</div>
               <Button
                 type="button"
                 size="icon"
@@ -155,9 +150,7 @@ const AssignTags = ({ task, taskId }: {
                     onChange={(e) => setNewTagName(e.target.value)}
                   />
                 </div>
-                <div className="text-sm font-medium text-default-700 my-2">
-                  Select Color
-                </div>
+                <div className="text-sm font-medium text-default-700 my-2">Select Color</div>
                 <div className="flex flex-wrap gap-4">
                   {themeColors.map((item, index) => (
                     <label
@@ -199,25 +192,20 @@ const AssignTags = ({ task, taskId }: {
                     value={newtag.value}
                     onSelect={() => handleSelect(newtag.value)}
                     className={cn(
-                      " bg-primary  text-primary-foreground mb-1  aria-selected:text-primary-foreground",
+                      ' bg-primary  text-primary-foreground mb-1  aria-selected:text-primary-foreground',
                       {
-                        "bg-destructive aria-selected:bg-destructive":
-                          newtag.value === "development",
-                        "bg-info aria-selected:bg-info":
-                          newtag.value === "planning",
-                        "bg-success aria-selected:bg-success":
-                          newtag.value === "design",
-                        "bg-warning aria-selected:bg-warning":
-                          newtag.value === "ui/ux",
+                        'bg-destructive aria-selected:bg-destructive':
+                          newtag.value === 'development',
+                        'bg-info aria-selected:bg-info': newtag.value === 'planning',
+                        'bg-success aria-selected:bg-success': newtag.value === 'design',
+                        'bg-warning aria-selected:bg-warning': newtag.value === 'ui/ux',
                       }
                     )}
                   >
                     <Check
                       className={cn(
-                        "mr-2 h-4 w-4",
-                        selectedValues.includes(newtag.value)
-                          ? "opacity-100"
-                          : "opacity-0"
+                        'mr-2 h-4 w-4',
+                        selectedValues.includes(newtag.value) ? 'opacity-100' : 'opacity-0'
                       )}
                     />
                     {newtag.label}

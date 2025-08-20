@@ -1,41 +1,30 @@
-"use client";
-import { useCallback, useEffect, useRef } from "react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
+'use client';
+import { useCallback, useEffect, useRef } from 'react';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea } from '@/components/ui/scroll-area';
 
-import ContactList from "./contact-list";
-import { useState } from "react";
-import Blank from "./blank";
-import MessageHeader from "./message-header";
-import MessageFooter from "./message-footer";
+import ContactList from './contact-list';
+import { useState } from 'react';
+import Blank from './blank';
+import MessageHeader from './message-header';
+import MessageFooter from './message-footer';
 
-import Messages from "./messages";
-import {
-  getContacts,
-  getMessages,
-  getProfile,
-  sendMessage,
-  deleteMessage,
-} from "./chat-config";
+import Messages from './messages';
+import { getContacts, getMessages, getProfile, sendMessage, deleteMessage } from './chat-config';
 
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import MyProfileHeader from "./my-profile-header";
-import EmptyMessage from "./empty-message";
-import Loader from "./loader";
-import { isObjectNotEmpty } from "@/lib/utils";
-import SearchMessages from "./contact-info/search-messages";
-import PinnedMessages from "./pin-messages";
-import ForwardMessage from "./forward-message";
-import ContactInfo from "./contact-info";
-import { useMediaQuery } from "@/hooks/use-media-query";
-import { cn } from "@/lib/utils";
-import { type Contact as ContactType } from "@/app/api/chat/data";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import MyProfileHeader from './my-profile-header';
+import EmptyMessage from './empty-message';
+import Loader from './loader';
+import { isObjectNotEmpty } from '@/lib/utils';
+import SearchMessages from './contact-info/search-messages';
+import PinnedMessages from './pin-messages';
+import ForwardMessage from './forward-message';
+import ContactInfo from './contact-info';
+import { useMediaQuery } from '@/hooks/use-media-query';
+import { cn } from '@/lib/utils';
+import { type Contact as ContactType } from '@/app/api/chat/data';
 const ChatPage = () => {
   const [selectedChatId, setSelectedChatId] = useState<any | null>(null);
   const [showContactSidebar, setShowContactSidebar] = useState<boolean>(false);
@@ -62,9 +51,8 @@ const ChatPage = () => {
     error,
     refetch: refetchContact,
   } = useQuery({
-    queryKey: ["contacts"],
+    queryKey: ['contacts'],
     queryFn: () => getContacts(),
-
   });
   const {
     isLoading: messageLoading,
@@ -73,9 +61,8 @@ const ChatPage = () => {
     error: messageError,
     refetch: refetchMessage,
   } = useQuery({
-    queryKey: ["message", selectedChatId],
-    queryFn: () => selectedChatId ? getMessagesCallback(selectedChatId) : Promise.resolve(null),
-
+    queryKey: ['message', selectedChatId],
+    queryFn: () => (selectedChatId ? getMessagesCallback(selectedChatId) : Promise.resolve(null)),
   });
   const {
     isLoading: profileLoading,
@@ -84,23 +71,20 @@ const ChatPage = () => {
     error: profileError,
     refetch: refetchProfile,
   } = useQuery({
-    queryKey: ["profile"],
+    queryKey: ['profile'],
     queryFn: () => getProfile(),
-
   });
   const messageMutation = useMutation({
     mutationFn: sendMessage,
     onSuccess: () => {
-
-      queryClient.invalidateQueries({ queryKey: ["messages"] });
+      queryClient.invalidateQueries({ queryKey: ['messages'] });
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: deleteMessage,
     onSuccess: () => {
-
-      queryClient.invalidateQueries({ queryKey: ["messages"] });
+      queryClient.invalidateQueries({ queryKey: ['messages'] });
     },
   });
 
@@ -135,7 +119,7 @@ const ChatPage = () => {
       replayMetadata: isObjectNotEmpty(replayData),
     };
     messageMutation.mutate(newMessage);
-    console.log(message, "ami msg");
+    console.log(message, 'ami msg');
   };
   const chatHeightRef = useRef<HTMLDivElement | null>(null);
 
@@ -153,7 +137,7 @@ const ChatPage = () => {
     if (chatHeightRef.current) {
       chatHeightRef.current.scrollTo({
         top: chatHeightRef.current.scrollHeight,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
     }
   }, [handleSendMessage, contacts]);
@@ -161,7 +145,7 @@ const ChatPage = () => {
     if (chatHeightRef.current) {
       chatHeightRef.current.scrollTo({
         top: chatHeightRef.current.scrollHeight,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
     }
   }, [pinnedMessages]);
@@ -176,9 +160,7 @@ const ChatPage = () => {
   const handlePinMessage = (note: any) => {
     const updatedPinnedMessages = [...pinnedMessages];
 
-    const existingIndex = updatedPinnedMessages.findIndex(
-      (msg) => msg.note === note.note
-    );
+    const existingIndex = updatedPinnedMessages.findIndex((msg) => msg.note === note.note);
 
     if (existingIndex !== -1) {
       updatedPinnedMessages.splice(existingIndex, 1); // Remove the message
@@ -197,8 +179,7 @@ const ChatPage = () => {
 
     // Find the index of the message to unpin in the updatedPinnedMessages array
     const index = updatedPinnedMessages.findIndex(
-      (msg) =>
-        msg.note === pinnedMessage.note && msg.avatar === pinnedMessage.avatar
+      (msg) => msg.note === pinnedMessage.note && msg.avatar === pinnedMessage.avatar
     );
 
     if (index !== -1) {
@@ -213,7 +194,7 @@ const ChatPage = () => {
   const handleForward = () => {
     setIsForward(!isForward);
   };
-  const isLg = useMediaQuery("(max-width: 1024px)");
+  const isLg = useMediaQuery('(max-width: 1024px)');
   return (
     <div className="flex gap-5 app-height  relative rtl:space-x-reverse">
       {isLg && showContactSidebar && (
@@ -231,11 +212,11 @@ const ChatPage = () => {
         ></div>
       )}
       <div
-        className={cn("transition-all duration-150 flex-none  ", {
-          "absolute h-full top-0 md:w-[260px] w-[200px] z-[999]": isLg,
-          "flex-none min-w-[260px]": !isLg,
-          "left-0": isLg && showContactSidebar,
-          "-left-full": isLg && !showContactSidebar,
+        className={cn('transition-all duration-150 flex-none  ', {
+          'absolute h-full top-0 md:w-[260px] w-[200px] z-[999]': isLg,
+          'flex-none min-w-[260px]': !isLg,
+          'left-0': isLg && showContactSidebar,
+          '-left-full': isLg && !showContactSidebar,
         })}
       >
         <Card className="h-full pb-0">
@@ -272,22 +253,13 @@ const ChatPage = () => {
                     showInfo={showInfo}
                     handleShowInfo={handleShowInfo}
                     profile={profileData}
-                    mblChatHandler={() =>
-                      setShowContactSidebar(!showContactSidebar)
-                    }
+                    mblChatHandler={() => setShowContactSidebar(!showContactSidebar)}
                   />
                 </CardHeader>
-                {isOpenSearch && (
-                  <SearchMessages
-                    handleSetIsOpenSearch={handleSetIsOpenSearch}
-                  />
-                )}
+                {isOpenSearch && <SearchMessages handleSetIsOpenSearch={handleSetIsOpenSearch} />}
 
                 <CardContent className=" !p-0 relative flex-1 overflow-y-auto">
-                  <div
-                    className="h-full py-4 overflow-y-auto no-scrollbar"
-                    ref={chatHeightRef}
-                  >
+                  <div className="h-full py-4 overflow-y-auto no-scrollbar" ref={chatHeightRef}>
                     {messageLoading ? (
                       <Loader />
                     ) : (
@@ -345,12 +317,7 @@ const ChatPage = () => {
       ) : (
         <Blank mblChatHandler={() => setShowContactSidebar(true)} />
       )}
-      <ForwardMessage
-        open={isForward}
-
-        setIsOpen={setIsForward}
-        contacts={contacts}
-      />
+      <ForwardMessage open={isForward} setIsOpen={setIsForward} contacts={contacts} />
     </div>
   );
 };

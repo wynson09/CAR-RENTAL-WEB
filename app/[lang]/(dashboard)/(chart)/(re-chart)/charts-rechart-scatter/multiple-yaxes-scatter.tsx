@@ -1,7 +1,7 @@
-"use client";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
+'use client';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
 import {
   CartesianGrid,
   XAxis,
@@ -10,8 +10,8 @@ import {
   Tooltip,
   ScatterChart,
   Scatter,
-} from "recharts";
-import CustomTooltip from "./custom-tooltip";
+} from 'recharts';
+import CustomTooltip from './custom-tooltip';
 interface DataPoint {
   x: number;
   y: number;
@@ -49,8 +49,7 @@ const MultipleYAxesChart = ({ height = 300 }) => {
     <ResponsiveContainer width="100%" height={height}>
       <ScatterChart height={height}>
         <CartesianGrid
-          stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-            })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
           strokeDasharray="3 3"
           vertical={false}
         />
@@ -60,11 +59,11 @@ const MultipleYAxesChart = ({ height = 300 }) => {
           name="stature"
           unit="cm"
           tick={{
-            fill: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`,
-            fontSize: "12px",
+            fill: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
+            fontSize: '12px',
           }}
           tickLine={false}
-          stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
           axisLine={false}
         />
         <YAxis
@@ -73,11 +72,11 @@ const MultipleYAxesChart = ({ height = 300 }) => {
           name="weight"
           unit="kg"
           tick={{
-            fill: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`,
-            fontSize: "12px",
+            fill: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
+            fontSize: '12px',
           }}
           tickLine={false}
-          stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
           yAxisId="left"
         />
         <YAxis
@@ -86,11 +85,11 @@ const MultipleYAxesChart = ({ height = 300 }) => {
           name="weight"
           unit="kg"
           tick={{
-            fill: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`,
-            fontSize: "12px",
+            fill: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
+            fontSize: '12px',
           }}
           tickLine={false}
-          stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
           yAxisId="right"
           orientation="right"
         />
@@ -99,13 +98,13 @@ const MultipleYAxesChart = ({ height = 300 }) => {
           yAxisId="left"
           name="A school"
           data={data01}
-          fill={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`}
+          fill={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`}
         />
         <Scatter
           yAxisId="right"
           name="A school"
           data={data02}
-          fill={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`}
+          fill={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`}
         />
       </ScatterChart>
     </ResponsiveContainer>

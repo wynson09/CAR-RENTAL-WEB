@@ -1,13 +1,9 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  InputGroup,
-  InputGroupButton,
-  InputGroupText,
-} from "@/components/ui/input-group";
-import { Label } from "@/components/ui/label";
-import { Icon } from "@iconify/react";
+'use client';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { InputGroup, InputGroupButton, InputGroupText } from '@/components/ui/input-group';
+import { Label } from '@/components/ui/label';
+import { Icon } from '@iconify/react';
 
 const BasicInputGroup = () => {
   return (
@@ -43,12 +39,7 @@ const BasicInputGroup = () => {
           Password
         </Label>
         <InputGroup>
-          <Input
-            type="password"
-            placeholder="Password"
-            id="username5"
-            required
-          />
+          <Input type="password" placeholder="Password" id="username5" required />
         </InputGroup>
       </div>
       <InputGroup>

@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Unovis Area Chart ",
+  title: 'Unovis Area Chart ',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

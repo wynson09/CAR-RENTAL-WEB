@@ -1,8 +1,8 @@
-"use client";
-import { useState } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
-import { cn } from "@/lib/utils";
-import { X } from "lucide-react";
+'use client';
+import { useState } from 'react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { cn } from '@/lib/utils';
+import { X } from 'lucide-react';
 
 const AccessibleCheckbox = () => {
   const [isSelectedCb1, setIsSelectedCb1] = useState<boolean>(true);
@@ -12,12 +12,9 @@ const AccessibleCheckbox = () => {
   return (
     <div className="flex items-center flex-wrap gap-6">
       <div
-        className={cn(
-          "bg-default-100  h-8 px-2 rounded-md inline-flex flex-col justify-center",
-          {
-            "bg-primary/10": isSelectedCb1,
-          }
-        )}
+        className={cn('bg-default-100  h-8 px-2 rounded-md inline-flex flex-col justify-center', {
+          'bg-primary/10': isSelectedCb1,
+        })}
       >
         <Checkbox
           id="accb1"
@@ -25,8 +22,8 @@ const AccessibleCheckbox = () => {
           defaultChecked
         >
           <span
-            className={cn("text-default-600", {
-              "text-primary": isSelectedCb1,
+            className={cn('text-default-600', {
+              'text-primary': isSelectedCb1,
             })}
           >
             Travelling
@@ -35,32 +32,18 @@ const AccessibleCheckbox = () => {
       </div>
 
       <div
-        className={cn(
-          "bg-default-100  h-8 px-2 rounded-md inline-flex flex-col justify-center",
-          {
-            "bg-info/10": isSelectedCb2,
-          }
-        )}
+        className={cn('bg-default-100  h-8 px-2 rounded-md inline-flex flex-col justify-center', {
+          'bg-info/10': isSelectedCb2,
+        })}
       >
-        <Checkbox
-          id="accb2"
-          color="info"
-          onCheckedChange={() => setIsSelectedCb2(!isSelectedCb2)}
-        >
-          <span
-            className={cn("text-default-600", { "text-info": isSelectedCb2 })}
-          >
-            Working
-          </span>
+        <Checkbox id="accb2" color="info" onCheckedChange={() => setIsSelectedCb2(!isSelectedCb2)}>
+          <span className={cn('text-default-600', { 'text-info': isSelectedCb2 })}>Working</span>
         </Checkbox>
       </div>
       <div
-        className={cn(
-          "bg-default-100  h-8 px-2 rounded-md inline-flex flex-col justify-center",
-          {
-            "bg-success/10": isSelectedCb3,
-          }
-        )}
+        className={cn('bg-default-100  h-8 px-2 rounded-md inline-flex flex-col justify-center', {
+          'bg-success/10': isSelectedCb3,
+        })}
       >
         <Checkbox
           id="accb3"
@@ -68,8 +51,8 @@ const AccessibleCheckbox = () => {
           onCheckedChange={() => setIsSelectedCb3(!isSelectedCb3)}
         >
           <span
-            className={cn("text-default-600", {
-              "text-success": isSelectedCb3,
+            className={cn('text-default-600', {
+              'text-success': isSelectedCb3,
             })}
           >
             Walking
@@ -77,12 +60,9 @@ const AccessibleCheckbox = () => {
         </Checkbox>
       </div>
       <div
-        className={cn(
-          "bg-default-100  h-8 px-2 rounded-md inline-flex flex-col justify-center",
-          {
-            "bg-destructive/10": isSelectedCb4,
-          }
-        )}
+        className={cn('bg-default-100  h-8 px-2 rounded-md inline-flex flex-col justify-center', {
+          'bg-destructive/10': isSelectedCb4,
+        })}
       >
         <Checkbox
           id="accb4"
@@ -91,8 +71,8 @@ const AccessibleCheckbox = () => {
           icon={<X />}
         >
           <span
-            className={cn("text-default-600", {
-              "text-destructive": isSelectedCb4,
+            className={cn('text-default-600', {
+              'text-destructive': isSelectedCb4,
             })}
           >
             Gaming

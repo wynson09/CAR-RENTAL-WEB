@@ -1,5 +1,5 @@
-"use client";
-import { useSession, signOut } from "next-auth/react";
+'use client';
+import { useSession, signOut } from 'next-auth/react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,10 +12,10 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Icon } from "@iconify/react";
-import Image from "next/image";
-import Link from "next/link";
+} from '@/components/ui/dropdown-menu';
+import { Icon } from '@iconify/react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 const ProfileInfo = () => {
   const { data: session } = useSession();
@@ -26,7 +26,7 @@ const ProfileInfo = () => {
           {session?.user?.image && (
             <Image
               src={session?.user?.image}
-              alt={session?.user?.name ?? ""}
+              alt={session?.user?.name ?? ''}
               width={36}
               height={36}
               className="rounded-full"
@@ -39,7 +39,7 @@ const ProfileInfo = () => {
           {session?.user?.image && (
             <Image
               src={session?.user?.image}
-              alt={session?.user?.name ?? ""}
+              alt={session?.user?.name ?? ''}
               width={36}
               height={36}
               className="rounded-full"
@@ -47,12 +47,9 @@ const ProfileInfo = () => {
           )}
           <div>
             <div className="text-sm font-medium text-default-800 capitalize ">
-              {session?.user?.name ?? "Mcc Callem"}
+              {session?.user?.name ?? 'Mcc Callem'}
             </div>
-            <Link
-              href="/dashboard"
-              className="text-xs text-default-600 hover:text-primary"
-            >
+            <Link href="/dashboard" className="text-xs text-default-600 hover:text-primary">
               @uxuidesigner
             </Link>
           </div>
@@ -60,31 +57,27 @@ const ProfileInfo = () => {
         <DropdownMenuGroup>
           {[
             {
-              name: "profile",
-              icon: "heroicons:user",
-              href:"/user-profile"
+              name: 'profile',
+              icon: 'heroicons:user',
+              href: '/user-profile',
             },
             {
-              name: "Billing",
-              icon: "heroicons:megaphone",
-              href:"/dashboard"
+              name: 'Billing',
+              icon: 'heroicons:megaphone',
+              href: '/dashboard',
             },
             {
-              name: "Settings",
-              icon: "heroicons:paper-airplane",
-              href:"/dashboard"
+              name: 'Settings',
+              icon: 'heroicons:paper-airplane',
+              href: '/dashboard',
             },
             {
-              name: "Keyboard shortcuts",
-              icon: "heroicons:language",
-              href:"/dashboard"
+              name: 'Keyboard shortcuts',
+              icon: 'heroicons:language',
+              href: '/dashboard',
             },
           ].map((item, index) => (
-            <Link
-              href={item.href}
-              key={`info-menu-${index}`}
-              className="cursor-pointer"
-            >
+            <Link href={item.href} key={`info-menu-${index}`} className="cursor-pointer">
               <DropdownMenuItem className="flex items-center gap-2 text-sm font-medium text-default-600 capitalize px-3 py-1.5 dark:hover:bg-background cursor-pointer">
                 <Icon icon={item.icon} className="w-4 h-4" />
                 {item.name}
@@ -109,20 +102,16 @@ const ProfileInfo = () => {
               <DropdownMenuSubContent>
                 {[
                   {
-                    name: "email",
+                    name: 'email',
                   },
                   {
-                    name: "message",
+                    name: 'message',
                   },
                   {
-                    name: "facebook",
+                    name: 'facebook',
                   },
                 ].map((item, index) => (
-                  <Link
-                    href="/dashboard"
-                    key={`message-sub-${index}`}
-                    className="cursor-pointer"
-                  >
+                  <Link href="/dashboard" key={`message-sub-${index}`} className="cursor-pointer">
                     <DropdownMenuItem className="text-sm font-medium text-default-600 capitalize px-3 py-1.5 dark:hover:bg-background cursor-pointer">
                       {item.name}
                     </DropdownMenuItem>
@@ -147,13 +136,13 @@ const ProfileInfo = () => {
               <DropdownMenuSubContent>
                 {[
                   {
-                    name: "portal",
+                    name: 'portal',
                   },
                   {
-                    name: "slack",
+                    name: 'slack',
                   },
                   {
-                    name: "whatsapp",
+                    name: 'whatsapp',
                   },
                 ].map((item, index) => (
                   <Link href="/dashboard" key={`message-sub-${index}`}>

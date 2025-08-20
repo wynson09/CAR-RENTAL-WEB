@@ -1,55 +1,47 @@
-"use client";
-import { faker } from "@faker-js/faker";
-import { Icon } from "@iconify/react";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarGroup,
-  AvatarImage,
-} from "@/components/ui/avatar";
+'use client';
+import { faker } from '@faker-js/faker';
+import { Icon } from '@iconify/react';
+import { Avatar, AvatarFallback, AvatarGroup, AvatarImage } from '@/components/ui/avatar';
 import {
   Tooltip,
   TooltipArrow,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from '@/components/ui/tooltip';
 
-import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet";
-import SubTaskHeader from "./subtask-header";
+import { Sheet, SheetContent, SheetHeader } from '@/components/ui/sheet';
+import SubTaskHeader from './subtask-header';
 
-import Comments from "../comments";
-import AssignMembers from "../../common/assign-members";
-import { Plus } from "lucide-react";
-import Priority from "../../common/priority";
-import TaskDate from "../../common/task-date";
+import Comments from '../comments';
+import AssignMembers from '../../common/assign-members';
+import { Plus } from 'lucide-react';
+import Priority from '../../common/priority';
+import TaskDate from '../../common/task-date';
 
 const members = [
   {
-    name: "Nick Jonas",
-    value: "userid1",
+    name: 'Nick Jonas',
+    value: 'userid1',
     image: faker.image.avatarLegacy(),
   },
   {
-    name: "Fahim",
-    value: "userid2",
+    name: 'Fahim',
+    value: 'userid2',
     image: faker.image.avatarLegacy(),
   },
   {
-    name: "Nayeem",
-    value: "userid3",
+    name: 'Nayeem',
+    value: 'userid3',
     image: faker.image.avatarLegacy(),
   },
   {
-    name: "Iftekhar",
-    value: "userid4",
+    name: 'Iftekhar',
+    value: 'userid4',
     image: faker.image.avatarLegacy(),
   },
 ];
-const SubtaskDetailsSheet = ({ open, onClose }: {
-  open: boolean;
-  onClose: () => void
-}) => {
+const SubtaskDetailsSheet = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
   return (
     <Sheet open={open}>
       <SheetContent
@@ -66,21 +58,12 @@ const SubtaskDetailsSheet = ({ open, onClose }: {
           <div>
             <div className="flex items-center gap-1 mb-3">
               <div className="bg-default-100 h-6 w-6 rounded-full grid place-content-center">
-                <Icon
-                  icon="heroicons:user-plus"
-                  className="text-primary w-3.5 h-3.5"
-                />
+                <Icon icon="heroicons:user-plus" className="text-primary w-3.5 h-3.5" />
               </div>
-              <span className="text-sm font-medium text-default-900">
-                Assigned
-              </span>
+              <span className="text-sm font-medium text-default-900">Assigned</span>
             </div>
             <div className="flex items-center gap-3">
-              <AvatarGroup
-                max={3}
-                total={members.length - 3}
-                countClass="w-6 h-6"
-              >
+              <AvatarGroup max={3} total={members.length - 3} countClass="w-6 h-6">
                 {members?.map((item, index) => (
                   <TooltipProvider key={`task-assigned-members-${index}`}>
                     <Tooltip>
@@ -90,11 +73,7 @@ const SubtaskDetailsSheet = ({ open, onClose }: {
                           <AvatarFallback>AB</AvatarFallback>
                         </Avatar>
                       </TooltipTrigger>
-                      <TooltipContent
-                        color="primary"
-                        side="bottom"
-                        className="py-[2px] px-2"
-                      >
+                      <TooltipContent color="primary" side="bottom" className="py-[2px] px-2">
                         <p className="text-xs font-medium">{item.name}</p>
                         <TooltipArrow className=" fill-primary" />
                       </TooltipContent>
@@ -115,14 +94,9 @@ const SubtaskDetailsSheet = ({ open, onClose }: {
           <div>
             <div className="flex items-center gap-1 mb-3">
               <div className="bg-default-100 h-6 w-6 rounded-full grid place-content-center">
-                <Icon
-                  icon="heroicons:scale"
-                  className="text-primary w-3.5 h-3.5"
-                />
+                <Icon icon="heroicons:scale" className="text-primary w-3.5 h-3.5" />
               </div>
-              <span className="text-sm font-medium text-default-900">
-                Priority
-              </span>
+              <span className="text-sm font-medium text-default-900">Priority</span>
             </div>
             <Priority />
           </div>
@@ -133,10 +107,7 @@ const SubtaskDetailsSheet = ({ open, onClose }: {
           <div>
             <div className="flex items-center gap-1 mb-3">
               <div className="bg-default-100 h-6 w-6 rounded-full grid place-content-center">
-                <Icon
-                  icon="heroicons:calendar"
-                  className="text-primary w-3.5 h-3.5"
-                />
+                <Icon icon="heroicons:calendar" className="text-primary w-3.5 h-3.5" />
               </div>
               <span className="text-sm font-medium text-default-900">Date</span>
             </div>

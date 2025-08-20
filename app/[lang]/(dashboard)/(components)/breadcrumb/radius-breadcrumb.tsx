@@ -1,14 +1,8 @@
-"use client"
-import { Breadcrumbs, BreadcrumbItem } from "@/components/ui/breadcrumbs";
+'use client';
+import { Breadcrumbs, BreadcrumbItem } from '@/components/ui/breadcrumbs';
 
 export default function RadiusBreadcrumb() {
-  const radius = [
-    "rounded-full",
-    "rounded-lg",
-    "rounded-md",
-    "rounded-sm",
-    "rounded-none",
-  ];
+  const radius = ['rounded-full', 'rounded-lg', 'rounded-md', 'rounded-sm', 'rounded-none'];
 
   return (
     <div className="flex flex-col flex-wrap gap-4">

@@ -1,12 +1,10 @@
-"use client"
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Icon } from "@iconify/react";
-
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Icon } from '@iconify/react';
 
 const SubTaskHeader = () => {
-
   return (
     <form className="py-5 px-6 pb-8 border-b border-default-200">
       <div className="flex items-center gap-1 mb-2">
@@ -22,10 +20,7 @@ const SubTaskHeader = () => {
 
       <div className="flex gap-1 relative">
         <div className="mt-1">
-          <Icon
-            icon="heroicons:information-circle"
-            className="w-5 h-5 text-default-900"
-          />
+          <Icon icon="heroicons:information-circle" className="w-5 h-5 text-default-900" />
         </div>
         <textarea
           className="w-full h-16 border-none focus:border-none focus:outline-none p-1 text-sm text-default-700 peer"
@@ -35,7 +30,6 @@ const SubTaskHeader = () => {
         <Button className="  text-xs h-6 py-0" type="submit">
           Save
         </Button>
-
       </div>
     </form>
   );

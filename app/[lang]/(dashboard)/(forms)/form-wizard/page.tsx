@@ -1,8 +1,8 @@
-import Card from "@/components/ui/card-snippet";
-import BasicFormWizard from "./basic-wizard";
-import ValidationWizard from "./validation-wizard";
-import VStepForm from "./vstep-form";
-import CustomWizard from "./custom-wizard";
+import Card from '@/components/ui/card-snippet';
+import BasicFormWizard from './basic-wizard';
+import ValidationWizard from './validation-wizard';
+import VStepForm from './vstep-form';
+import CustomWizard from './custom-wizard';
 
 const FormLayout = () => {
   return (

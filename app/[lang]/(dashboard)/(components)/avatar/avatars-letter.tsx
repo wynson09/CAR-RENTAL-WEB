@@ -1,38 +1,26 @@
-"use client"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+'use client';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const AvatarsLetter = () => {
   return (
     <>
       <Avatar>
-        <AvatarFallback className=" bg-primary text-primary-foreground">
-          PR
-        </AvatarFallback>
+        <AvatarFallback className=" bg-primary text-primary-foreground">PR</AvatarFallback>
       </Avatar>
       <Avatar>
-        <AvatarFallback className=" bg-secondary text-secondary-foreground">
-          LI
-        </AvatarFallback>
+        <AvatarFallback className=" bg-secondary text-secondary-foreground">LI</AvatarFallback>
       </Avatar>
       <Avatar>
-        <AvatarFallback className="  bg-destructive text-destructive-foreground">
-          SH
-        </AvatarFallback>
+        <AvatarFallback className="  bg-destructive text-destructive-foreground">SH</AvatarFallback>
       </Avatar>
       <Avatar>
-        <AvatarFallback className="  bg-warning text-warning-foreground">
-          SU
-        </AvatarFallback>
+        <AvatarFallback className="  bg-warning text-warning-foreground">SU</AvatarFallback>
       </Avatar>
       <Avatar>
-        <AvatarFallback className="  bg-success text-success-foreground">
-          PR
-        </AvatarFallback>
+        <AvatarFallback className="  bg-success text-success-foreground">PR</AvatarFallback>
       </Avatar>
       <Avatar>
-        <AvatarFallback className="  bg-info text-info-foreground">
-          SR
-        </AvatarFallback>
+        <AvatarFallback className="  bg-info text-info-foreground">SR</AvatarFallback>
       </Avatar>
     </>
   );

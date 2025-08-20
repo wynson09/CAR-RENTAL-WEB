@@ -1,8 +1,8 @@
-"use client"
+'use client';
 import React from 'react';
 import { Panel, useReactFlow, getRectOfNodes, getTransformForBounds } from 'reactflow';
 import { toPng } from 'html-to-image';
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button';
 function downloadImage(dataUrl: string) {
   const a = document.createElement('a');
 
@@ -18,7 +18,6 @@ function DownloadButton() {
   const { getNodes } = useReactFlow();
 
   const onClick = () => {
-
     const nodesBounds = getRectOfNodes(getNodes());
     const transform = getTransformForBounds(nodesBounds, imageWidth, imageHeight, 0.5, 2);
     const viewportElement = document.querySelector('.react-flow__viewport') as HTMLElement;
@@ -36,7 +35,6 @@ function DownloadButton() {
         transform: `translate(${transform[0]}px, ${transform[1]}px) scale(${transform[2]})`,
       },
     }).then(downloadImage);
-
   };
 
   return (

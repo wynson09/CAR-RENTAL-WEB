@@ -1,11 +1,11 @@
-"use client";
-import { useState } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
-import avatar7 from "@/public/images/avatar/avatar-7.jpg";
-import avatar8 from "@/public/images/avatar/avatar-8.jpg";
+'use client';
+import { useState } from 'react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
+import avatar7 from '@/public/images/avatar/avatar-7.jpg';
+import avatar8 from '@/public/images/avatar/avatar-8.jpg';
 
 const CustomImplementation = () => {
   const [isSelected, setIsSelected] = useState<boolean>(true);
@@ -13,12 +13,9 @@ const CustomImplementation = () => {
   return (
     <>
       <div
-        className={cn(
-          " rounded-lg border p-4  w-full transition-all duration-200",
-          {
-            "border-success": isSelected,
-          }
-        )}
+        className={cn(' rounded-lg border p-4  w-full transition-all duration-200', {
+          'border-success': isSelected,
+        })}
       >
         <Checkbox
           id="custom_11"
@@ -34,38 +31,31 @@ const CustomImplementation = () => {
                 <AvatarFallback>SN</AvatarFallback>
               </Avatar>
               <div className=" space-y-1">
-                <h4 className=" font-medium text-default-800">
-                  Jeneefer Acnoladge
-                </h4>
-                <div className=" text-sm text-default-600 font-normal">
-                  UX/UI Designer
-                </div>
+                <h4 className=" font-medium text-default-800">Jeneefer Acnoladge</h4>
+                <div className=" text-sm text-default-600 font-normal">UX/UI Designer</div>
               </div>
             </div>
             <div className="flex-none">
               <Badge
-                color={isSelected ? "success" : "secondary"}
-                variant={isSelected ? "soft" : "outline"}
+                color={isSelected ? 'success' : 'secondary'}
+                variant={isSelected ? 'soft' : 'outline'}
               >
                 <span
-                  className={cn("h-2 w-2 rounded-md mr-2 ", {
-                    "bg-default-400": !isSelected,
-                    "bg-success": isSelected,
+                  className={cn('h-2 w-2 rounded-md mr-2 ', {
+                    'bg-default-400': !isSelected,
+                    'bg-success': isSelected,
                   })}
                 ></span>
-                {isSelected ? "Active Now" : "Inactive"}
+                {isSelected ? 'Active Now' : 'Inactive'}
               </Badge>
             </div>
           </div>
         </Checkbox>
       </div>
       <div
-        className={cn(
-          " rounded-lg border p-4  w-full transition-all duration-200",
-          {
-            "border-success": isSelected1,
-          }
-        )}
+        className={cn(' rounded-lg border p-4  w-full transition-all duration-200', {
+          'border-success': isSelected1,
+        })}
       >
         <Checkbox
           id="custom_12"
@@ -80,26 +70,22 @@ const CustomImplementation = () => {
                 <AvatarFallback>SN</AvatarFallback>
               </Avatar>
               <div className=" space-y-1">
-                <h4 className=" font-medium text-default-800">
-                  Jeneefer Acnoladge
-                </h4>
-                <div className=" text-sm text-default-600 font-normal">
-                  UX/UI Designer
-                </div>
+                <h4 className=" font-medium text-default-800">Jeneefer Acnoladge</h4>
+                <div className=" text-sm text-default-600 font-normal">UX/UI Designer</div>
               </div>
             </div>
             <div className="flex-none">
               <Badge
-                color={isSelected1 ? "success" : "secondary"}
-                variant={isSelected1 ? "soft" : "outline"}
+                color={isSelected1 ? 'success' : 'secondary'}
+                variant={isSelected1 ? 'soft' : 'outline'}
               >
                 <span
-                  className={cn("h-2 w-2 rounded-md mr-2 ", {
-                    "bg-default-400": !isSelected1,
-                    "bg-success": isSelected1,
+                  className={cn('h-2 w-2 rounded-md mr-2 ', {
+                    'bg-default-400': !isSelected1,
+                    'bg-success': isSelected1,
                   })}
                 ></span>
-                {isSelected1 ? "Active Now" : "Inactive"}
+                {isSelected1 ? 'Active Now' : 'Inactive'}
               </Badge>
             </div>
           </div>

@@ -1,10 +1,10 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { getGridConfig } from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getGridConfig } from '@/lib/appex-chart-options';
 
 const BasicFunnel = ({ height = 350 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -13,11 +13,11 @@ const BasicFunnel = ({ height = 350 }) => {
 
   const series = [
     {
-      name: "Funnel Series",
+      name: 'Funnel Series',
       data: [1380, 1100, 990, 880, 740, 548, 330, 200],
     },
   ];
-  const options:any = {
+  const options: any = {
     chart: {
       toolbar: {
         show: false,
@@ -27,48 +27,42 @@ const BasicFunnel = ({ height = 350 }) => {
       bar: {
         borderRadius: 0,
         horizontal: true,
-        barHeight: "90%",
+        barHeight: '90%',
         isFunnel: true,
       },
     },
     dataLabels: {
       enabled: true,
-      formatter: function (val:number, opt:any) {
-        return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val;
+      formatter: function (val: number, opt: any) {
+        return opt.w.globals.labels[opt.dataPointIndex] + ':  ' + val;
       },
       dropShadow: {
         enabled: true,
       },
     },
-    colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-    ],
+    colors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
 
     fill: {
-      type: "gradient",
-      colors: `hsl(${
-        theme?.cssVars[mode === "dark" ? "dark" : "light"].primary
-      })`,
+      type: 'gradient',
+      colors: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
     },
     yaxis: {
       show: false,
     },
     xaxis: {
       categories: [
-        "Sourced",
-        "Screened",
-        "Assessed",
-        "HR Interview",
-        "Technical",
-        "Verify",
-        "Offered",
-        "Hired",
+        'Sourced',
+        'Screened',
+        'Assessed',
+        'HR Interview',
+        'Technical',
+        'Verify',
+        'Offered',
+        'Hired',
       ],
     },
     legend: {
@@ -81,15 +75,7 @@ const BasicFunnel = ({ height = 350 }) => {
       left: 0,
     },
   };
-  return (
-      <Chart
-        options={options}
-        series={series}
-        type="bar"
-        height={height}
-        width={"100%"}
-      />
-  );
+  return <Chart options={options} series={series} type="bar" height={height} width={'100%'} />;
 };
 
 export default BasicFunnel;

@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "React Email",
+  title: 'React Email',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

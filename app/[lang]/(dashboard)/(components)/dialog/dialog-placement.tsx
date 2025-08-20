@@ -1,7 +1,7 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+'use client';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 import {
   Dialog,
@@ -9,18 +9,18 @@ import {
   DialogContent,
   DialogFooter,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 
-import avatar1 from "@/public/images/avatar/avatar-1.jpg";
-import avatar2 from "@/public/images/avatar/avatar-2.jpg";
-import avatar3 from "@/public/images/avatar/avatar-3.jpg";
-import avatar4 from "@/public/images/avatar/avatar-4.jpg";
-import avatar5 from "@/public/images/avatar/avatar-5.jpg";
-import avatar6 from "@/public/images/avatar/avatar-6.jpg";
-import avatar7 from "@/public/images/avatar/avatar-7.jpg";
-import avatar8 from "@/public/images/avatar/avatar-8.jpg";
-import avatar9 from "@/public/images/avatar/avatar-9.jpg";
-import avatar10 from "@/public/images/avatar/avatar-10.jpg";
+import avatar1 from '@/public/images/avatar/avatar-1.jpg';
+import avatar2 from '@/public/images/avatar/avatar-2.jpg';
+import avatar3 from '@/public/images/avatar/avatar-3.jpg';
+import avatar4 from '@/public/images/avatar/avatar-4.jpg';
+import avatar5 from '@/public/images/avatar/avatar-5.jpg';
+import avatar6 from '@/public/images/avatar/avatar-6.jpg';
+import avatar7 from '@/public/images/avatar/avatar-7.jpg';
+import avatar8 from '@/public/images/avatar/avatar-8.jpg';
+import avatar9 from '@/public/images/avatar/avatar-9.jpg';
+import avatar10 from '@/public/images/avatar/avatar-10.jpg';
 
 const DialogPlacement = () => {
   return (
@@ -44,23 +44,21 @@ const DialogPlacement = () => {
             <h3 className="text-lg font-semibold text-default-950 dark:text-primary-foreground">
               Jenyyfer Nolan
             </h3>
-            <span className="text-sm text-default-500  mt-1 block">
-              UX/UI Designer
-            </span>
+            <span className="text-sm text-default-500  mt-1 block">UX/UI Designer</span>
             <p className="text-sm text-default-500  mt-3">
-              I am a UI/UX Designer with over 2.5 years of experience in the
-              field. I sincerely believe that by working together, extraordinary
-              friendships can be made all over the world
+              I am a UI/UX Designer with over 2.5 years of experience in the field. I sincerely
+              believe that by working together, extraordinary friendships can be made all over the
+              world
             </p>
           </div>
           <hr className="my-5 border-border" />
           <DialogFooter className="sm:justify-center">
             <DialogClose asChild>
-              <Button  variant="outline" color="warning">
+              <Button variant="outline" color="warning">
                 Close
               </Button>
             </DialogClose>
-            <Button > Follow me </Button>
+            <Button> Follow me </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -83,24 +81,21 @@ const DialogPlacement = () => {
             <h3 className="text-lg font-semibold text-default-950 dark:text-primary-foreground">
               Jenyyfer Nolan
             </h3>
-            <span className="text-sm text-default-500  mt-1 block">
-              UX/UI Designer
-            </span>
+            <span className="text-sm text-default-500  mt-1 block">UX/UI Designer</span>
             <p className="text-sm text-default-500  mt-3">
-              I am a UI/UX Designer with over 2.5 years of experience in the
-              field. I sincerely believe that by working together, extraordinary
-              friendships can be made all over the world
+              I am a UI/UX Designer with over 2.5 years of experience in the field. I sincerely
+              believe that by working together, extraordinary friendships can be made all over the
+              world
             </p>
           </div>
           <hr className="my-5 border-border" />
           <DialogFooter className="sm:justify-center">
             <DialogClose asChild>
-              <Button  variant="outline" color="warning">
-              
+              <Button variant="outline" color="warning">
                 Close
               </Button>
             </DialogClose>
-            <Button >Follow me</Button>
+            <Button>Follow me</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -123,24 +118,21 @@ const DialogPlacement = () => {
             <h3 className="text-lg font-semibold text-default-950 dark:text-primary-foreground">
               Jenyyfer Nolan
             </h3>
-            <span className="text-sm text-default-500  mt-1 block">
-              UX/UI Designer
-            </span>
+            <span className="text-sm text-default-500  mt-1 block">UX/UI Designer</span>
             <p className="text-sm text-default-500  mt-3">
-              I am a UI/UX Designer with over 2.5 years of experience in the
-              field. I sincerely believe that by working together, extraordinary
-              friendships can be made all over the world
+              I am a UI/UX Designer with over 2.5 years of experience in the field. I sincerely
+              believe that by working together, extraordinary friendships can be made all over the
+              world
             </p>
           </div>
           <hr className="my-5 border-border" />
           <DialogFooter className="sm:justify-center">
             <DialogClose asChild>
-              <Button  variant="outline" color="warning">
-              
+              <Button variant="outline" color="warning">
                 Close
               </Button>
             </DialogClose>
-            <Button >Follow me</Button>
+            <Button>Follow me</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -163,24 +155,21 @@ const DialogPlacement = () => {
             <h3 className="text-lg font-semibold text-default-950 dark:text-primary-foreground">
               Jenyyfer Nolan
             </h3>
-            <span className="text-sm text-default-500  mt-1 block">
-              UX/UI Designer
-            </span>
+            <span className="text-sm text-default-500  mt-1 block">UX/UI Designer</span>
             <p className="text-sm text-default-500  mt-3">
-              I am a UI/UX Designer with over 2.5 years of experience in the
-              field. I sincerely believe that by working together, extraordinary
-              friendships can be made all over the world
+              I am a UI/UX Designer with over 2.5 years of experience in the field. I sincerely
+              believe that by working together, extraordinary friendships can be made all over the
+              world
             </p>
           </div>
           <hr className="my-5 border-border" />
           <DialogFooter className="sm:justify-center">
             <DialogClose asChild>
-              <Button  variant="outline" color="warning">
-              
+              <Button variant="outline" color="warning">
                 Close
               </Button>
             </DialogClose>
-            <Button >Follow me</Button>
+            <Button>Follow me</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -203,24 +192,21 @@ const DialogPlacement = () => {
             <h3 className="text-lg font-semibold text-default-950 dark:text-primary-foreground">
               Jenyyfer Nolan
             </h3>
-            <span className="text-sm text-default-500  mt-1 block">
-              UX/UI Designer
-            </span>
+            <span className="text-sm text-default-500  mt-1 block">UX/UI Designer</span>
             <p className="text-sm text-default-500  mt-3">
-              I am a UI/UX Designer with over 2.5 years of experience in the
-              field. I sincerely believe that by working together, extraordinary
-              friendships can be made all over the world
+              I am a UI/UX Designer with over 2.5 years of experience in the field. I sincerely
+              believe that by working together, extraordinary friendships can be made all over the
+              world
             </p>
           </div>
           <hr className="my-5 border-border" />
           <DialogFooter className="sm:justify-center">
             <DialogClose asChild>
-              <Button  variant="outline" color="warning">
-              
+              <Button variant="outline" color="warning">
                 Close
               </Button>
             </DialogClose>
-            <Button >Follow me</Button>
+            <Button>Follow me</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -243,26 +229,21 @@ const DialogPlacement = () => {
             <h3 className="text-lg font-semibold text-default-950 dark:text-primary-foreground">
               Jenyyfer Nolan
             </h3>
-            <span className="text-sm text-default-500  mt-1 block">
-              UX/UI Designer
-            </span>
+            <span className="text-sm text-default-500  mt-1 block">UX/UI Designer</span>
             <p className="text-sm text-default-500  mt-3">
-              I am a UI/UX Designer with over 2.5 years of experience in the
-              field. I sincerely believe that by working together, extraordinary
-              friendships can be made all over the world
+              I am a UI/UX Designer with over 2.5 years of experience in the field. I sincerely
+              believe that by working together, extraordinary friendships can be made all over the
+              world
             </p>
           </div>
           <hr className="my-5 border-border" />
           <DialogFooter className="sm:justify-center">
             <DialogClose asChild>
-              <Button  variant="outline" color="warning">
-              
+              <Button variant="outline" color="warning">
                 Close
               </Button>
             </DialogClose>
-            <Button  color="success">
-              Follow me
-            </Button>
+            <Button color="success">Follow me</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -285,24 +266,21 @@ const DialogPlacement = () => {
             <h3 className="text-lg font-semibold text-default-950 dark:text-primary-foreground">
               Jenyyfer Nolan
             </h3>
-            <span className="text-sm text-default-500  mt-1 block">
-              UX/UI Designer
-            </span>
+            <span className="text-sm text-default-500  mt-1 block">UX/UI Designer</span>
             <p className="text-sm text-default-500  mt-3">
-              I am a UI/UX Designer with over 2.5 years of experience in the
-              field. I sincerely believe that by working together, extraordinary
-              friendships can be made all over the world
+              I am a UI/UX Designer with over 2.5 years of experience in the field. I sincerely
+              believe that by working together, extraordinary friendships can be made all over the
+              world
             </p>
           </div>
           <hr className="my-5 border-border" />
           <DialogFooter className="sm:justify-center">
             <DialogClose asChild>
-              <Button  variant="outline" color="warning">
-              
+              <Button variant="outline" color="warning">
                 Close
               </Button>
             </DialogClose>
-            <Button >Follow me</Button>
+            <Button>Follow me</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -325,24 +303,21 @@ const DialogPlacement = () => {
             <h3 className="text-lg font-semibold text-default-950 dark:text-primary-foreground">
               Jenyyfer Nolan
             </h3>
-            <span className="text-sm text-default-500  mt-1 block">
-              UX/UI Designer
-            </span>
+            <span className="text-sm text-default-500  mt-1 block">UX/UI Designer</span>
             <p className="text-sm text-default-500  mt-3">
-              I am a UI/UX Designer with over 2.5 years of experience in the
-              field. I sincerely believe that by working together, extraordinary
-              friendships can be made all over the world
+              I am a UI/UX Designer with over 2.5 years of experience in the field. I sincerely
+              believe that by working together, extraordinary friendships can be made all over the
+              world
             </p>
           </div>
           <hr className="my-5 border-border" />
           <DialogFooter className="sm:justify-center">
             <DialogClose asChild>
-              <Button  variant="outline" color="warning">
-              
+              <Button variant="outline" color="warning">
                 Close
               </Button>
             </DialogClose>
-            <Button >Follow me</Button>
+            <Button>Follow me</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -365,24 +340,21 @@ const DialogPlacement = () => {
             <h3 className="text-lg font-semibold text-default-950 dark:text-primary-foreground">
               Jenyyfer Nolan
             </h3>
-            <span className="text-sm text-default-500  mt-1 block">
-              UX/UI Designer
-            </span>
+            <span className="text-sm text-default-500  mt-1 block">UX/UI Designer</span>
             <p className="text-sm text-default-500  mt-3">
-              I am a UI/UX Designer with over 2.5 years of experience in the
-              field. I sincerely believe that by working together, extraordinary
-              friendships can be made all over the world
+              I am a UI/UX Designer with over 2.5 years of experience in the field. I sincerely
+              believe that by working together, extraordinary friendships can be made all over the
+              world
             </p>
           </div>
           <hr className="my-5 border-border" />
           <DialogFooter className="sm:justify-center">
             <DialogClose asChild>
-              <Button  variant="outline" color="warning">
-              
+              <Button variant="outline" color="warning">
                 Close
               </Button>
             </DialogClose>
-            <Button >Follow me</Button>
+            <Button>Follow me</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -405,24 +377,21 @@ const DialogPlacement = () => {
             <h3 className="text-lg font-semibold text-default-950 dark:text-primary-foreground">
               Jenyyfer Nolan
             </h3>
-            <span className="text-sm text-default-500  mt-1 block">
-              UX/UI Designer
-            </span>
+            <span className="text-sm text-default-500  mt-1 block">UX/UI Designer</span>
             <p className="text-sm text-default-500  mt-3">
-              I am a UI/UX Designer with over 2.5 years of experience in the
-              field. I sincerely believe that by working together, extraordinary
-              friendships can be made all over the world
+              I am a UI/UX Designer with over 2.5 years of experience in the field. I sincerely
+              believe that by working together, extraordinary friendships can be made all over the
+              world
             </p>
           </div>
           <hr className="my-5 border-border" />
           <DialogFooter className="sm:justify-center">
             <DialogClose asChild>
-              <Button  variant="outline" color="warning">
-              
+              <Button variant="outline" color="warning">
                 Close
               </Button>
             </DialogClose>
-            <Button >Follow me</Button>
+            <Button>Follow me</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

@@ -1,11 +1,11 @@
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import avatar3 from "@/public/images/avatar/avatar-3.jpg";
-import avatar4 from "@/public/images/avatar/avatar-4.jpg";
-import avatar5 from "@/public/images/avatar/avatar-5.jpg";
-import avatar6 from "@/public/images/avatar/avatar-6.jpg";
-import avatar2 from "@/public/images/avatar/avatar-2.jpg";
-import avatar1 from "@/public/images/avatar/avatar-1.jpg";
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import avatar3 from '@/public/images/avatar/avatar-3.jpg';
+import avatar4 from '@/public/images/avatar/avatar-4.jpg';
+import avatar5 from '@/public/images/avatar/avatar-5.jpg';
+import avatar6 from '@/public/images/avatar/avatar-6.jpg';
+import avatar2 from '@/public/images/avatar/avatar-2.jpg';
+import avatar1 from '@/public/images/avatar/avatar-1.jpg';
 const DotStyleBadge = () => {
   return (
     <>

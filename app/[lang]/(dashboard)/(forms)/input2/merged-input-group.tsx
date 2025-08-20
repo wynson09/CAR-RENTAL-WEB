@@ -1,14 +1,10 @@
-"use client";
+'use client';
 
-import { Input } from "@/components/ui/input";
-import {
-  InputGroup,
-  InputGroupButton,
-  InputGroupText,
-} from "@/components/ui/input-group";
-import { Icon } from "@iconify/react";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
+import { Input } from '@/components/ui/input';
+import { InputGroup, InputGroupButton, InputGroupText } from '@/components/ui/input-group';
+import { Icon } from '@iconify/react';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
 
 const MergedInputGroup = () => {
   return (
@@ -44,24 +40,15 @@ const MergedInputGroup = () => {
           Password
         </Label>
         <InputGroup>
-          <Input
-            type="password"
-            placeholder="Password"
-            id="username2"
-            required
-          />
+          <Input type="password" placeholder="Password" id="username2" required />
         </InputGroup>
       </div>
       <InputGroup merged>
         <Input type="text" placeholder="Recient’s username" />
-        <InputGroupText className=" text-sm font-normal">
-          @example.com
-        </InputGroupText>
+        <InputGroupText className=" text-sm font-normal">@example.com</InputGroupText>
       </InputGroup>
       <InputGroup merged>
-        <InputGroupText className=" text-sm font-normal">
-          https://example.com/users/
-        </InputGroupText>
+        <InputGroupText className=" text-sm font-normal">https://example.com/users/</InputGroupText>
         <Input type="text" placeholder="Recient’s username" />
       </InputGroup>
     </>

@@ -1,5 +1,4 @@
-
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const LinkAlert = () => {
   return (

@@ -1,9 +1,8 @@
-"use client";
+'use client';
 
-import { CircularProgress } from "@/components/ui/progress";
+import { CircularProgress } from '@/components/ui/progress';
 
 const CircleProgressbarSize = () => {
-
   return (
     <>
       <CircularProgress value={70} size="xs" />

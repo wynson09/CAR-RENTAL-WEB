@@ -1,28 +1,32 @@
-"use client";
-import { useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/react";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+'use client';
+import { useState } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@iconify/react';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import Link from "next/link";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import MuteNotification from "./mute-notification";
-import EditNickname from "./edit-nickname";
-import ChangeTheme from "./change-theme";
-import BlockUser from "./block-user";
-import MediaSheet from "./media-sheet";
-import { AlertTriangle, FolderClosed, Image } from "lucide-react";
-import { type Contact as ContactType, } from "@/app/api/chat/data";
-const ContactInfo = ({ handleSetIsOpenSearch, handleShowInfo, contact }: {
+} from '@/components/ui/accordion';
+import Link from 'next/link';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import MuteNotification from './mute-notification';
+import EditNickname from './edit-nickname';
+import ChangeTheme from './change-theme';
+import BlockUser from './block-user';
+import MediaSheet from './media-sheet';
+import { AlertTriangle, FolderClosed, Image } from 'lucide-react';
+import { type Contact as ContactType } from '@/app/api/chat/data';
+const ContactInfo = ({
+  handleSetIsOpenSearch,
+  handleShowInfo,
+  contact,
+}: {
   handleSetIsOpenSearch: () => void;
   handleShowInfo: () => void;
-  contact: ContactType
+  contact: ContactType;
 }) => {
   const [showDrawer, setShowDrawer] = useState(null);
   const handleDrawer = (itemKey: any) => {
@@ -30,9 +34,7 @@ const ContactInfo = ({ handleSetIsOpenSearch, handleShowInfo, contact }: {
   };
   return (
     <div className="flex-none w-[285px] absolute xl:relative  right-0 h-full z-50 ">
-      {showDrawer !== null && (
-        <MediaSheet showDrawer={showDrawer} handleDrawer={handleDrawer} />
-      )}
+      {showDrawer !== null && <MediaSheet showDrawer={showDrawer} handleDrawer={handleDrawer} />}
 
       <Card className="h-full overflow-hidden ">
         <CardHeader>
@@ -63,24 +65,13 @@ const ContactInfo = ({ handleSetIsOpenSearch, handleShowInfo, contact }: {
                 href="/chat"
                 className="h-10 w-10 rounded-full bg-secondary dark:bg-default-500/50 flex justify-center items-center"
               >
-                <Icon
-                  icon="fa-regular:user"
-                  className="text-lg text-default-900"
-                />
+                <Icon icon="fa-regular:user" className="text-lg text-default-900" />
               </Link>
               <span className="text-xs text-default-900">Profile</span>
             </div>
             <MuteNotification />
-            <div
-              className="flex flex-col items-center gap-1"
-              onClick={handleSetIsOpenSearch}
-            >
-              <Button
-                type="button"
-                color="secondary"
-                size="icon"
-                className="rounded-full"
-              >
+            <div className="flex flex-col items-center gap-1" onClick={handleSetIsOpenSearch}>
+              <Button type="button" color="secondary" size="icon" className="rounded-full">
                 <Icon icon="zondicons:search" />
               </Button>
               <span className="text-xs text-default-900">Search</span>
@@ -113,7 +104,7 @@ const ContactInfo = ({ handleSetIsOpenSearch, handleShowInfo, contact }: {
                     <Button
                       type="button"
                       className="w-full justify-start gap-3  bg-transparent hover:bg-default-50 px-1.5 group"
-                      onClick={() => handleDrawer("media")}
+                      onClick={() => handleDrawer('media')}
                     >
                       <span className="w-5 h-5 rounded-full bg-default-200 group-hover:bg-default-300 flex justify-center items-center">
                         <img className="w-3.5 h-3.5 text-default-400" />
@@ -123,7 +114,7 @@ const ContactInfo = ({ handleSetIsOpenSearch, handleShowInfo, contact }: {
                     <Button
                       type="button"
                       className="w-full justify-start gap-3  bg-transparent hover:bg-default-50 group px-1.5"
-                      onClick={() => handleDrawer("files")}
+                      onClick={() => handleDrawer('files')}
                     >
                       <span className="w-5 h-5 rounded-full bg-default-200 group-hover:bg-default-300 flex justify-center items-center">
                         <FolderClosed className="w-3 h-3 text-default-500" />
@@ -133,13 +124,10 @@ const ContactInfo = ({ handleSetIsOpenSearch, handleShowInfo, contact }: {
                     <Button
                       type="button"
                       className="w-full justify-start gap-3  bg-transparent hover:bg-default-50 group px-1"
-                      onClick={() => handleDrawer("links")}
+                      onClick={() => handleDrawer('links')}
                     >
                       <span className="w-5 h-5 rounded-full bg-default-200 group-hover:bg-default-300 flex justify-center items-center">
-                        <Icon
-                          icon="heroicons:link"
-                          className="w-3 h-3 text-default-500"
-                        />
+                        <Icon icon="heroicons:link" className="w-3 h-3 text-default-500" />
                       </span>
                       <span className="text-xs text-default-600">Links</span>
                     </Button>
@@ -152,9 +140,7 @@ const ContactInfo = ({ handleSetIsOpenSearch, handleShowInfo, contact }: {
                 value="item-3"
                 className="shadow-none dark:shadow-none dark:bg-card/90 px-4"
               >
-                <AccordionTrigger className="rounded-none">
-                  Settings
-                </AccordionTrigger>
+                <AccordionTrigger className="rounded-none">Settings</AccordionTrigger>
                 <AccordionContent>
                   <div>
                     <BlockUser />
@@ -165,9 +151,7 @@ const ContactInfo = ({ handleSetIsOpenSearch, handleShowInfo, contact }: {
                       <span className="w-5 h-5 rounded-full bg-default-200 group-hover:bg-default-300 flex justify-center items-center">
                         <AlertTriangle className="w-3 h-3 text-default-500" />
                       </span>
-                      <span className="text-xs text-default-600">
-                        Something wrong
-                      </span>
+                      <span className="text-xs text-default-600">Something wrong</span>
                     </Button>
                   </div>
                 </AccordionContent>

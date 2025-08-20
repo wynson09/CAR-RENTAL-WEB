@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { cn } from "@/lib/utils";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+import { cn } from '@/lib/utils';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -13,13 +13,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { toast } from '@/components/ui/use-toast';
 
 const FormSchema = z.object({
   username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+    message: 'Username must be at least 2 characters.',
   }),
 });
 
@@ -27,13 +27,13 @@ const InvalidButton = () => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      username: "",
+      username: '',
     },
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast({
-      title: "You submitted the following values:",
+      title: 'You submitted the following values:',
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-default-950 p-4">
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
@@ -55,9 +55,8 @@ const InvalidButton = () => {
                 <Input
                   placeholder="DashTail"
                   {...field}
-                  className={cn("", {
-                    "border-destructive focus:border-destructive":
-                      form.formState.errors.username,
+                  className={cn('', {
+                    'border-destructive focus:border-destructive': form.formState.errors.username,
                   })}
                 />
               </FormControl>
@@ -66,9 +65,7 @@ const InvalidButton = () => {
             </FormItem>
           )}
         />
-        <Button
-          type="submit"
-          disabled={!form.formState.errors.username}>
+        <Button type="submit" disabled={!form.formState.errors.username}>
           Submit
         </Button>
       </form>

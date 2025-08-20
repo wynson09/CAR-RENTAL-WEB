@@ -1,18 +1,18 @@
-import * as React from "react";
-import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils";
-import { Rating as PluginRating, RatingChange } from "@smastrom/react-rating";
-import "@smastrom/react-rating/style.css";
+import * as React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '@/lib/utils';
+import { Rating as PluginRating, RatingChange } from '@smastrom/react-rating';
+import '@smastrom/react-rating/style.css';
 
-const ratingVariants = cva(" ", {
+const ratingVariants = cva(' ', {
   variants: {
     variant: {
-      flat: "flat",
-      outline: "outline-style",
-    }
+      flat: 'flat',
+      outline: 'outline-style',
+    },
   },
   defaultVariants: {
-    variant: "flat",
+    variant: 'flat',
   },
 });
 
@@ -25,7 +25,7 @@ interface RatingProps extends VariantProps<typeof ratingVariants> {
   itemStyles?: {
     [key: string]: string | number | string[];
   };
-  variant?: "flat" | "outline";
+  variant?: 'flat' | 'outline';
   value: number;
   onChange?: RatingChange;
   readOnly?: boolean;
@@ -34,14 +34,21 @@ interface RatingProps extends VariantProps<typeof ratingVariants> {
   highlightOnlySelected?: boolean;
 }
 
-const Rating = ({ className, itemStyles = {}, variant = "flat", value, onChange, ...props }: RatingProps) => {
+const Rating = ({
+  className,
+  itemStyles = {},
+  variant = 'flat',
+  value,
+  onChange,
+  ...props
+}: RatingProps) => {
   const myStyles = {
     itemShapes: StarDrawing,
-    activeFillColor: variant === "outline" ? "none" : "#FACC15",
-    activeStrokeColor: variant === "outline" ? "#FACC15" : "none",
-    inactiveStrokeColor: variant === "outline" ? "#CBD5E1" : "none",
+    activeFillColor: variant === 'outline' ? 'none' : '#FACC15',
+    activeStrokeColor: variant === 'outline' ? '#FACC15' : 'none',
+    inactiveStrokeColor: variant === 'outline' ? '#CBD5E1' : 'none',
     itemStrokeWidth: 1,
-    inactiveFillColor: variant === "outline" ? "none" : "#CBD5E1",
+    inactiveFillColor: variant === 'outline' ? 'none' : '#CBD5E1',
     ...itemStyles,
   };
 

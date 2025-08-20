@@ -1,10 +1,9 @@
-import { Rating } from "@/components/ui/rating";
+import { Rating } from '@/components/ui/rating';
 
 const DefaultRating = () => {
-
   return (
     <>
-      <Rating  className="gap-x-1.5 max-w-[125px]" value={3} />
+      <Rating className="gap-x-1.5 max-w-[125px]" value={3} />
     </>
   );
 };

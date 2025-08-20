@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Carousel"
+  title: 'Carousel',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

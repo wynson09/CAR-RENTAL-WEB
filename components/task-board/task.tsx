@@ -1,36 +1,20 @@
-"use client";
-import React from "react";
+'use client';
+import React from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { Icon } from "@iconify/react";
-import {
-  Calendar,
-  ChevronDown,
-  Link,
-  List,
-  MoreHorizontal,
-} from "lucide-react";
-import Image from "next/image";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarGroup,
-  AvatarImage,
-} from "@/components/ui/avatar";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { Icon } from '@iconify/react';
+import { Calendar, ChevronDown, Link, List, MoreHorizontal } from 'lucide-react';
+import Image from 'next/image';
+import { Avatar, AvatarFallback, AvatarGroup, AvatarImage } from '@/components/ui/avatar';
+import { Checkbox } from '@/components/ui/checkbox';
 
 import {
   Tooltip,
@@ -38,33 +22,32 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { getWords } from "@/lib/utils";
+} from '@/components/ui/tooltip';
+import { getWords } from '@/lib/utils';
 
-import { deleteTaskAction, updateTaskAction } from "@/action/project-action";
-import AssignMembers from "./common/assign-members";
-import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
-import { cn } from "@/lib/utils";
-
+import { deleteTaskAction, updateTaskAction } from '@/action/project-action';
+import AssignMembers from './common/assign-members';
+import DeleteConfirmationDialog from '@/components/delete-confirmation-dialog';
+import { cn } from '@/lib/utils';
 
 const prioritiesColorMap: { [key: string]: any } = {
-  high: "red",
-  medium: "yellow",
-  low: "green",
+  high: 'red',
+  medium: 'yellow',
+  low: 'green',
 };
 
 const tagsColorMap: { [key: string]: any } = {
-  development: "destructive",
-  planning: "info",
-  design: "success",
-  "ui/ux": "warning",
+  development: 'destructive',
+  planning: 'info',
+  design: 'success',
+  'ui/ux': 'warning',
 };
 // dnd
-import { SortableContext, useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import { SortableContext, useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
-import { type Board as BoardType } from "@/app/api/boards/data";
-import { type Task as TaskType } from "@/app/api/tasks/data";
+import { type Board as BoardType } from '@/app/api/boards/data';
+import { type Task as TaskType } from '@/app/api/tasks/data';
 interface TaskProps {
   task: TaskType;
   onUpdateTask: (task: TaskType) => void;
@@ -90,7 +73,7 @@ const Task = ({ task, onUpdateTask, boards }: TaskProps) => {
     time,
   } = task;
 
-  const handleMoveTask = (task: TaskType, boardId: BoardType["id"]) => {
+  const handleMoveTask = (task: TaskType, boardId: BoardType['id']) => {
     const newData = {
       ...task,
       boardId: boardId,
@@ -98,26 +81,19 @@ const Task = ({ task, onUpdateTask, boards }: TaskProps) => {
     updateTaskAction(task.id, newData);
   };
 
-  const getBoardNameById = (boardId: BoardType["id"]) => {
+  const getBoardNameById = (boardId: BoardType['id']) => {
     const foundBoard = boards.find((board: BoardType) => board.id === boardId);
-    return foundBoard ? foundBoard.name : "Unknown Board";
+    return foundBoard ? foundBoard.name : 'Unknown Board';
   };
   // delete task
   const onAction = async (dltId: string) => {
     await deleteTaskAction(dltId);
   };
   // dnd
-  const {
-    setNodeRef,
-    attributes,
-    listeners,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({
+  const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
     id: task.id,
     data: {
-      type: "Task",
+      type: 'Task',
       task,
     },
     disabled: false,
@@ -138,12 +114,9 @@ const Task = ({ task, onUpdateTask, boards }: TaskProps) => {
         ref={setNodeRef}
         style={style}
         {...attributes}
-        className={cn(
-          "shadow  border-default-200  p-3 cursor-pointer group relative",
-          {
-            "opacity-50": isDragging,
-          }
-        )}
+        className={cn('shadow  border-default-200  p-3 cursor-pointer group relative', {
+          'opacity-50': isDragging,
+        })}
         onClick={() => onUpdateTask(task)}
       >
         <CardHeader className="space-x-0 space-y-0 p-0 flex-row items-center justify-between mb-0 border-none">
@@ -189,9 +162,7 @@ const Task = ({ task, onUpdateTask, boards }: TaskProps) => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-[196px]" align="start">
-                <DropdownMenuItem onSelect={() => setOpen(true)}>
-                  Delete
-                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setOpen(true)}>Delete</DropdownMenuItem>
                 <DropdownMenuItem>Change List</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -200,28 +171,18 @@ const Task = ({ task, onUpdateTask, boards }: TaskProps) => {
         </CardHeader>
         <CardContent className="p-0">
           <div className="relative">
-            <div className="text-sm font-semibold text-default-700 my-1 capitalize">
-              {title}
-            </div>
+            <div className="text-sm font-semibold text-default-700 my-1 capitalize">{title}</div>
           </div>
           <div className="text-[13px] text-default-500">{desc}</div>
           {image && (
             <div className="w-full mt-3 rounded">
-              <Image
-                alt=""
-                src={image}
-
-                className=" rounded"
-                height={190}
-                width={277}
-              />
+              <Image alt="" src={image} className=" rounded" height={190} width={277} />
             </div>
           )}
 
           <div className="flex flex-wrap items-center gap-1 mt-2">
             <Badge
               color={prioritiesColorMap[task.priority]}
-
               className="text-[10px] px-1 py-0 rounded leading-4 capitalize"
             >
               {priority}

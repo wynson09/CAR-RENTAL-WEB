@@ -1,9 +1,8 @@
-"use client";
+'use client';
 
-import { CircularProgress} from "@/components/ui/progress";
+import { CircularProgress } from '@/components/ui/progress';
 
 const CircleColorProgress = () => {
-
   return (
     <>
       <CircularProgress value={30} color="primary" />

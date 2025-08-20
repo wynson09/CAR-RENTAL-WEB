@@ -1,12 +1,18 @@
-import React from "react";
-import { Card, CardFooter } from "@/components/ui/card";
-import { getProject } from "@/config/project-config";
-import Link from "next/link";
+import React from 'react';
+import { Card, CardFooter } from '@/components/ui/card';
+import { getProject } from '@/config/project-config';
+import Link from 'next/link';
 
-import ProjectHeader from "./project-header";
-import PageLink from "./page-link";
+import ProjectHeader from './project-header';
+import PageLink from './page-link';
 
-const singleProjectLayout = async ({ children, params }: { children: React.ReactNode; params: { id: string } }) => {
+const singleProjectLayout = async ({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: { id: string };
+}) => {
   const { id } = params;
   const project = await getProject(id);
 

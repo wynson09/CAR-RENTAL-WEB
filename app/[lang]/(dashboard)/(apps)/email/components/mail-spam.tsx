@@ -1,25 +1,20 @@
-"use client";
-import { Button } from "@/components/ui/button";
+'use client';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 
-import { X } from "lucide-react";
-const MailSpam = ({ open, onClose }: {
-  open: boolean;
-  onClose: () => void
-}) => {
+import { X } from 'lucide-react';
+const MailSpam = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
   return (
     <Dialog open={open}>
       <DialogContent className="py-4" hiddenCloseIcon>
         <DialogHeader className="flex-row items-center justify-between">
-          <DialogTitle className="text-base font-medium ">
-            Report spam or unsubscribe
-          </DialogTitle>
+          <DialogTitle className="text-base font-medium ">Report spam or unsubscribe</DialogTitle>
           <Button
             onClick={onClose}
             size="icon"
@@ -31,12 +26,12 @@ const MailSpam = ({ open, onClose }: {
 
         <div className="text-sm text-default-500  space-y-4">
           <div className="text-sm font-medium text-default-500">
-            Dashmail can unsubscribe you by sending a message to{" "}
+            Dashmail can unsubscribe you by sending a message to{' '}
             <strong>unsubscribe@unsub.spmta.com.</strong>
           </div>
           <div className="text-sm text-default-500">
-            If you didn't sign up to receive this message, Report spam instead
-            to help protect all Gmail users from unwanted email. Learn more
+            If you didn't sign up to receive this message, Report spam instead to help protect all
+            Gmail users from unwanted email. Learn more
           </div>
         </div>
         <DialogFooter className="mt-3">

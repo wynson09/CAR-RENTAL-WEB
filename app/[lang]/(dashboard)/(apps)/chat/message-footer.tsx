@@ -1,42 +1,43 @@
-"use client";
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Icon } from "@iconify/react";
-import { Annoyed, SendHorizontal } from "lucide-react";
+'use client';
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Icon } from '@iconify/react';
+import { Annoyed, SendHorizontal } from 'lucide-react';
 
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
+import data from '@emoji-mart/data';
+import Picker from '@emoji-mart/react';
 import {
   Tooltip,
   TooltipArrow,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Label } from "@/components/ui/label";
+} from '@/components/ui/tooltip';
+import { Label } from '@/components/ui/label';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+} from '@/components/ui/dropdown-menu';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
-const MessageFooter = ({ handleSendMessage, replay, setReply, replayData }: {
+const MessageFooter = ({
+  handleSendMessage,
+  replay,
+  setReply,
+  replayData,
+}: {
   handleSendMessage: (message: string) => void;
   replay: boolean;
   setReply: React.Dispatch<React.SetStateAction<boolean>>;
-  replayData: any
+  replayData: any;
 }) => {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
-    e.target.style.height = "auto"; // Reset the height to auto to adjust
+    e.target.style.height = 'auto'; // Reset the height to auto to adjust
     e.target.style.height = `${e.target.scrollHeight - 15}px`;
   };
 
@@ -48,9 +49,9 @@ const MessageFooter = ({ handleSendMessage, replay, setReply, replayData }: {
     e.preventDefault();
     handleSendMessage(message);
     setReply(false);
-    setMessage("");
+    setMessage('');
 
-    console.log(replay, message, "ami k");
+    console.log(replay, message, 'ami k');
   };
   return (
     <>
@@ -61,16 +62,11 @@ const MessageFooter = ({ handleSendMessage, replay, setReply, replayData }: {
               Replying to {replayData?.contact?.fullName}
             </div>
             <div className="truncate">
-              <span className="text-sm text-muted-foreground">
-                {replayData?.message}
-              </span>
+              <span className="text-sm text-muted-foreground">{replayData?.message}</span>
             </div>
           </div>
           <span className="cursor-pointer " onClick={() => setReply(false)}>
-            <Icon
-              icon="heroicons:x-mark-20-solid"
-              className="text-2xl text-default-900"
-            />
+            <Icon icon="heroicons:x-mark-20-solid" className="text-2xl text-default-900" />
           </span>
         </div>
       )}
@@ -78,7 +74,7 @@ const MessageFooter = ({ handleSendMessage, replay, setReply, replayData }: {
       <div
         className="w-full flex items-end gap-1 lg:gap-4 lg:px-4 relative px-2 "
         style={{
-          boxSizing: "border-box",
+          boxSizing: 'border-box',
         }}
       >
         <div className="flex-none flex gap-1 absolute md:static top-0 left-1.5 z-10 ">
@@ -94,10 +90,7 @@ const MessageFooter = ({ handleSendMessage, replay, setReply, replayData }: {
                         className="bg-transparent rounded-full hover:bg-default-50"
                       >
                         <span className="h-6 w-6 rounded-full bg-primary">
-                          <Icon
-                            icon="mdi:plus"
-                            className="text-2xl text-primary-foreground "
-                          />
+                          <Icon icon="mdi:plus" className="text-2xl text-primary-foreground " />
                         </span>
                       </Button>
                     </TooltipTrigger>
@@ -109,30 +102,18 @@ const MessageFooter = ({ handleSendMessage, replay, setReply, replayData }: {
                 </TooltipProvider>
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent
-              className="w-[196px] p-2.5 rounded-xl"
-              align="start"
-              side="top"
-            >
+            <DropdownMenuContent className="w-[196px] p-2.5 rounded-xl" align="start" side="top">
               <DropdownMenuItem className="py-2 px-2 rounded-xl">
                 <div className="flex items-center gap-1">
-                  <Icon
-                    icon="material-symbols:mic"
-                    className="text-xl text-primary"
-                  />
-                  <span className="text-sm font-medium text-default-900">
-                    Send a voice clip
-                  </span>
+                  <Icon icon="material-symbols:mic" className="text-xl text-primary" />
+                  <span className="text-sm font-medium text-default-900">Send a voice clip</span>
                 </div>
               </DropdownMenuItem>
               {message.length > 0 && (
                 <>
                   <DropdownMenuItem className="py-2 px-2 rounded-xl">
                     <Label htmlFor="attachement" className="flex items-center">
-                      <Icon
-                        icon="tabler:file-filled"
-                        className="text-xl text-primary "
-                      />
+                      <Icon icon="tabler:file-filled" className="text-xl text-primary " />
                       <Input type="file" className="hidden" id="attachement" />
                       <span className="text-sm font-medium text-defualt-900 inline-block ml-1">
                         Attach a file
@@ -141,10 +122,7 @@ const MessageFooter = ({ handleSendMessage, replay, setReply, replayData }: {
                   </DropdownMenuItem>
                   <DropdownMenuItem className="py-2 px-2 rounded-xl">
                     <div className="flex items-center gap-1">
-                      <Icon
-                        icon="fluent:sticker-12-filled"
-                        className="text-xl text-primary"
-                      />
+                      <Icon icon="fluent:sticker-12-filled" className="text-xl text-primary" />
                       <span className="text-sm font-medium text-defualt-900 inline-block ml-1">
                         Choose a sticker
                       </span>
@@ -162,16 +140,9 @@ const MessageFooter = ({ handleSendMessage, replay, setReply, replayData }: {
                     <TooltipTrigger asChild>
                       <Label htmlFor="attachement">
                         <span className="h-10 w-10 rounded-full hover:bg-default-50 flex justify-center items-center ">
-                          <Icon
-                            icon="tabler:file-filled"
-                            className="text-2xl text-primary/80 "
-                          />
+                          <Icon icon="tabler:file-filled" className="text-2xl text-primary/80 " />
                         </span>
-                        <Input
-                          type="file"
-                          className="hidden"
-                          id="attachement"
-                        />
+                        <Input type="file" className="hidden" id="attachement" />
                       </Label>
                     </TooltipTrigger>
                     <TooltipContent align="start">
@@ -215,16 +186,16 @@ const MessageFooter = ({ handleSendMessage, replay, setReply, replayData }: {
                 placeholder="Type your message..."
                 className="bg-background border border-default-200 outline-none focus:border-primary  rounded-xl break-words pl-8  md:pl-3 px-3 flex-1 h-10 pt-2 p-1 pr-8 no-scrollbar "
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
+                  if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
                     handleSubmit(e as any);
                   }
                 }}
                 style={{
-                  minHeight: "40px",
-                  maxHeight: "120px",
-                  overflowY: "auto",
-                  resize: "none",
+                  minHeight: '40px',
+                  maxHeight: '120px',
+                  overflowY: 'auto',
+                  resize: 'none',
                 }}
               />
 
@@ -234,12 +205,11 @@ const MessageFooter = ({ handleSendMessage, replay, setReply, replayData }: {
                     <Annoyed className="w-6 h-6 text-primary" />
                   </span>
                 </PopoverTrigger>
-                <PopoverContent side="top" className="w-fit p-0 shadow-none border-none bottom-0 rtl:left-5 ltr:-left-[110px]">
-                  <Picker
-                    data={data}
-                    onEmojiSelect={handleSelectEmoji}
-                    theme="light"
-                  />
+                <PopoverContent
+                  side="top"
+                  className="w-fit p-0 shadow-none border-none bottom-0 rtl:left-5 ltr:-left-[110px]"
+                >
+                  <Picker data={data} onEmojiSelect={handleSelectEmoji} theme="light" />
                 </PopoverContent>
               </Popover>
               <Button

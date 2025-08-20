@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import {
   Table,
   TableBody,
@@ -7,21 +7,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { users, columns, ColumnProps, UserProps } from "./data";
+} from '@/components/ui/table';
+import { users, columns, ColumnProps, UserProps } from './data';
 const CaptionsTable = () => {
   return (
     <Table>
       <TableCaption>List of Desserts</TableCaption>
       <TableHeader>
         <TableRow>
-          {
-            columns.map((column: ColumnProps) => (
-              <TableHead key={column.key} >
-                {column.label}
-              </TableHead>
-            ))
-          }
+          {columns.map((column: ColumnProps) => (
+            <TableHead key={column.key}>{column.label}</TableHead>
+          ))}
         </TableRow>
       </TableHeader>
       <TableBody>

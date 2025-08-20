@@ -1,12 +1,12 @@
-"use server";
-import { type Mail } from "@/app/api/email/data";
-import { createEmail, deleteEmail, getMail } from "@/config/email.config";
-import { revalidatePath } from "next/cache";
+'use server';
+import { type Mail } from '@/app/api/email/data';
+import { createEmail, deleteEmail, getMail } from '@/config/email.config';
+import { revalidatePath } from 'next/cache';
 
-export const getMailAction = async (id:Mail["id"]) => {
+export const getMailAction = async (id: Mail['id']) => {
   try {
     const response = await getMail(id);
-    revalidatePath("/email");
+    revalidatePath('/email');
     return response;
   } catch (error: any) {
     return error.response.data;
@@ -17,7 +17,7 @@ export const getMailAction = async (id:Mail["id"]) => {
 export const createEmailAction = async (data: Mail) => {
   try {
     const response = await createEmail(data);
-    revalidatePath("/email");
+    revalidatePath('/email');
     return response;
   } catch (error: any) {
     return error.response.data;
@@ -25,10 +25,10 @@ export const createEmailAction = async (data: Mail) => {
 };
 
 // delete
-export const deleteMailAction = async (id: Mail["id"]) => {
+export const deleteMailAction = async (id: Mail['id']) => {
   try {
     const response = await deleteEmail(id);
-    revalidatePath("/email");
+    revalidatePath('/email');
     return response;
   } catch (error: any) {
     return error.response.data;

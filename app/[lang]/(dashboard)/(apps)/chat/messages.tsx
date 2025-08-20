@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { formatTime } from "@/lib/utils";
-import { Icon } from "@iconify/react";
+import React, { useState } from 'react';
+import { formatTime } from '@/lib/utils';
+import { Icon } from '@iconify/react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,18 +8,22 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Undo2 } from "lucide-react";
-import { type ProfileUser as ProfileUser, type Contact as ContactType, type Chat as ChatType } from "@/app/api/chat/data";
-import Image from "next/image";
+} from '@/components/ui/dropdown-menu';
+import { Undo2 } from 'lucide-react';
+import {
+  type ProfileUser as ProfileUser,
+  type Contact as ContactType,
+  type Chat as ChatType,
+} from '@/app/api/chat/data';
+import Image from 'next/image';
 const chatAction = [
   {
-    label: "Remove",
-    link: "#",
+    label: 'Remove',
+    link: '#',
   },
   {
-    label: "Forward",
-    link: "#",
+    label: 'Forward',
+    link: '#',
   },
 ];
 
@@ -35,7 +39,6 @@ interface MessagesProps {
   handleForward: (data: any) => void;
   handlePinMessage: (data: any) => void;
   pinnedMessages: ChatType[];
-
 }
 const Messages = ({
   message,
@@ -75,12 +78,10 @@ const Messages = ({
             {replayMetadata === true && (
               <div className="w-max ml-auto -mb-2 mr-10">
                 <div className="flex items-center gap-1 mb-1">
-                  <Undo2 className="w-4 h-4 text-default-600" />{" "}
+                  <Undo2 className="w-4 h-4 text-default-600" />{' '}
                   <span className="text-xs text-default-700">
                     You replied to
-                    <span className="ml-1 text-default-800">
-                      {replayData?.contact?.fullName}
-                    </span>
+                    <span className="ml-1 text-default-800">{replayData?.contact?.fullName}</span>
                   </span>
                 </div>
                 <p className="truncate text-sm bg-default-200 rounded-2xl px-3 py-2.5">
@@ -95,21 +96,11 @@ const Messages = ({
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <span className="w-7 h-7 rounded-full bg-default-200 flex items-center justify-center">
-                          <Icon
-                            icon="bi:three-dots-vertical"
-                            className="text-lg"
-                          />
+                          <Icon icon="bi:three-dots-vertical" className="text-lg" />
                         </span>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent
-                        className="w-20 p-0"
-                        align="center"
-                        side="top"
-                      >
-                        <DropdownMenuItem
-                          onClick={() => onDelete(selectedChatId, index)}
-
-                        >
+                      <DropdownMenuContent className="w-20 p-0" align="center" side="top">
+                        <DropdownMenuItem onClick={() => onDelete(selectedChatId, index)}>
                           Delete
                         </DropdownMenuItem>
                         <DropdownMenuItem>Forward</DropdownMenuItem>
@@ -122,9 +113,7 @@ const Messages = ({
                     </div>
                   </div>
                 </div>
-                <span className="text-xs text-end text-default-500">
-                  {formatTime(time)}
-                </span>
+                <span className="text-xs text-end text-default-500">{formatTime(time)}</span>
               </div>
               <div className="flex-none self-end -translate-y-5">
                 <div className="h-8 w-8 rounded-full ">
@@ -167,44 +156,27 @@ const Messages = ({
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <span className="w-7 h-7 rounded-full bg-default-200 flex items-center justify-center">
-                          <Icon
-                            icon="bi:three-dots-vertical"
-                            className="text-lg"
-                          />
+                          <Icon icon="bi:three-dots-vertical" className="text-lg" />
                         </span>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent
-                        className="w-20 p-0"
-                        align="center"
-                        side="top"
-                      >
-                        <DropdownMenuItem
-                          onClick={() => onDelete(selectedChatId, index)}
-                        >
+                      <DropdownMenuContent className="w-20 p-0" align="center" side="top">
+                        <DropdownMenuItem onClick={() => onDelete(selectedChatId, index)}>
                           Remove
                         </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => handleReply(chatMessage, contact)}
-                        >
+                        <DropdownMenuItem onClick={() => handleReply(chatMessage, contact)}>
                           Reply
                         </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => handlePinMessageLocal(chatMessage)}
-                        >
-                          {isMessagePinned ? "Unpin" : "Pin"}
+                        <DropdownMenuItem onClick={() => handlePinMessageLocal(chatMessage)}>
+                          {isMessagePinned ? 'Unpin' : 'Pin'}
                         </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => handleForward(chatMessage)}
-                        >
+                        <DropdownMenuItem onClick={() => handleForward(chatMessage)}>
                           Forward
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>
                 </div>
-                <span className="text-xs   text-default-500">
-                  {formatTime(time)}
-                </span>
+                <span className="text-xs   text-default-500">{formatTime(time)}</span>
               </div>
             </div>
           </div>

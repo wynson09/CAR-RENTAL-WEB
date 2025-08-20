@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Rechart Area Chart ",
+  title: 'Rechart Area Chart ',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

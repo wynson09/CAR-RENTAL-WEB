@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Tooltip",
+  title: 'Tooltip',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

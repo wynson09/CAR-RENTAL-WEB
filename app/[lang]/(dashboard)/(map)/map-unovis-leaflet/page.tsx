@@ -1,15 +1,15 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import BasicMap from "./basic-map";
-import MapWithData from "./map-with-data";
-import MapPointsColor from "./map-points-color";
-import MapPointRadius from "./mappoint-radius";
-import MapClusterColor from "./map-cluster-color";
-import BasicLeafletMap from "./basic-leaflet-map";
-import MapClusterExpand from "./cluster-expand";
-import MapPointTraingleShape from "./map-points-traingle";
-import MapPointCircleShape from "./mappoint-circleshape";
-import MapPointSquareShape from "./mappoint-squareshape";
-import MapPointRingShape from "./mappoint-ringshape";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import BasicMap from './basic-map';
+import MapWithData from './map-with-data';
+import MapPointsColor from './map-points-color';
+import MapPointRadius from './mappoint-radius';
+import MapClusterColor from './map-cluster-color';
+import BasicLeafletMap from './basic-leaflet-map';
+import MapClusterExpand from './cluster-expand';
+import MapPointTraingleShape from './map-points-traingle';
+import MapPointCircleShape from './mappoint-circleshape';
+import MapPointSquareShape from './mappoint-squareshape';
+import MapPointRingShape from './mappoint-ringshape';
 
 const MapUnovisLeafletPage = () => {
   return (
@@ -102,7 +102,6 @@ const MapUnovisLeafletPage = () => {
           <MapClusterExpand />
         </CardContent>
       </Card>
-
     </div>
   );
 };

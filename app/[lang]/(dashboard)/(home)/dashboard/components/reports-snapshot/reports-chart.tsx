@@ -1,14 +1,10 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import {
-  getGridConfig,
-  getXAxisConfig,
-  getYAxisConfig,
-} from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getGridConfig, getXAxisConfig, getYAxisConfig } from '@/lib/appex-chart-options';
 
 interface ReportsChartProps {
   series: ApexAxisChartSeries;
@@ -32,18 +28,16 @@ const ReportsChart = ({ series, chartColor, height = 300 }: ReportsChartProps) =
       enabled: false,
     },
     stroke: {
-      curve: "smooth",
+      curve: 'smooth',
       width: 4,
     },
     colors: [chartColor],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
     fill: {
-      type: "gradient",
+      type: 'gradient',
       colors: chartColor,
       gradient: {
         shadeIntensity: 0.1,
@@ -52,12 +46,8 @@ const ReportsChart = ({ series, chartColor, height = 300 }: ReportsChartProps) =
         stops: [50, 100, 0],
       },
     },
-    yaxis: getYAxisConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`
-    ),
-    xaxis: getXAxisConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`
-    ),
+    yaxis: getYAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
+    xaxis: getXAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
     padding: {
       top: 0,
       right: 0,
@@ -65,15 +55,7 @@ const ReportsChart = ({ series, chartColor, height = 300 }: ReportsChartProps) =
       left: 0,
     },
   };
-  return (
-    <Chart
-      options={options}
-      series={series}
-      type="area"
-      height={height}
-      width={"100%"}
-    />
-  )
-}
+  return <Chart options={options} series={series} type="area" height={height} width={'100%'} />;
+};
 
 export default ReportsChart;

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 interface NCRLogoProps {
   className?: string;
@@ -7,11 +7,11 @@ interface NCRLogoProps {
   type?: 'svg' | 'webp';
 }
 
-export function NCRLogo({ 
-  className = "h-30 w-30", 
-  width = 100, 
-  height = 100, 
-  type = 'svg' 
+export function NCRLogo({
+  className = 'h-30 w-30',
+  width = 100,
+  height = 100,
+  type = 'svg',
 }: NCRLogoProps) {
   if (type === 'webp') {
     return (

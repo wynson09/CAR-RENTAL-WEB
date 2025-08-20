@@ -1,14 +1,14 @@
-"use client";
-import React from "react";
-import { Stepper, Step, StepLabel } from "@/components/ui/steps";
-import { toast } from "@/components/ui/use-toast";
-import { Button } from "@/components/ui/button";
-import { useMediaQuery } from "@/hooks/use-media-query";
+'use client';
+import React from 'react';
+import { Stepper, Step, StepLabel } from '@/components/ui/steps';
+import { toast } from '@/components/ui/use-toast';
+import { Button } from '@/components/ui/button';
+import { useMediaQuery } from '@/hooks/use-media-query';
 const ClickableStep = () => {
   const [activestep, setActiveStep] = React.useState<number>(0);
   const [skipped, setSkipped] = React.useState<Set<number>>(new Set());
-  const steps: string[] = ["Step 1", "Step 2", "Step 3", "Step 4", "Step 5"];
-  const isTablet = useMediaQuery("(max-width: 1024px)");
+  const steps: string[] = ['Step 1', 'Step 2', 'Step 3', 'Step 4', 'Step 5'];
+  const isTablet = useMediaQuery('(max-width: 1024px)');
 
   const isStepOptional = (step: number) => {
     return step === 1;
@@ -52,7 +52,7 @@ const ClickableStep = () => {
 
   const onSubmit = () => {
     toast({
-      title: "You submitted the following values:",
+      title: 'You submitted the following values:',
       description: (
         <div className="mt-2 w-[340px] rounded-md bg-slate-950 p-4 top-0 right-0">
           <p className="text-primary-foreground">Done</p>
@@ -63,17 +63,12 @@ const ClickableStep = () => {
 
   return (
     <div className="mt-4">
-      <Stepper
-        current={activestep}
-        direction={isTablet ? "vertical" : "horizontal"}
-      >
+      <Stepper current={activestep} direction={isTablet ? 'vertical' : 'horizontal'}>
         {steps.map((label, index) => {
           const stepProps: { completed?: boolean } = {};
           const labelProps: { optional?: React.ReactNode } = {};
           if (isStepOptional(index)) {
-            labelProps.optional = (
-              <StepLabel>Optional</StepLabel>
-            );
+            labelProps.optional = <StepLabel>Optional</StepLabel>;
           }
           if (isStepSkipped(index)) {
             stepProps.completed = false;

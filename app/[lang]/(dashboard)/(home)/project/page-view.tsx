@@ -1,27 +1,27 @@
-"use client";
+'use client';
 
-import WelcomeBlock from "./components/welcome-block";
-import ReportsCard from "./components/reports";
-import ReportChart from "./components/report-chart";
-import Workload from "./components/workload";
-import ProjectBudget from "./components/project-budget";
-import WorksNote from "./components/works-note";
-import OverdueTask from "./components/overdue-task";
-import ProjectBudgetBar from "./components/project-budget-bar";
-import UpcomingDeadline from "./components/upcoming-deadlines";
-import RecentActivity from "./components/recent-activity";
-import TopContributer from "./components/top-contributer";
-import ActiveTask from "./components/active-task";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import DatePickerWithRange from "@/components/date-picker-with-range";
+import WelcomeBlock from './components/welcome-block';
+import ReportsCard from './components/reports';
+import ReportChart from './components/report-chart';
+import Workload from './components/workload';
+import ProjectBudget from './components/project-budget';
+import WorksNote from './components/works-note';
+import OverdueTask from './components/overdue-task';
+import ProjectBudgetBar from './components/project-budget-bar';
+import UpcomingDeadline from './components/upcoming-deadlines';
+import RecentActivity from './components/recent-activity';
+import TopContributer from './components/top-contributer';
+import ActiveTask from './components/active-task';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import DatePickerWithRange from '@/components/date-picker-with-range';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Icon } from "@iconify/react";
+} from '@/components/ui/select';
+import { Icon } from '@iconify/react';
 interface ProjectPageViewProps {
   trans: {
     [key: string]: string;
@@ -31,9 +31,7 @@ const ProjectPageView = ({ trans }: ProjectPageViewProps) => {
   return (
     <div className="space-y-6">
       <div className="flex items-center flex-wrap justify-between gap-4">
-        <div className="text-2xl font-medium text-default-800">
-          Project Dashboard
-        </div>
+        <div className="text-2xl font-medium text-default-800">Project Dashboard</div>
         <DatePickerWithRange />
       </div>
 

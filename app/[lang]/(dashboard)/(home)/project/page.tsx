@@ -1,5 +1,5 @@
-import { getDictionary } from "@/app/dictionaries";
-import ProjectPageView from "./page-view";
+import { getDictionary } from '@/app/dictionaries';
+import ProjectPageView from './page-view';
 
 interface DashboardProps {
   params: {

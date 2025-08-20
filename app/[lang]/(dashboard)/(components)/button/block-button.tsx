@@ -1,6 +1,6 @@
-"use client"
-import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/react";
+'use client';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@iconify/react';
 const BlockButton = () => {
   return (
     <>

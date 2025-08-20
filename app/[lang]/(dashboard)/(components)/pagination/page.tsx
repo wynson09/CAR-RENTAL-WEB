@@ -1,5 +1,5 @@
-import Card from "@/components/ui/card-snippet";
-import DefaultPagination from "./dafault-pagi";
+import Card from '@/components/ui/card-snippet';
+import DefaultPagination from './dafault-pagi';
 
 const PaginationPage = () => {
   return (

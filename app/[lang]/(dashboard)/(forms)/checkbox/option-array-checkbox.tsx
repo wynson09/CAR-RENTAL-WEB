@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Checkbox } from "@/components/ui/checkbox";
-import { useState } from "react";
+import { Checkbox } from '@/components/ui/checkbox';
+import { useState } from 'react';
 interface Option {
   value: string;
   label: string;
@@ -11,16 +11,16 @@ const OptionArrayCheckbox = () => {
   const [selected, setSelected] = useState<string[]>([]);
   const options: Option[] = [
     {
-      value: "orange",
-      label: "Orange",
+      value: 'orange',
+      label: 'Orange',
     },
     {
-      value: "apple",
-      label: "Apple",
+      value: 'apple',
+      label: 'Apple',
     },
     {
-      value: "banana",
-      label: "Banana",
+      value: 'banana',
+      label: 'Banana',
     },
   ];
   return (
@@ -45,9 +45,7 @@ const OptionArrayCheckbox = () => {
       </div>
 
       {selected.length > 0 && (
-        <div className="text-muted-foreground ">
-          Selected: [{selected.join(", ")}]
-        </div>
+        <div className="text-muted-foreground ">Selected: [{selected.join(', ')}]</div>
       )}
     </div>
   );

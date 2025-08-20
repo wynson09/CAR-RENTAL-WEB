@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import {
   Table,
   TableBody,
@@ -6,27 +6,23 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 
-import { users, columns, ColumnProps, UserProps } from "./data";
+import { users, columns, ColumnProps, UserProps } from './data';
 
 const BasicTable = () => {
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          {
-            columns.map((column: ColumnProps) => (
-              <TableHead key={`simple-table-${column.key}`}>
-                {column.label}
-              </TableHead>
-            ))
-          }
+          {columns.map((column: ColumnProps) => (
+            <TableHead key={`simple-table-${column.key}`}>{column.label}</TableHead>
+          ))}
         </TableRow>
       </TableHeader>
       <TableBody>
-        {users.slice(0, 5).map((item:UserProps) => (
-          <TableRow key={item.id} >
+        {users.slice(0, 5).map((item: UserProps) => (
+          <TableRow key={item.id}>
             <TableCell>{item.id}</TableCell>
             <TableCell>{item.name}</TableCell>
             <TableCell>{item.email}</TableCell>

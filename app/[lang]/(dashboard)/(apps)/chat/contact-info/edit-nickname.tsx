@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -10,12 +10,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Icon } from "@iconify/react";
-import { Pen } from "lucide-react";
+} from '@/components/ui/dialog';
+import { Icon } from '@iconify/react';
+import { Pen } from 'lucide-react';
 
-import avatar7 from "@/public/images/avatar/avatar-7.jpg";
-import avatar2 from "@/public/images/avatar/avatar-2.jpg";
+import avatar7 from '@/public/images/avatar/avatar-7.jpg';
+import avatar2 from '@/public/images/avatar/avatar-2.jpg';
 
 const EditNickname = () => {
   return (
@@ -46,7 +46,6 @@ const EditNickname = () => {
                 <input
                   type="text"
                   placeholder="Ada Lovelace"
-
                   id="guest"
                   className="peer opacity-0 focus:opacity-100 w-full h-10 px-4 rounded-md border border-default-300"
                 />
@@ -66,12 +65,8 @@ const EditNickname = () => {
                   className="peer-focus:hidden absolute top-0  left-0 w-full h-full flex justify-between items-center"
                 >
                   <div>
-                    <div className="text-base font-bold text-default-900">
-                      Ada Lovelace
-                    </div>
-                    <span className="text-sm text-default-700">
-                      Set Nickname
-                    </span>
+                    <div className="text-base font-bold text-default-900">Ada Lovelace</div>
+                    <span className="text-sm text-default-700">Set Nickname</span>
                   </div>
                   <Pen className="w-5 h-4 text-default-900  peer-focus:block" />
                 </label>
@@ -90,7 +85,6 @@ const EditNickname = () => {
                 <input
                   type="text"
                   placeholder="Einstain"
-
                   id="user"
                   className="peer opacity-0 focus:opacity-100 w-full h-10 px-4 rounded-md border border-default-300"
                 />
@@ -110,12 +104,8 @@ justify-center items-center h-8 w-8
                   className="peer-focus:hidden absolute top-0  left-0 w-full h-full flex justify-between items-center"
                 >
                   <div>
-                    <div className="text-base font-bold text-default-900">
-                      Einstain
-                    </div>
-                    <span className="text-sm text-default-700">
-                      Set Nickname
-                    </span>
+                    <div className="text-base font-bold text-default-900">Einstain</div>
+                    <span className="text-sm text-default-700">Set Nickname</span>
                   </div>
                   <Pen className="w-5 h-4 text-default-900  peer-focus:block mr-3" />
                 </label>

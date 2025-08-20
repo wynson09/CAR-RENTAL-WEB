@@ -1,43 +1,43 @@
-"use client";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Loader2 } from "lucide-react";
-import toast from "react-hot-toast";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { addUser } from "@/action/auth-action";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { Icon } from "@iconify/react";
-import { Checkbox } from "@/components/ui/checkbox";
-import googleIcon from "@/public/images/auth/google.png";
-import facebook from "@/public/images/auth/facebook.png";
-import apple from "@/public/images/auth/apple.png";
-import twitter from "@/public/images/auth/twitter.png";
-import { SiteLogo } from "@/components/svg";
-import { useMediaQuery } from "@/hooks/use-media-query";
+'use client';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Loader2 } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import { addUser } from '@/action/auth-action';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { Icon } from '@iconify/react';
+import { Checkbox } from '@/components/ui/checkbox';
+import googleIcon from '@/public/images/auth/google.png';
+import facebook from '@/public/images/auth/facebook.png';
+import apple from '@/public/images/auth/apple.png';
+import twitter from '@/public/images/auth/twitter.png';
+import { SiteLogo } from '@/components/svg';
+import { useMediaQuery } from '@/hooks/use-media-query';
 
 const schema = z.object({
-  firstName: z.string().min(2, { message: "First name must be at least 2 characters." }),
-  lastName: z.string().min(2, { message: "Last name must be at least 2 characters." }),
-  email: z.string().email({ message: "Your email is invalid." }),
-  password: z.string().min(4, { message: "Password must be at least 4 characters." }),
+  firstName: z.string().min(2, { message: 'First name must be at least 2 characters.' }),
+  lastName: z.string().min(2, { message: 'Last name must be at least 2 characters.' }),
+  email: z.string().email({ message: 'Your email is invalid.' }),
+  password: z.string().min(4, { message: 'Password must be at least 4 characters.' }),
 });
 
 const RegForm = () => {
   const [isPending, startTransition] = React.useTransition();
-  const [passwordType, setPasswordType] = useState("password");
-  const isDesktop2xl = useMediaQuery("(max-width: 1530px)");
+  const [passwordType, setPasswordType] = useState('password');
+  const isDesktop2xl = useMediaQuery('(max-width: 1530px)');
   const togglePasswordType = () => {
-    if (passwordType === "text") {
-      setPasswordType("password");
-    } else if (passwordType === "password") {
-      setPasswordType("text");
+    if (passwordType === 'text') {
+      setPasswordType('password');
+    } else if (passwordType === 'password') {
+      setPasswordType('text');
     }
   };
   const router = useRouter();
@@ -48,7 +48,7 @@ const RegForm = () => {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
-    mode: "all",
+    mode: 'all',
   });
   const [isVisible, setIsVisible] = React.useState(false);
 
@@ -57,10 +57,10 @@ const RegForm = () => {
   const onSubmit = (data: any) => {
     startTransition(async () => {
       let response = await addUser(data);
-      if (response?.status === "success") {
+      if (response?.status === 'success') {
         toast.success(response?.message);
         reset();
-        router.push("/auth/login");
+        router.push('/auth/login');
       } else {
         toast.error(response?.message);
       }
@@ -82,17 +82,17 @@ const RegForm = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="firstName" className="mb-2 font-medium text-default-600">
-                First Name{" "}
+                First Name{' '}
               </Label>
               <Input
                 disabled={isPending}
-                {...register("firstName")}
+                {...register('firstName')}
                 type="text"
                 id="firstName"
-                className={cn("", {
-                  "border-destructive": errors.firstName,
+                className={cn('', {
+                  'border-destructive': errors.firstName,
                 })}
-                size={!isDesktop2xl ? "xl" : "lg"}
+                size={!isDesktop2xl ? 'xl' : 'lg'}
                 placeholder="Enter your first name"
               />
               {errors.firstName && (
@@ -103,17 +103,17 @@ const RegForm = () => {
             </div>
             <div>
               <Label htmlFor="lastName" className="mb-2 font-medium text-default-600">
-                Last Name{" "}
+                Last Name{' '}
               </Label>
               <Input
                 disabled={isPending}
-                {...register("lastName")}
+                {...register('lastName')}
                 type="text"
                 id="lastName"
-                className={cn("", {
-                  "border-destructive": errors.lastName,
+                className={cn('', {
+                  'border-destructive': errors.lastName,
                 })}
-                size={!isDesktop2xl ? "xl" : "lg"}
+                size={!isDesktop2xl ? 'xl' : 'lg'}
                 placeholder="Enter your last name"
               />
               {errors.lastName && (
@@ -124,77 +124,57 @@ const RegForm = () => {
             </div>
           </div>
           <div>
-            <Label
-              htmlFor="email"
-              className="mb-2 font-medium text-default-600"
-            >
-              Email{" "}
+            <Label htmlFor="email" className="mb-2 font-medium text-default-600">
+              Email{' '}
             </Label>
             <Input
               disabled={isPending}
-              {...register("email")}
+              {...register('email')}
               type="email"
               id="email"
-              className={cn("", {
-                "border-destructive": errors.email,
+              className={cn('', {
+                'border-destructive': errors.email,
               })}
-              size={!isDesktop2xl ? "xl" : "lg"}
+              size={!isDesktop2xl ? 'xl' : 'lg'}
             />
             {errors.email && (
-              <div className=" text-destructive mt-2 mb-4">
-                {errors.email.message as string}
-              </div>
+              <div className=" text-destructive mt-2 mb-4">{errors.email.message as string}</div>
             )}
           </div>
           <div>
-            <Label
-              htmlFor="password"
-              className="mb-2 font-medium text-default-600"
-            >
-              Password{" "}
+            <Label htmlFor="password" className="mb-2 font-medium text-default-600">
+              Password{' '}
             </Label>
             <div className="relative">
               <Input
                 type={passwordType}
                 id="password"
-                size={!isDesktop2xl ? "xl" : "lg"}
+                size={!isDesktop2xl ? 'xl' : 'lg'}
                 disabled={isPending}
-                {...register("password")}
-                className={cn("", {
-                  "border-destructive": errors.password,
+                {...register('password')}
+                className={cn('', {
+                  'border-destructive': errors.password,
                 })}
               />
               <div
                 className="absolute top-1/2 -translate-y-1/2 ltr:right-4 rtl:left-4 cursor-pointer"
                 onClick={togglePasswordType}
               >
-                {passwordType === "password" ? (
-                  <Icon
-                    icon="heroicons:eye"
-                    className="w-5 h-5 text-default-400"
-                  />
+                {passwordType === 'password' ? (
+                  <Icon icon="heroicons:eye" className="w-5 h-5 text-default-400" />
                 ) : (
-                  <Icon
-                    icon="heroicons:eye-slash"
-                    className="w-5 h-5 text-default-400"
-                  />
+                  <Icon icon="heroicons:eye-slash" className="w-5 h-5 text-default-400" />
                 )}
               </div>
             </div>
             {errors.password && (
-              <div className=" text-destructive mt-2">
-                {errors.password.message as string}
-              </div>
+              <div className=" text-destructive mt-2">{errors.password.message as string}</div>
             )}
           </div>
         </div>
 
         <div className="mt-5 flex items-center gap-1.5 mb-8">
-          <Checkbox
-            size="sm"
-            className="border-default-300 mt-[1px]"
-            id="terms"
-          />
+          <Checkbox size="sm" className="border-default-300 mt-[1px]" id="terms" />
           <Label
             htmlFor="terms"
             className="text-sm text-default-600 cursor-pointer whitespace-nowrap"
@@ -206,7 +186,7 @@ const RegForm = () => {
         <Button className="w-full" disabled={isPending} size="lg">
           {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
 
-          {isPending ? "Registering..." : "Create an Account"}
+          {isPending ? 'Registering...' : 'Create an Account'}
         </Button>
       </form>
       <div className="mt-8 flex flex-wrap justify-center gap-4">
@@ -244,7 +224,7 @@ const RegForm = () => {
         </Button>
       </div>
       <div className="mt-5 2xl:mt-8 text-center text-base text-default-600">
-        Already Registered?{" "}
+        Already Registered?{' '}
         <Link href="/auth/login" className="text-primary">
           Sign In
         </Link>

@@ -1,6 +1,6 @@
-import { NextResponse,  NextRequest} from "next/server";
-import { demoBoards } from "./data";
-export const dynamic = "force-dynamic";
+import { NextResponse, NextRequest } from 'next/server';
+import { demoBoards } from './data';
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest, response: NextResponse) {
   return NextResponse.json(demoBoards, { status: 200 });
@@ -18,12 +18,8 @@ export async function PATCH(request: NextRequest, response: any) {
   const payloadItem = await request.json();
   const { activeBoardId, overBoardId } = payloadItem;
 
-  const activeIndex = demoBoards.findIndex(
-    (item) => item.id === activeBoardId
-  );
-  const overIndex = demoBoards.findIndex(
-    (item) => item.id === overBoardId
-  );
+  const activeIndex = demoBoards.findIndex((item) => item.id === activeBoardId);
+  const overIndex = demoBoards.findIndex((item) => item.id === overBoardId);
   if (activeIndex !== -1 && overIndex !== -1) {
     // // swap boards
     [demoBoards[activeIndex], demoBoards[overIndex]] = [
@@ -31,11 +27,8 @@ export async function PATCH(request: NextRequest, response: any) {
       demoBoards[activeIndex],
     ];
 
-    return NextResponse.json(
-      { message: "Item updated successfully" },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: 'Item updated successfully' }, { status: 200 });
   } else {
-    return NextResponse.json({ message: "Item not found" }, { status: 404 });
+    return NextResponse.json({ message: 'Item not found' }, { status: 404 });
   }
 }

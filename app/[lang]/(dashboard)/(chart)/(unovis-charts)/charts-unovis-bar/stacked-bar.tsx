@@ -1,17 +1,10 @@
-"use client";
-import {
-  VisAxis,
-  VisBulletLegend,
-  VisStackedBar,
-  VisTooltip,
-  VisXYContainer,
-} from "@unovis/react";
-import { Direction, FitMode, Orientation, StackedBar } from "@unovis/ts";
-import { educationsData } from "./data";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-
+'use client';
+import { VisAxis, VisBulletLegend, VisStackedBar, VisTooltip, VisXYContainer } from '@unovis/react';
+import { Direction, FitMode, Orientation, StackedBar } from '@unovis/ts';
+import { educationsData } from './data';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
 
 function StackedBarChart(): JSX.Element {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -21,7 +14,7 @@ function StackedBarChart(): JSX.Element {
   const labels = {
     bachelors: "Bachelor's or equivalent",
     masters: "Master's or equivalent",
-    doctoral: "Doctoral or equivalent",
+    doctoral: 'Doctoral or equivalent',
   };
   const chartLabels = Object.entries(labels).map(function ([k, v], i) {
     return {
@@ -29,9 +22,9 @@ function StackedBarChart(): JSX.Element {
       legend: v,
       tooltip: function (d: any) {
         return [
-          v.split(" ")[0],
+          v.split(' ')[0],
           `<span style="color: var(--vis-color${i}); font-weight: 800">${d[k]}%</span>`,
-        ].join(": ");
+        ].join(': ');
       },
     };
   });
@@ -43,17 +36,14 @@ function StackedBarChart(): JSX.Element {
       .map(function (l) {
         return l.tooltip(d);
       })
-      .join(" | ");
+      .join(' | ');
     return `<div style="font-size: 12px">${title}${total}${stats}</div>`;
   }
 
   return (
     <>
       <VisBulletLegend items={chartLabels.map((d) => ({ name: d.legend }))} />
-      <VisXYContainer
-        height={isSmallScreen ? 300 : 400}
-        yDirection={Direction.South}
-      >
+      <VisXYContainer height={isSmallScreen ? 300 : 400} yDirection={Direction.South}>
         <VisStackedBar
           data={educationsData}
           x={(d, i) => i}
@@ -68,34 +58,30 @@ function StackedBarChart(): JSX.Element {
         <VisAxis
           type="x"
           label="% of population aged 25 or above"
-          tickTextColor={`hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`}
-          labelColor={`hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`}
+          tickTextColor={`hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`}
+          labelColor={`hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`}
         />
         <VisAxis
           tickTextWidth={isSmallScreen ? 75 : undefined}
           tickTextFitMode={FitMode.Trim}
           type="y"
           tickFormat={(_, i) => educationsData[i].country}
-          label={isSmallScreen ? undefined : "Country"}
+          label={isSmallScreen ? undefined : 'Country'}
           numTicks={educationsData.length}
-          tickTextColor={`hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`}
-          labelColor={`hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`}
+          tickTextColor={`hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`}
+          labelColor={`hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`}
         />
       </VisXYContainer>
     </>
   );
-};
+}
 
 export default StackedBarChart;

@@ -1,33 +1,33 @@
-"use client";
-import React from "react";
-import { Stepper, Step, StepLabel } from "@/components/ui/steps";
-import { toast } from "@/components/ui/use-toast";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+'use client';
+import React from 'react';
+import { Stepper, Step, StepLabel } from '@/components/ui/steps';
+import { toast } from '@/components/ui/use-toast';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { cn } from "@/lib/utils";
-import { useMediaQuery } from "@/hooks/use-media-query";
+} from '@/components/ui/select';
+import { cn } from '@/lib/utils';
+import { useMediaQuery } from '@/hooks/use-media-query';
 const ValidationWizard = () => {
   const [activeStep, setActiveStep] = React.useState<number>(0);
 
   const steps = [
     {
-      label: "Account Details",
-      content: "Set up your account details",
+      label: 'Account Details',
+      content: 'Set up your account details',
     },
     {
-      label: "Personal Info",
-      content: "Add your personal info",
+      label: 'Personal Info',
+      content: 'Add your personal info',
     },
     {
-      label: "Social Links",
-      content: "Add your social links",
+      label: 'Social Links',
+      content: 'Add your social links',
     },
   ];
 
@@ -49,7 +49,7 @@ const ValidationWizard = () => {
 
   const onSubmit = () => {
     toast({
-      title: "You submitted the following values:",
+      title: 'You submitted the following values:',
       description: (
         <div className="mt-2 w-[340px] rounded-md bg-slate-950 p-4 top-0 right-0">
           <p className="text-primary-foreground">Done</p>
@@ -58,21 +58,19 @@ const ValidationWizard = () => {
     });
   };
 
-  const isTablet = useMediaQuery("(max-width: 1024px)");
+  const isTablet = useMediaQuery('(max-width: 1024px)');
   return (
     <div className="mt-4">
       <Stepper
         current={activeStep}
         content="right"
-        direction={isTablet ? "vertical" : "horizontal"}
+        direction={isTablet ? 'vertical' : 'horizontal'}
       >
         {steps.map((label, index) => {
           const stepProps: any = {};
           const labelProps: any = {};
           if (isStepOptional(index)) {
-            labelProps.optional = (
-              <StepLabel>Optional</StepLabel>
-            );
+            labelProps.optional = <StepLabel>Optional</StepLabel>;
           }
           return (
             <Step key={label.label} {...stepProps}>
@@ -207,7 +205,7 @@ const ValidationWizard = () => {
               size="xs"
               variant="outline"
               color="secondary"
-              className={cn("cursor-pointer", {
+              className={cn('cursor-pointer', {
                 hidden: activeStep === 0,
               })}
               onClick={handleBack}

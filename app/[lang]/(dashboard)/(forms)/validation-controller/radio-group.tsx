@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -12,13 +12,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { toast } from "@/components/ui/use-toast";
+} from '@/components/ui/form';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { toast } from '@/components/ui/use-toast';
 
 const FormSchema = z.object({
-  type: z.enum(["all", "mentions", "none"], {
-    required_error: "You need to select a notification type.",
+  type: z.enum(['all', 'mentions', 'none'], {
+    required_error: 'You need to select a notification type.',
   }),
 });
 
@@ -29,7 +29,7 @@ const RadioGroupForm = () => {
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast({
-      title: "You submitted the following values:",
+      title: 'You submitted the following values:',
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
@@ -57,17 +57,13 @@ const RadioGroupForm = () => {
                     <FormControl>
                       <RadioGroupItem value="all" />
                     </FormControl>
-                    <FormLabel className="font-normal">
-                      All new messages
-                    </FormLabel>
+                    <FormLabel className="font-normal">All new messages</FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center gap-3 space-y-0">
                     <FormControl>
                       <RadioGroupItem value="mentions" />
                     </FormControl>
-                    <FormLabel className="font-normal">
-                      Direct messages and mentions
-                    </FormLabel>
+                    <FormLabel className="font-normal">Direct messages and mentions</FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center gap-3 space-y-0">
                     <FormControl>

@@ -1,10 +1,17 @@
-
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 const SelectWithLabel = () => {
   return (
     <div>
-      <Label htmlFor="selectId" className="mb-2 block">Select A Subject(label not working)</Label>
+      <Label htmlFor="selectId" className="mb-2 block">
+        Select A Subject(label not working)
+      </Label>
       <Select>
         <SelectTrigger id="selectId">
           <SelectValue placeholder="Select a subject" />

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { render } from "@react-email/render";
-import ShoppingCart from "./shopping-cart";
+import { render } from '@react-email/render';
+import ShoppingCart from './shopping-cart';
 const ShopTemplate = () => {
   const shoppingCart = render(<ShoppingCart />);
   return (

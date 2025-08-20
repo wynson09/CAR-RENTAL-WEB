@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Combobox",
+  title: 'Combobox',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

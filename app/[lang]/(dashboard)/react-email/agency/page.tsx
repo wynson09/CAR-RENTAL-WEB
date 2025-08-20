@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { render } from "@react-email/render";
-import Agency from "./agency";
+import { render } from '@react-email/render';
+import Agency from './agency';
 
 const AgencyEmail = () => {
   const agency = render(<Agency />);

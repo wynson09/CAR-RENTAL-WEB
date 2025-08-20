@@ -1,14 +1,10 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import {
-  getGridConfig,
-  getXAxisConfig,
-  getYAxisConfig,
-} from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getGridConfig, getXAxisConfig, getYAxisConfig } from '@/lib/appex-chart-options';
 
 const BasicArea = ({ height = 300 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -19,7 +15,7 @@ const BasicArea = ({ height = 300 }) => {
       data: [90, 70, 85, 60, 80, 70, 90, 75, 60, 80],
     },
   ];
-  const options:any = {
+  const options: any = {
     chart: {
       toolbar: {
         show: false,
@@ -29,24 +25,18 @@ const BasicArea = ({ height = 300 }) => {
       enabled: false,
     },
     stroke: {
-      curve: "smooth",
+      curve: 'smooth',
       width: 4,
     },
-    colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-    ],
+    colors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
 
     fill: {
-      type: "gradient",
-      colors: `hsl(${
-        theme?.cssVars[mode === "dark" ? "dark" : "light"].primary
-      })`,
+      type: 'gradient',
+      colors: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
       gradient: {
         shadeIntensity: 1,
         opacityFrom: 0.2,
@@ -54,12 +44,8 @@ const BasicArea = ({ height = 300 }) => {
         stops: [50, 100, 0],
       },
     },
-    yaxis: getYAxisConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`
-    ),
-    xaxis: getXAxisConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`
-    ),
+    yaxis: getYAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
+    xaxis: getXAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
     padding: {
       top: 0,
       right: 0,
@@ -67,15 +53,7 @@ const BasicArea = ({ height = 300 }) => {
       left: 0,
     },
   };
-  return (
-      <Chart
-        options={options}
-        series={series}
-        type="area"
-        height={height}
-        width={"100%"}
-      />
-  );
+  return <Chart options={options} series={series} type="area" height={height} width={'100%'} />;
 };
 
 export default BasicArea;

@@ -1,6 +1,6 @@
-"use client";
-import { render } from "@react-email/render";
-import VerifyEmail from "./verify-email";
+'use client';
+import { render } from '@react-email/render';
+import VerifyEmail from './verify-email';
 
 const ReviewEmailTemplate = () => {
   const verifyEmail = render(<VerifyEmail />);

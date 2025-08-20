@@ -1,23 +1,23 @@
-"use client";
-import React from "react";
-import { Stepper, Step, StepLabel } from "@/components/ui/steps";
-import { toast } from "@/components/ui/use-toast";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+'use client';
+import React from 'react';
+import { Stepper, Step, StepLabel } from '@/components/ui/steps';
+import { toast } from '@/components/ui/use-toast';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { cn } from "@/lib/utils";
-import { useMediaQuery } from "@/hooks/use-media-query";
-import { faker } from "@faker-js/faker";
+} from '@/components/ui/select';
+import { cn } from '@/lib/utils';
+import { useMediaQuery } from '@/hooks/use-media-query';
+import { faker } from '@faker-js/faker';
 const BasicWizard = () => {
   const [activeStep, setActiveStep] = React.useState<number>(0);
 
-  const steps = ["Account Details", "Personal Info", "Address", "Social Links"];
+  const steps = ['Account Details', 'Personal Info', 'Address', 'Social Links'];
 
   const isStepOptional = (step: number) => {
     return step === 1;
@@ -37,7 +37,7 @@ const BasicWizard = () => {
 
   const onSubmit = () => {
     toast({
-      title: "You submitted the following values:",
+      title: 'You submitted the following values:',
       description: (
         <div className="mt-2 w-[340px] rounded-md bg-slate-950 p-4 top-0 right-0">
           <p className="text-primary-foreground">Done</p>
@@ -45,18 +45,16 @@ const BasicWizard = () => {
       ),
     });
   };
-  const isTablet = useMediaQuery("(max-width: 1024px)");
+  const isTablet = useMediaQuery('(max-width: 1024px)');
 
   return (
     <div className="mt-4">
-      <Stepper current={activeStep} direction={isTablet ? "vertical" : "horizontal"}>
+      <Stepper current={activeStep} direction={isTablet ? 'vertical' : 'horizontal'}>
         {steps.map((label, index) => {
           const stepProps: any = {};
           const labelProps: any = {};
           if (isStepOptional(index)) {
-            labelProps.optional = (
-              <StepLabel>Optional</StepLabel>
-            );
+            labelProps.optional = <StepLabel>Optional</StepLabel>;
           }
           return (
             <Step key={faker.string.uuid()} {...stepProps}>
@@ -154,9 +152,7 @@ const BasicWizard = () => {
               {activeStep === 2 && (
                 <>
                   <div className="col-span-12 mt-6 mb-4">
-                    <h4 className="text-sm font-medium text-default-600">
-                      Enter Your Address
-                    </h4>
+                    <h4 className="text-sm font-medium text-default-600">Enter Your Address</h4>
                     <p className="text-xs text-default-600 mt-1">
                       Fill in the box with correct data
                     </p>
@@ -224,7 +220,7 @@ const BasicWizard = () => {
               size="xs"
               variant="outline"
               color="secondary"
-              className={cn("cursor-pointer", {
+              className={cn('cursor-pointer', {
                 hidden: activeStep === 0,
               })}
               onClick={handleBack}

@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import {
   Table,
   TableBody,
@@ -7,20 +7,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { users, columns, ColumnProps, UserProps } from "./data";
+} from '@/components/ui/table';
+import { users, columns, ColumnProps, UserProps } from './data';
 const TableFoot = () => {
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          {
-            columns.map((column: ColumnProps) => (
-              <TableHead key={column.key}>
-                {column.label}
-              </TableHead>
-            ))
-          }
+          {columns.map((column: ColumnProps) => (
+            <TableHead key={column.key}>{column.label}</TableHead>
+          ))}
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -39,7 +35,9 @@ const TableFoot = () => {
           <TableCell colSpan={4} className="text-sm  text-default-600  font-semibold">
             Total
           </TableCell>
-          <TableCell className="text-sm text-default-600  font-semibold text-right">41.05</TableCell>
+          <TableCell className="text-sm text-default-600  font-semibold text-right">
+            41.05
+          </TableCell>
         </TableRow>
       </TableFooter>
     </Table>

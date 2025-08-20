@@ -1,7 +1,7 @@
-"use client";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
+'use client';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
 import {
   CartesianGrid,
   XAxis,
@@ -11,8 +11,8 @@ import {
   Bar,
   Tooltip,
   Legend,
-} from "recharts";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+} from 'recharts';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface DataItem {
   name: string;
@@ -22,42 +22,42 @@ interface DataItem {
 
 const data: DataItem[] = [
   {
-    name: "Jan",
+    name: 'Jan',
     total_budget: 4000,
     project_cost: 2400,
   },
   {
-    name: "Feb",
+    name: 'Feb',
     total_budget: 3000,
     project_cost: 1398,
   },
   {
-    name: "Mar",
+    name: 'Mar',
     total_budget: 2000,
     project_cost: 9800,
   },
   {
-    name: "Apr",
+    name: 'Apr',
     total_budget: 2780,
     project_cost: 3908,
   },
   {
-    name: "May",
+    name: 'May',
     total_budget: 1890,
     project_cost: 4800,
   },
   {
-    name: "Jun",
+    name: 'Jun',
     total_budget: 2390,
     project_cost: 3800,
   },
   {
-    name: "Jul",
+    name: 'Jul',
     total_budget: 3490,
     project_cost: 4300,
   },
   {
-    name: "Aug",
+    name: 'Aug',
     total_budget: 3490,
     project_cost: 4300,
   },
@@ -84,8 +84,8 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
               style={{ backgroundColor: `${item.color}` }}
             ></span>
             <span>
-              {item.name === "total_budget" && "Total Budget"}
-              {item.name === "project_cost" && "Project Cost"}:
+              {item.name === 'total_budget' && 'Total Budget'}
+              {item.name === 'project_cost' && 'Project Cost'}:
             </span>
             <span className="font-medium">{item.value}</span>
           </div>
@@ -115,8 +115,8 @@ const CustomLegend = (props: any) => {
             style={{ backgroundColor: `${entry.color}` }}
           ></span>
 
-          {entry.value === "total_budget" && "Total Budget"}
-          {entry.value === "project_cost" && "Project Cost"}
+          {entry.value === 'total_budget' && 'Total Budget'}
+          {entry.value === 'project_cost' && 'Project Cost'}
         </li>
       ))}
     </ul>
@@ -136,50 +136,39 @@ const ProjectBudgetBar = ({ height = 285 }) => {
         <ResponsiveContainer width="100%" height={height}>
           <BarChart height={height} data={data}>
             <CartesianGrid
-              stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-                })`}
+              stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
               strokeDasharray="3 3"
               vertical={false}
             />
-            <Legend
-              verticalAlign="bottom"
-              height={36}
-              content={<CustomLegend />}
-            />
+            <Legend verticalAlign="bottom" height={36} content={<CustomLegend />} />
             <XAxis
               dataKey="name"
               tick={{
-                fill: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel
-                  })`,
-                fontSize: "12px",
+                fill: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
+                fontSize: '12px',
               }}
               tickLine={false}
-              stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-                })`}
+              stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
               axisLine={false}
             />
             <YAxis
               tick={{
-                fill: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel
-                  })`,
-                fontSize: "12px",
+                fill: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
+                fontSize: '12px',
               }}
               tickLine={false}
               axisLine={false}
-              stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-                })`}
+              stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
               tickFormatter={YAxisFormatter}
             />
             <Tooltip content={<CustomTooltip />} />
             <Bar
               dataKey="total_budget"
-              fill={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success
-                })`}
+              fill={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`}
             />
             <Bar
               dataKey="project_cost"
-              fill={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success
-                })`}
+              fill={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`}
               fillOpacity={0.3}
             />
           </BarChart>

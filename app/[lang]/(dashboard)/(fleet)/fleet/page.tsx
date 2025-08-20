@@ -1,42 +1,39 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import Card from "@/components/ui/card-snippet";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { useState, useEffect } from 'react';
+import Card from '@/components/ui/card-snippet';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { CalendarIcon, Clock } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { CarGrid, Car } from "@/components/fleet";
-import { CarFirebaseService } from "@/lib/firebase-car-service";
-import { CarListing } from "@/data/car-listings-data";
-import { Skeleton } from "@/components/ui/skeleton";
-import { toast } from "sonner";
-import ErrorBoundary from "@/components/error-boundary";
+} from '@/components/ui/select';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
+import { format } from 'date-fns';
+import { CalendarIcon, Clock } from 'lucide-react';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { CarGrid, Car } from '@/components/fleet';
+import { CarFirebaseService } from '@/lib/firebase-car-service';
+import { CarListing } from '@/data/car-listings-data';
+import { Skeleton } from '@/components/ui/skeleton';
+import { toast } from 'sonner';
+import ErrorBoundary from '@/components/error-boundary';
 // Convert CarListing data to Car data format for fleet display
 const convertCarListingToCar = (carListing: CarListing): Car => {
   // Add promotional indicator to features if the car is promotional
-  const features = carListing.features
+  const features = carListing.features;
 
   // Provide fallback for missing or invalid image URLs
-  const imageUrl = carListing.image && carListing.image.trim() !== ""
-    ? carListing.image
-    : "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f3f4f6'/%3E%3Ctext x='200' y='150' text-anchor='middle' dy='0.3em' font-family='Arial, sans-serif' font-size='16' fill='%236b7280'%3ECar Image%3C/text%3E%3C/svg%3E";
+  const imageUrl =
+    carListing.image && carListing.image.trim() !== ''
+      ? carListing.image
+      : "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f3f4f6'/%3E%3Ctext x='200' y='150' text-anchor='middle' dy='0.3em' font-family='Arial, sans-serif' font-size='16' fill='%236b7280'%3ECar Image%3C/text%3E%3C/svg%3E";
 
   return {
     id: parseInt(carListing.id) || Math.random(), // Convert string id to number
@@ -52,12 +49,12 @@ const convertCarListingToCar = (carListing: CarListing): Car => {
 };
 
 const FleetPage = () => {
-  const [destination, setDestination] = useState("");
+  const [destination, setDestination] = useState('');
   const [pickupDate, setPickupDate] = useState<Date>();
   const [returnDate, setReturnDate] = useState<Date>();
-  const [pickupTime, setPickupTime] = useState("");
-  const [returnTime, setReturnTime] = useState("");
-  
+  const [pickupTime, setPickupTime] = useState('');
+  const [returnTime, setReturnTime] = useState('');
+
   // Firebase data state
   const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(true);
@@ -69,16 +66,16 @@ const FleetPage = () => {
       try {
         setLoading(true);
         setError(null);
-        
+
         const carListings = await CarFirebaseService.getAllCars();
         const convertedCars = carListings.map(convertCarListingToCar);
-        
+
         setCars(convertedCars);
         toast.success(`Loaded ${convertedCars.length} vehicles from database`);
       } catch (err) {
-        console.error("Error fetching cars:", err);
-        setError("Failed to load vehicles. Please try again.");
-        toast.error("Failed to load vehicles from database");
+        console.error('Error fetching cars:', err);
+        setError('Failed to load vehicles. Please try again.');
+        toast.error('Failed to load vehicles from database');
         setCars([]); // Set empty array as fallback
       } finally {
         setLoading(false);
@@ -89,9 +86,9 @@ const FleetPage = () => {
   }, []);
 
   const addressOptions = [
-    { value: "nacs-garage", label: "Self Pick Up @ NACS Car Rental Garage" },
-    { value: "pagadian-airport", label: "Pagadian Airport" },
-    { value: "pagadian-area", label: "Pagadian Area" },
+    { value: 'nacs-garage', label: 'Self Pick Up @ NACS Car Rental Garage' },
+    { value: 'pagadian-airport', label: 'Pagadian Airport' },
+    { value: 'pagadian-area', label: 'Pagadian Area' },
   ];
 
   const hours = Array.from({ length: 12 }, (_, i) => (i + 1).toString().padStart(2, '0'));
@@ -100,7 +97,7 @@ const FleetPage = () => {
 
   const handleBookNow = (car: Car) => {
     // Handle booking logic here
-    console.log("Booking car:", car);
+    console.log('Booking car:', car);
     // You can navigate to booking page or open a modal
   };
 
@@ -108,28 +105,28 @@ const FleetPage = () => {
     try {
       setLoading(true);
       setError(null);
-      
+
       const carListings = await CarFirebaseService.getAllCars();
       const convertedCars = carListings.map(convertCarListingToCar);
-      
+
       setCars(convertedCars);
       toast.success(`Refreshed! Loaded ${convertedCars.length} vehicles`);
     } catch (err) {
-      console.error("Error refreshing cars:", err);
-      setError("Failed to refresh vehicles. Please try again.");
-      toast.error("Failed to refresh vehicles");
+      console.error('Error refreshing cars:', err);
+      setError('Failed to refresh vehicles. Please try again.');
+      toast.error('Failed to refresh vehicles');
     } finally {
       setLoading(false);
     }
   };
 
-  const DrumRollTimePicker = ({ 
-    selectedTime, 
-    onTimeChange, 
-    placeholder = "--:-- --" 
-  }: { 
-    selectedTime: string; 
-    onTimeChange: (time: string) => void; 
+  const DrumRollTimePicker = ({
+    selectedTime,
+    onTimeChange,
+    placeholder = '--:-- --',
+  }: {
+    selectedTime: string;
+    onTimeChange: (time: string) => void;
     placeholder?: string;
   }) => {
     const parseTime = (timeStr: string) => {
@@ -138,22 +135,26 @@ const FleetPage = () => {
       const [hour, minute] = time.split(':');
       return { hour, minute, period: period || '' };
     };
-    
-    const { hour: selectedHour, minute: selectedMinute, period: selectedPeriod } = parseTime(selectedTime);
-    
+
+    const {
+      hour: selectedHour,
+      minute: selectedMinute,
+      period: selectedPeriod,
+    } = parseTime(selectedTime);
+
     // Temporary states for preview before confirming
     const [tempHour, setTempHour] = useState(selectedHour || '01');
     const [tempMinute, setTempMinute] = useState(selectedMinute || '00');
     const [tempPeriod, setTempPeriod] = useState(selectedPeriod || 'AM');
     const [isOpen, setIsOpen] = useState(false);
-    
+
     const handleConfirmTime = () => {
       if (tempHour && tempMinute && tempPeriod) {
         onTimeChange(`${tempHour}:${tempMinute} ${tempPeriod}`);
         setIsOpen(false);
       }
     };
-    
+
     const handleCancel = () => {
       // Reset temp values to current selected values
       setTempHour(selectedHour || '01');
@@ -168,8 +169,8 @@ const FleetPage = () => {
           <Button
             variant="outline"
             className={cn(
-              "w-full justify-start text-left font-normal",
-              !selectedTime && "text-muted-foreground"
+              'w-full justify-start text-left font-normal',
+              !selectedTime && 'text-muted-foreground'
             )}
           >
             <Clock className="mr-2 h-4 w-4" />
@@ -189,8 +190,8 @@ const FleetPage = () => {
                     <button
                       key={hour}
                       className={cn(
-                        "w-full p-2 text-sm rounded hover:bg-accent hover:text-accent-foreground",
-                        tempHour === hour && "bg-primary text-primary-foreground"
+                        'w-full p-2 text-sm rounded hover:bg-accent hover:text-accent-foreground',
+                        tempHour === hour && 'bg-primary text-primary-foreground'
                       )}
                       onClick={() => setTempHour(hour)}
                     >
@@ -200,7 +201,7 @@ const FleetPage = () => {
                 </div>
               </ScrollArea>
             </div>
-            
+
             {/* Minutes Drum */}
             <div className="flex flex-col items-center border-r">
               <div className="text-xs font-medium text-center py-2 px-3 border-b w-full bg-muted">
@@ -212,8 +213,8 @@ const FleetPage = () => {
                     <button
                       key={minute}
                       className={cn(
-                        "w-full p-2 text-sm rounded hover:bg-accent hover:text-accent-foreground",
-                        tempMinute === minute && "bg-primary text-primary-foreground"
+                        'w-full p-2 text-sm rounded hover:bg-accent hover:text-accent-foreground',
+                        tempMinute === minute && 'bg-primary text-primary-foreground'
                       )}
                       onClick={() => setTempMinute(minute)}
                     >
@@ -235,8 +236,8 @@ const FleetPage = () => {
                     <button
                       key={period}
                       className={cn(
-                        "w-full p-2 text-sm rounded hover:bg-accent hover:text-accent-foreground",
-                        tempPeriod === period && "bg-primary text-primary-foreground"
+                        'w-full p-2 text-sm rounded hover:bg-accent hover:text-accent-foreground',
+                        tempPeriod === period && 'bg-primary text-primary-foreground'
                       )}
                       onClick={() => setTempPeriod(period)}
                     >
@@ -247,22 +248,13 @@ const FleetPage = () => {
               </ScrollArea>
             </div>
           </div>
-          
+
           {/* Action Buttons */}
           <div className="flex gap-2 p-3 border-t">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="flex-1"
-              onClick={handleCancel}
-            >
+            <Button variant="outline" size="sm" className="flex-1" onClick={handleCancel}>
               Cancel
             </Button>
-            <Button 
-              size="sm" 
-              className="flex-1"
-              onClick={handleConfirmTime}
-            >
+            <Button size="sm" className="flex-1" onClick={handleConfirmTime}>
               Set Time
             </Button>
           </div>
@@ -286,8 +278,8 @@ const FleetPage = () => {
               value={destination}
               onChange={(e) => setDestination(e.target.value)}
               className={cn(
-                "min-h-[80px] resize-none",
-                destination && "border-blue-500 bg-blue-50 dark:bg-blue-950/20 dark:border-blue-400"
+                'min-h-[80px] resize-none',
+                destination && 'border-blue-500 bg-blue-50 dark:bg-blue-950/20 dark:border-blue-400'
               )}
               rows={3}
             />
@@ -320,14 +312,14 @@ const FleetPage = () => {
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
-                    variant={"outline"}
+                    variant={'outline'}
                     className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !pickupDate && "text-muted-foreground"
+                      'w-full justify-start text-left font-normal',
+                      !pickupDate && 'text-muted-foreground'
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {pickupDate ? format(pickupDate, "PPP") : <span>Pick a date</span>}
+                    {pickupDate ? format(pickupDate, 'PPP') : <span>Pick a date</span>}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">
@@ -380,14 +372,14 @@ const FleetPage = () => {
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
-                    variant={"outline"}
+                    variant={'outline'}
                     className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !returnDate && "text-muted-foreground"
+                      'w-full justify-start text-left font-normal',
+                      !returnDate && 'text-muted-foreground'
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {returnDate ? format(returnDate, "PPP") : <span>Pick a date</span>}
+                    {returnDate ? format(returnDate, 'PPP') : <span>Pick a date</span>}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">
@@ -425,11 +417,14 @@ const FleetPage = () => {
                 <Skeleton key={i} className="h-10 w-20" />
               ))}
             </div>
-            
+
             {/* Loading skeleton for car grid */}
             <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(380px,1fr))]">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                <div
+                  key={i}
+                  className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
+                >
                   <Skeleton className="aspect-[4/3] w-full" />
                   <div className="p-4 space-y-3">
                     <Skeleton className="h-6 w-3/4" />
@@ -456,11 +451,7 @@ const FleetPage = () => {
               <p className="text-lg font-medium">⚠️ Error Loading Vehicles</p>
               <p className="text-sm">{error}</p>
             </div>
-            <Button 
-              onClick={() => window.location.reload()} 
-              variant="outline"
-              className="mt-4"
-            >
+            <Button onClick={() => window.location.reload()} variant="outline" className="mt-4">
               Try Again
             </Button>
           </div>
@@ -477,19 +468,14 @@ const FleetPage = () => {
           <div className="space-y-4">
             {/* Refresh Button */}
             <div className="flex justify-end">
-              <Button 
-                onClick={handleRefreshData} 
-                variant="outline" 
-                size="sm"
-                disabled={loading}
-              >
+              <Button onClick={handleRefreshData} variant="outline" size="sm" disabled={loading}>
                 <CalendarIcon className="h-4 w-4 mr-2" />
                 Refresh Data
               </Button>
             </div>
-            
+
             <ErrorBoundary>
-              <CarGrid 
+              <CarGrid
                 cars={cars}
                 onBookNow={handleBookNow}
                 showFilter={true}

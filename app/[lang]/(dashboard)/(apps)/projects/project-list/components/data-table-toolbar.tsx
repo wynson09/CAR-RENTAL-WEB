@@ -1,16 +1,15 @@
-"use client";
-import { X } from "lucide-react";
-import { Table } from "@tanstack/react-table"
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { DataTableViewOptions } from "./data-table-view-options";
+'use client';
+import { X } from 'lucide-react';
+import { Table } from '@tanstack/react-table';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { DataTableViewOptions } from './data-table-view-options';
 
-import { priorities, statuses } from "../data/data";
-import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-
+import { priorities, statuses } from '../data/data';
+import { DataTableFacetedFilter } from './data-table-faceted-filter';
 
 interface DataTableToolbarProps<TData> {
-  table: Table<TData>
+  table: Table<TData>;
 }
 
 export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>) {
@@ -20,24 +19,21 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
     <div className="flex lg:flex-row flex-col flex-wrap items-center gap-2 lg:mr-2">
       <Input
         placeholder="Filter tasks..."
-
-        value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
-        onChange={(event) =>
-          table.getColumn("title")?.setFilterValue(event.target.value)
-        }
+        value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
+        onChange={(event) => table.getColumn('title')?.setFilterValue(event.target.value)}
         className="h-8 w-full lg:w-[250px] lg:mb-0 mb-3"
       />
       <div className="flex gap-2">
-        {table.getColumn("status") && (
+        {table.getColumn('status') && (
           <DataTableFacetedFilter
-            column={table.getColumn("status")}
+            column={table.getColumn('status')}
             title="Status"
             options={statuses}
           />
         )}
-        {table.getColumn("priority") && (
+        {table.getColumn('priority') && (
           <DataTableFacetedFilter
-            column={table.getColumn("priority")}
+            column={table.getColumn('priority')}
             title="Priority"
             options={priorities}
           />

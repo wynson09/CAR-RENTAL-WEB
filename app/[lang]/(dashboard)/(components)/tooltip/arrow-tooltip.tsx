@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Tooltip,
@@ -6,8 +6,8 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/tooltip';
+import { Button } from '@/components/ui/button';
 const ArrowTooltip = () => {
   return (
     <div className="flex  justify-center">

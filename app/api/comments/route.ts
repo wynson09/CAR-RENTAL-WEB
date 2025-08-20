@@ -1,6 +1,6 @@
-import { NextResponse, NextRequest } from "next/server";
-import { comments } from "./data";
-export const dynamic = "force-dynamic";
+import { NextResponse, NextRequest } from 'next/server';
+import { comments } from './data';
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest, response: NextResponse) {
   //const delayedResponse = await delayResponse(demoData, 2000);

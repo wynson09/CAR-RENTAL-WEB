@@ -1,7 +1,7 @@
-"use client";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
+'use client';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
 import {
   CartesianGrid,
   XAxis,
@@ -11,8 +11,8 @@ import {
   Bar,
   Tooltip,
   Legend,
-} from "recharts";
-import CustomTooltip from "./custom-tooltip";
+} from 'recharts';
+import CustomTooltip from './custom-tooltip';
 interface DataPoint {
   date: string;
   uv: number;
@@ -22,79 +22,78 @@ interface DataPoint {
 
 const data: DataPoint[] = [
   {
-    date: "2000-01",
+    date: '2000-01',
     uv: 4000,
     pv: 2400,
     amt: 2400,
   },
   {
-    date: "2000-02",
+    date: '2000-02',
     uv: 3000,
     pv: 1398,
     amt: 2210,
   },
   {
-    date: "2000-03",
+    date: '2000-03',
     uv: 2000,
     pv: 9800,
     amt: 2290,
   },
   {
-    date: "2000-04",
+    date: '2000-04',
     uv: 2780,
     pv: 3908,
     amt: 2000,
   },
   {
-    date: "2000-05",
+    date: '2000-05',
     uv: 1890,
     pv: 4800,
     amt: 2181,
   },
   {
-    date: "2000-06",
+    date: '2000-06',
     uv: 2390,
     pv: 3800,
     amt: 2500,
   },
   {
-    date: "2000-07",
+    date: '2000-07',
     uv: 3490,
     pv: 4300,
     amt: 2100,
   },
   {
-    date: "2000-08",
+    date: '2000-08',
     uv: 4000,
     pv: 2400,
     amt: 2400,
   },
   {
-    date: "2000-09",
+    date: '2000-09',
     uv: 3000,
     pv: 1398,
     amt: 2210,
   },
   {
-    date: "2000-10",
+    date: '2000-10',
     uv: 2000,
     pv: 9800,
     amt: 2290,
   },
   {
-    date: "2000-11",
+    date: '2000-11',
     uv: 2780,
     pv: 3908,
     amt: 2000,
   },
   {
-    date: "2000-12",
+    date: '2000-12',
     uv: 1890,
     pv: 4800,
     amt: 2181,
   },
 ];
-
 
 const monthTickFormatter = (tick: string): string => {
   const date = new Date(tick);
@@ -129,8 +128,7 @@ const BarChartWithMultiAxis = ({ height = 300 }) => {
     <ResponsiveContainer width="100%" height={height}>
       <BarChart height={height} data={data}>
         <CartesianGrid
-          stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-            })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
           strokeDasharray="3 3"
           vertical={false}
         />
@@ -138,13 +136,11 @@ const BarChartWithMultiAxis = ({ height = 300 }) => {
         <XAxis
           dataKey="date"
           tick={{
-            fill: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel
-              })`,
-            fontSize: "12px",
+            fill: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
+            fontSize: '12px',
           }}
           tickLine={false}
-          stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-            })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
           axisLine={false}
           tickFormatter={monthTickFormatter}
         />
@@ -160,25 +156,25 @@ const BarChartWithMultiAxis = ({ height = 300 }) => {
         />
         <YAxis
           tick={{
-            fill: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel
-              })`,
-            fontSize: "12px",
+            fill: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
+            fontSize: '12px',
           }}
           tickLine={false}
-          stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-            })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
         />
         <Tooltip content={<CustomTooltip />} />
         <Legend
-          formatter={(value, entry) => <span style={{ color: entry.color, marginRight: isRtl ? "5px" : "0px" }}>{value}</span>}
+          formatter={(value, entry) => (
+            <span style={{ color: entry.color, marginRight: isRtl ? '5px' : '0px' }}>{value}</span>
+          )}
         />
         <Bar
           dataKey="pv"
-          fill={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning})`}
+          fill={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`}
         />
         <Bar
           dataKey="uv"
-          fill={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`}
+          fill={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`}
         />
       </BarChart>
     </ResponsiveContainer>

@@ -1,11 +1,11 @@
-"use client";
-import { useState } from "react";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { getGridConfig, getXAxisConfig } from "@/lib/appex-chart-options";
+'use client';
+import { useState } from 'react';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getGridConfig, getXAxisConfig } from '@/lib/appex-chart-options';
 
 const RealTimeLineChart = ({ height = 300 }) => {
   const [chartData, setChartData] = useState({
@@ -23,7 +23,7 @@ const RealTimeLineChart = ({ height = 300 }) => {
       },
       animations: {
         enabled: true,
-        easing: "linear",
+        easing: 'linear',
         dynamicAnimation: {
           speed: 1000,
         },
@@ -33,28 +33,18 @@ const RealTimeLineChart = ({ height = 300 }) => {
       enabled: false,
     },
     stroke: {
-      curve: "smooth",
+      curve: 'smooth',
     },
     markers: {
       size: 0,
     },
-    colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-    ],
+    colors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"]
-        .chartGird
-      })`
-    ),
-    yaxis: getXAxisConfig(`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"]
-        .chartLabel
-      })`),
-    xaxis: getXAxisConfig(`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"]
-        .chartLabel
-      })`),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
+    yaxis: getXAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
+    xaxis: getXAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
     padding: {
       top: 0,
       right: 0,
@@ -70,7 +60,7 @@ const RealTimeLineChart = ({ height = 300 }) => {
         series={chartData.series}
         type="line"
         height={height}
-        width={"100%"}
+        width={'100%'}
       />
     </>
   );

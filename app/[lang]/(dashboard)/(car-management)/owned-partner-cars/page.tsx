@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/react";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@iconify/react';
 
 const OwnedPartnerCarsPage = () => {
   return (
@@ -37,9 +37,9 @@ const OwnedPartnerCarsPage = () => {
             <div className="space-y-2">
               <h3 className="text-xl font-semibold">Coming Soon</h3>
               <p className="text-muted-foreground max-w-md mx-auto">
-                This page will contain functionality for managing owned company vehicles 
-                and partner car listings. Features will include inventory tracking, 
-                maintenance schedules, and partner agreements.
+                This page will contain functionality for managing owned company vehicles and partner
+                car listings. Features will include inventory tracking, maintenance schedules, and
+                partner agreements.
               </p>
             </div>
             <div className="pt-4">

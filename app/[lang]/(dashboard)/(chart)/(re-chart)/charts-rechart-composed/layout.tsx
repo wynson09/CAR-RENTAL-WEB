@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Rechart Composed Chart",
+  title: 'Rechart Composed Chart',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

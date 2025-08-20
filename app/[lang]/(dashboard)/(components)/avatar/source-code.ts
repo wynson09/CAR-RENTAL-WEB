@@ -602,7 +602,7 @@ const AvatarGroupSize = () => {
 
 export default AvatarGroupSize;
 `;
-export const avatarWithTooltip =`import {
+export const avatarWithTooltip = `import {
   Avatar,
   AvatarFallback,
   AvatarImage,
@@ -683,4 +683,4 @@ const AvatarWithTooltip = () => {
 };
 
 export default AvatarWithTooltip;
-`
+`;

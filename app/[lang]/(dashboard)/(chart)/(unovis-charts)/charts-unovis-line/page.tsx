@@ -1,7 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import BasicLine from "./basic-line";
-import MultiLine from "./multi-line";
-import LineChartWithDataGaps from "./data-gaps-line";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import BasicLine from './basic-line';
+import MultiLine from './multi-line';
+import LineChartWithDataGaps from './data-gaps-line';
 
 const ChartsUnovisLinePage = () => {
   return (

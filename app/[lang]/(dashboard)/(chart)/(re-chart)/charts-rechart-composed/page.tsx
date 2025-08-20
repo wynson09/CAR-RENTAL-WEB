@@ -1,12 +1,11 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import LineBarAreaComposedChart from "./linebar-area-composedchart";
-import SameDataComposedChart from "./samedata-composed-chart";
-import ReVerticalComposedChart from "./vertical-composed-chart";
-import ComposedChartWithAxisLabels from "./composedchart-with-axislabels";
-import ReScatterAndLineOfBestFit from "./scatter-line-bestfit";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import LineBarAreaComposedChart from './linebar-area-composedchart';
+import SameDataComposedChart from './samedata-composed-chart';
+import ReVerticalComposedChart from './vertical-composed-chart';
+import ComposedChartWithAxisLabels from './composedchart-with-axislabels';
+import ReScatterAndLineOfBestFit from './scatter-line-bestfit';
 
 const ChartJsRechartComposed = () => {
-
   return (
     <div className="grid xl:grid-cols-2  grid-cols-1 gap-6">
       <Card>

@@ -1,15 +1,13 @@
-"use client";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
+'use client';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 const schema = z.object({
-  message: z
-    .string()
-    .min(1, { message: "Please select a subject to display." }),
+  message: z.string().min(1, { message: 'Please select a subject to display.' }),
 });
 
 const ValidateRadio = () => {
@@ -26,10 +24,8 @@ const ValidateRadio = () => {
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <p className="text-sm mb-1 font-medium text-default-600">
-        Notify me about...
-      </p>
-      <RadioGroup {...register("message")} className="rtl:justify-end">
+      <p className="text-sm mb-1 font-medium text-default-600">Notify me about...</p>
+      <RadioGroup {...register('message')} className="rtl:justify-end">
         <RadioGroupItem value="rad_1" id="rad_1">
           All new messages
         </RadioGroupItem>

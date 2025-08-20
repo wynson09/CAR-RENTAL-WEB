@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,24 +8,16 @@ import {
   Tooltip,
   Legend,
   PointElement,
-} from "chart.js";
+} from 'chart.js';
 
-import { hslToHex, hexToRGB } from "@/lib/utils";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { Bar } from "react-chartjs-2";
-import { faker } from "@faker-js/faker";
+import { hslToHex, hexToRGB } from '@/lib/utils';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { Bar } from 'react-chartjs-2';
+import { faker } from '@faker-js/faker';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  PointElement
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, PointElement);
 
 const DelayChart = ({ height = 350 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -33,46 +25,38 @@ const DelayChart = ({ height = 350 }) => {
 
   const theme = themes.find((theme) => theme.name === config);
 
-  const hslDestructive = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].destructive})`;
-  const hslInfo = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`;
-  const hslSuccess = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success})`;
+  const hslDestructive = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].destructive})`;
+  const hslInfo = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`;
+  const hslSuccess = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`;
   const hexDestructive = hslToHex(hslDestructive);
   const hexInfo = hslToHex(hslInfo);
   const hexSuccess = hslToHex(hslSuccess);
 
-  const labels = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-  ];
+  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
   const data: any = {
     labels: labels,
     datasets: [
       {
-        label: "Dataset 1",
+        label: 'Dataset 1',
         data: labels.map(() => faker.number.int({ min: -100, max: 100 })),
         borderColor: hexToRGB(hexDestructive, 0.5),
         backgroundColor: hexToRGB(hexDestructive, 0.5),
-        borderSkipped: "bottom",
+        borderSkipped: 'bottom',
       },
       {
-        label: "Dataset 1",
+        label: 'Dataset 1',
         data: labels.map(() => faker.number.int({ min: -100, max: 100 })),
         borderColor: hexToRGB(hexInfo, 0.5),
         backgroundColor: hexToRGB(hexInfo, 0.5),
-        borderSkipped: "bottom",
+        borderSkipped: 'bottom',
       },
       {
-        label: "Dataset 3",
+        label: 'Dataset 3',
         data: labels.map(() => faker.number.int({ min: -100, max: 100 })),
         borderColor: hexToRGB(hexSuccess, 0.5),
         backgroundColor: hexToRGB(hexSuccess, 0.5),
-        borderSkipped: "bottom",
+        borderSkipped: 'bottom',
       },
     ],
   };
@@ -83,12 +67,12 @@ const DelayChart = ({ height = 350 }) => {
     plugins: {
       legend: {
         labels: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel})`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
         display: true,
-      }
+      },
     },
     animation: {
       onComplete: () => {
@@ -96,14 +80,14 @@ const DelayChart = ({ height = 350 }) => {
       },
       delay: (context: any) => {
         let delay = 0;
-        if (context.type === "data" && context.mode === "default" && !delayed) {
+        if (context.type === 'data' && context.mode === 'default' && !delayed) {
           delay = context.dataIndex * 300 + context.datasetIndex * 100;
         }
         return delay;
       },
     },
     hover: {
-      mode: "index",
+      mode: 'index',
       intersect: false,
     },
     scales: {
@@ -111,38 +95,34 @@ const DelayChart = ({ height = 350 }) => {
         stacked: true,
         grid: {
           drawTicks: false,
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartGird
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartGird
+          })`,
         },
         ticks: {
-          color: mode === "dark" ? "#cbd5e1" : "#475569",
+          color: mode === 'dark' ? '#cbd5e1' : '#475569',
           stepSize: 50,
         },
       },
       x: {
         stacked: true,
         title: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
           display: true,
         },
         grid: {
           drawTicks: false,
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartGird
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartGird
+          })`,
         },
 
         ticks: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
     },

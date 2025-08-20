@@ -1,7 +1,7 @@
-import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import ReSimpleRadarChart from "./simple-radar-chart";
-import ReSpecifiedDomainRadarChart from "./specified-domain-radar";
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import ReSimpleRadarChart from './simple-radar-chart';
+import ReSpecifiedDomainRadarChart from './specified-domain-radar';
 const ChartJsRechartRadar = () => {
   return (
     <div className="grid   grid-cols-1 gap-6">

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Chart as ChartJS,
@@ -9,39 +9,30 @@ import {
   Tooltip,
   Legend,
   PointElement,
-} from "chart.js";
+} from 'chart.js';
 
-import { hslToHex, hexToRGB } from "@/lib/utils";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { Line } from "react-chartjs-2";
+import { hslToHex, hexToRGB } from '@/lib/utils';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { Line } from 'react-chartjs-2';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  PointElement
-);
+ChartJS.register(CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend, PointElement);
 
 const BasicArea = ({ height = 350 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
   const { theme: mode } = useTheme();
   const theme = themes.find((theme) => theme.name === config);
 
-  const hslWarning = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning
-    })`;
+  const hslWarning = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`;
   const hexWarning = hslToHex(hslWarning);
 
   const data: any = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
     datasets: [
       {
         fill: true,
-        label: "Dataset",
+        label: 'Dataset',
         data: [-20, -60, 35, 59, 80, -50, 81, 56, 55, 40],
         borderColor: hexToRGB(hexWarning, 1),
       },
@@ -55,10 +46,9 @@ const BasicArea = ({ height = 350 }) => {
       },
       legend: {
         labels: {
-          color: `hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
     },
@@ -67,34 +57,30 @@ const BasicArea = ({ height = 350 }) => {
       y: {
         grid: {
           drawTicks: false,
-          color: `hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartGird
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartGird
+          })`,
         },
         ticks: {
-          color: `hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
       x: {
         grid: {
           drawTicks: false,
-          color: `hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartGird
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartGird
+          })`,
         },
 
         ticks: {
-          color: `hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`
-        }
-      }
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
+        },
+      },
     },
 
     maintainAspectRatio: false,

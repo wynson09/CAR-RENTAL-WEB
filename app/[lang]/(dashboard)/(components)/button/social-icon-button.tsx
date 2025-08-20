@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/react";
+import { Button } from '@/components/ui/button';
+import { Icon } from '@iconify/react';
 
 const SocialIconButton = () => {
   return (
@@ -46,10 +46,7 @@ const SocialIconButton = () => {
           className=" rounded-full  hover:bg-opacity-10 "
           variant="outline"
         >
-          <Icon
-            icon="ic:round-facebook"
-            className="w-6 h-6  text-[#1877F2]  "
-          />
+          <Icon icon="ic:round-facebook" className="w-6 h-6  text-[#1877F2]  " />
         </Button>
         <Button
           size="icon"
@@ -57,10 +54,7 @@ const SocialIconButton = () => {
           className=" rounded-full  hover:bg-opacity-10 "
           variant="outline"
         >
-          <Icon
-            icon="ic:baseline-apple"
-            className="w-6 h-6   text-card-foreground "
-          />
+          <Icon icon="ic:baseline-apple" className="w-6 h-6   text-card-foreground " />
         </Button>
         <Button
           size="icon"
@@ -86,10 +80,7 @@ const SocialIconButton = () => {
           className=" rounded-full  hover:bg-default-200 "
           variant="outline"
         >
-          <Icon
-            icon="ic:round-facebook"
-            className="w-6 h-6   text-muted-foreground  "
-          />
+          <Icon icon="ic:round-facebook" className="w-6 h-6   text-muted-foreground  " />
         </Button>
         <Button
           size="icon"
@@ -97,10 +88,7 @@ const SocialIconButton = () => {
           className=" rounded-full  hover:bg-default-200 "
           variant="outline"
         >
-          <Icon
-            icon="ic:baseline-apple"
-            className="w-6 h-6   text-muted-foreground "
-          />
+          <Icon icon="ic:baseline-apple" className="w-6 h-6   text-muted-foreground " />
         </Button>
         <Button
           size="icon"
@@ -108,10 +96,7 @@ const SocialIconButton = () => {
           className=" rounded-full  hover:bg-default-200 "
           variant="outline"
         >
-          <Icon
-            icon="mdi:twitter"
-            className="w-6 h-6 text-muted-foreground   "
-          />
+          <Icon icon="mdi:twitter" className="w-6 h-6 text-muted-foreground   " />
         </Button>
       </div>
     </>

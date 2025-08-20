@@ -1,13 +1,13 @@
-"use client"
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Icon } from "@iconify/react";
+'use client';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Icon } from '@iconify/react';
 
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { getGridConfig } from "@/lib/appex-chart-options";
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getGridConfig } from '@/lib/appex-chart-options';
 
 const UsersStat = () => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -29,24 +29,20 @@ const UsersStat = () => {
       enabled: false,
     },
     stroke: {
-      curve: "smooth",
+      curve: 'smooth',
       width: 0,
     },
-    colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-    ],
+    colors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
     yaxis: {
       show: false,
     },
     bar: {
-      columnWidth: "100%",
-      barHeight: "100%",
+      columnWidth: '100%',
+      barHeight: '100%',
     },
 
     xaxis: {
@@ -91,17 +87,10 @@ const UsersStat = () => {
       </CardHeader>
       <CardContent className="px-5 pb-0">
         <p className="text-xs font-medium text-default-800">User Per Minutes</p>
-        <Chart
-          options={options}
-          series={series}
-          type="bar"
-          height={250}
-          width={"100%"}
-        />
+        <Chart options={options} series={series} type="bar" height={250} width={'100%'} />
       </CardContent>
     </Card>
   );
 };
 
 export default UsersStat;
-

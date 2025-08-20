@@ -1,6 +1,6 @@
-import { Edge, Node } from "reactflow";
+import { Edge, Node } from 'reactflow';
 
-export const initialNodes:Node[] = [
+export const initialNodes: Node[] = [
   {
     id: '1',
     type: 'input',
@@ -51,11 +51,11 @@ export const initialNodes:Node[] = [
     position: { x: 600, y: 100 },
     style: {
       backgroundColor: '#4299E1',
-    }
-  }
+    },
+  },
 ];
 
-export const initialEdges:Edge[] = [
+export const initialEdges: Edge[] = [
   {
     id: 'e1-2',
     source: '1',
@@ -82,5 +82,5 @@ export const initialEdges:Edge[] = [
     id: 'e4b-6',
     source: '4',
     target: '6',
-  }
+  },
 ];

@@ -1,7 +1,7 @@
-"use client";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
+'use client';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
 import {
   CartesianGrid,
   Cell,
@@ -11,18 +11,16 @@ import {
   BarChart,
   Bar,
   Tooltip,
-} from "recharts";
-import { data } from "./data";
-import CustomTooltip from "./custom-tooltip";
+} from 'recharts';
+import { data } from './data';
+import CustomTooltip from './custom-tooltip';
 
 const getPath = (x: number, y: number, width: number, height: number) => {
-  return `M${x},${y + height}C${x + width / 3},${y + height} ${x + width / 2},${
-    y + height / 3
-  }
+  return `M${x},${y + height}C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3}
     ${x + width / 2}, ${y}
     C${x + width / 2},${y + height / 3} ${x + (2 * width) / 3},${y + height} ${
-    x + width
-  }, ${y + height}
+      x + width
+    }, ${y + height}
     Z`;
 };
 
@@ -41,9 +39,7 @@ const CustomShape = ({ height = 300 }) => {
     <ResponsiveContainer width="100%" height={height}>
       <BarChart height={height} data={data}>
         <CartesianGrid
-          stroke={`hsl(${
-            theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-          })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
           strokeDasharray="3 3"
           vertical={false}
         />
@@ -51,42 +47,27 @@ const CustomShape = ({ height = 300 }) => {
         <XAxis
           dataKey="name"
           tick={{
-            fill: `hsl(${
-              theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel
-            })`,
-            fontSize: "12px",
+            fill: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
+            fontSize: '12px',
           }}
           tickLine={false}
-          stroke={`hsl(${
-            theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-          })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
           axisLine={false}
         />
         <YAxis
           tick={{
-            fill: `hsl(${
-              theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel
-            })`,
-            fontSize: "12px",
+            fill: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
+            fontSize: '12px',
           }}
           tickLine={false}
-          stroke={`hsl(${
-            theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-          })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
         />
         <Tooltip content={<CustomTooltip />} />
-        <Bar
-          dataKey="uv"
-          fill="#8884d8"
-          shape={<TriangleBar />}
-          label={{ position: "top" }}
-        >
+        <Bar dataKey="uv" fill="#8884d8" shape={<TriangleBar />} label={{ position: 'top' }}>
           {data.map((entry, index) => (
             <Cell
               key={`cell-${index}`}
-              fill={`hsl(${
-                theme?.cssVars[mode === "dark" ? "dark" : "light"].primary
-              })`}
+              fill={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`}
             />
           ))}
         </Bar>

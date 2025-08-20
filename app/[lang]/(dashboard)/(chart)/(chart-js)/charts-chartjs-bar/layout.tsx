@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Chart-js Bar Chart ",
+  title: 'Chart-js Bar Chart ',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

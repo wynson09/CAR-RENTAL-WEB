@@ -1,6 +1,6 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/react";
+'use client';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@iconify/react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 
 const WithShortcut = () => {
   return (
@@ -22,32 +22,27 @@ const WithShortcut = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[196px] " align="start">
-          <DropdownMenuLabel className="text-default-950">
-            Header Title
-          </DropdownMenuLabel>
+          <DropdownMenuLabel className="text-default-950">Header Title</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem className=" focus:bg-default-200 focus:text-default-950 text-default-500 cursor-pointer">
             <Icon icon="heroicons:chart-pie" className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             <p className="text-sm leading-5 ">Text Item</p>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem className=" focus:bg-default-200 focus:text-default-950 text-default-500 cursor-pointer">
             <Icon icon="heroicons:user" className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             <p className="text-sm leading-5 ">Number Item</p>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem className=" focus:bg-default-200 focus:text-default-950 text-default-500 cursor-pointer">
             <Icon icon="heroicons:calendar" className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             <p className="text-sm leading-5 ">Date Item</p>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem className=" focus:bg-default-200 focus:text-default-950 text-default-500 cursor-pointer">
-            <Icon
-              icon="heroicons:clipboard-document"
-              className="w-4 h-4 ltr:mr-2 rtl:ml-2"
-            />
+            <Icon icon="heroicons:clipboard-document" className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             <p className="text-sm leading-5 ">Single Form Item</p>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -59,32 +54,27 @@ const WithShortcut = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[196px] " align="start">
-          <DropdownMenuLabel className="text-default-950">
-            Header Title
-          </DropdownMenuLabel>
+          <DropdownMenuLabel className="text-default-950">Header Title</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem className=" focus:bg-default-200 focus:text-default-950 text-default-500 cursor-pointer">
             <Icon icon="heroicons:chart-pie" className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             <p className="text-sm leading-5 ">Text Item</p>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem className=" focus:bg-default-200 focus:text-default-950 text-default-500 cursor-pointer">
             <Icon icon="heroicons:user" className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             <p className="text-sm leading-5 ">Number Item</p>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem className=" focus:bg-default-200 focus:text-default-950 text-default-500 cursor-pointer">
             <Icon icon="heroicons:calendar" className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             <p className="text-sm leading-5 ">Date Item</p>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem className=" focus:bg-default-200 focus:text-default-950 text-default-500 cursor-pointer">
-            <Icon
-              icon="heroicons:clipboard-document"
-              className="w-4 h-4 ltr:mr-2 rtl:ml-2"
-            />
+            <Icon icon="heroicons:clipboard-document" className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             <p className="text-sm leading-5 ">Single Form Item</p>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -96,32 +86,27 @@ const WithShortcut = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[196px] " align="start">
-          <DropdownMenuLabel className="text-default-950">
-            Header Title
-          </DropdownMenuLabel>
+          <DropdownMenuLabel className="text-default-950">Header Title</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem className=" focus:bg-default-200 focus:text-default-950 text-default-500 cursor-pointer">
             <Icon icon="heroicons:chart-pie" className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             <p className="text-sm leading-5 ">Text Item</p>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem className=" focus:bg-default-200 focus:text-default-950 text-default-500 cursor-pointer">
             <Icon icon="heroicons:user" className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             <p className="text-sm leading-5 ">Number Item</p>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem className=" focus:bg-default-200 focus:text-default-950 text-default-500 cursor-pointer">
             <Icon icon="heroicons:calendar" className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             <p className="text-sm leading-5 ">Date Item</p>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem className=" focus:bg-default-200 focus:text-default-950 text-default-500 cursor-pointer">
-            <Icon
-              icon="heroicons:clipboard-document"
-              className="w-4 h-4 ltr:mr-2 rtl:ml-2"
-            />
+            <Icon icon="heroicons:clipboard-document" className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             <p className="text-sm leading-5 ">Single Form Item</p>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -133,32 +118,27 @@ const WithShortcut = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[196px] " align="start">
-          <DropdownMenuLabel className="text-default-950">
-            Header Title
-          </DropdownMenuLabel>
+          <DropdownMenuLabel className="text-default-950">Header Title</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem className=" focus:bg-default-200 focus:text-default-950 text-default-500 cursor-pointer">
             <Icon icon="heroicons:chart-pie" className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             <p className="text-sm leading-5 ">Text Item</p>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem className=" focus:bg-default-200 focus:text-default-950 text-default-500 cursor-pointer">
             <Icon icon="heroicons:user" className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             <p className="text-sm leading-5 ">Number Item</p>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem className=" focus:bg-default-200 focus:text-default-950 text-default-500 cursor-pointer">
             <Icon icon="heroicons:calendar" className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             <p className="text-sm leading-5 ">Date Item</p>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem className=" focus:bg-default-200 focus:text-default-950 text-default-500 cursor-pointer">
-            <Icon
-              icon="heroicons:clipboard-document"
-              className="w-4 h-4 ltr:mr-2 rtl:ml-2"
-            />
+            <Icon icon="heroicons:clipboard-document" className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             <p className="text-sm leading-5 ">Single Form Item</p>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -170,32 +150,27 @@ const WithShortcut = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[196px] " align="start">
-          <DropdownMenuLabel className="text-default-950">
-            Header Title
-          </DropdownMenuLabel>
+          <DropdownMenuLabel className="text-default-950">Header Title</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem className=" focus:bg-default-200 focus:text-default-950 text-default-500 cursor-pointer">
             <Icon icon="heroicons:chart-pie" className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             <p className="text-sm leading-5 ">Text Item</p>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem className=" focus:bg-default-200 focus:text-default-950 text-default-500 cursor-pointer">
             <Icon icon="heroicons:user" className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             <p className="text-sm leading-5 ">Number Item</p>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem className=" focus:bg-default-200 focus:text-default-950 text-default-500 cursor-pointer">
             <Icon icon="heroicons:calendar" className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             <p className="text-sm leading-5 ">Date Item</p>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem className=" focus:bg-default-200 focus:text-default-950 text-default-500 cursor-pointer">
-            <Icon
-              icon="heroicons:clipboard-document"
-              className="w-4 h-4 ltr:mr-2 rtl:ml-2"
-            />
+            <Icon icon="heroicons:clipboard-document" className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             <p className="text-sm leading-5 ">Single Form Item</p>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

@@ -1,20 +1,14 @@
-"use client";
-import React from "react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+'use client';
+import React from 'react';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 const data = [
-  { name: "budget", value: 40, color: "#ff0000" },
-  { name: "cost", value: 50, color: "#00ff00" },
+  { name: 'budget', value: 40, color: '#ff0000' },
+  { name: 'cost', value: 50, color: '#00ff00' },
 ];
 
 const RADIAN = Math.PI / 180;
@@ -24,7 +18,15 @@ const iR = 100;
 const oR = 160;
 const value = 50;
 
-const needle = (value: number, data: any, cx: number, cy: number, iR: number, oR: number, color: string) => {
+const needle = (
+  value: number,
+  data: any,
+  cx: number,
+  cy: number,
+  iR: number,
+  oR: number,
+  color: string
+) => {
   let total = 0;
   data.forEach((v: any) => {
     total += v.value;
@@ -44,14 +46,7 @@ const needle = (value: number, data: any, cx: number, cy: number, iR: number, oR
   const yp = y0 + length * sin;
 
   return [
-    <circle
-      cx={x0}
-      cy={y0}
-      r={r}
-      fill={color}
-      stroke="none"
-      key="needle-circle"
-    />,
+    <circle cx={x0} cy={y0} r={r} fill={color} stroke="none" key="needle-circle" />,
     <path
       d={`M${xba} ${yba}L${xbb} ${ybb} L${xp} ${yp} L${xba} ${yba}`}
       stroke="none"
@@ -82,8 +77,7 @@ const ProjectBudget = ({ height = 250 }: { height?: number }) => {
               cy={cy}
               innerRadius={iR}
               outerRadius={oR}
-              fill={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary
-                })`}
+              fill={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`}
               stroke="none"
             >
               {data.map((entry, index) => (
@@ -97,23 +91,18 @@ const ProjectBudget = ({ height = 250 }: { height?: number }) => {
               cy,
               iR,
               oR,
-              `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning
-              })`
+              `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`
             )}
           </PieChart>
         </ResponsiveContainer>
       </CardContent>
       <CardFooter className="justify-center gap-12 pt-0">
         <div>
-          <div className="text-sm font-medium text-default-600 mb-1.5">
-            Project Budget
-          </div>
+          <div className="text-sm font-medium text-default-600 mb-1.5">Project Budget</div>
           <div className="text-lg font-semibold text-default-900">$96,321</div>
         </div>
         <div>
-          <div className="text-sm font-medium text-default-600 mb-1.5">
-            Estimated Cost
-          </div>
+          <div className="text-sm font-medium text-default-600 mb-1.5">Estimated Cost</div>
           <div className="text-lg font-semibold text-default-900">$42,321</div>
         </div>
       </CardFooter>

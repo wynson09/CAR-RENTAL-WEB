@@ -1,14 +1,14 @@
-import React, { useTransition } from "react";
+import React, { useTransition } from 'react';
 
-import { toast } from "react-hot-toast";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { cn } from "@/lib/utils";
-import { useForm, Controller } from "react-hook-form";
+import { toast } from 'react-hot-toast';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { cn } from '@/lib/utils';
+import { useForm, Controller } from 'react-hook-form';
 
-import { addBoardAction, editBoardAction } from "@/action/project-action";
+import { addBoardAction, editBoardAction } from '@/action/project-action';
 import {
   Dialog,
   DialogContent,
@@ -16,21 +16,20 @@ import {
   DialogHeader,
   DialogTitle,
   DialogClose,
+} from '@/components/ui/dialog';
 
-} from "@/components/ui/dialog";
-
-import { X } from "lucide-react";
-import { Label } from "@/components/ui/label";
-import { type Board as BoardType } from "@/app/api/boards/data";
+import { X } from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { type Board as BoardType } from '@/app/api/boards/data';
 const schema = z.object({
-  name: z.string().min(2, { message: "Your email is invalid." }),
+  name: z.string().min(2, { message: 'Your email is invalid.' }),
   status: z.string().optional(),
 });
 interface CreateBoardProps {
   open: boolean;
   onClose: () => void;
   board?: BoardType;
-  boardId?: BoardType["id"];
+  boardId?: BoardType['id'];
 }
 const CreateBoard = ({ open, onClose, board, boardId }: CreateBoardProps) => {
   const [isPending, startTransition] = useTransition();
@@ -58,22 +57,21 @@ const CreateBoard = ({ open, onClose, board, boardId }: CreateBoardProps) => {
     if (board) {
       startTransition(async () => {
         result = await editBoardAction(boardId as any, updatedData as any);
-        toast.success("Successfully update");
+        toast.success('Successfully update');
       });
     } else {
       startTransition(async () => {
         result = await addBoardAction(data);
-        toast.success("Successfully added");
+        toast.success('Successfully added');
       });
     }
-
 
     onClose();
     reset();
   };
   React.useEffect(() => {
-    setValue("name", board?.name || "");
-    setValue("status", board?.status || "defaultStatus");
+    setValue('name', board?.name || '');
+    setValue('status', board?.status || 'defaultStatus');
   }, [open]);
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -81,10 +79,7 @@ const CreateBoard = ({ open, onClose, board, boardId }: CreateBoardProps) => {
         <DialogHeader className="flex-row justify-between items-center py-0 ">
           <DialogTitle className="text-default-900">Create Board</DialogTitle>
           <DialogClose asChild>
-            <div
-
-              className="w-7 h-7 bg-transparent hover:bg-transparent cursor-pointer"
-            >
+            <div className="w-7 h-7 bg-transparent hover:bg-transparent cursor-pointer">
               <X className="w-5 h-5 text-default-900" />
             </div>
           </DialogClose>
@@ -97,10 +92,10 @@ const CreateBoard = ({ open, onClose, board, boardId }: CreateBoardProps) => {
               </Label>
               <Input
                 type="text"
-                {...register("name")}
+                {...register('name')}
                 id="boardName"
-                className={cn("", {
-                  "border-destructive focus:border-destructive": errors.name,
+                className={cn('', {
+                  'border-destructive focus:border-destructive': errors.name,
                 })}
               />
             </div>
@@ -117,11 +112,7 @@ const CreateBoard = ({ open, onClose, board, boardId }: CreateBoardProps) => {
             </div>
             <div className="flex justify-center gap-4">
               <DialogClose asChild>
-                <Button
-                  color="destructive"
-                  variant="soft"
-                  className="min-w-[136px]"
-                >
+                <Button color="destructive" variant="soft" className="min-w-[136px]">
                   Cancel
                 </Button>
               </DialogClose>

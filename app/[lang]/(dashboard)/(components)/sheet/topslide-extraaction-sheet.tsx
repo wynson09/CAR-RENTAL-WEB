@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Sheet,
   SheetClose,
@@ -7,9 +7,9 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
+} from '@/components/ui/sheet';
 
-import BlogCard from "./blog-card";
+import BlogCard from './blog-card';
 
 export default function TopExtraActionsSheet() {
   return (
@@ -28,9 +28,11 @@ export default function TopExtraActionsSheet() {
         </div>
         <div className="flex gap-4 pb-5 px-4">
           <SheetClose asChild>
-            <Button variant="outline" size="xs" color="destructive">Cancel</Button>
+            <Button variant="outline" size="xs" color="destructive">
+              Cancel
+            </Button>
           </SheetClose>
-          <Button size="xs" >Ok</Button>
+          <Button size="xs">Ok</Button>
         </div>
       </SheetContent>
     </Sheet>

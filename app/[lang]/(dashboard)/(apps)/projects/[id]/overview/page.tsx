@@ -1,13 +1,13 @@
-"use client";
-import OverdueTask from "./overdue-task";
-import ProjectBudget from "./project-budget";
-import ProjectDeadline from "./project-deadline";
-import ProjectProgress from "./project-progress";
-import ReportChart from "./report-chart";
-import TopContributer from "./top-contributer";
-import UpcomingDeadline from "./upcoming-deadlines";
-import WorkloadChart from "./workload";
-import WorksNote from "./works-note";
+'use client';
+import OverdueTask from './overdue-task';
+import ProjectBudget from './project-budget';
+import ProjectDeadline from './project-deadline';
+import ProjectProgress from './project-progress';
+import ReportChart from './report-chart';
+import TopContributer from './top-contributer';
+import UpcomingDeadline from './upcoming-deadlines';
+import WorkloadChart from './workload';
+import WorksNote from './works-note';
 
 const Overview = () => {
   return (

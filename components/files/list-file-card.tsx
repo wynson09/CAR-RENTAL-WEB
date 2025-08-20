@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { Icon } from "@iconify/react";
-import { Button } from "@/components/ui/button";
+import React, { useState } from 'react';
+import { Icon } from '@iconify/react';
+import { Button } from '@/components/ui/button';
 import {
   Table,
   TableBody,
@@ -10,16 +10,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Checkbox } from "@/components/ui/checkbox";
+} from '@/components/ui/table';
+import { Checkbox } from '@/components/ui/checkbox';
 
-import pdfi from "@/public/images/files/pdf.png";
-import htmli from "@/public/images/files/html.png";
-import zipi from "@/public/images/files/zip.png";
-import figmai from "@/public/images/files/figma.png";
-import aii from "@/public/images/files/ai.png";
-import Image from "next/image";
-import { type File } from "./view-files";
+import pdfi from '@/public/images/files/pdf.png';
+import htmli from '@/public/images/files/html.png';
+import zipi from '@/public/images/files/zip.png';
+import figmai from '@/public/images/files/figma.png';
+import aii from '@/public/images/files/ai.png';
+import Image from 'next/image';
+import { type File } from './view-files';
 
 const ListFileCard = ({ files }: { files: File[] }) => {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
@@ -42,20 +42,15 @@ const ListFileCard = ({ files }: { files: File[] }) => {
     setSelectedRows(updatedSelectedRows);
   };
   const selectEvenRows = () => {
-    const evenRowIds = files
-      .filter((_, index) => index % 2 !== 0)
-      .map((row) => row.id);
+    const evenRowIds = files.filter((_, index) => index % 2 !== 0).map((row) => row.id);
     setSelectedRows(evenRowIds);
   };
 
   const selectOddRows = () => {
-    const oddRowIds = files
-      .filter((_, index) => index % 2 === 0)
-      .map((row) => row.id);
+    const oddRowIds = files.filter((_, index) => index % 2 === 0).map((row) => row.id);
     setSelectedRows(oddRowIds);
   };
   return (
-
     <div className="w-full h-[calc(100vh-180px)] overflow-auto no-scrollbar">
       <Table>
         <TableHeader>
@@ -63,9 +58,7 @@ const ListFileCard = ({ files }: { files: File[] }) => {
             <TableHead>
               <div className="flex items-center  space-x-1">
                 <Checkbox
-                  checked={
-                    selectedRows.length === files.length || "indeterminate"
-                  }
+                  checked={selectedRows.length === files.length || 'indeterminate'}
                   onCheckedChange={handleSelectAll}
                 />
               </div>
@@ -83,7 +76,7 @@ const ListFileCard = ({ files }: { files: File[] }) => {
             <TableRow
               key={item.id}
               className="hover:bg-muted whitespace-nowrap"
-              data-state={selectedRows.includes(item.id) && "selected"}
+              data-state={selectedRows.includes(item.id) && 'selected'}
             >
               <TableCell>
                 <Checkbox
@@ -98,12 +91,13 @@ const ListFileCard = ({ files }: { files: File[] }) => {
                       alt=""
                       className="h-full w-full object-cover"
                       src={
-                        (item?.ext === "pdf" && pdfi) ||
-                        (item?.ext === "html" && htmli) ||
-                        (item?.ext === "ai" && aii) ||
-                        (item?.ext === "fig" && figmai) ||
-                        (item?.ext === "zip" && zipi) ||
-                        item?.background || ""
+                        (item?.ext === 'pdf' && pdfi) ||
+                        (item?.ext === 'html' && htmli) ||
+                        (item?.ext === 'ai' && aii) ||
+                        (item?.ext === 'fig' && figmai) ||
+                        (item?.ext === 'zip' && zipi) ||
+                        item?.background ||
+                        ''
                       }
                     />
                   </div>
@@ -119,22 +113,10 @@ const ListFileCard = ({ files }: { files: File[] }) => {
 
               <TableCell className="flex justify-end">
                 <div className="flex space-x-3 rtl:space-x-reverse">
-                  <Button
-                    size="icon"
-                    variant="outline"
-                    className=" h-7 w-7"
-                  >
-                    <Icon
-                      icon="heroicons:arrow-down-tray"
-                      className=" h-4 w-4  "
-                    />
+                  <Button size="icon" variant="outline" className=" h-7 w-7">
+                    <Icon icon="heroicons:arrow-down-tray" className=" h-4 w-4  " />
                   </Button>
-                  <Button
-                    size="icon"
-                    variant="outline"
-                    className=" h-7 w-7"
-                    color="destructive"
-                  >
+                  <Button size="icon" variant="outline" className=" h-7 w-7" color="destructive">
                     <Icon icon="heroicons:trash" className=" h-4 w-4  " />
                   </Button>
                 </div>

@@ -1,8 +1,8 @@
-"use client"
-import * as React from "react";
-import * as AvatarPrimitive from "@radix-ui/react-avatar";
-import { faker } from "@faker-js/faker";
-import { cn } from "@/lib/utils";
+'use client';
+import * as React from 'react';
+import * as AvatarPrimitive from '@radix-ui/react-avatar';
+import { faker } from '@faker-js/faker';
+import { cn } from '@/lib/utils';
 
 const Avatar = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
@@ -10,10 +10,7 @@ const Avatar = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AvatarPrimitive.Root
     ref={ref}
-    className={cn(
-      "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
-      className
-    )}
+    className={cn('relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full', className)}
     {...props}
   />
 ));
@@ -36,7 +33,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
       <div
         ref={ref}
         className={cn(
-          " relative w-max-content flex -space-x-3 avatarGroup items-center",
+          ' relative w-max-content flex -space-x-3 avatarGroup items-center',
           className
         )}
         {...props}
@@ -48,12 +45,15 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
           <>
             {custom ? (
               <div className=" inline-block">
-                <span className="ltr:ml-5 rtl:mr-5 inline-block"> +{avatars.length - max} more</span>
+                <span className="ltr:ml-5 rtl:mr-5 inline-block">
+                  {' '}
+                  +{avatars.length - max} more
+                </span>
               </div>
             ) : (
               <Avatar
                 className={cn(
-                  "ring-1 ring-background ring-offset-[2px]  ring-offset-background ",
+                  'ring-1 ring-background ring-offset-[2px]  ring-offset-background ',
                   countClass
                 )}
               >
@@ -68,7 +68,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
     );
   }
 );
-AvatarGroup.displayName = "AvatarGroup";
+AvatarGroup.displayName = 'AvatarGroup';
 
 const AvatarImage = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Image>,
@@ -76,7 +76,7 @@ const AvatarImage = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AvatarPrimitive.Image
     ref={ref}
-    className={cn("aspect-square h-full w-full", className)}
+    className={cn('aspect-square h-full w-full', className)}
     {...props}
   />
 ));
@@ -89,7 +89,7 @@ const AvatarFallback = React.forwardRef<
   <AvatarPrimitive.Fallback
     ref={ref}
     className={cn(
-      "flex h-full w-full items-center justify-center rounded-full bg-muted font-semibold text-sm",
+      'flex h-full w-full items-center justify-center rounded-full bg-muted font-semibold text-sm',
       className
     )}
     {...props}

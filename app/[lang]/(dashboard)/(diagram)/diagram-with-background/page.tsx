@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import { useState } from 'react';
 import ReactFlow, { Background, BackgroundVariant, Edge, Node, Panel } from 'reactflow';
 import 'reactflow/dist/style.css';
@@ -29,7 +29,6 @@ const initialEdges: Edge[] = [
   { id: 'e2-3', source: '2', target: '3', animated: true },
 ];
 
-
 function Flow() {
   const [variant, setVariant] = useState(BackgroundVariant.Cross);
 
@@ -39,15 +38,36 @@ function Flow() {
         <CardTitle>Change Background</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className='w-full h-[calc(100vh-220px)] overflow-x-auto'>
+        <div className="w-full h-[calc(100vh-220px)] overflow-x-auto">
           <ReactFlow defaultNodes={defaultNodes} defaultEdges={initialEdges} fitView>
-            <Background color="#ccc" variant={variant}  />
+            <Background color="#ccc" variant={variant} />
             <Panel position="top-left">
-              <div className='text-sm font-medium text-default-900 mb-4'>Variant:</div>
+              <div className="text-sm font-medium text-default-900 mb-4">Variant:</div>
               <div className="space-x-3 rtl:space-x-reverse">
-                <Button onClick={() => setVariant(BackgroundVariant.Dots)} size="sm" className="rounded" variant="outline">Dots</Button>
-                <Button onClick={() => setVariant(BackgroundVariant.Lines)} size="sm" className="rounded" variant="outline">Lines</Button>
-                <Button onClick={() => setVariant(BackgroundVariant.Cross)} size="sm" className="rounded" variant="outline">Cross</Button>
+                <Button
+                  onClick={() => setVariant(BackgroundVariant.Dots)}
+                  size="sm"
+                  className="rounded"
+                  variant="outline"
+                >
+                  Dots
+                </Button>
+                <Button
+                  onClick={() => setVariant(BackgroundVariant.Lines)}
+                  size="sm"
+                  className="rounded"
+                  variant="outline"
+                >
+                  Lines
+                </Button>
+                <Button
+                  onClick={() => setVariant(BackgroundVariant.Cross)}
+                  size="sm"
+                  className="rounded"
+                  variant="outline"
+                >
+                  Cross
+                </Button>
               </div>
             </Panel>
           </ReactFlow>

@@ -1,11 +1,8 @@
-"use client";
-import React from "react";
-import ReactDOM from "react-dom";
+'use client';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-const MenuOverlayPortal = ({ isOpen, onClose }: {
-  isOpen: boolean;
-  onClose: () => void;
-}) => {
+const MenuOverlayPortal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   if (!isOpen) return null;
 
   return ReactDOM.createPortal(

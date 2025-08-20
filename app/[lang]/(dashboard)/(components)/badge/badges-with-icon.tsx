@@ -1,6 +1,6 @@
-"use client";
-import { Badge } from "@/components/ui/badge";
-import { Star } from "lucide-react";
+'use client';
+import { Badge } from '@/components/ui/badge';
+import { Star } from 'lucide-react';
 const BadgesWithIcon = () => {
   return (
     <>

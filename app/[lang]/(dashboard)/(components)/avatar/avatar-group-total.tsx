@@ -1,15 +1,10 @@
-"use client"
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-  AvatarGroup,
-} from "@/components/ui/avatar";
-import avatar5 from "@/public/images/avatar/avatar-5.jpg";
-import avatar6 from "@/public/images/avatar/avatar-6.jpg";
-import avatar7 from "@/public/images/avatar/avatar-7.jpg";
-import avatar8 from "@/public/images/avatar/avatar-8.jpg";
-import avatar9 from "@/public/images/avatar/avatar-9.jpg";
+'use client';
+import { Avatar, AvatarFallback, AvatarImage, AvatarGroup } from '@/components/ui/avatar';
+import avatar5 from '@/public/images/avatar/avatar-5.jpg';
+import avatar6 from '@/public/images/avatar/avatar-6.jpg';
+import avatar7 from '@/public/images/avatar/avatar-7.jpg';
+import avatar8 from '@/public/images/avatar/avatar-8.jpg';
+import avatar9 from '@/public/images/avatar/avatar-9.jpg';
 
 const AvatarGroupTotal = () => {
   return (

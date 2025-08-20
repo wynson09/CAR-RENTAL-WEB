@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import {
   Timeline,
   TimelineItem,
@@ -6,38 +6,33 @@ import {
   TimelineDot,
   TimelineConnector,
   TimelineSeparator,
-} from "@/components/ui/timeline";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-  AvatarGroup,
-} from "@/components/ui/avatar";
+} from '@/components/ui/timeline';
+import { Avatar, AvatarFallback, AvatarImage, AvatarGroup } from '@/components/ui/avatar';
 
-import { Icon } from "@iconify/react";
-import { Button } from "@/components/ui/button";
-import { File } from "lucide-react";
+import { Icon } from '@iconify/react';
+import { Button } from '@/components/ui/button';
+import { File } from 'lucide-react';
 
-import avatar1 from "@/public/images/avatar/avatar-1.jpg";
-import avatar2 from "@/public/images/avatar/avatar-2.jpg";
-import avatar3 from "@/public/images/avatar/avatar-3.jpg";
-import avatar4 from "@/public/images/avatar/avatar-4.jpg";
-import avatar5 from "@/public/images/avatar/avatar-5.jpg";
-import avatar6 from "@/public/images/avatar/avatar-6.jpg";
-import avatar7 from "@/public/images/avatar/avatar-7.jpg";
-import avatar8 from "@/public/images/avatar/avatar-8.jpg";
-import avatar9 from "@/public/images/avatar/avatar-9.jpg";
-import avatar10 from "@/public/images/avatar/avatar-10.jpg";
+import avatar1 from '@/public/images/avatar/avatar-1.jpg';
+import avatar2 from '@/public/images/avatar/avatar-2.jpg';
+import avatar3 from '@/public/images/avatar/avatar-3.jpg';
+import avatar4 from '@/public/images/avatar/avatar-4.jpg';
+import avatar5 from '@/public/images/avatar/avatar-5.jpg';
+import avatar6 from '@/public/images/avatar/avatar-6.jpg';
+import avatar7 from '@/public/images/avatar/avatar-7.jpg';
+import avatar8 from '@/public/images/avatar/avatar-8.jpg';
+import avatar9 from '@/public/images/avatar/avatar-9.jpg';
+import avatar10 from '@/public/images/avatar/avatar-10.jpg';
 
-import banana from "@/public/images/all-img/banana.jpg";
-import headphone from "@/public/images/all-img/headphone.png";
-import baby from "@/public/images/all-img/baby.jpg";
-import busket from "@/public/images/all-img/busket.jpg";
-import mic from "@/public/images/all-img/mic.jpg";
-import orange from "@/public/images/all-img/orange.jpg";
-import orange2 from "@/public/images/all-img/orange-2.jpg";
+import banana from '@/public/images/all-img/banana.jpg';
+import headphone from '@/public/images/all-img/headphone.png';
+import baby from '@/public/images/all-img/baby.jpg';
+import busket from '@/public/images/all-img/busket.jpg';
+import mic from '@/public/images/all-img/mic.jpg';
+import orange from '@/public/images/all-img/orange.jpg';
+import orange2 from '@/public/images/all-img/orange-2.jpg';
 
-import Image from "next/image";
+import Image from 'next/image';
 
 const TimelineWithCard = () => {
   return (
@@ -51,17 +46,13 @@ const TimelineWithCard = () => {
           <TimelineContent>
             <div className="md:flex gap-4">
               <div className="grow">
-                <h5 className="font-medium text-sm text-default-600 ">
-                  User Photo Changed
-                </h5>
+                <h5 className="font-medium text-sm text-default-600 ">User Photo Changed</h5>
               </div>
               <div className="text-default-400 text-xs md:min-w-[90px] md:max-w-[120px] md:text-right">
                 12 minutes ago
               </div>
             </div>
-            <p className="text-sm text-default-500  mt-1">
-              Jone Doe changed his avatar photo
-            </p>
+            <p className="text-sm text-default-500  mt-1">Jone Doe changed his avatar photo</p>
           </TimelineContent>
         </TimelineItem>
         <TimelineItem>
@@ -73,21 +64,15 @@ const TimelineWithCard = () => {
             <div className="tm-content">
               <div className="md:flex gap-4">
                 <div className="grow">
-                  <h5 className="font-medium text-sm text-default-600 ">
-                    Video Added
-                  </h5>
+                  <h5 className="font-medium text-sm text-default-600 ">Video Added</h5>
                 </div>
                 <div className="text-default-400 text-xs md:min-w-[90px] md:max-w-[120px] md:text-right">
                   1 hour ago
                 </div>
               </div>
-              <p className="text-sm text-default-500  mt-1 mb-4">
-                Mores Clarke added new video
-              </p>
+              <p className="text-sm text-default-500  mt-1 mb-4">Mores Clarke added new video</p>
               <div className="flex flex-col sm:flex-row gap-2">
-                <span className="grow text-sm font-medium text-default-600 ">
-                  New Application
-                </span>
+                <span className="grow text-sm font-medium text-default-600 ">New Application</span>
                 <div className="grow-0 flex gap-2">
                   <Avatar className="h-5 w-5">
                     <AvatarImage src={avatar1.src} alt="" />
@@ -111,48 +96,20 @@ const TimelineWithCard = () => {
             <div className="tm-content">
               <div className="md:flex gap-4">
                 <div className="grow">
-                  <h5 className="font-medium text-sm text-default-600 ">
-                    Image Added
-                  </h5>
+                  <h5 className="font-medium text-sm text-default-600 ">Image Added</h5>
                 </div>
                 <div className="text-default-400 text-xs md:min-w-[90px] md:max-w-[120px] md:text-right">
                   9 hours ago
                 </div>
               </div>
-              <p className="text-sm text-default-500  mt-1 mb-4">
-                Mores Clarke added new video
-              </p>
+              <p className="text-sm text-default-500  mt-1 mb-4">Mores Clarke added new video</p>
               <div className="grid grid-cols-3 gap-6">
-                <Image
-                  src={banana}
-                  className="w-full h-full object-cover"
-                  alt=""
-                />
-                <Image
-                  src={headphone}
-                  className="w-full h-full object-cover"
-                  alt=""
-                />
-                <Image
-                  src={baby}
-                  className="w-full h-full object-cover"
-                  alt=""
-                />
-                <Image
-                  src={busket}
-                  className="w-full h-full object-cover"
-                  alt=""
-                />
-                <Image
-                  src={mic}
-                  className="w-full h-full object-cover"
-                  alt=""
-                />
-                <Image
-                  src={orange}
-                  className="w-full h-full object-cover"
-                  alt=""
-                />
+                <Image src={banana} className="w-full h-full object-cover" alt="" />
+                <Image src={headphone} className="w-full h-full object-cover" alt="" />
+                <Image src={baby} className="w-full h-full object-cover" alt="" />
+                <Image src={busket} className="w-full h-full object-cover" alt="" />
+                <Image src={mic} className="w-full h-full object-cover" alt="" />
+                <Image src={orange} className="w-full h-full object-cover" alt="" />
               </div>
             </div>
           </TimelineContent>
@@ -166,9 +123,7 @@ const TimelineWithCard = () => {
             <div className="tm-content">
               <div className="md:flex gap-4 ">
                 <div className="grow">
-                  <h5 className="font-medium text-sm text-default-600 ">
-                    Designed Completed
-                  </h5>
+                  <h5 className="font-medium text-sm text-default-600 ">Designed Completed</h5>
                 </div>
                 <div className="text-default-400 text-xs md:min-w-[90px] md:max-w-[120px] md:text-right">
                   3rd October
@@ -178,21 +133,15 @@ const TimelineWithCard = () => {
               <div className="flex">
                 <div className="grow">
                   <div className="flex flex-col sm:flex-row items-center  sm:space-x-3  rtl:space-x-reverse">
-                    <span className="text-sm text-default-500 ">
-                      Robert Nolan completed
-                    </span>
+                    <span className="text-sm text-default-500 ">Robert Nolan completed</span>
                     <span className="text-xl rotate-90 sm:rotate-0">
                       <Icon icon="ph:arrow-right-thin" />
                     </span>
-                    <span className="text-sm text-default-500 ">
-                      CRM Application
-                    </span>
+                    <span className="text-sm text-default-500 ">CRM Application</span>
                   </div>
                   <div className="flex space-x-3 rtl:space-x-reverse items-center mt-5 md:mt-3">
                     <File className="w-4 h-4 text-default-400" />
-                    <span className="text-sm text-default-500 ">
-                      designComplated.pdf
-                    </span>
+                    <span className="text-sm text-default-500 ">designComplated.pdf</span>
                   </div>
                 </div>
                 <div className="hidden md:block">
@@ -213,11 +162,7 @@ const TimelineWithCard = () => {
             <div className="flex flex-col sm:flex-row gap-3">
               <div className="flex-1 ">
                 <div className="h-14 w-14">
-                  <Image
-                    src={orange2}
-                    alt=""
-                    className="w-full h-full object-cover"
-                  />
+                  <Image src={orange2} alt="" className="w-full h-full object-cover" />
                 </div>
               </div>
               <span className="flex-none block text-default-400 text-xs whitespace-nowrap">
@@ -225,12 +170,10 @@ const TimelineWithCard = () => {
               </span>
             </div>
 
-            <h5 className="text-sm font-medium text-default-600 mt-3 ">
-              This a Orange
-            </h5>
+            <h5 className="text-sm font-medium text-default-600 mt-3 ">This a Orange</h5>
             <p className="text-sm text-default-500  mt-1">
-              Orange S.A. formerly France S.A. is a French Multi - national
-              telecommunications corporation.
+              Orange S.A. formerly France S.A. is a French Multi - national telecommunications
+              corporation.
             </p>
           </TimelineContent>
         </TimelineItem>
@@ -242,17 +185,15 @@ const TimelineWithCard = () => {
           <TimelineContent>
             <div className="md:flex gap-4">
               <div className="grow">
-                <h5 className="font-medium text-sm text-default-600 ">
-                  Interview Schedule
-                </h5>
+                <h5 className="font-medium text-sm text-default-600 ">Interview Schedule</h5>
               </div>
               <div className="text-default-400 text-xs md:min-w-[90px] md:max-w-[120px] md:text-right">
                 9th October
               </div>
             </div>
             <p className="text-sm text-default-500  mt-1">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus
-              quos, voluptates voluptas rem veniam expedita.
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus quos, voluptates
+              voluptas rem veniam expedita.
             </p>
             <hr className="my-3" />
             <div className="flex flex-col sm:flex-row sm:items-center gap-4">
@@ -263,12 +204,8 @@ const TimelineWithCard = () => {
                     <AvatarFallback>SN</AvatarFallback>
                   </Avatar>
                   <div>
-                    <span className="text-sm text-default-500  block">
-                      Permanent Delete
-                    </span>
-                    <span className="text-xs text-default-500  block">
-                      UX/UI Designer
-                    </span>
+                    <span className="text-sm text-default-500  block">Permanent Delete</span>
+                    <span className="text-xs text-default-500  block">UX/UI Designer</span>
                   </div>
                 </div>
               </div>
@@ -289,16 +226,14 @@ const TimelineWithCard = () => {
           </TimelineSeparator>
           <TimelineContent>
             <div className="flex flex-col sm:flex-row gap-2">
-              <h5 className="font-medium text-sm text-default-600 ">
-                2 notifications
-              </h5>
+              <h5 className="font-medium text-sm text-default-600 ">2 notifications</h5>
               <div className="text-default-400 text-xs md:min-w-[90px] md:max-w-[120px] md:text-right">
                 11th October
               </div>
             </div>
             <p className="text-sm text-default-500  mt-1">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus
-              quos, voluptates voluptas rem veniam expedita.
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus quos, voluptates
+              voluptas rem veniam expedita.
             </p>
             <hr className="my-3" />
             {/* comment list */}
@@ -342,9 +277,7 @@ const TimelineWithCard = () => {
                     <AvatarFallback>AB</AvatarFallback>
                   </Avatar>
                 </AvatarGroup>
-                <p className=" text-xs text-default-600 ">
-                  Commented on your post.
-                </p>
+                <p className=" text-xs text-default-600 ">Commented on your post.</p>
               </div>
               <div>
                 <Button type="button" size="xs">
@@ -361,18 +294,12 @@ const TimelineWithCard = () => {
                     <AvatarFallback>AB</AvatarFallback>
                   </Avatar>
                   <div>
-                    <span className="text-sm text-default-500  block">
-                      Prantik repaid you
-                    </span>
-                    <span className="text-xs text-default-500  block">
-                      30 minutes ago
-                    </span>
+                    <span className="text-sm text-default-500  block">Prantik repaid you</span>
+                    <span className="text-xs text-default-500  block">30 minutes ago</span>
                   </div>
                 </div>
               </div>
-              <span className="text-sm font-semibold text-default-700 ">
-                $20
-              </span>
+              <span className="text-sm font-semibold text-default-700 ">$20</span>
             </div>
           </TimelineContent>
         </TimelineItem>

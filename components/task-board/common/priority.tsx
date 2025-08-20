@@ -1,24 +1,20 @@
-"use client";
+'use client';
 
-import { useState } from "react"; // Import useState hook
+import { useState } from 'react'; // Import useState hook
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { updateTaskAction } from "@/action/project-action";
-import { type Task as TaskType } from "@/app/api/tasks/data";
-const Priority = ({ task, taskId }: {
-  task?: TaskType | any;
-  taskId?: TaskType["id"];
-}) => {
+} from '@/components/ui/select';
+import { updateTaskAction } from '@/action/project-action';
+import { type Task as TaskType } from '@/app/api/tasks/data';
+const Priority = ({ task, taskId }: { task?: TaskType | any; taskId?: TaskType['id'] }) => {
   const [selectedPriority, setSelectedPriority] = useState<TaskType | any>(task?.priority);
 
   const handlePriorityChange = async (value: any) => {
     if (taskId) {
-
       try {
         const newData = {
           ...task,

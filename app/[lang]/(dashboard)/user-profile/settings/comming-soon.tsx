@@ -1,6 +1,6 @@
-import { Card, CardContent } from "@/components/ui/card";
-import CommingSoonImage from "@/public/images/all-img/comming-soon.png"
-import Image from "next/image";
+import { Card, CardContent } from '@/components/ui/card';
+import CommingSoonImage from '@/public/images/all-img/comming-soon.png';
+import Image from 'next/image';
 const CommingSoon = () => {
   return (
     <Card className="rounded-t-none">

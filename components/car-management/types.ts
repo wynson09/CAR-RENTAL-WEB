@@ -1,6 +1,6 @@
-import { CarListing } from "@/data/car-listings-data";
+import { CarListing } from '@/data/car-listings-data';
 
-export type ViewMode = "table" | "grid";
+export type ViewMode = 'table' | 'grid';
 
 export interface LoadingStates {
   fetchingCars: boolean;
@@ -29,4 +29,4 @@ export interface CarDialogProps {
   isLoading?: boolean;
 }
 
-export { type CarListing } from "@/data/car-listings-data";
+export { type CarListing } from '@/data/car-listings-data';

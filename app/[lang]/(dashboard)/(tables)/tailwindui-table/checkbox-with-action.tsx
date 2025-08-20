@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { Icon } from "@iconify/react";
-import { Button } from "@/components/ui/button";
+import React, { useState } from 'react';
+import { Icon } from '@iconify/react';
+import { Button } from '@/components/ui/button';
 import {
   Table,
   TableBody,
@@ -10,11 +10,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { DataRows, users } from "./data";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+} from '@/components/ui/table';
+import { DataRows, users } from './data';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 
 const CheckboxWithAction = () => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
@@ -43,7 +43,7 @@ const CheckboxWithAction = () => {
         <TableRow>
           <TableHead>
             <Checkbox
-              checked={selectedRows.length === users.length || "indeterminate"}
+              checked={selectedRows.length === users.length || 'indeterminate'}
               onCheckedChange={handleSelectAll}
             />
           </TableHead>
@@ -51,25 +51,15 @@ const CheckboxWithAction = () => {
           <TableHead className=" font-semibold">
             {selectedRows.length === users.length ? (
               <div className=" flex gap-2">
-                <Button
-                  size="xs"
-                  variant="outline"
-                  className=" text-xs "
-                  color="secondary"
-                >
+                <Button size="xs" variant="outline" className=" text-xs " color="secondary">
                   Bulk edit
                 </Button>
-                <Button
-                  size="xs"
-                  variant="outline"
-                  className=" text-xs "
-                  color="destructive"
-                >
+                <Button size="xs" variant="outline" className=" text-xs " color="destructive">
                   Delete all
                 </Button>
               </div>
             ) : (
-              "User"
+              'User'
             )}
           </TableHead>
           <TableHead>Title</TableHead>
@@ -80,11 +70,11 @@ const CheckboxWithAction = () => {
       </TableHeader>
 
       <TableBody>
-        {users.map((item:DataRows) => (
+        {users.map((item: DataRows) => (
           <TableRow
             key={item.email}
             className="hover:bg-muted"
-            data-state={selectedRows.includes(item.id) && "selected"}
+            data-state={selectedRows.includes(item.id) && 'selected'}
           >
             <TableCell>
               <Checkbox
@@ -98,9 +88,7 @@ const CheckboxWithAction = () => {
                   <AvatarImage src={item.avatar} />
                   <AvatarFallback>AB</AvatarFallback>
                 </Avatar>
-                <span className=" text-sm   text-card-foreground">
-                  {item.name}
-                </span>
+                <span className=" text-sm   text-card-foreground">{item.name}</span>
               </div>
             </TableCell>
 
@@ -110,10 +98,11 @@ const CheckboxWithAction = () => {
               <Badge
                 variant="soft"
                 color={
-                  (item.role === "admin" && "default") ||
-                  (item.role === "member" && "success") ||
-                  (item.role === "owner" && "info") ||
-                  (item.role === "editor" && "warning") || "default"
+                  (item.role === 'admin' && 'default') ||
+                  (item.role === 'member' && 'success') ||
+                  (item.role === 'owner' && 'info') ||
+                  (item.role === 'editor' && 'warning') ||
+                  'default'
                 }
                 className=" capitalize"
               >
@@ -123,28 +112,13 @@ const CheckboxWithAction = () => {
 
             <TableCell className="flex justify-end">
               <div className="flex gap-3">
-                <Button
-                  size="icon"
-                  variant="outline"
-                  color="secondary"
-                  className="h-7 w-7"
-                >
+                <Button size="icon" variant="outline" color="secondary" className="h-7 w-7">
                   <Icon icon="heroicons:pencil" className="h-4 w-4" />
                 </Button>
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className="h-7 w-7"
-                  color="secondary"
-                >
+                <Button size="icon" variant="outline" className="h-7 w-7" color="secondary">
                   <Icon icon="heroicons:eye" className=" h-4 w-4" />
                 </Button>
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className=" h-7 w-7"
-                  color="secondary"
-                >
+                <Button size="icon" variant="outline" className=" h-7 w-7" color="secondary">
                   <Icon icon="heroicons:trash" className=" h-4 w-4" />
                 </Button>
               </div>

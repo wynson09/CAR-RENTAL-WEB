@@ -1,6 +1,6 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+'use client';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Dialog,
   DialogClose,
@@ -8,13 +8,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import Link from "next/link";
-import { useState } from "react";
-import Flatpickr from "react-flatpickr";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import Link from 'next/link';
+import { useState } from 'react';
+import Flatpickr from 'react-flatpickr';
 const DialogForm = () => {
   const [picker, setPicker] = useState<Date>(new Date());
   return (
@@ -66,12 +66,9 @@ const DialogForm = () => {
                 </div>
                 <div className="col-span-2 flex  items-center gap-2">
                   <Checkbox id="terms" />
-                  <Label
-                    htmlFor="terms"
-                    className="text-xs text-default-700 cursor-pointer"
-                  >
-                    You agree to our Terms, Privacy Policy. You may receive SMS
-                    notifications from us and can opt out at any time.
+                  <Label htmlFor="terms" className="text-xs text-default-700 cursor-pointer">
+                    You agree to our Terms, Privacy Policy. You may receive SMS notifications from
+                    us and can opt out at any time.
                   </Label>
                 </div>
               </div>
@@ -90,8 +87,8 @@ const DialogForm = () => {
             <p className="text-sm font-medium text-default-700 ">
               Already Have An Account?
               <Link href="/dashboard" className="text-success">
-                {" "}
-                Sign In{" "}
+                {' '}
+                Sign In{' '}
               </Link>
             </p>
           </div>

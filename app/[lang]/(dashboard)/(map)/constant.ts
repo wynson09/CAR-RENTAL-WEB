@@ -1,1 +1,1 @@
-export const MAP_KEY = "7ZOaHj6xeWeeUNIdCjfC";
+export const MAP_KEY = '7ZOaHj6xeWeeUNIdCjfC';

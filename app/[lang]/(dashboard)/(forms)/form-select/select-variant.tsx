@@ -1,11 +1,11 @@
-"use client"
+'use client';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 const SelectVariant = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-4">
@@ -105,7 +105,6 @@ const SelectVariant = () => {
           <SelectItem value="biology">Biology</SelectItem>
         </SelectContent>
       </Select>
-
     </div>
   );
 };

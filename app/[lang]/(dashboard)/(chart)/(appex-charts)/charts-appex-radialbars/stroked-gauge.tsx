@@ -1,9 +1,9 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
 
 const StrokedGauge = ({ height = 350 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -25,29 +25,27 @@ const StrokedGauge = ({ height = 350 }) => {
         endAngle: 135,
         dataLabels: {
           name: {
-            fontSize: "16px",
+            fontSize: '16px',
             color: undefined,
             offsetY: 120,
           },
           value: {
             offsetY: 76,
-            fontSize: "22px",
+            fontSize: '22px',
             color: `hsl(${
-              theme?.cssVars[
-                mode === "dark" || mode === "system" ? "dark" : "light"
-              ].chartLabel
+              theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
             })`,
             formatter: function (val: number) {
-              return val + "%";
+              return val + '%';
             },
           },
         },
       },
     },
     fill: {
-      type: "gradient",
+      type: 'gradient',
       gradient: {
-        shade: "dark",
+        shade: 'dark',
         shadeIntensity: 0.15,
         inverseColors: false,
         opacityFrom: 1,
@@ -58,12 +56,10 @@ const StrokedGauge = ({ height = 350 }) => {
     stroke: {
       dashArray: 4,
     },
-    labels: ["Median Ratio"],
-    colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning})`,
-    ],
+    labels: ['Median Ratio'],
+    colors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
     padding: {
       top: 0,
@@ -73,13 +69,7 @@ const StrokedGauge = ({ height = 350 }) => {
     },
   };
   return (
-      <Chart
-        options={options}
-        series={series}
-        type="radialBar"
-        height={height}
-        width={"100%"}
-      />
+    <Chart options={options} series={series} type="radialBar" height={height} width={'100%'} />
   );
 };
 

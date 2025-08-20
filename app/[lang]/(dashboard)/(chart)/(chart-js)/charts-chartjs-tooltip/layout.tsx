@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Chart-js Tooltip Chart ",
+  title: 'Chart-js Tooltip Chart ',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

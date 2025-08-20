@@ -1,14 +1,14 @@
-"use client";
-import { Button } from "@/components/ui/button";
+'use client';
+import { Button } from '@/components/ui/button';
 
-import Link from "next/link";
+import Link from 'next/link';
 import {
   Tooltip,
   TooltipArrow,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from '@/components/ui/tooltip';
 import {
   AlertOctagon,
   AlertCircle,
@@ -69,255 +69,255 @@ import {
   File,
   Filter,
   GripHorizontal,
-} from "lucide-react";
+} from 'lucide-react';
 
 const icons = [
   {
-    name: "Apple",
+    name: 'Apple',
     icon: Apple,
   },
   {
-    name: "AlertOctagon",
+    name: 'AlertOctagon',
     icon: AlertOctagon,
   },
   {
-    name: "AlertCircle",
+    name: 'AlertCircle',
     icon: AlertCircle,
   },
   {
-    name: "ArchiveRestore",
+    name: 'ArchiveRestore',
     icon: ArchiveRestore,
   },
   {
-    name: "ArchiveX",
+    name: 'ArchiveX',
     icon: ArchiveX,
   },
   {
-    name: "Archive",
+    name: 'Archive',
     icon: Archive,
   },
   {
-    name: "AreaChart",
+    name: 'AreaChart',
     icon: AreaChart,
   },
   {
-    name: "AreaChart",
+    name: 'AreaChart',
     icon: AreaChart,
   },
   {
-    name: "ArrowUpLeft",
+    name: 'ArrowUpLeft',
     icon: ArrowUpLeft,
   },
   {
-    name: "ArrowUpNarrowWide",
+    name: 'ArrowUpNarrowWide',
     icon: ArrowUpNarrowWide,
   },
   {
-    name: "ArrowUpSquare",
+    name: 'ArrowUpSquare',
     icon: ArrowUpSquare,
   },
   {
-    name: "ArrowUpToLine",
+    name: 'ArrowUpToLine',
     icon: ArrowUpToLine,
   },
   {
-    name: "ArrowUpWideNarrow",
+    name: 'ArrowUpWideNarrow',
     icon: ArrowUpWideNarrow,
   },
   {
-    name: "ArrowUp",
+    name: 'ArrowUp',
     icon: ArrowUp,
   },
   {
-    name: "Asterisk",
+    name: 'Asterisk',
     icon: Asterisk,
   },
   {
-    name: "Asterisk",
+    name: 'Asterisk',
     icon: Asterisk,
   },
   {
-    name: "Ban",
+    name: 'Ban',
     icon: Ban,
   },
   {
-    name: "Banana",
+    name: 'Banana',
     icon: Banana,
   },
   {
-    name: "Banknote",
+    name: 'Banknote',
     icon: Banknote,
   },
   {
-    name: "BarChart2",
+    name: 'BarChart2',
     icon: BarChart2,
   },
   {
-    name: "BarChart3",
+    name: 'BarChart3',
     icon: BarChart3,
   },
   {
-    name: "BarChart4",
+    name: 'BarChart4',
     icon: BarChart4,
   },
   {
-    name: "BarChartBig",
+    name: 'BarChartBig',
     icon: BarChartBig,
   },
   {
-    name: "BatteryFull",
+    name: 'BatteryFull',
     icon: BatteryFull,
   },
   {
-    name: "Battery",
+    name: 'Battery',
     icon: Battery,
   },
   {
-    name: "Bean",
+    name: 'Bean',
     icon: Bean,
   },
   {
-    name: "BedDouble",
+    name: 'BedDouble',
     icon: BedDouble,
   },
   {
-    name: "BedSingle",
+    name: 'BedSingle',
     icon: BedSingle,
   },
   {
-    name: "Beef",
+    name: 'Beef',
     icon: Beef,
   },
   {
-    name: "BellOff",
+    name: 'BellOff',
     icon: BellOff,
   },
   {
-    name: "BellPlus",
+    name: 'BellPlus',
     icon: BellPlus,
   },
   {
-    name: "BellRing",
+    name: 'BellRing',
     icon: BellRing,
   },
   {
-    name: "Bell",
+    name: 'Bell',
     icon: Bell,
   },
   {
-    name: "Bird",
+    name: 'Bird',
     icon: Bird,
   },
   {
-    name: "Bird",
+    name: 'Bird',
     icon: CheckCheck,
   },
   {
-    name: "Check",
+    name: 'Check',
     icon: Check,
   },
   {
-    name: "Check",
+    name: 'Check',
     icon: ChevronDown,
   },
   {
-    name: "ChevronsDown",
+    name: 'ChevronsDown',
     icon: ChevronsDown,
   },
   {
-    name: "AlignJustify",
+    name: 'AlignJustify',
     icon: AlignJustify,
   },
   {
-    name: "AlignLeft",
+    name: 'AlignLeft',
     icon: AlignLeft,
   },
   {
-    name: "AlignRight",
+    name: 'AlignRight',
     icon: AlignRight,
   },
   {
-    name: "Angry",
+    name: 'Angry',
     icon: Angry,
   },
   {
-    name: "Annoyed",
+    name: 'Annoyed',
     icon: Annoyed,
   },
   {
-    name: "AppWindow",
+    name: 'AppWindow',
     icon: AppWindow,
   },
   {
-    name: "ArchiveIcon",
+    name: 'ArchiveIcon',
     icon: ArchiveIcon,
   },
   {
-    name: "ArrowDownCircle",
+    name: 'ArrowDownCircle',
     icon: ArrowDownCircle,
   },
   {
-    name: "ArrowDownFromLine",
+    name: 'ArrowDownFromLine',
     icon: ArrowDownFromLine,
   },
   {
-    name: "ArrowDownFromLine",
+    name: 'ArrowDownFromLine',
     icon: ArrowDownFromLine,
   },
   {
-    name: "ArrowDownRight",
+    name: 'ArrowDownRight',
     icon: ArrowDownRight,
   },
   {
-    name: "ArrowDownSquare",
+    name: 'ArrowDownSquare',
     icon: ArrowDownSquare,
   },
   {
-    name: "ArrowDownUp",
+    name: 'ArrowDownUp',
     icon: ArrowDownUp,
   },
   {
-    name: "ArrowLeftRight",
+    name: 'ArrowLeftRight',
     icon: ArrowLeftRight,
   },
   {
-    name: "AtSign",
+    name: 'AtSign',
     icon: AtSign,
   },
   {
-    name: "Atom",
+    name: 'Atom',
     icon: Atom,
   },
   {
-    name: "BadgeAlert",
+    name: 'BadgeAlert',
     icon: BadgeAlert,
   },
   {
-    name: "BadgePercent",
+    name: 'BadgePercent',
     icon: BadgePercent,
   },
   {
-    name: "Book",
+    name: 'Book',
     icon: Book,
   },
   {
-    name: "Bookmark",
+    name: 'Bookmark',
     icon: Bookmark,
   },
   {
-    name: "Box",
+    name: 'Box',
     icon: Box,
   },
   {
-    name: "Box",
+    name: 'Box',
     icon: File,
   },
   {
-    name: "Filter",
+    name: 'Filter',
     icon: Filter,
   },
   {
-    name: "Grip",
+    name: 'Grip',
     icon: GripHorizontal,
   },
 ];
@@ -335,9 +335,7 @@ const IconPage = () => {
                   variant="outline"
                   className="border-default-200 text-default-600 hover:bg-background hover:text-primary"
                 >
-                  {item.icon && (
-                    <item.icon className=" h-4 w-4 text-muted-foreground" />
-                  )}
+                  {item.icon && <item.icon className=" h-4 w-4 text-muted-foreground" />}
                 </Button>
               </TooltipTrigger>
               <TooltipContent>

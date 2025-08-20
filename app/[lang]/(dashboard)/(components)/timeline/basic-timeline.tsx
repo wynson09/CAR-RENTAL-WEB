@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import {
   Timeline,
   TimelineItem,
@@ -6,31 +6,31 @@ import {
   TimelineDot,
   TimelineConnector,
   TimelineSeparator,
-} from "@/components/ui/timeline";
+} from '@/components/ui/timeline';
 const BasicTimeline = () => {
   return (
-      <Timeline>
-        <TimelineItem>
-          <TimelineSeparator>
-            <TimelineDot />
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent>Eat</TimelineContent>
-        </TimelineItem>
-        <TimelineItem>
-          <TimelineSeparator>
-            <TimelineDot />
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent>Code</TimelineContent>
-        </TimelineItem>
-        <TimelineItem>
-          <TimelineSeparator>
-            <TimelineDot />
-          </TimelineSeparator>
-          <TimelineContent>Sleep</TimelineContent>
-        </TimelineItem>
-      </Timeline>
+    <Timeline>
+      <TimelineItem>
+        <TimelineSeparator>
+          <TimelineDot />
+          <TimelineConnector />
+        </TimelineSeparator>
+        <TimelineContent>Eat</TimelineContent>
+      </TimelineItem>
+      <TimelineItem>
+        <TimelineSeparator>
+          <TimelineDot />
+          <TimelineConnector />
+        </TimelineSeparator>
+        <TimelineContent>Code</TimelineContent>
+      </TimelineItem>
+      <TimelineItem>
+        <TimelineSeparator>
+          <TimelineDot />
+        </TimelineSeparator>
+        <TimelineContent>Sleep</TimelineContent>
+      </TimelineItem>
+    </Timeline>
   );
 };
 

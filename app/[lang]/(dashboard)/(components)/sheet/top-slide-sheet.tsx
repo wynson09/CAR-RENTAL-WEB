@@ -1,17 +1,10 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { X } from "lucide-react";
-import BlogCard from "./blog-card"
+'use client';
+import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { X } from 'lucide-react';
+import BlogCard from './blog-card';
 
 export default function TopSideSheet() {
-
   return (
     <Sheet>
       <SheetTrigger asChild>

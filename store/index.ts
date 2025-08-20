@@ -1,6 +1,6 @@
-import { create } from 'zustand'
-import { siteConfig } from "@/config/site";
-import { persist, createJSONStorage } from "zustand/middleware";
+import { create } from 'zustand';
+import { siteConfig } from '@/config/site';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 interface ThemeStoreState {
   theme: string;
@@ -15,13 +15,12 @@ interface ThemeStoreState {
   setFooterType: (value: string) => void;
   isRtl: boolean;
   setRtl: (value: boolean) => void;
-  
 }
 
 export const useThemeStore = create<ThemeStoreState>()(
- persist(
-      (set) => ({
-           theme: siteConfig.theme,
+  persist(
+    (set) => ({
+      theme: siteConfig.theme,
       setTheme: (theme) => set({ theme }),
       radius: siteConfig.radius,
       setRadius: (value) => set({ radius: value }),
@@ -30,16 +29,16 @@ export const useThemeStore = create<ThemeStoreState>()(
         set({ layout: value });
 
         // If the new layout is "semibox," also set the sidebarType to "popover"
-        if (value === "semibox") {
-          useSidebar.setState({ sidebarType: "popover" });
+        if (value === 'semibox') {
+          useSidebar.setState({ sidebarType: 'popover' });
         }
-        if (value === "horizontal") {
-          useSidebar.setState({ sidebarType: "classic" });
+        if (value === 'horizontal') {
+          useSidebar.setState({ sidebarType: 'classic' });
         }
         //
-        if (value === "horizontal") {
+        if (value === 'horizontal') {
           // update  setNavbarType
-          useThemeStore.setState({ navbarType: "sticky" });
+          useThemeStore.setState({ navbarType: 'sticky' });
         }
       },
       navbarType: siteConfig.navbarType,
@@ -48,14 +47,10 @@ export const useThemeStore = create<ThemeStoreState>()(
       setFooterType: (value) => set({ footerType: value }),
       isRtl: false,
       setRtl: (value) => set({ isRtl: value }),
-        
-      }),
-      { name: "theme-store",
-      storage: createJSONStorage(() => localStorage), },
-    ),
-)
-
-
+    }),
+    { name: 'theme-store', storage: createJSONStorage(() => localStorage) }
+  )
+);
 
 interface SidebarState {
   collapsed: boolean;
@@ -69,17 +64,14 @@ interface SidebarState {
   setSidebarBg: (value: string) => void;
   mobileMenu: boolean;
   setMobileMenu: (value: boolean) => void;
-  
 }
 
-
 export const useSidebar = create<SidebarState>()(
-   persist(
-      (set) => ({
-          collapsed: false,
+  persist(
+    (set) => ({
+      collapsed: false,
       setCollapsed: (value) => set({ collapsed: value }),
-      sidebarType:
-        siteConfig.layout === "semibox" ? "popover" : siteConfig.sidebarType,
+      sidebarType: siteConfig.layout === 'semibox' ? 'popover' : siteConfig.sidebarType,
       setSidebarType: (value) => {
         set({ sidebarType: value });
       },
@@ -90,12 +82,10 @@ export const useSidebar = create<SidebarState>()(
       setSidebarBg: (value) => set({ sidebarBg: value }),
       mobileMenu: false,
       setMobileMenu: (value) => set({ mobileMenu: value }),
-      
-      }),
-      {  name: "sidebar-store",
-      storage: createJSONStorage(() => localStorage), },
-    ),
-)
+    }),
+    { name: 'sidebar-store', storage: createJSONStorage(() => localStorage) }
+  )
+);
 
 // User Data Types
 export interface KycRecord {
@@ -154,20 +144,20 @@ export const useUserStore = create<UserStoreState>()(
       updateUser: (updates) => {
         const currentUser = get().user;
         if (currentUser) {
-          set({ 
-            user: { 
-              ...currentUser, 
-              ...updates, 
-              updatedAt: new Date() 
-            } 
+          set({
+            user: {
+              ...currentUser,
+              ...updates,
+              updatedAt: new Date(),
+            },
           });
         }
       },
       clearUser: () => set({ user: null, isLoading: false }),
     }),
     {
-      name: "user-store",
+      name: 'user-store',
       storage: createJSONStorage(() => localStorage),
-    },
-  ),
-)
+    }
+  )
+);

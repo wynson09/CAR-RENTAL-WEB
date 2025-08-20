@@ -1,7 +1,7 @@
-"use client";
-import { Skeleton } from "@/components/ui/skeleton";
+'use client';
+import { Skeleton } from '@/components/ui/skeleton';
 
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from '@/components/ui/card';
 const ECommerceDefaultSkeleton = () => {
   return (
     <Card className="w-1/3 p-4 rounded-md dark:border dark:border-default-200">

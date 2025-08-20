@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Appex Radar Chart",
+  title: 'Appex Radar Chart',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

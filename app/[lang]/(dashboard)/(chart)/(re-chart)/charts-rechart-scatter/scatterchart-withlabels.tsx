@@ -1,7 +1,7 @@
-"use client";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
+'use client';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
 import {
   CartesianGrid,
   XAxis,
@@ -11,8 +11,8 @@ import {
   ScatterChart,
   Scatter,
   LabelList,
-} from "recharts";
-import CustomTooltip from "./custom-tooltip";
+} from 'recharts';
+import CustomTooltip from './custom-tooltip';
 interface DataPoint {
   x: number;
   y: number;
@@ -35,8 +35,7 @@ const ScatterChartWithLabels = ({ height = 300 }) => {
     <ResponsiveContainer width="100%" height={height}>
       <ScatterChart height={height} data={data}>
         <CartesianGrid
-          stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-            })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
           strokeDasharray="3 3"
           vertical={false}
         />
@@ -46,13 +45,11 @@ const ScatterChartWithLabels = ({ height = 300 }) => {
           name="stature"
           unit="cm"
           tick={{
-            fill: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel
-              })`,
-            fontSize: "12px",
+            fill: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
+            fontSize: '12px',
           }}
           tickLine={false}
-          stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-            })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
           axisLine={false}
         />
         <YAxis
@@ -61,20 +58,17 @@ const ScatterChartWithLabels = ({ height = 300 }) => {
           name="weight"
           unit="kg"
           tick={{
-            fill: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel
-              })`,
-            fontSize: "12px",
+            fill: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
+            fontSize: '12px',
           }}
           tickLine={false}
-          stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-            })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
         />
         <Tooltip content={<CustomTooltip />} />
         <Scatter
           name="A school"
           data={data}
-          fill={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info
-            })`}
+          fill={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`}
         >
           <LabelList dataKey="x" />
         </Scatter>

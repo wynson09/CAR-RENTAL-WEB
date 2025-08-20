@@ -1,17 +1,16 @@
-import React from "react";
-import { Button } from "@/components/ui/button";
-import toast from "react-hot-toast";
-
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import toast from 'react-hot-toast';
 
 const ReactHotToast = () => {
-  const defaultToast = () => toast("Here is your toast.");
+  const defaultToast = () => toast('Here is your toast.');
   const darkToast = () =>
-    toast("Hello Darkness!", {
-      icon: "👏",
+    toast('Hello Darkness!', {
+      icon: '👏',
       style: {
-        borderRadius: "10px",
-        background: "#333",
-        color: "#fff",
+        borderRadius: '10px',
+        background: '#333',
+        color: '#fff',
       },
     });
   const newLineToast = () =>
@@ -25,51 +24,48 @@ const ReactHotToast = () => {
     const myPromise = new Promise((resolve, reject) => {
       setTimeout(() => {
         if (Math.random() < 0.5) {
-          resolve("foo");
+          resolve('foo');
         } else {
-          reject("fox");
+          reject('fox');
         }
       }, 1000);
     });
 
     return toast.promise(myPromise, {
-      loading: "Loading",
-      success: "Got the data",
-      error: "Error when fetching",
+      loading: 'Loading',
+      success: 'Got the data',
+      error: 'Error when fetching',
     });
   };
   const customJsx = () => {
     toast((t) => (
       <span className="space-x-4">
         Custom and <b>bold</b>
-        <Button
-          size="sm"
-          color="destructive"
-          onClick={() => toast.dismiss(t.id)}
-        >
+        <Button size="sm" color="destructive" onClick={() => toast.dismiss(t.id)}>
           Dismiss
         </Button>
       </span>
     ));
   };
   const themToast = () => {
-    toast.success("Look at my styles.", {
+    toast.success('Look at my styles.', {
       style: {
-        border: "1px solid #713200",
-        padding: "16px",
-        color: "#713200",
+        border: '1px solid #713200',
+        padding: '16px',
+        color: '#713200',
       },
       iconTheme: {
-        primary: "#713200",
-        secondary: "#FFFAEE",
+        primary: '#713200',
+        secondary: '#FFFAEE',
       },
     });
   };
   const tailwindClass = () => {
     toast.custom((t) => (
       <div
-        className={`${t.visible ? "animate-enter" : "animate-leave"
-          } max-w-md w-full bg-background shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        className={`${
+          t.visible ? 'animate-enter' : 'animate-leave'
+        } max-w-md w-full bg-background shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
       >
         <div className="flex-1 w-0 p-4">
           <div className="flex items-start">
@@ -82,9 +78,7 @@ const ReactHotToast = () => {
             </div>
             <div className="ml-3 flex-1">
               <p className="text-sm font-medium text-gray-900">Emilia Gates</p>
-              <p className="mt-1 text-sm text-gray-500">
-                Sure! 8:30pm works great!
-              </p>
+              <p className="mt-1 text-sm text-gray-500">Sure! 8:30pm works great!</p>
             </div>
           </div>
         </div>
@@ -102,16 +96,10 @@ const ReactHotToast = () => {
   return (
     <>
       <Button onClick={defaultToast}>Default</Button>
-      <Button
-        color="destructive"
-        onClick={() => toast.error("This didn't work.")}
-      >
+      <Button color="destructive" onClick={() => toast.error("This didn't work.")}>
         Error
       </Button>
-      <Button
-        color="success"
-        onClick={() => toast.success("Successfully toasted!")}
-      >
+      <Button color="success" onClick={() => toast.success('Successfully toasted!')}>
         Success
       </Button>
       <Button variant="outline" onClick={promiseToast}>
@@ -120,7 +108,7 @@ const ReactHotToast = () => {
       <Button variant="soft" onClick={newLineToast}>
         New Line Toast
       </Button>
-      <Button color="info" onClick={() => toast("Good Job!", { icon: "👏" })}>
+      <Button color="info" onClick={() => toast('Good Job!', { icon: '👏' })}>
         Emoji Toast
       </Button>
       <Button variant="outline" onClick={darkToast}>
@@ -136,8 +124,8 @@ const ReactHotToast = () => {
         color="dark"
         variant="outline"
         onClick={() =>
-          toast.success("Always at the bottom.", {
-            position: "bottom-center",
+          toast.success('Always at the bottom.', {
+            position: 'bottom-center',
           })
         }
       >

@@ -1,9 +1,9 @@
-import React from "react";
-import * as NavigationMenu from "@radix-ui/react-navigation-menu";
-import { menus, type Menu } from "./../data";
-import { cn } from "@/lib/utils";
-import { ChevronDown } from "lucide-react";
-import Link from "next/link";
+import React from 'react';
+import * as NavigationMenu from '@radix-ui/react-navigation-menu';
+import { menus, type Menu } from './../data';
+import { cn } from '@/lib/utils';
+import { ChevronDown } from 'lucide-react';
+import Link from 'next/link';
 export default function NavMenu() {
   const [offset, setOffset] = React.useState<number | null>(null);
   const [list, setList] = React.useState<HTMLUListElement | null | undefined>();
@@ -15,7 +15,7 @@ export default function NavMenu() {
       const triggerOffsetLeft = trigger.offsetLeft + trigger.offsetWidth / 6;
 
       setOffset(Math.round(triggerOffsetLeft));
-    } else if (value === "") {
+    } else if (value === '') {
       setOffset(null);
     }
     return trigger;
@@ -35,7 +35,6 @@ export default function NavMenu() {
               setList(null);
             }
           }}
-
           className="group flex list-none gap-8"
         >
           {menus?.map((item: any, index: number) =>
@@ -47,9 +46,7 @@ export default function NavMenu() {
                   className=" flex items-center"
                 >
                   <div className=" flex items-center  py-4 cursor-pointer group data-[state=open]:text-primary">
-                    <span className="text-base font-medium text-default-600">
-                      {item.title}
-                    </span>
+                    <span className="text-base font-medium text-default-600">{item.title}</span>
                     <ChevronDown
                       className="relative top-[1px] ml-1 h-4 w-4 transition duration-200 group-data-[state=open]:rotate-180"
                       aria-hidden="true"
@@ -58,7 +55,7 @@ export default function NavMenu() {
                 </NavigationMenu.Trigger>
                 <NavigationMenu.Content
                   className={cn(
-                    "w-full  rounded-md border bg-popover text-popover-foreground shadow-lg   "
+                    'w-full  rounded-md border bg-popover text-popover-foreground shadow-lg   '
                   )}
                 >
                   {item.child && (
@@ -94,10 +91,10 @@ export default function NavMenu() {
         <div className=" absolute  top-full ">
           <NavigationMenu.Viewport
             style={{
-              display: !offset ? "none" : undefined,
+              display: !offset ? 'none' : undefined,
               transform: `translateX(${offset}px)`,
-              top: "100%",
-              transition: "all 0.5s ease",
+              top: '100%',
+              transition: 'all 0.5s ease',
             }}
           />
         </div>
@@ -111,7 +108,7 @@ const ListItem = React.forwardRef<HTMLAnchorElement, any>(
     <NavigationMenu.Link asChild>
       <Link
         className={cn(
-          " select-none   text-base  font-medium text-default-600 rounded-md flex  items-center gap-2 mb-4 last:mb-0  leading-none no-underline outline-none transition-colors  hover:text-primary  focus:text-primary",
+          ' select-none   text-base  font-medium text-default-600 rounded-md flex  items-center gap-2 mb-4 last:mb-0  leading-none no-underline outline-none transition-colors  hover:text-primary  focus:text-primary',
           className
         )}
         {...props}

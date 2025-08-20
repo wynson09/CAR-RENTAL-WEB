@@ -1,12 +1,10 @@
-"use client";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Icon } from "@iconify/react";
+'use client';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Icon } from '@iconify/react';
 
 const IconInRadio = () => {
   return (
-    <RadioGroup
-      defaultValue="icon_1"
-    >
+    <RadioGroup defaultValue="icon_1">
       <RadioGroupItem
         value="icon_1"
         icon={<Icon icon="heroicons:heart-solid" />}
@@ -15,19 +13,10 @@ const IconInRadio = () => {
       >
         Heart
       </RadioGroupItem>
-      <RadioGroupItem
-        value="icon_2"
-        color="info"
-        icon={<Icon icon="tabler:message" />}
-        id="icon_2"
-      >
+      <RadioGroupItem value="icon_2" color="info" icon={<Icon icon="tabler:message" />} id="icon_2">
         Message
       </RadioGroupItem>
-      <RadioGroupItem
-        value="icon_3"
-        color="info"
-        id="icon_3"
-      >
+      <RadioGroupItem value="icon_3" color="info" id="icon_3">
         Correct
       </RadioGroupItem>
       <RadioGroupItem
@@ -38,12 +27,7 @@ const IconInRadio = () => {
       >
         Incorrect
       </RadioGroupItem>
-      <RadioGroupItem
-        value="icon_5"
-        color="success"
-        icon={<Icon icon="mdi:like" />}
-        id="icon_5"
-      >
+      <RadioGroupItem value="icon_5" color="success" icon={<Icon icon="mdi:like" />} id="icon_5">
         Thumb
       </RadioGroupItem>
     </RadioGroup>

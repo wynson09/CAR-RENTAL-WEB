@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Chart as ChartJS,
@@ -9,23 +9,15 @@ import {
   Tooltip,
   Legend,
   PointElement,
-} from "chart.js";
-import { hslToHex, hexToRGB } from "@/lib/utils";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { Line } from "react-chartjs-2";
-import { faker } from "@faker-js/faker";
+} from 'chart.js';
+import { hslToHex, hexToRGB } from '@/lib/utils';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { Line } from 'react-chartjs-2';
+import { faker } from '@faker-js/faker';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  PointElement
-);
+ChartJS.register(CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend, PointElement);
 
 const LoopChart = ({ height = 350 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -33,27 +25,19 @@ const LoopChart = ({ height = 350 }) => {
 
   const theme = themes.find((theme) => theme.name === config);
 
-  const hslDestructive = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].destructive})`;
-  const hslInfo = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`;
+  const hslDestructive = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].destructive})`;
+  const hslInfo = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`;
 
   const hexDestructive = hslToHex(hslDestructive);
   const hexInfo = hslToHex(hslInfo);
 
-  const labels = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-  ];
+  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
   const data: any = {
     labels: labels,
     datasets: [
       {
-        label: "Dataset 1",
+        label: 'Dataset 1',
         animations: {
           y: {
             duration: 2000,
@@ -67,7 +51,7 @@ const LoopChart = ({ height = 350 }) => {
         tension: 0.5,
       },
       {
-        label: "Dataset 1",
+        label: 'Dataset 1',
         data: labels.map(() => faker.number.int({ min: -100, max: 100 })),
         borderColor: hexToRGB(hexInfo, 0.5),
         backgroundColor: hexToRGB(hexInfo, 0.5),
@@ -80,10 +64,9 @@ const LoopChart = ({ height = 350 }) => {
     plugins: {
       legend: {
         labels: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
         display: true,
       },
@@ -91,56 +74,51 @@ const LoopChart = ({ height = 350 }) => {
     animations: {
       radius: {
         duration: 400,
-        easing: "linear",
+        easing: 'linear',
         loop: (context: any) => context.active,
       },
     },
     hoverRadius: 12,
-    hoverBackgroundColor: "yellow",
+    hoverBackgroundColor: 'yellow',
     interaction: {
-      mode: "nearest",
+      mode: 'nearest',
       intersect: false,
-      axis: "x",
+      axis: 'x',
     },
     scales: {
       y: {
         stacked: true,
         grid: {
           drawTicks: false,
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartGird
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartGird
+          })`,
         },
         ticks: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
       x: {
         stacked: true,
         title: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
           display: true,
         },
         grid: {
           drawTicks: false,
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartGird
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartGird
+          })`,
         },
 
         ticks: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
     },

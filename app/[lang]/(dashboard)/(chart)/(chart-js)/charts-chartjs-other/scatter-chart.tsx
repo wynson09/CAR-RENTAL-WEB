@@ -1,5 +1,5 @@
-"use client";
-import React from "react";
+'use client';
+import React from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,41 +8,25 @@ import {
   Title,
   Tooltip,
   Legend,
-} from "chart.js";
+} from 'chart.js';
 
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { Scatter } from "react-chartjs-2";
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { Scatter } from 'react-chartjs-2';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend);
 
 const ScatterChart = ({ height = 350 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
   const { theme: mode } = useTheme();
   const theme = themes.find((theme) => theme.name === config);
-  const hslWarning = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning
-    })`;
+  const hslWarning = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`;
   const data: any = {
-    labels: [
-      "Eating",
-      "Drinking",
-      "Sleeping",
-      "Designing",
-      "Coding",
-      "Cycling",
-      "Running",
-    ],
+    labels: ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'],
     datasets: [
       {
-        label: "Scatter Dataset",
+        label: 'Scatter Dataset',
         data: [
           {
             x: -10,
@@ -68,32 +52,28 @@ const ScatterChart = ({ height = 350 }) => {
       y: {
         grid: {
           drawTicks: false,
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartGird
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartGird
+          })`,
         },
         ticks: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
       x: {
         grid: {
           drawTicks: false,
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartGird
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartGird
+          })`,
         },
 
         ticks: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
     },
@@ -103,10 +83,9 @@ const ScatterChart = ({ height = 350 }) => {
     plugins: {
       legend: {
         labels: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
     },
@@ -115,11 +94,7 @@ const ScatterChart = ({ height = 350 }) => {
 
   return (
     <div>
-      <Scatter
-        options={options}
-        data={data}
-        height={height}
-      />
+      <Scatter options={options} data={data} height={height} />
     </div>
   );
 };

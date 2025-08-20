@@ -1,15 +1,11 @@
-"use client";
-import React, { useState } from "react";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import MultiMenuHandler from "./multi-menu-handler";
-import MultiNestedMenu from "./multi-nested-menu";
-import SubMenuItem from "./sub-menu-item";
-import { usePathname } from "next/navigation";
-import { isLocationMatch, cn, getDynamicPath } from "@/lib/utils";
+'use client';
+import React, { useState } from 'react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import MultiMenuHandler from './multi-menu-handler';
+import MultiNestedMenu from './multi-nested-menu';
+import SubMenuItem from './sub-menu-item';
+import { usePathname } from 'next/navigation';
+import { isLocationMatch, cn, getDynamicPath } from '@/lib/utils';
 
 const NestedSubMenu = ({
   activeSubmenu,
@@ -26,7 +22,7 @@ const NestedSubMenu = ({
   activeMultiMenu: number | null;
   toggleMultiMenu: (index: number) => void;
   title?: string;
-  trans: any
+  trans: any;
 }) => {
   const pathname = usePathname();
   const locationName = getDynamicPath(pathname);
@@ -37,11 +33,11 @@ const NestedSubMenu = ({
           {item.child?.map((subItem: any, j: number) => (
             <li
               className={cn(
-                "block pl-9   first:pt-4 last:pb-4  relative before:absolute first:before:top-4 before:top-0 before:left-4  before:w-[3px]",
+                'block pl-9   first:pt-4 last:pb-4  relative before:absolute first:before:top-4 before:top-0 before:left-4  before:w-[3px]',
                 {
-                  "before:bg-primary first:before:h-[calc(100%-16px)]  before:h-full":
+                  'before:bg-primary first:before:h-[calc(100%-16px)]  before:h-full':
                     isLocationMatch(subItem.href, locationName),
-                  " ": activeSubmenu === index,
+                  ' ': activeSubmenu === index,
                 }
               )}
               key={`sub_menu_${j}`}

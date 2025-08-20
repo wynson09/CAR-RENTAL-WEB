@@ -1,12 +1,12 @@
-"use client";
-import { Button } from "@/components/ui/button";
+'use client';
+import { Button } from '@/components/ui/button';
 import {
   Tooltip,
   TooltipArrow,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from '@/components/ui/tooltip';
 import {
   Application,
   Authentication,
@@ -53,192 +53,192 @@ import {
   Mail,
   UserSign,
   Web,
-  Mail2
-} from "@/components/svg";
+  Mail2,
+} from '@/components/svg';
 
 const icons = [
   {
-    name: "DashBoard",
+    name: 'DashBoard',
     icon: DashBoard,
   },
   {
-    name: "Application",
+    name: 'Application',
     icon: Application,
   },
   {
-    name: "Authentication",
+    name: 'Authentication',
     icon: Authentication,
   },
   {
-    name: "Components",
+    name: 'Components',
     icon: Components,
   },
   {
-    name: "Grid",
+    name: 'Grid',
     icon: Grid,
   },
   {
-    name: "Stacks2",
+    name: 'Stacks2',
     icon: Stacks2,
   },
   {
-    name: "Pages",
+    name: 'Pages',
     icon: Pages,
   },
   {
-    name: "Chart",
+    name: 'Chart',
     icon: Chart,
   },
   {
-    name: "Map",
+    name: 'Map',
     icon: Map,
   },
   {
-    name: "Settings",
+    name: 'Settings',
     icon: Settings,
   },
   {
-    name: "Files",
+    name: 'Files',
     icon: Files,
   },
   {
-    name: "Graph",
+    name: 'Graph',
     icon: Graph,
   },
   {
-    name: "Cart",
+    name: 'Cart',
     icon: Cart,
   },
   {
-    name: "ClipBoard",
+    name: 'ClipBoard',
     icon: ClipBoard,
   },
   {
-    name: "Envelope",
+    name: 'Envelope',
     icon: Envelope,
   },
   {
-    name: "Messages",
+    name: 'Messages',
     icon: Messages,
   },
   {
-    name: "Monitor",
+    name: 'Monitor',
     icon: Monitor,
   },
   {
-    name: "List",
+    name: 'List',
     icon: List,
   },
   {
-    name: "ListFill",
+    name: 'ListFill',
     icon: ListFill,
   },
   {
-    name: "Calendar",
+    name: 'Calendar',
     icon: Calendar,
   },
   {
-    name: "Flag",
+    name: 'Flag',
     icon: Flag,
   },
   {
-    name: "Book",
+    name: 'Book',
     icon: Book,
   },
   {
-    name: "Medical",
+    name: 'Medical',
     icon: Medical,
   },
   {
-    name: "ClipBoard2",
+    name: 'ClipBoard2',
     icon: ClipBoard2,
   },
   {
-    name: "Note2",
+    name: 'Note2',
     icon: Note2,
   },
   {
-    name: "Note3",
+    name: 'Note3',
     icon: Note3,
   },
   {
-    name: "BarLeft",
+    name: 'BarLeft',
     icon: BarLeft,
   },
   {
-    name: "BarTop",
+    name: 'BarTop',
     icon: BarTop,
   },
   {
-    name: "PretentionChartLine2",
+    name: 'PretentionChartLine2',
     icon: PretentionChartLine2,
   },
   {
-    name: "Google",
+    name: 'Google',
     icon: Google,
   },
   {
-    name: "Pointer",
+    name: 'Pointer',
     icon: Pointer,
   },
   {
-    name: "Map2",
+    name: 'Map2',
     icon: Map2,
   },
   {
-    name: "MenuBar",
+    name: 'MenuBar',
     icon: MenuBar,
   },
   {
-    name: "Map2",
+    name: 'Map2',
     icon: Icons,
   },
   {
-    name: "Sun",
+    name: 'Sun',
     icon: Sun,
   },
   {
-    name: "Moon",
+    name: 'Moon',
     icon: Moon,
   },
   {
-    name: "User",
+    name: 'User',
     icon: User,
   },
   {
-    name: "Phone",
+    name: 'Phone',
     icon: Phone,
   },
   {
-    name: "Location",
+    name: 'Location',
     icon: Location,
   },
   {
-    name: "Calender",
+    name: 'Calender',
     icon: Calender,
   },
   {
-    name: "CalenderCheck",
+    name: 'CalenderCheck',
     icon: CalenderCheck,
   },
   {
-    name: "UserPlus",
+    name: 'UserPlus',
     icon: UserPlus,
   },
   {
-    name: "Mail",
+    name: 'Mail',
     icon: Mail,
   },
   {
-    name: "UserSign",
+    name: 'UserSign',
     icon: UserSign,
   },
   {
-    name: "Web",
+    name: 'Web',
     icon: Web,
   },
   {
-    name: "Mail2",
+    name: 'Mail2',
     icon: Mail2,
   },
 ];

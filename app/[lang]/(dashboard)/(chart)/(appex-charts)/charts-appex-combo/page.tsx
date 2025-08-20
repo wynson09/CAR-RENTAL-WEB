@@ -1,9 +1,8 @@
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import LineColumn from "./line-column";
-import MultipleYAxis from "./multiple-yaxis";
-import LineArea from "./line-area";
-import LineColumnArea from "./line-column-area";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import LineColumn from './line-column';
+import MultipleYAxis from './multiple-yaxis';
+import LineArea from './line-area';
+import LineColumnArea from './line-column-area';
 
 const ComboChartPage = () => {
   return (

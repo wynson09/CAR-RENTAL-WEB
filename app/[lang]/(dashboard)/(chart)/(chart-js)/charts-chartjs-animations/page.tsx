@@ -1,10 +1,8 @@
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import PrograssiveLine from "./prograssive-line";
-import DelayChart from "./delay-chart";
-import DropChart from "./drop-chart";
-import LoopChart from "./loop-chart";
-
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import PrograssiveLine from './prograssive-line';
+import DelayChart from './delay-chart';
+import DropChart from './drop-chart';
+import LoopChart from './loop-chart';
 
 const ChartsChartJsAnimation = () => {
   return (

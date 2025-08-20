@@ -1,33 +1,29 @@
-"use client";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Loader2 } from "lucide-react";
-import toast from "react-hot-toast";
-import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
-import { Icon } from "@iconify/react";
-import Link from "next/link";
-import { Checkbox } from "@/components/ui/checkbox";
-import { SiteLogo } from "@/components/svg";
-import { useMediaQuery } from "@/hooks/use-media-query";
+'use client';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Loader2 } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { cn } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
+import { Icon } from '@iconify/react';
+import Link from 'next/link';
+import { Checkbox } from '@/components/ui/checkbox';
+import { SiteLogo } from '@/components/svg';
+import { useMediaQuery } from '@/hooks/use-media-query';
 const schema = z.object({
-  password: z
-    .string()
-    .min(4, { message: "Your password must be at least 4 characters." }),
-  confirmPassword: z
-    .string()
-    .min(4, { message: "Your password must be at least 4 characters." }),
+  password: z.string().min(4, { message: 'Your password must be at least 4 characters.' }),
+  confirmPassword: z.string().min(4, { message: 'Your password must be at least 4 characters.' }),
 });
 const CreatePasswordForm = () => {
   const [isPending, startTransition] = React.useTransition();
   const [newPasswordType, setNewPasswordType] = React.useState<boolean>(false);
   const [confirmPasswordType, setConfirmPasswordType] = React.useState<boolean>(false);
-  const isDesktop2xl = useMediaQuery("(max-width: 1530px)");
+  const isDesktop2xl = useMediaQuery('(max-width: 1530px)');
   const router = useRouter();
   const {
     register,
@@ -36,18 +32,18 @@ const CreatePasswordForm = () => {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
-    mode: "all",
+    mode: 'all',
   });
   const [isVisible, setIsVisible] = React.useState<boolean>(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
   const onSubmit = (data: any) => {
-    console.log("Form Data:", data);
+    console.log('Form Data:', data);
     startTransition(async () => {
-      toast.success("reset successful");
+      toast.success('reset successful');
       reset();
-      router.push("/dashboard");
+      router.push('/dashboard');
     });
   };
   return (
@@ -65,21 +61,18 @@ const CreatePasswordForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="mt-5 xl:mt-7">
         <div className="space-y-4">
           <div>
-            <Label
-              htmlFor="password"
-              className="mb-2 font-medium text-default-600"
-            >
+            <Label htmlFor="password" className="mb-2 font-medium text-default-600">
               Password
             </Label>
             <div className="relative">
               <Input
                 disabled={isPending}
-                {...register("password")}
-                type={newPasswordType ? "text" : "password"}
+                {...register('password')}
+                type={newPasswordType ? 'text' : 'password'}
                 id="password"
-                size={!isDesktop2xl ? "xl" : "lg"}
-                className={cn("", {
-                  "border-destructive": errors.password,
+                size={!isDesktop2xl ? 'xl' : 'lg'}
+                className={cn('', {
+                  'border-destructive': errors.password,
                 })}
               />
               <div
@@ -87,56 +80,39 @@ const CreatePasswordForm = () => {
                 onClick={() => setNewPasswordType(!newPasswordType)}
               >
                 {newPasswordType ? (
-                  <Icon
-                    icon="heroicons:eye"
-                    className="w-5 h-5 text-default-400"
-                  />
+                  <Icon icon="heroicons:eye" className="w-5 h-5 text-default-400" />
                 ) : (
-                  <Icon
-                    icon="heroicons:eye-slash"
-                    className="w-5 h-5 text-default-400"
-                  />
+                  <Icon icon="heroicons:eye-slash" className="w-5 h-5 text-default-400" />
                 )}
               </div>
             </div>
             {errors.password && (
-              <div className=" text-destructive mt-2">
-                {errors.password.message as string}
-              </div>
+              <div className=" text-destructive mt-2">{errors.password.message as string}</div>
             )}
           </div>
           <div>
-            <Label
-              htmlFor="confirmPassword"
-              className="mb-2 font-medium text-default-600"
-            >
+            <Label htmlFor="confirmPassword" className="mb-2 font-medium text-default-600">
               Confirm Password
             </Label>
             <div className="relative">
               <Input
                 disabled={isPending}
-                {...register("confirmPassword")}
-                type={confirmPasswordType ? "text" : "password"}
+                {...register('confirmPassword')}
+                type={confirmPasswordType ? 'text' : 'password'}
                 id="confirmPassword"
-                className={cn("", {
-                  "border-destructive": errors.confirmPassword,
+                className={cn('', {
+                  'border-destructive': errors.confirmPassword,
                 })}
-                size={!isDesktop2xl ? "xl" : "lg"}
+                size={!isDesktop2xl ? 'xl' : 'lg'}
               />
               <div
                 className="absolute top-1/2 -translate-y-1/2 ltr:right-4 rtl:left-4 cursor-pointer"
                 onClick={() => setConfirmPasswordType(!confirmPasswordType)}
               >
                 {confirmPasswordType ? (
-                  <Icon
-                    icon="heroicons:eye"
-                    className="w-5 h-5 text-default-400"
-                  />
+                  <Icon icon="heroicons:eye" className="w-5 h-5 text-default-400" />
                 ) : (
-                  <Icon
-                    icon="heroicons:eye-slash"
-                    className="w-5 h-5 text-default-400"
-                  />
+                  <Icon icon="heroicons:eye-slash" className="w-5 h-5 text-default-400" />
                 )}
               </div>
             </div>
@@ -149,11 +125,7 @@ const CreatePasswordForm = () => {
         </div>
 
         <div className="flex-1 flex  items-center gap-1.5 mt-5 ">
-          <Checkbox
-            size="sm"
-            className="border-default-300 mt-[1px]"
-            id="terms"
-          />
+          <Checkbox size="sm" className="border-default-300 mt-[1px]" id="terms" />
           <Label
             htmlFor="terms"
             className="text-sm text-default-600 cursor-pointer whitespace-nowrap"
@@ -163,14 +135,14 @@ const CreatePasswordForm = () => {
         </div>
         <Button className="w-full mt-8" size="lg">
           {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {isPending ? "Resetting..." : "Reset Password"}
+          {isPending ? 'Resetting...' : 'Reset Password'}
         </Button>
       </form>
       <div className="mt-5 2xl:mt-8 text-center text-base text-default-600">
-        Not now? Return{" "}
+        Not now? Return{' '}
         <Link href="/auth/register5" className="text-primary">
-          {" "}
-          Sign In{" "}
+          {' '}
+          Sign In{' '}
         </Link>
       </div>
     </div>

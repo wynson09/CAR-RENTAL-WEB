@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Chart as ChartJS,
@@ -9,22 +9,14 @@ import {
   Tooltip,
   Legend,
   ArcElement,
-} from "chart.js";
-import { hslToHex, hexToRGB } from "@/lib/utils";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { Doughnut } from "react-chartjs-2";
+} from 'chart.js';
+import { hslToHex, hexToRGB } from '@/lib/utils';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { Doughnut } from 'react-chartjs-2';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement
-);
+ChartJS.register(CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend, ArcElement);
 
 const DoughnutChart = ({ height = 350 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -32,24 +24,20 @@ const DoughnutChart = ({ height = 350 }) => {
 
   const theme = themes.find((theme) => theme.name === config);
 
-  const hslPrimary = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary
-    })`;
-  const hslInfo = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info
-    })`;
-  const hslWarning = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning
-    })`;
-  const hslSuccess = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success
-    })`;
+  const hslPrimary = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`;
+  const hslInfo = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`;
+  const hslWarning = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`;
+  const hslSuccess = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`;
 
   const hexPrimary = hslToHex(hslPrimary);
   const hexInfo = hslToHex(hslInfo);
   const hexWarning = hslToHex(hslWarning);
   const hexSuccess = hslToHex(hslSuccess);
   const data: any = {
-    labels: ["Primary", "Info", "Warning", "Success"],
+    labels: ['Primary', 'Info', 'Warning', 'Success'],
     datasets: [
       {
-        label: "Dataset 1",
+        label: 'Dataset 1',
         data: [50, 60, 30, 70, 80, 90, 100, 40],
         backgroundColor: [
           hexToRGB(hexPrimary, 0.5),
@@ -65,10 +53,9 @@ const DoughnutChart = ({ height = 350 }) => {
     plugins: {
       legend: {
         labels: {
-          color: `hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
     },

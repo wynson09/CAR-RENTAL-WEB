@@ -1,11 +1,7 @@
-import {
-  ChevronsLeft,
-  ChevronRight,
-  ChevronLeft,
-} from "lucide-react";
+import { ChevronsLeft, ChevronRight, ChevronLeft } from 'lucide-react';
 
-import { Button } from "@/components/ui/button";
-import { Table } from "@tanstack/react-table";
+import { Button } from '@/components/ui/button';
+import { Table } from '@tanstack/react-table';
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
@@ -15,7 +11,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
   return (
     <div className="flex items-center flex-wrap gap-2 justify-between p-5">
       <div className="flex-1 text-sm text-muted-foreground whitespace-nowrap">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
+        {table.getFilteredSelectedRowModel().rows.length} of{' '}
         {table.getFilteredRowModel().rows.length} row(s) selected.
       </div>
       <div className="flex flex-wrap items-center gap-6 lg:gap-8">

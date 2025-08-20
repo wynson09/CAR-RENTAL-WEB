@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import React, { useCallback } from 'react';
 import ReactFlow, { useNodesState, useEdgesState, addEdge, Node, Edge, OnConnect } from 'reactflow';
@@ -111,7 +111,7 @@ const HorizontalFlow = () => {
         <CardTitle>Horizontal Flow</CardTitle>
       </CardHeader>
       <CardContent className="overflow-auto">
-        <div className='w-full h-[calc(100vh-280px)]'>
+        <div className="w-full h-[calc(100vh-280px)]">
           <ReactFlow
             nodes={nodes}
             edges={edges}

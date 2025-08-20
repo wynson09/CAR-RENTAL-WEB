@@ -1,47 +1,37 @@
-"use client";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+'use client';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
 
-const promise = () =>
-  new Promise((resolve) => setTimeout(() => resolve({ name: "Sonner" }), 2000));
+const promise = () => new Promise((resolve) => setTimeout(() => resolve({ name: 'Sonner' }), 2000));
 const SoonerToastDemo = () => {
   return (
     <>
-      <Button
-        variant="outline"
-        onClick={() => toast("Event has been created")}
-      >
+      <Button variant="outline" onClick={() => toast('Event has been created')}>
         Default
       </Button>
-      <Button
-        color="success"
-        onClick={() => toast.success("Event has been created")}
-      >
+      <Button color="success" onClick={() => toast.success('Event has been created')}>
         Toast Success
       </Button>
       <Button
         color="success"
         variant="outline"
         onClick={() =>
-          toast.success("Event has been created", {
-            description: "Sunday, December 03, 2023 at 9:00 AM",
+          toast.success('Event has been created', {
+            description: 'Sunday, December 03, 2023 at 9:00 AM',
           })
         }
       >
         Toast Description
       </Button>
-      <Button
-        color="info"
-        onClick={() => toast.info("Event has been created", {})}
-      >
+      <Button color="info" onClick={() => toast.info('Event has been created', {})}>
         Toast Info
       </Button>
       <Button
         color="dark"
         variant="outline"
         onClick={() =>
-          toast("Event has been created", {
-            position: "top-right",
+          toast('Event has been created', {
+            position: 'top-right',
           })
         }
       >
@@ -51,10 +41,10 @@ const SoonerToastDemo = () => {
         color="info"
         variant="outline"
         onClick={() =>
-          toast.info("Event has been created", {
+          toast.info('Event has been created', {
             action: {
-              label: "Undo",
-              onClick: () => console.log("Undo"),
+              label: 'Undo',
+              onClick: () => console.log('Undo'),
             },
           })
         }
@@ -65,25 +55,22 @@ const SoonerToastDemo = () => {
         color="dark"
         variant="outline"
         onClick={() =>
-          toast("Event has been created", {
-            position: "top-left",
+          toast('Event has been created', {
+            position: 'top-left',
           })
         }
       >
         Toast Top Left
       </Button>
-      <Button
-        color="warning"
-        onClick={() => toast.warning("Event has been created", {})}
-      >
+      <Button color="warning" onClick={() => toast.warning('Event has been created', {})}>
         Toast Warning
       </Button>
       <Button
         color="warning"
         variant="outline"
         onClick={() =>
-          toast.warning("Event has been created", {
-            description: "Sunday, December 03, 2023 at 9:00 AM",
+          toast.warning('Event has been created', {
+            description: 'Sunday, December 03, 2023 at 9:00 AM',
           })
         }
       >
@@ -93,12 +80,12 @@ const SoonerToastDemo = () => {
         color="warning"
         variant="outline"
         onClick={() =>
-          toast.warning("Event has been created", {
-            description: "Sunday, December 03, 2023 at 9:00 AM",
-            position: "top-right",
+          toast.warning('Event has been created', {
+            description: 'Sunday, December 03, 2023 at 9:00 AM',
+            position: 'top-right',
             action: {
-              label: "Undo",
-              onClick: () => console.log("Undo"),
+              label: 'Undo',
+              onClick: () => console.log('Undo'),
             },
           })
         }
@@ -110,11 +97,11 @@ const SoonerToastDemo = () => {
         variant="outline"
         onClick={() =>
           toast.promise(promise, {
-            loading: "Loading...",
-            success: (data:any) => {
+            loading: 'Loading...',
+            success: (data: any) => {
               return `${data.name} toast has been added`;
             },
-            error: "Error",
+            error: 'Error',
           })
         }
       >
@@ -126,9 +113,7 @@ const SoonerToastDemo = () => {
         onClick={() =>
           toast(
             <div className="p-2 text-center mx-auto border border-1 rounded-md">
-              <p className="text-info text-base font-normal">
-                A custom toast with default styling
-              </p>
+              <p className="text-info text-base font-normal">A custom toast with default styling</p>
             </div>
           )
         }
@@ -139,12 +124,12 @@ const SoonerToastDemo = () => {
         color="warning"
         variant="outline"
         onClick={() =>
-          toast.warning("Event has been created", {
-            description: "Sunday, December 03, 2023 at 9:00 AM",
-            position: "top-center",
+          toast.warning('Event has been created', {
+            description: 'Sunday, December 03, 2023 at 9:00 AM',
+            position: 'top-center',
             action: {
-              label: "Undo",
-              onClick: () => console.log("Undo"),
+              label: 'Undo',
+              onClick: () => console.log('Undo'),
             },
           })
         }
@@ -155,28 +140,25 @@ const SoonerToastDemo = () => {
         color="dark"
         variant="outline"
         onClick={() =>
-          toast("Event has been created", {
-            position: "bottom-left",
+          toast('Event has been created', {
+            position: 'bottom-left',
           })
         }
       >
         Toast Bottom Left
       </Button>
-      <Button
-        color="destructive"
-        onClick={() => toast.error("Event has not been created", {})}
-      >
+      <Button color="destructive" onClick={() => toast.error('Event has not been created', {})}>
         Toast Error
       </Button>
       <Button
         color="destructive"
         variant="outline"
         onClick={() =>
-          toast.error("Event has not been created", {
-            description: "Sunday, December 03, 2023 at 9:00 AM",
+          toast.error('Event has not been created', {
+            description: 'Sunday, December 03, 2023 at 9:00 AM',
             action: {
-              label: "Undo",
-              onClick: () => console.log("Undo"),
+              label: 'Undo',
+              onClick: () => console.log('Undo'),
             },
           })
         }
@@ -187,12 +169,12 @@ const SoonerToastDemo = () => {
         color="dark"
         variant="outline"
         onClick={() =>
-          toast("Event has been created", {
-            description: "Sunday, December 03, 2023 at 9:00 AM",
-            position: "bottom-center",
+          toast('Event has been created', {
+            description: 'Sunday, December 03, 2023 at 9:00 AM',
+            position: 'bottom-center',
             action: {
-              label: "Undo",
-              onClick: () => console.log("Undo"),
+              label: 'Undo',
+              onClick: () => console.log('Undo'),
             },
           })
         }

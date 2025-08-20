@@ -1,11 +1,11 @@
-"use client";
-import React, { useState } from "react";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { getGridConfig, getLabel } from "@/lib/appex-chart-options";
+'use client';
+import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getGridConfig, getLabel } from '@/lib/appex-chart-options';
 
 interface DataRange {
   min: number;
@@ -16,13 +16,12 @@ const BrushLinechart = () => {
   const { theme: mode } = useTheme();
   const theme = themes.find((theme) => theme.name === config);
 
-  function generateDayWiseTimeSeries(baseval:number, count:number, yrange:DataRange) {
+  function generateDayWiseTimeSeries(baseval: number, count: number, yrange: DataRange) {
     var i = 0;
     var series: [number, number][] = [];
     while (i < count) {
       var x = baseval;
-      var y =
-        Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+      var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
 
       series.push([x, y]);
       baseval += 86400000;
@@ -31,7 +30,7 @@ const BrushLinechart = () => {
     return series;
   }
 
-  var data = generateDayWiseTimeSeries(new Date("11 Feb 2017").getTime(), 185, {
+  var data = generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 185, {
     min: 30,
     max: 90,
   });
@@ -41,22 +40,18 @@ const BrushLinechart = () => {
     },
   ];
 
-  const options:any = {
+  const options: any = {
     chart: {
-      id: "chart2",
+      id: 'chart2',
 
       height: 230,
       toolbar: {
-        autoSelected: "pan",
+        autoSelected: 'pan',
         show: false,
       },
     },
-    colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-    ],
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    colors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`],
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
     stroke: {
       width: 3,
     },
@@ -70,7 +65,7 @@ const BrushLinechart = () => {
       size: 0,
     },
     xaxis: {
-      type: "datetime",
+      type: 'datetime',
       axisBorder: {
         show: false,
       },
@@ -78,21 +73,13 @@ const BrushLinechart = () => {
         show: false,
       },
       labels: getLabel(
-        `hsl(${
-          theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
     },
     yaxis: {
       tickAmount: 2,
       labels: getLabel(
-        `hsl(${
-          theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
     },
     padding: {
@@ -105,45 +92,41 @@ const BrushLinechart = () => {
 
   const seriesLine = [
     {
-      data: data, 
+      data: data,
     },
   ];
 
-  const optionsLine:any = {
+  const optionsLine: any = {
     chart: {
-      id: "chart1",
+      id: 'chart1',
       height: 130,
       brush: {
-        target: "chart2",
+        target: 'chart2',
         enabled: true,
       },
       selection: {
         enabled: true,
         xaxis: {
-          min: new Date("19 Jun 2017").getTime(),
-          max: new Date("14 Aug 2017").getTime(),
+          min: new Date('19 Jun 2017').getTime(),
+          max: new Date('14 Aug 2017').getTime(),
         },
       },
     },
-    colors: [`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`],
+    colors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`],
     fill: {
-      type: "gradient",
+      type: 'gradient',
       gradient: {
         opacityFrom: 0.91,
         opacityTo: 0.1,
       },
     },
     xaxis: {
-      type: "datetime",
+      type: 'datetime',
       tooltip: {
         enabled: false,
       },
       labels: getLabel(
-        `hsl(${
-          theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
       axisBorder: {
         show: false,
@@ -155,11 +138,7 @@ const BrushLinechart = () => {
     yaxis: {
       tickAmount: 2,
       labels: getLabel(
-        `hsl(${
-          theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
     },
   };
@@ -167,22 +146,10 @@ const BrushLinechart = () => {
   return (
     <div id="wrapper">
       <div id="chart-line2">
-        <Chart
-          options={options}
-          series={series}
-          type="line"
-          height={230}
-          width={"100%"}
-        />
+        <Chart options={options} series={series} type="line" height={230} width={'100%'} />
       </div>
       <div id="chart-line">
-        <Chart
-          options={optionsLine}
-          series={seriesLine}
-          type="area"
-          height={130}
-          width={"100%"}
-        />
+        <Chart options={optionsLine} series={seriesLine} type="area" height={130} width={'100%'} />
       </div>
     </div>
   );

@@ -1,127 +1,122 @@
-"use client";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import avatar from "@/public/images/avatar/avatar-13.jpg";
-import TeamHeader from "./team-header";
-import TeamCard from "./team-card";
-import { Button } from "@/components/ui/button";
+'use client';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import avatar from '@/public/images/avatar/avatar-13.jpg';
+import TeamHeader from './team-header';
+import TeamCard from './team-card';
+import { Button } from '@/components/ui/button';
 const members = [
   {
     id: 1,
-    name: "Prantik Chakraborty",
-    designation: "UX/UI Designer",
-    company: "codeshaper",
+    name: 'Prantik Chakraborty',
+    designation: 'UX/UI Designer',
+    company: 'codeshaper',
     stats: [
       {
-        name: "Total Task",
-        count: "223",
-        color: "primary",
+        name: 'Total Task',
+        count: '223',
+        color: 'primary',
       },
       {
-        name: "completed",
-        count: "123",
-        color: "success",
+        name: 'completed',
+        count: '123',
+        color: 'success',
       },
       {
-        name: "incomplete",
-        count: "143",
-        color: "info",
+        name: 'incomplete',
+        count: '143',
+        color: 'info',
       },
       {
-        name: "overdue task",
-        count: "123",
-        color: "destructive",
+        name: 'overdue task',
+        count: '123',
+        color: 'destructive',
       },
     ],
     avatar: avatar,
   },
   {
     id: 2,
-    name: "Prantik Chakraborty",
-    designation: "UX/UI Designer",
-    company: "codeshaper",
+    name: 'Prantik Chakraborty',
+    designation: 'UX/UI Designer',
+    company: 'codeshaper',
     stats: [
       {
-        name: "Total Task",
-        count: "223",
-        color: "primary",
+        name: 'Total Task',
+        count: '223',
+        color: 'primary',
       },
       {
-        name: "completed",
-        count: "123",
-        color: "success",
+        name: 'completed',
+        count: '123',
+        color: 'success',
       },
       {
-        name: "incomplete",
-        count: "143",
-        color: "info",
+        name: 'incomplete',
+        count: '143',
+        color: 'info',
       },
       {
-        name: "overdue task",
-        count: "123",
-        color: "destructive",
+        name: 'overdue task',
+        count: '123',
+        color: 'destructive',
       },
     ],
     avatar: avatar,
   },
   {
     id: 3,
-    name: "Prantik Chakraborty",
-    designation: "UX/UI Designer",
-    company: "codeshaper",
+    name: 'Prantik Chakraborty',
+    designation: 'UX/UI Designer',
+    company: 'codeshaper',
     stats: [
       {
-        name: "Total Task",
-        count: "223",
-        color: "primary",
+        name: 'Total Task',
+        count: '223',
+        color: 'primary',
       },
       {
-        name: "completed",
-        count: "123",
-        color: "success",
+        name: 'completed',
+        count: '123',
+        color: 'success',
       },
       {
-        name: "incomplete",
-        count: "143",
-        color: "info",
+        name: 'incomplete',
+        count: '143',
+        color: 'info',
       },
       {
-        name: "overdue task",
-        count: "123",
-        color: "destructive",
+        name: 'overdue task',
+        count: '123',
+        color: 'destructive',
       },
     ],
     avatar: avatar,
   },
   {
     id: 4,
-    name: "Prantik Chakraborty",
-    designation: "UX/UI Designer",
-    company: "codeshaper",
+    name: 'Prantik Chakraborty',
+    designation: 'UX/UI Designer',
+    company: 'codeshaper',
     stats: [
       {
-        name: "Total Task",
-        count: "223",
-        color: "primary",
+        name: 'Total Task',
+        count: '223',
+        color: 'primary',
       },
       {
-        name: "completed",
-        count: "123",
-        color: "success",
+        name: 'completed',
+        count: '123',
+        color: 'success',
       },
       {
-        name: "incomplete",
-        count: "143",
-        color: "info",
+        name: 'incomplete',
+        count: '143',
+        color: 'info',
       },
       {
-        name: "overdue task",
-        count: "123",
-        color: "destructive",
+        name: 'overdue task',
+        count: '123',
+        color: 'destructive',
       },
     ],
     avatar: avatar,
@@ -130,7 +125,6 @@ const members = [
 
 export type Member = (typeof members)[number];
 const Team = () => {
-
   return (
     <Card>
       <CardHeader className="lg:flex-row">

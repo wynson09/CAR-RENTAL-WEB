@@ -1,76 +1,54 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import {
-  getGridConfig,
-  getLabel,
-  getYAxisConfig,
-} from "@/lib/appex-chart-options";
-import moment from "moment";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getGridConfig, getLabel, getYAxisConfig } from '@/lib/appex-chart-options';
+import moment from 'moment';
 const MultiSeries = ({ height = 300 }) => {
-  const { theme: config, setTheme: setConfig,isRtl } = useThemeStore();
+  const { theme: config, setTheme: setConfig, isRtl } = useThemeStore();
   const { theme: mode } = useTheme();
 
   const theme = themes.find((theme) => theme.name === config);
 
   const series = [
     {
-      name: "Bob",
+      name: 'Bob',
       data: [
         {
-          x: "Design",
-          y: [
-            new Date("2019-03-05").getTime(),
-            new Date("2019-03-08").getTime(),
-          ],
+          x: 'Design',
+          y: [new Date('2019-03-05').getTime(), new Date('2019-03-08').getTime()],
         },
         {
-          x: "Code",
-          y: [
-            new Date("2019-03-08").getTime(),
-            new Date("2019-03-11").getTime(),
-          ],
+          x: 'Code',
+          y: [new Date('2019-03-08').getTime(), new Date('2019-03-11').getTime()],
         },
         {
-          x: "Test",
-          y: [
-            new Date("2019-03-11").getTime(),
-            new Date("2019-03-16").getTime(),
-          ],
+          x: 'Test',
+          y: [new Date('2019-03-11').getTime(), new Date('2019-03-16').getTime()],
         },
       ],
     },
     {
-      name: "Joe",
+      name: 'Joe',
       data: [
         {
-          x: "Design",
-          y: [
-            new Date("2019-03-02").getTime(),
-            new Date("2019-03-05").getTime(),
-          ],
+          x: 'Design',
+          y: [new Date('2019-03-02').getTime(), new Date('2019-03-05').getTime()],
         },
         {
-          x: "Code",
-          y: [
-            new Date("2019-03-06").getTime(),
-            new Date("2019-03-09").getTime(),
-          ],
+          x: 'Code',
+          y: [new Date('2019-03-06').getTime(), new Date('2019-03-09').getTime()],
         },
         {
-          x: "Test",
-          y: [
-            new Date("2019-03-10").getTime(),
-            new Date("2019-03-19").getTime(),
-          ],
+          x: 'Test',
+          y: [new Date('2019-03-10').getTime(), new Date('2019-03-19').getTime()],
         },
       ],
     },
   ];
-  const options:any = {
+  const options: any = {
     chart: {
       toolbar: {
         show: false,
@@ -84,18 +62,18 @@ const MultiSeries = ({ height = 300 }) => {
     },
     dataLabels: {
       enabled: true,
-      formatter: function (val:[number, number]) {
+      formatter: function (val: [number, number]) {
         var a = moment(val[0]);
         var b = moment(val[1]);
-        var diff = b.diff(a, "days");
-        return diff + (diff > 1 ? " days" : " day");
+        var diff = b.diff(a, 'days');
+        return diff + (diff > 1 ? ' days' : ' day');
       },
     },
     fill: {
-      type: "gradient",
+      type: 'gradient',
       gradient: {
-        shade: "light",
-        type: "vertical",
+        shade: 'light',
+        type: 'vertical',
         shadeIntensity: 0.5,
         gradientToColors: undefined,
         inverseColors: true,
@@ -105,24 +83,18 @@ const MultiSeries = ({ height = 300 }) => {
       },
     },
     colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`,
     ],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
 
     xaxis: {
-      type: "datetime",
+      type: 'datetime',
       labels: getLabel(
-        `hsl(${
-          theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
       axisBorder: {
         show: false,
@@ -131,16 +103,12 @@ const MultiSeries = ({ height = 300 }) => {
         show: false,
       },
     },
-    yaxis: getYAxisConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`
-    ),
+    yaxis: getYAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
     legend: {
-      position: "top",
+      position: 'top',
       labels: {
         colors: `hsl(${
-          theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
+          theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
         })`,
       },
       itemMargin: {
@@ -151,8 +119,8 @@ const MultiSeries = ({ height = 300 }) => {
         width: 10,
         height: 10,
         radius: 10,
-        offsetX: isRtl ? 5 : -5
-      }
+        offsetX: isRtl ? 5 : -5,
+      },
     },
     padding: {
       top: 0,
@@ -161,15 +129,7 @@ const MultiSeries = ({ height = 300 }) => {
       left: 0,
     },
   };
-  return (
-      <Chart
-        options={options}
-        series={series}
-        type="rangeBar"
-        height={height}
-        width={"100%"}
-      />
-  );
+  return <Chart options={options} series={series} type="rangeBar" height={height} width={'100%'} />;
 };
 
 export default MultiSeries;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -7,23 +7,23 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogClose,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Icon } from "@iconify/react";
-import { carCategories } from "@/data/car-listings-data";
-import { ArrayInput } from "@/components/ui/array-input";
-import { ImageUpload } from "@/components/ui/image-upload";
-import { PromoToggle } from "@/components/ui/promo-toggle";
-import { type CarListing } from "./types";
+} from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Icon } from '@iconify/react';
+import { carCategories } from '@/data/car-listings-data';
+import { ArrayInput } from '@/components/ui/array-input';
+import { ImageUpload } from '@/components/ui/image-upload';
+import { PromoToggle } from '@/components/ui/promo-toggle';
+import { type CarListing } from './types';
 
 interface AddCarDialogProps {
   isOpen: boolean;
@@ -37,37 +37,37 @@ export const AddCarDialog = ({ isOpen, onOpenChange, onAddCar, isLoading }: AddC
     isPromo: false,
     colorVariant: [],
     priorityLevel: 3,
-    name: "",
-    image: "",
-    price: "",
-    category: "Sedan",
-    passengers: "",
-    bags: "",
-    transmission: "Automatic",
+    name: '',
+    image: '',
+    price: '',
+    category: 'Sedan',
+    passengers: '',
+    bags: '',
+    transmission: 'Automatic',
     features: [],
     createdDate: new Date(),
-    updatedDate: new Date()
+    updatedDate: new Date(),
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onAddCar(newCar);
-    
+
     // Reset form
     setNewCar({
       isPromo: false,
       colorVariant: [],
       priorityLevel: 3,
-      name: "",
-      image: "",
-      price: "",
-      category: "Sedan",
-      passengers: "",
-      bags: "",
-      transmission: "Automatic",
+      name: '',
+      image: '',
+      price: '',
+      category: 'Sedan',
+      passengers: '',
+      bags: '',
+      transmission: 'Automatic',
       features: [],
       createdDate: new Date(),
-      updatedDate: new Date()
+      updatedDate: new Date(),
     });
   };
 
@@ -82,11 +82,9 @@ export const AddCarDialog = ({ isOpen, onOpenChange, onAddCar, isLoading }: AddC
       <DialogContent size="2xl" className="max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Add New Car</DialogTitle>
-          <DialogDescription>
-            Enter the details for the new car listing
-          </DialogDescription>
+          <DialogDescription>Enter the details for the new car listing</DialogDescription>
         </DialogHeader>
-        
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Basic Information */}
@@ -100,23 +98,28 @@ export const AddCarDialog = ({ isOpen, onOpenChange, onAddCar, isLoading }: AddC
                   required
                 />
               </div>
-              
+
               <div>
                 <Label htmlFor="new-category">Category</Label>
-                <Select value={newCar.category} onValueChange={(value) => setNewCar({ ...newCar, category: value })}>
+                <Select
+                  value={newCar.category}
+                  onValueChange={(value) => setNewCar({ ...newCar, category: value })}
+                >
                   <SelectTrigger id="new-category">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {carCategories.filter(cat => cat !== "All").map((category) => (
-                      <SelectItem key={category} value={category}>
-                        {category}
-                      </SelectItem>
-                    ))}
+                    {carCategories
+                      .filter((cat) => cat !== 'All')
+                      .map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div>
                 <Label htmlFor="new-price">Price *</Label>
                 <Input
@@ -127,10 +130,13 @@ export const AddCarDialog = ({ isOpen, onOpenChange, onAddCar, isLoading }: AddC
                   required
                 />
               </div>
-              
+
               <div>
                 <Label htmlFor="new-transmission">Transmission</Label>
-                <Select value={newCar.transmission} onValueChange={(value) => setNewCar({ ...newCar, transmission: value })}>
+                <Select
+                  value={newCar.transmission}
+                  onValueChange={(value) => setNewCar({ ...newCar, transmission: value })}
+                >
                   <SelectTrigger id="new-transmission">
                     <SelectValue />
                   </SelectTrigger>
@@ -155,7 +161,7 @@ export const AddCarDialog = ({ isOpen, onOpenChange, onAddCar, isLoading }: AddC
                   required
                 />
               </div>
-              
+
               <div>
                 <Label htmlFor="new-bags">Bags *</Label>
                 <Input
@@ -166,12 +172,14 @@ export const AddCarDialog = ({ isOpen, onOpenChange, onAddCar, isLoading }: AddC
                   required
                 />
               </div>
-              
+
               <div>
                 <Label htmlFor="new-priorityLevel">Priority Level</Label>
-                <Select 
-                  value={newCar.priorityLevel.toString()} 
-                  onValueChange={(value) => setNewCar({ ...newCar, priorityLevel: parseInt(value) as 1 | 2 | 3 | 4 | 5 })}
+                <Select
+                  value={newCar.priorityLevel.toString()}
+                  onValueChange={(value) =>
+                    setNewCar({ ...newCar, priorityLevel: parseInt(value) as 1 | 2 | 3 | 4 | 5 })
+                  }
                 >
                   <SelectTrigger id="new-priorityLevel">
                     <SelectValue />
@@ -203,7 +211,7 @@ export const AddCarDialog = ({ isOpen, onOpenChange, onAddCar, isLoading }: AddC
               maxItems={10}
               type="color"
             />
-            
+
             <ArrayInput
               label="Features"
               value={newCar.features}
@@ -211,7 +219,7 @@ export const AddCarDialog = ({ isOpen, onOpenChange, onAddCar, isLoading }: AddC
               placeholder="Add feature (e.g., GPS Navigation, Bluetooth)"
               maxItems={15}
             />
-            
+
             <ImageUpload
               label="Car Image"
               value={newCar.image}

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { CircularProgress, Progress } from "@/components/ui/progress";
-import { Button } from "@/components/ui/button";
-import { Minus, Plus } from "lucide-react";
-import React from "react";
+import { CircularProgress, Progress } from '@/components/ui/progress';
+import { Button } from '@/components/ui/button';
+import { Minus, Plus } from 'lucide-react';
+import React from 'react';
 
 const DynamicProgressbar = () => {
   const [value2, setValue2] = React.useState<number>(10);

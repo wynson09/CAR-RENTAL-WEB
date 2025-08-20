@@ -1,26 +1,30 @@
-"use client";
+'use client';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
-import { Icon } from "@iconify/react";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { type Contact as ContactType } from "@/app/api/chat/data";
-const ForwardMessage = ({ open, contacts, setIsOpen }: {
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { cn } from '@/lib/utils';
+import { Input } from '@/components/ui/input';
+import { Icon } from '@iconify/react';
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { type Contact as ContactType } from '@/app/api/chat/data';
+const ForwardMessage = ({
+  open,
+  contacts,
+  setIsOpen,
+}: {
   open: boolean;
   contacts: any;
-  setIsOpen: any
+  setIsOpen: any;
 }) => {
   return (
-    <Dialog open={open} >
+    <Dialog open={open}>
       <DialogContent size="xl" className="px-0 pb-0">
         <DialogHeader className="relative py-2">
           <DialogTitle className="text-center">Forward</DialogTitle>
@@ -42,13 +46,13 @@ const ForwardMessage = ({ open, contacts, setIsOpen }: {
           </div>
           <div className="xl:h-[calc(100vh-340px)]">
             <ScrollArea className="h-full">
-
               {contacts?.contacts?.map((contact: ContactType, index: number) => (
                 <div
                   className={cn(
-                    " gap-4 py-2.5 px-2.5 border-l-2 border-transparent rounded-sm  hover:bg-default-100 cursor-pointer flex"
+                    ' gap-4 py-2.5 px-2.5 border-l-2 border-transparent rounded-sm  hover:bg-default-100 cursor-pointer flex'
                   )}
-                  key={`contact-${index}`} >
+                  key={`contact-${index}`}
+                >
                   <div className="flex-1 flex items-center gap-3">
                     <div className="relative inline-block ">
                       <Avatar>
@@ -62,11 +66,7 @@ const ForwardMessage = ({ open, contacts, setIsOpen }: {
                       </span>
                     </div>
                   </div>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="rounded-md"
-                  >
+                  <Button type="button" variant="outline" className="rounded-md">
                     Send
                   </Button>
                 </div>
@@ -74,8 +74,8 @@ const ForwardMessage = ({ open, contacts, setIsOpen }: {
             </ScrollArea>
           </div>
         </div>
-      </DialogContent >
-    </Dialog >
+      </DialogContent>
+    </Dialog>
   );
 };
 

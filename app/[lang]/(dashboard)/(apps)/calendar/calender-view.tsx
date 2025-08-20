@@ -1,32 +1,30 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import FullCalendar from "@fullcalendar/react"; // must go before plugins
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin, { Draggable } from "@fullcalendar/interaction";
-import listPlugin from "@fullcalendar/list";
-import EventSheet from "./event-sheet";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import ExternalDraggingevent from "./dragging-events";
-import { Calendar } from "@/components/ui/calendar";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Plus } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
-import { CalendarEvent, CalendarCategory } from "@/app/api/calendars/data"
+'use client';
+import React, { useState, useEffect } from 'react';
+import FullCalendar from '@fullcalendar/react'; // must go before plugins
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin, { Draggable } from '@fullcalendar/interaction';
+import listPlugin from '@fullcalendar/list';
+import EventSheet from './event-sheet';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import ExternalDraggingevent from './dragging-events';
+import { Calendar } from '@/components/ui/calendar';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Plus } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { CalendarEvent, CalendarCategory } from '@/app/api/calendars/data';
 import {
   EventApi,
   DateSelectArg,
   EventClickArg,
   EventContentArg,
   formatDate,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core';
 const wait = () => new Promise((resolve) => setTimeout(resolve, 1000));
 interface CalendarViewProps {
   events: CalendarEvent[];
   categories: CalendarCategory[];
-
-
 }
 
 const CalendarView = ({ events, categories }: CalendarViewProps) => {
@@ -40,10 +38,10 @@ const CalendarView = ({ events, categories }: CalendarViewProps) => {
   const [date, setDate] = React.useState<Date>(new Date());
 
   const [dragEvents] = useState([
-    { title: "New Event Planning", id: "101", tag: "business" },
-    { title: "Meeting", id: "102", tag: "meeting" },
-    { title: "Generating Reports", id: "103", tag: "holiday" },
-    { title: "Create New theme", id: "104", tag: "etc" },
+    { title: 'New Event Planning', id: '101', tag: 'business' },
+    { title: 'Meeting', id: '102', tag: 'meeting' },
+    { title: 'Generating Reports', id: '103', tag: 'holiday' },
+    { title: 'Create New theme', id: '104', tag: 'etc' },
   ]);
 
   useEffect(() => {
@@ -51,17 +49,17 @@ const CalendarView = ({ events, categories }: CalendarViewProps) => {
   }, [events, categories]);
 
   useEffect(() => {
-    const draggableEl = document.getElementById("external-events");
+    const draggableEl = document.getElementById('external-events');
 
     const initDraggable = () => {
       if (draggableEl) {
         new Draggable(draggableEl, {
-          itemSelector: ".fc-event",
+          itemSelector: '.fc-event',
           eventData: function (eventEl) {
-            let title = eventEl.getAttribute("title");
-            let id = eventEl.getAttribute("data");
+            let title = eventEl.getAttribute('title');
+            let id = eventEl.getAttribute('data');
             let event = dragEvents.find((e) => e.id === id);
-            let tag = event ? event.tag : "";
+            let tag = event ? event.tag : '';
             return {
               title: title,
               id: id,
@@ -79,7 +77,7 @@ const CalendarView = ({ events, categories }: CalendarViewProps) => {
     }
 
     return () => {
-      draggableEl?.removeEventListener("mousedown", initDraggable);
+      draggableEl?.removeEventListener('mousedown', initDraggable);
     };
   }, [dragEvents]);
   // event click
@@ -87,7 +85,7 @@ const CalendarView = ({ events, categories }: CalendarViewProps) => {
     setSelectedEventDate(null);
     setSheetOpen(true);
     setSelectedEvent(arg);
-    wait().then(() => (document.body.style.pointerEvents = "auto"));
+    wait().then(() => (document.body.style.pointerEvents = 'auto'));
   };
   // handle close modal
   const handleCloseModal = () => {
@@ -99,37 +97,33 @@ const CalendarView = ({ events, categories }: CalendarViewProps) => {
     setSheetOpen(true);
     setSelectedEventDate(arg);
     setSelectedEvent(null);
-    wait().then(() => (document.body.style.pointerEvents = "auto"));
+    wait().then(() => (document.body.style.pointerEvents = 'auto'));
   };
 
   const handleCategorySelection = (category: string) => {
     if (selectedCategory && selectedCategory.includes(category)) {
       setSelectedCategory(selectedCategory.filter((c) => c !== category));
     } else {
-      setSelectedCategory([...selectedCategory || [], category]);
+      setSelectedCategory([...(selectedCategory || []), category]);
     }
   };
 
   const handleClassName = (arg: EventContentArg) => {
-
-    if (arg.event.extendedProps.calendar === "holiday") {
-      return "destructive";
+    if (arg.event.extendedProps.calendar === 'holiday') {
+      return 'destructive';
+    } else if (arg.event.extendedProps.calendar === 'business') {
+      return 'primary';
+    } else if (arg.event.extendedProps.calendar === 'personal') {
+      return 'success';
+    } else if (arg.event.extendedProps.calendar === 'family') {
+      return 'info';
+    } else if (arg.event.extendedProps.calendar === 'etc') {
+      return 'info';
+    } else if (arg.event.extendedProps.calendar === 'meeting') {
+      return 'warning';
+    } else {
+      return 'primary';
     }
-    else if (arg.event.extendedProps.calendar === "business") {
-      return "primary";
-    } else if (arg.event.extendedProps.calendar === "personal") {
-      return "success";
-    } else if (arg.event.extendedProps.calendar === "family") {
-      return "info";
-    } else if (arg.event.extendedProps.calendar === "etc") {
-      return "info";
-    } else if (arg.event.extendedProps.calendar === "meeting") {
-      return "warning";
-    }
-    else {
-      return "primary";
-    }
-
   };
 
   const filteredEvents = events?.filter((event) =>
@@ -201,16 +195,11 @@ const CalendarView = ({ events, categories }: CalendarViewProps) => {
         <Card className="col-span-12 lg:col-span-8 2xl:col-span-9  pt-5">
           <CardContent className="dash-tail-calendar">
             <FullCalendar
-              plugins={[
-                dayGridPlugin,
-                timeGridPlugin,
-                interactionPlugin,
-                listPlugin,
-              ]}
+              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
               headerToolbar={{
-                left: "prev,next today",
-                center: "title",
-                right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
               }}
               events={filteredEvents}
               editable={true}

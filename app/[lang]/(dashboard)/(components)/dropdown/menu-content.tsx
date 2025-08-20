@@ -1,7 +1,7 @@
-"use client";
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/react";
+'use client';
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@iconify/react';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -10,10 +10,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 const MenuContent = () => {
   const [showStatusBar1, setShowStatusBar1] = useState<boolean>(false);
   const [showStatusBar2, setShowStatusBar2] = useState<boolean>(false);
@@ -29,9 +29,7 @@ const MenuContent = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[196px] " align="start">
-          <DropdownMenuLabel className="text-default-950">
-            Header Title
-          </DropdownMenuLabel>
+          <DropdownMenuLabel className="text-default-950">Header Title</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuCheckboxItem
             checked={showStatusBar1}
@@ -71,9 +69,7 @@ const MenuContent = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[196px] " align="start">
-          <DropdownMenuLabel className="text-default-950">
-            Header Title
-          </DropdownMenuLabel>
+          <DropdownMenuLabel className="text-default-950">Header Title</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuCheckboxItem
             checked={showStatusBar1}
@@ -115,8 +111,8 @@ const MenuContent = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[196px] " align="start">
           <DropdownMenuItem className=" focus:bg-transparent focus:text-default-950 text-default-500 cursor-pointer">
-            Another Action is a show something else here to lorem ipsum dolar
-            sit ent another boxes content write here.
+            Another Action is a show something else here to lorem ipsum dolar sit ent another boxes
+            content write here.
           </DropdownMenuItem>
           <DropdownMenuItem className=" focus:bg-transparent focus:text-default-950 text-default-500 cursor-pointer">
             Lorem ipsum dolar sit ent another boxes.
@@ -135,17 +131,13 @@ const MenuContent = () => {
             <div className="space-y-4">
               <div>
                 <Label className="mb-3" htmlFor="inputId">
-                  Email Address{" "}
+                  Email Address{' '}
                 </Label>
-                <Input
-                  type="email"
-                  placeholder="email@example.com"
-                  id="inputId"
-                />
+                <Input type="email" placeholder="email@example.com" id="inputId" />
               </div>
               <div>
                 <Label className="mb-3" htmlFor="inputId">
-                  Password{" "}
+                  Password{' '}
                 </Label>
                 <Input type="password" placeholder="Password" id="inputId" />
               </div>

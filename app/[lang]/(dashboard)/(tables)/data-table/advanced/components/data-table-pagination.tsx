@@ -1,34 +1,31 @@
-import {
-  ChevronsLeft,
-  ChevronRight,
-  ChevronLeft,
-} from "lucide-react";
+import { ChevronsLeft, ChevronRight, ChevronLeft } from 'lucide-react';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Table } from "@tanstack/react-table";
+} from '@/components/ui/select';
+import { Table } from '@tanstack/react-table';
 
 interface DataTablePaginationProps {
   table: Table<any>;
 }
 
-
 export function DataTablePagination({ table }: DataTablePaginationProps) {
   return (
     <div className="flex items-center flex-wrap gap-2 justify-between px-2">
       <div className="flex-1 text-sm text-muted-foreground whitespace-nowrap">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
+        {table.getFilteredSelectedRowModel().rows.length} of{' '}
         {table.getFilteredRowModel().rows.length} row(s) selected.
       </div>
       <div className="flex flex-wrap items-center gap-6 lg:gap-8">
         <div className="flex items-center gap-2">
-          <p className="text-sm font-medium text-muted-foreground whitespace-nowrap">Rows per page</p>
+          <p className="text-sm font-medium text-muted-foreground whitespace-nowrap">
+            Rows per page
+          </p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
@@ -48,8 +45,7 @@ export function DataTablePagination({ table }: DataTablePaginationProps) {
           </Select>
         </div>
         <div className="flex w-[100px] items-center justify-center text-sm font-medium text-muted-foreground">
-          Page {table.getState().pagination.pageIndex + 1} of{" "}
-          {table.getPageCount()}
+          Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
         </div>
         <div className="flex items-center gap-2">
           <Button

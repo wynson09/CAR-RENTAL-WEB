@@ -1,7 +1,7 @@
-"use client";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
+'use client';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
 import {
   CartesianGrid,
   XAxis,
@@ -11,8 +11,8 @@ import {
   ScatterChart,
   Scatter,
   ZAxis,
-} from "recharts";
-import CustomTooltip from "./custom-tooltip";
+} from 'recharts';
+import CustomTooltip from './custom-tooltip';
 interface DataPoint {
   x: number;
   y: number;
@@ -44,8 +44,7 @@ const ThreeDimScatter = ({ height = 300 }) => {
     <ResponsiveContainer width="100%" height={height}>
       <ScatterChart height={height}>
         <CartesianGrid
-          stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-            })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
           strokeDasharray="3 3"
           vertical={false}
         />
@@ -55,13 +54,11 @@ const ThreeDimScatter = ({ height = 300 }) => {
           name="stature"
           unit="cm"
           tick={{
-            fill: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel
-              })`,
-            fontSize: "12px",
+            fill: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
+            fontSize: '12px',
           }}
           tickLine={false}
-          stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-            })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
           axisLine={false}
         />
         <YAxis
@@ -70,34 +67,24 @@ const ThreeDimScatter = ({ height = 300 }) => {
           name="weight"
           unit="kg"
           tick={{
-            fill: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel
-              })`,
-            fontSize: "12px",
+            fill: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
+            fontSize: '12px',
           }}
           tickLine={false}
-          stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-            })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
         />
-        <ZAxis
-          type="number"
-          dataKey="z"
-          range={[60, 400]}
-          name="score"
-          unit="km"
-        />
+        <ZAxis type="number" dataKey="z" range={[60, 400]} name="score" unit="km" />
         <Tooltip content={<CustomTooltip />} />
         <Scatter
           name="A school"
           data={data01}
           shape="star"
-          fill={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info
-            })`}
+          fill={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`}
         />
         <Scatter
           name="B school"
           data={data02}
-          fill={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success
-            })`}
+          fill={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`}
           shape="triangle"
         />
       </ScatterChart>

@@ -1,16 +1,15 @@
-"use client";
-import React, { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+'use client';
+import React, { useState } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
 
-import ProjectsSheet from "./project-sheet";
-import { Plus, LayoutGrid, List } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import ProjectGrid from "./project-grid";
-import ProjectList from "./project-list";
-import { cn } from "@/lib/utils";
+import ProjectsSheet from './project-sheet';
+import { Plus, LayoutGrid, List } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import ProjectGrid from './project-grid';
+import ProjectList from './project-list';
+import { cn } from '@/lib/utils';
 import {
-
   getCoreRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
@@ -20,19 +19,19 @@ import {
   useReactTable,
   VisibilityState,
   ColumnFiltersState,
-  SortingState
-} from "@tanstack/react-table";
-import { columns } from "./project-list/components/columns";
-import { DataTableToolbar } from "./project-list/components/data-table-toolbar";
-import Blank from "@/components/blank";
+  SortingState,
+} from '@tanstack/react-table';
+import { columns } from './project-list/components/columns';
+import { DataTableToolbar } from './project-list/components/data-table-toolbar';
+import Blank from '@/components/blank';
 
 const wait = () => new Promise((resolve) => setTimeout(resolve, 1000));
-import { type Project } from "@/app/api/projects/data";
+import { type Project } from '@/app/api/projects/data';
 interface ProjectsViewProps {
   projects: Project[];
 }
 const ProjectsView = ({ projects }: ProjectsViewProps) => {
-  const [pageView, setPageView] = React.useState<"grid" | "list">("grid");
+  const [pageView, setPageView] = React.useState<'grid' | 'list'>('grid');
   // modal state
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [selectedProjectId, setSelectedProjectId] = useState<any | null>(null);
@@ -43,8 +42,6 @@ const ProjectsView = ({ projects }: ProjectsViewProps) => {
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
-
-
 
   const table = useReactTable({
     data: projects,
@@ -72,7 +69,7 @@ const ProjectsView = ({ projects }: ProjectsViewProps) => {
     setSelectedProject(null);
     setSelectedProjectId(null);
     setIsOpen(true);
-    wait().then(() => (document.body.style.pointerEvents = "auto"));
+    wait().then(() => (document.body.style.pointerEvents = 'auto'));
   };
 
   const editProjectModal = (project: Project) => {
@@ -87,18 +84,16 @@ const ProjectsView = ({ projects }: ProjectsViewProps) => {
     setSelectedProject(null);
     setSelectedProjectId(null);
 
-    wait().then(() => (document.body.style.pointerEvents = "auto"));
+    wait().then(() => (document.body.style.pointerEvents = 'auto'));
   };
 
   if (projects.length < 1) {
     return (
       <Blank className="max-w-[320px] mx-auto flex flex-col items-center justify-center h-full space-y-3">
-        <div className=" text-default-900 text-xl font-semibold">
-          No Project Here
-        </div>
+        <div className=" text-default-900 text-xl font-semibold">No Project Here</div>
         <div className=" text-sm  text-default-600 ">
-          There is no task create. If you create a new task then click this
-          button & create new board.
+          There is no task create. If you create a new task then click this button & create new
+          board.
         </div>
         <div></div>
         <Button onClick={addProjectModal}>
@@ -122,53 +117,44 @@ const ProjectsView = ({ projects }: ProjectsViewProps) => {
               <Button
                 size="icon"
                 variant="outline"
-                className={cn("hover:bg-transparent  ", {
-                  "hover:border-primary hover:text-primary":
-                    pageView === "grid",
-                  "hover:border-muted-foreground hover:text-muted-foreground":
-                    pageView !== "grid",
+                className={cn('hover:bg-transparent  ', {
+                  'hover:border-primary hover:text-primary': pageView === 'grid',
+                  'hover:border-muted-foreground hover:text-muted-foreground': pageView !== 'grid',
                 })}
-                color={pageView === "grid" ? "primary" : "secondary"}
-                onClick={() => setPageView("grid")}
+                color={pageView === 'grid' ? 'primary' : 'secondary'}
+                onClick={() => setPageView('grid')}
               >
                 <LayoutGrid className="h-5 w-5" />
               </Button>
               <Button
                 size="icon"
                 variant="outline"
-                className={cn("hover:bg-transparent  ", {
-                  "hover:border-primary hover:text-primary":
-                    pageView === "list",
-                  "hover:border-muted-foreground hover:text-muted-foreground":
-                    pageView !== "list",
+                className={cn('hover:bg-transparent  ', {
+                  'hover:border-primary hover:text-primary': pageView === 'list',
+                  'hover:border-muted-foreground hover:text-muted-foreground': pageView !== 'list',
                 })}
-                color={pageView === "list" ? "primary" : "secondary"}
-                onClick={() => setPageView("list")}
+                color={pageView === 'list' ? 'primary' : 'secondary'}
+                onClick={() => setPageView('list')}
               >
                 <List className="h-5 w-5" />
               </Button>
             </div>
             <div className=" flex-none  flex flex-wrap gap-3">
-              {pageView === "grid" && <Input placeholder="search..." />}
-              {pageView === "list" && <DataTableToolbar table={table} />}
+              {pageView === 'grid' && <Input placeholder="search..." />}
+              {pageView === 'list' && <DataTableToolbar table={table} />}
             </div>
           </div>
         </CardContent>
       </Card>
-      {pageView === "grid" && (
+      {pageView === 'grid' && (
         <div className="grid  xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-5">
           {projects?.map((project, i) => (
-            <ProjectGrid
-              project={project}
-              key={`project-grid-${i}`}
-              onEdit={editProjectModal}
-            />
+            <ProjectGrid project={project} key={`project-grid-${i}`} onEdit={editProjectModal} />
           ))}
         </div>
       )}
-      {pageView === "list" && (
+      {pageView === 'list' && (
         <ProjectList data={projects} table={table} columns={columns as any} />
-
       )}
 
       <ProjectsSheet

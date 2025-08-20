@@ -1,13 +1,13 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from '@/components/ui/skeleton';
 
-export type ViewMode = "table" | "grid";
+export type ViewMode = 'table' | 'grid';
 
 interface LoadingSkeletonProps {
   viewMode: ViewMode;
 }
 
 export const LoadingSkeleton = ({ viewMode }: LoadingSkeletonProps) => {
-  if (viewMode === "table") {
+  if (viewMode === 'table') {
     return (
       <div className="p-6">
         <div className="space-y-4">

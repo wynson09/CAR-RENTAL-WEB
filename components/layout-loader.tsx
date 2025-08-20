@@ -1,7 +1,7 @@
-"use client";
-import React from "react";
-import { SiteLogo } from "@/components/svg";
-import { Loader2 } from "lucide-react";
+'use client';
+import React from 'react';
+import { SiteLogo } from '@/components/svg';
+import { Loader2 } from 'lucide-react';
 const LayoutLoader = () => {
   return (
     <div className=" h-screen flex items-center justify-center flex-col space-y-2">

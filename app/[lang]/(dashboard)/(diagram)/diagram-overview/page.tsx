@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import React, { useCallback } from 'react';
 import ReactFlow, {
   addEdge,
@@ -29,7 +29,8 @@ const minimapStyle = {
   height: 120,
 };
 
-const onInit = (reactFlowInstance: ReactFlowInstance) => console.log('flow loaded:', reactFlowInstance);
+const onInit = (reactFlowInstance: ReactFlowInstance) =>
+  console.log('flow loaded:', reactFlowInstance);
 
 const OverviewFlow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node[]>(initialNodes);
@@ -38,14 +39,13 @@ const OverviewFlow = () => {
 
   const edgesWithUpdatedTypes = edges.map((edge) => {
     if (edge.sourceHandle) {
-      const edgeType = (nodes as any).find((node: any) => node.type === 'custom').data.selects[edge.sourceHandle];
+      const edgeType = (nodes as any).find((node: any) => node.type === 'custom').data.selects[
+        edge.sourceHandle
+      ];
       edge.type = edgeType;
     }
     return edge;
   });
-
-
-
 
   return (
     <Card>
@@ -53,7 +53,7 @@ const OverviewFlow = () => {
         <CardTitle>Overview</CardTitle>
       </CardHeader>
       <CardContent className="overflow-x-auto">
-        <div className='w-full h-[calc(100vh-280px)]'>
+        <div className="w-full h-[calc(100vh-280px)]">
           <ReactFlow
             nodes={nodes}
             edges={edgesWithUpdatedTypes}
@@ -72,8 +72,6 @@ const OverviewFlow = () => {
         </div>
       </CardContent>
     </Card>
-
-
   );
 };
 

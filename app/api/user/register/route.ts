@@ -1,6 +1,6 @@
-import { NextResponse, NextRequest } from "next/server";
-import { user } from "../data";
-import avatar3 from "@/public/images/avatar/avatar-3.jpg";
+import { NextResponse, NextRequest } from 'next/server';
+import { user } from '../data';
+import avatar3 from '@/public/images/avatar/avatar-3.jpg';
 export async function POST(request: NextRequest, response: any) {
   try {
     let reqBody = await request.json();
@@ -9,8 +9,8 @@ export async function POST(request: NextRequest, response: any) {
 
     if (foundUser) {
       return NextResponse.json({
-        status: "fail",
-        message: "User already exists",
+        status: 'fail',
+        message: 'User already exists',
       });
     }
 
@@ -19,15 +19,15 @@ export async function POST(request: NextRequest, response: any) {
     reqBody.image = avatar3;
     user.push(reqBody);
     return NextResponse.json({
-      status: "success",
-      message: "User created successfully",
+      status: 'success',
+      message: 'User created successfully',
       data: reqBody,
     });
   } catch (e) {
-    console.log("An error occurred:", e);
+    console.log('An error occurred:', e);
     return NextResponse.json({
-      status: "fail",
-      message: "Something went wrong",
+      status: 'fail',
+      message: 'Something went wrong',
       data: e,
     });
   }

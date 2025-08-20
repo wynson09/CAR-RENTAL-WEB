@@ -1,9 +1,8 @@
-"use client";
+'use client';
 
-import { CircularProgress } from "@/components/ui/progress";
+import { CircularProgress } from '@/components/ui/progress';
 
 const DefaultCircleProgressbar = () => {
-
   return (
     <>
       <CircularProgress value={70} />

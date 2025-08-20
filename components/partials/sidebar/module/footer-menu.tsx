@@ -1,9 +1,9 @@
-import React from "react";
-import { Icon } from "@iconify/react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Settings } from "@/components/svg";
-import { useSession, signIn, signOut } from "next-auth/react";
-import Image from "next/image";
+import React from 'react';
+import { Icon } from '@iconify/react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Settings } from '@/components/svg';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import Image from 'next/image';
 const FooterMenu = () => {
   const { data: session } = useSession();
   return (
@@ -15,7 +15,7 @@ const FooterMenu = () => {
         {session?.user?.image && (
           <Image
             src={session?.user?.image}
-            alt={session?.user?.name ?? ""}
+            alt={session?.user?.name ?? ''}
             width={36}
             height={36}
             className="rounded-full"

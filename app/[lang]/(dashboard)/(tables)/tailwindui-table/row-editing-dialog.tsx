@@ -1,4 +1,4 @@
-import { Switch } from "@/components/ui/switch";
+import { Switch } from '@/components/ui/switch';
 import {
   Table,
   TableBody,
@@ -7,13 +7,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { DataRows, users } from "./data";
-import { Icon } from "@iconify/react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+} from '@/components/ui/table';
+import { DataRows, users } from './data';
+import { Icon } from '@iconify/react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import {
   Dialog,
   DialogContent,
@@ -22,16 +22,16 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogClose,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -42,7 +42,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from '@/components/ui/alert-dialog';
 const RowEditingDialog = () => {
   return (
     <Table>
@@ -65,9 +65,7 @@ const RowEditingDialog = () => {
                   <AvatarImage src={item.avatar} />
                   <AvatarFallback>AB</AvatarFallback>
                 </Avatar>
-                <span className=" text-sm   text-card-foreground">
-                  {item.name}
-                </span>
+                <span className=" text-sm   text-card-foreground">{item.name}</span>
               </div>
             </TableCell>
 
@@ -77,10 +75,11 @@ const RowEditingDialog = () => {
               <Badge
                 variant="soft"
                 color={
-                  (item.role === "admin" && "default") ||
-                  (item.role === "member" && "success") ||
-                  (item.role === "owner" && "info") ||
-                  (item.role === "editor" && "warning") || "default"
+                  (item.role === 'admin' && 'default') ||
+                  (item.role === 'member' && 'success') ||
+                  (item.role === 'owner' && 'info') ||
+                  (item.role === 'editor' && 'warning') ||
+                  'default'
                 }
                 className=" capitalize"
               >
@@ -95,30 +94,20 @@ const RowEditingDialog = () => {
                 <EditingDialog />
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button
-                      size="icon"
-                      variant="outline"
-                      className=" h-7 w-7"
-                      color="secondary"
-                    >
+                    <Button size="icon" variant="outline" className=" h-7 w-7" color="secondary">
                       <Icon icon="heroicons:trash" className=" h-4 w-4  " />
                     </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        Are you absolutely sure?
-                      </AlertDialogTitle>
+                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                       <AlertDialogDescription>
-                        This action cannot be undone. This will permanently
-                        delete your account and remove your data from our
-                        servers.
+                        This action cannot be undone. This will permanently delete your account and
+                        remove your data from our servers.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel className=" bg-secondary">
-                        Cancel
-                      </AlertDialogCancel>
+                      <AlertDialogCancel className=" bg-secondary">Cancel</AlertDialogCancel>
                       <AlertDialogAction className="bg-destructive hover:bg-destructive/80">
                         Ok
                       </AlertDialogAction>
@@ -140,12 +129,7 @@ const EditingDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          size="icon"
-          variant="outline"
-          color="secondary"
-          className=" h-7 w-7"
-        >
+        <Button size="icon" variant="outline" color="secondary" className=" h-7 w-7">
           <Icon icon="heroicons:pencil" className=" h-4 w-4  " />
         </Button>
       </DialogTrigger>

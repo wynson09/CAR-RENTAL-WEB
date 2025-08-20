@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { AlertTriangle } from "lucide-react";
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { AlertTriangle } from 'lucide-react';
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -46,7 +46,8 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
             Something went wrong
           </h2>
           <p className="text-sm text-red-600 dark:text-red-400 mb-4 max-w-md">
-            {this.state.error?.message || "An unexpected error occurred while loading this component."}
+            {this.state.error?.message ||
+              'An unexpected error occurred while loading this component.'}
           </p>
           <Button onClick={this.resetError} variant="outline" size="sm">
             Try Again

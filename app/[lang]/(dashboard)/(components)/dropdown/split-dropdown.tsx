@@ -1,6 +1,6 @@
-"use client"
-import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/react";
+'use client';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@iconify/react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,7 +8,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 const SplitDropdown = () => {
   return (
     <>
@@ -82,10 +82,7 @@ const SplitDropdown = () => {
         </DropdownMenu>
       </div>
       <div className="flex">
-        <Button
-          className=" ltr:rounded-r-none rtl:rounded-l-none"
-          color="destructive"
-        >
+        <Button className=" ltr:rounded-r-none rtl:rounded-l-none" color="destructive">
           Danger
         </Button>
         <DropdownMenu>

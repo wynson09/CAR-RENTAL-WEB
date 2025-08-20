@@ -1,82 +1,74 @@
+import * as React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { Icon } from '@iconify/react';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
-import * as React from "react";
-import { cva, type VariantProps } from "class-variance-authority";
-import { Icon } from "@iconify/react";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-
-const breadcrumbItemsVariants = cva(
-  " flex gap-1 items-center transition  underline-offset-4 ",
-  {
-    variants: {
-      color: {
-        default:
-          "text-default-600 hover:default-600/80 data-[state=active]:text-primary aria-[current=page]:text-primary",
-        primary:
-          "text-primary/80 hover:text-primary/60 data-[state=active]:text-primary aria-[current=page]:text-primary",
-        success:
-          "text-success/80 hover:text-success/60 data-[state=active]:text-success aria-[current=page]:text-success",
-        info: "text-info/80 hover:text-info/60 data-[state=active]:text-info aria-[current=page]:text-info",
-        warning:
-          "text-warning/80  hover:text-warning/60 data-[state=active]:text-warning aria-[current=page]:text-warning",
-        destructive:
-          "text-destructive/80  hover:text-destructive/60 data-[state=active]:text-destructive aria-[current=page]:text-destructive",
-      },
-
-      underline: {
-        none: "no-underline",
-        hover: "hover:underline",
-        always: "underline",
-        active: "active:underline",
-        focus: "focus:underline",
-      },
-      size: {
-        md: "text-base",
-        sm: "text-sm",
-        lg: "text-lg",
-      },
-    },
-
-    defaultVariants: {
-      color: "default",
-      size: "sm",
-      underline: "none",
-    },
-  }
-);
-const breadcrumbsVariants = cva(" flex flex-wrap list-none max-w-fit ", {
+const breadcrumbItemsVariants = cva(' flex gap-1 items-center transition  underline-offset-4 ', {
   variants: {
-    variant: {
-      default: "default-style",
-      solid: " bg-muted p-3 rounded",
-      bordered: "border-2 border-border rounded p-3",
-    }
+    color: {
+      default:
+        'text-default-600 hover:default-600/80 data-[state=active]:text-primary aria-[current=page]:text-primary',
+      primary:
+        'text-primary/80 hover:text-primary/60 data-[state=active]:text-primary aria-[current=page]:text-primary',
+      success:
+        'text-success/80 hover:text-success/60 data-[state=active]:text-success aria-[current=page]:text-success',
+      info: 'text-info/80 hover:text-info/60 data-[state=active]:text-info aria-[current=page]:text-info',
+      warning:
+        'text-warning/80  hover:text-warning/60 data-[state=active]:text-warning aria-[current=page]:text-warning',
+      destructive:
+        'text-destructive/80  hover:text-destructive/60 data-[state=active]:text-destructive aria-[current=page]:text-destructive',
+    },
+
+    underline: {
+      none: 'no-underline',
+      hover: 'hover:underline',
+      always: 'underline',
+      active: 'active:underline',
+      focus: 'focus:underline',
+    },
+    size: {
+      md: 'text-base',
+      sm: 'text-sm',
+      lg: 'text-lg',
+    },
   },
 
   defaultVariants: {
-    variant: "default",
+    color: 'default',
+    size: 'sm',
+    underline: 'none',
+  },
+});
+const breadcrumbsVariants = cva(' flex flex-wrap list-none max-w-fit ', {
+  variants: {
+    variant: {
+      default: 'default-style',
+      solid: ' bg-muted p-3 rounded',
+      bordered: 'border-2 border-border rounded p-3',
+    },
+  },
+
+  defaultVariants: {
+    variant: 'default',
   },
 });
 
-
-interface BreadcrumbsProps extends React.HTMLAttributes<HTMLOListElement>,
-  VariantProps<typeof breadcrumbsVariants> {
-
-  maxItems?: number
-  itemsBeforeCollapse?: any
-  itemsAfterCollapse?: any
-  renderEllipsis?: React.ReactNode
-  separator?: React.ReactNode
-  itemClasses?: string
-  disabled?: boolean
-  variant?: "solid" | "default" | "bordered"
-  underline?: string
-  ellipsisClass?: string
-  size?: any
-  color?: any
-
-
-
+interface BreadcrumbsProps
+  extends React.HTMLAttributes<HTMLOListElement>,
+    VariantProps<typeof breadcrumbsVariants> {
+  maxItems?: number;
+  itemsBeforeCollapse?: any;
+  itemsAfterCollapse?: any;
+  renderEllipsis?: React.ReactNode;
+  separator?: React.ReactNode;
+  itemClasses?: string;
+  disabled?: boolean;
+  variant?: 'solid' | 'default' | 'bordered';
+  underline?: string;
+  ellipsisClass?: string;
+  size?: any;
+  color?: any;
 }
 const Breadcrumbs = React.forwardRef<HTMLOListElement, BreadcrumbsProps>(
   (
@@ -99,20 +91,13 @@ const Breadcrumbs = React.forwardRef<HTMLOListElement, BreadcrumbsProps>(
     },
     ref
   ) => {
-
     const breadcrumbItems = React.Children.toArray(children);
     const totalItems = breadcrumbItems.length;
 
     let visibleItems: React.ReactNode[] = breadcrumbItems;
     if (maxItems && totalItems > maxItems) {
-      const visibleBefore = Math.min(
-        itemsBeforeCollapse,
-        totalItems - itemsAfterCollapse
-      );
-      const visibleAfter = Math.min(
-        itemsAfterCollapse,
-        totalItems - visibleBefore
-      );
+      const visibleBefore = Math.min(itemsBeforeCollapse, totalItems - itemsAfterCollapse);
+      const visibleAfter = Math.min(itemsAfterCollapse, totalItems - visibleBefore);
       visibleItems = [
         ...breadcrumbItems.slice(0, visibleBefore),
         null, // Placeholder for ellipsis
@@ -121,11 +106,7 @@ const Breadcrumbs = React.forwardRef<HTMLOListElement, BreadcrumbsProps>(
     }
 
     return (
-      <ol
-        ref={ref}
-        className={cn(breadcrumbsVariants({ variant }), className)}
-        {...props}
-      >
+      <ol ref={ref} className={cn(breadcrumbsVariants({ variant }), className)} {...props}>
         {visibleItems.map((child, index) => {
           const islast = index === visibleItems.length - 1;
 
@@ -134,42 +115,24 @@ const Breadcrumbs = React.forwardRef<HTMLOListElement, BreadcrumbsProps>(
             return (
               <li
                 key={`breadcrumb-ellipsis-${index}`}
-                className={cn("flex items-center", {
-                  "  gap-1 text-base": renderEllipsis,
+                className={cn('flex items-center', {
+                  '  gap-1 text-base': renderEllipsis,
                 })}
               >
                 {renderEllipsis ? (
-                  <div
-                    className={cn(
-                      "flex gap-1 text-default-600 items-center ",
-                      ellipsisClass
-                    )}
-                  >
+                  <div className={cn('flex gap-1 text-default-600 items-center ', ellipsisClass)}>
                     {renderEllipsis}
                     <span className="separator px-1 self-center">
-                      {separator ? (
-                        separator
-                      ) : (
-                        <Icon icon="heroicons:chevron-right" />
-                      )}
+                      {separator ? separator : <Icon icon="heroicons:chevron-right" />}
                     </span>
                   </div>
                 ) : (
-                  <div
-                    className={cn(
-                      "flex gap-1 text-default-600  text-base",
-                      ellipsisClass
-                    )}
-                  >
+                  <div className={cn('flex gap-1 text-default-600  text-base', ellipsisClass)}>
                     <span>
                       <Icon icon="heroicons:ellipsis-horizontal" />
                     </span>
                     <span className="separator px-1 self-center">
-                      {separator ? (
-                        separator
-                      ) : (
-                        <Icon icon="heroicons:chevron-right" />
-                      )}
+                      {separator ? separator : <Icon icon="heroicons:chevron-right" />}
                     </span>
                   </div>
                 )}
@@ -194,11 +157,7 @@ const Breadcrumbs = React.forwardRef<HTMLOListElement, BreadcrumbsProps>(
   }
 );
 
-Breadcrumbs.displayName = "Breadcrumbs";
-
-
-
-
+Breadcrumbs.displayName = 'Breadcrumbs';
 
 const BreadcrumbItem = React.forwardRef<HTMLSpanElement, any>(
   (
@@ -221,9 +180,9 @@ const BreadcrumbItem = React.forwardRef<HTMLSpanElement, any>(
     },
     ref
   ) => {
-    const ariaCurrent = iscurrent ? "page" : undefined;
-    const dataState = iscurrent ? "active" : undefined;
-    const dataDisabled = disabled && !iscurrent ? "true" : undefined;
+    const ariaCurrent = iscurrent ? 'page' : undefined;
+    const dataState = iscurrent ? 'active' : undefined;
+    const dataDisabled = disabled && !iscurrent ? 'true' : undefined;
 
     const handleClick = () => {
       if (onAction && !iscurrent) {
@@ -235,15 +194,11 @@ const BreadcrumbItem = React.forwardRef<HTMLSpanElement, any>(
       <li className="inline-flex items-center">
         <span
           ref={ref}
-          className={cn(
-            breadcrumbItemsVariants({ color, size, underline }),
-            className,
-            {
-              "cursor-pointer": (!iscurrent && onAction) || !islast,
-              "data-[disabled=true]:opacity-50 data-[disabled=true]:cursor-not-allowed":
-                disabled && !iscurrent,
-            },
-          )}
+          className={cn(breadcrumbItemsVariants({ color, size, underline }), className, {
+            'cursor-pointer': (!iscurrent && onAction) || !islast,
+            'data-[disabled=true]:opacity-50 data-[disabled=true]:cursor-not-allowed':
+              disabled && !iscurrent,
+          })}
           aria-current={ariaCurrent}
           data-state={dataState}
           data-disabled={dataDisabled}
@@ -262,6 +217,6 @@ const BreadcrumbItem = React.forwardRef<HTMLSpanElement, any>(
   }
 );
 
-BreadcrumbItem.displayName = "BreadcrumbItem";
+BreadcrumbItem.displayName = 'BreadcrumbItem';
 
 export { Breadcrumbs, BreadcrumbItem };

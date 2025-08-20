@@ -1,13 +1,13 @@
-import Card from "@/components/ui/card-snippet";
-import FormGrid from "./form-grid";
-import Gutters from "./gutters-box";
-import VFormWithLabel from "./vform-withlabel";
-import VFormWithIcon from "./vform-withicon";
-import HrFormWithLabel from "./hform-withlabel";
-import HrFormWithIcon from "./hform-withicon";
-import HrFormLabelSizing from "./hform-labelsizing";
-import ColumnSizing from "./column-sizing";
-import FormAutoSize from "./form-auto-size";
+import Card from '@/components/ui/card-snippet';
+import FormGrid from './form-grid';
+import Gutters from './gutters-box';
+import VFormWithLabel from './vform-withlabel';
+import VFormWithIcon from './vform-withicon';
+import HrFormWithLabel from './hform-withlabel';
+import HrFormWithIcon from './hform-withicon';
+import HrFormLabelSizing from './hform-labelsizing';
+import ColumnSizing from './column-sizing';
+import FormAutoSize from './form-auto-size';
 const FormLayout = () => {
   return (
     <div className="space-y-5">

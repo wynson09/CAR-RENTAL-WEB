@@ -1,13 +1,16 @@
-"use client"; // Error components must be Client Components
+'use client'; // Error components must be Client Components
 
-import { useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Info } from "lucide-react";
+import { useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Info } from 'lucide-react';
 
-export default function Error({ error, reset }: {
-  error: Error & { digest?: string }
-  reset: () => void
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
 }) {
   return (
     <div className="space-y-4">
@@ -21,4 +24,3 @@ export default function Error({ error, reset }: {
     </div>
   );
 }
-

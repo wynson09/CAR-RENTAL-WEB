@@ -1,22 +1,16 @@
-"use client";
+'use client';
 
-import { useCallback, useMemo } from "react";
-import {
-  VisArea,
-  VisAxis,
-  VisBulletLegend,
-  VisXYContainer,
-} from "@unovis/react";
-import { CurveType } from "@unovis/ts";
-import { categories, baselineData } from "./data";
-import { useTheme } from "next-themes";
-import { useThemeStore } from "@/store";
-import { themes } from "@/config/thems";
+import { useCallback, useMemo } from 'react';
+import { VisArea, VisAxis, VisBulletLegend, VisXYContainer } from '@unovis/react';
+import { CurveType } from '@unovis/ts';
+import { categories, baselineData } from './data';
+import { useTheme } from 'next-themes';
+import { useThemeStore } from '@/store';
+import { themes } from '@/config/thems';
 const BaselineAreaChart = ({ height = 400 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
   const { theme: mode } = useTheme();
   const theme = themes.find((theme) => theme.name === config);
-
 
   const sums = baselineData.map((d) => d.art.reduce((t, i) => t + i, 0));
   const max = Math.max(...sums);
@@ -32,7 +26,6 @@ const BaselineAreaChart = ({ height = 400 }) => {
   const y = useCallback((c: any) => (d: any) => d.art[c.id], []);
   const baseline = useCallback((_: any, i: any) => (max - sums[i]) / 2, []);
 
-
   return (
     <div>
       <VisBulletLegend items={categories} />
@@ -46,20 +39,18 @@ const BaselineAreaChart = ({ height = 400 }) => {
         <VisAxis
           type="x"
           label="Year"
-          tickTextColor={`hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`}
+          tickTextColor={`hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`}
         />
         <VisAxis
           type="y"
           label="Number of Works Acquired"
           tickValues={yTicks}
           tickFormat={useCallback((i: any) => `${Math.abs(i - max / 2)}`, [])}
-          tickTextColor={`hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`}
+          tickTextColor={`hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`}
         />
       </VisXYContainer>
     </div>

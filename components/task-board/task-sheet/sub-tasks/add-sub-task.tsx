@@ -1,19 +1,19 @@
-"use client";
-import React from "react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Plus } from "lucide-react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { cn, formatDate } from "@/lib/utils";
-import { toast } from "react-hot-toast";
-import { addSubTaskAction } from "@/action/project-action";
+'use client';
+import React from 'react';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Plus } from 'lucide-react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { cn, formatDate } from '@/lib/utils';
+import { toast } from 'react-hot-toast';
+import { addSubTaskAction } from '@/action/project-action';
 const schema = z.object({
-  title: z.string().min(2, { message: "title lagbe re vai ." }),
+  title: z.string().min(2, { message: 'title lagbe re vai .' }),
 });
-import { type Task as TaskType } from "@/app/api/tasks/data";
-const AddSubTask = ({ taskId }: { taskId: TaskType["id"] }) => {
+import { type Task as TaskType } from '@/app/api/tasks/data';
+const AddSubTask = ({ taskId }: { taskId: TaskType['id'] }) => {
   const [isPending, startTransition] = React.useTransition();
   const {
     register,
@@ -33,7 +33,7 @@ const AddSubTask = ({ taskId }: { taskId: TaskType["id"] }) => {
 
     startTransition(async () => {
       result = await addSubTaskAction(data);
-      toast.success("Successfully added");
+      toast.success('Successfully added');
     });
 
     reset();
@@ -48,11 +48,11 @@ const AddSubTask = ({ taskId }: { taskId: TaskType["id"] }) => {
       </Label>
       <Input
         id="add-subtask"
-        {...register("title")}
+        {...register('title')}
         className={cn(
-          "h-[52px] rounded-none border-b border-default-200 pl-12 text-sm font-medium text-default-600 focus:shadow-sm focus:drop-shadow-sm focus:inset-4 focus:border-default-300",
+          'h-[52px] rounded-none border-b border-default-200 pl-12 text-sm font-medium text-default-600 focus:shadow-sm focus:drop-shadow-sm focus:inset-4 focus:border-default-300',
           {
-            "border-destructive focus:border-destructive": errors.title,
+            'border-destructive focus:border-destructive': errors.title,
           }
         )}
         placeholder="Add a new subtask..."

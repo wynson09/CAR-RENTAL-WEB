@@ -1,4 +1,4 @@
-import ServiceButtonsPremium from "../service-buttons-premium";
+import ServiceButtonsPremium from '../service-buttons-premium';
 
 const ShowCase = () => {
   return (
@@ -9,12 +9,12 @@ const ShowCase = () => {
             Car Rental <span className="text-primary">Services</span>
           </h2>
           <p className="text-base leading-7 text-center text-default-700">
-            Discover the freedom of travel with Nacs Car Rental — offering a wide range of vehicles 
-            for every journey. From self-drive adventures to chauffeured convenience, we&apos;ve 
-            got the perfect ride for you anywhere in the Philippines.
+            Discover the freedom of travel with Nacs Car Rental — offering a wide range of vehicles
+            for every journey. From self-drive adventures to chauffeured convenience, we&apos;ve got
+            the perfect ride for you anywhere in the Philippines.
           </p>
         </div>
-        
+
         {/* Service Buttons with Hover Cards - Full Width */}
         <div className="max-w-7xl mx-auto px-4">
           <ServiceButtonsPremium />

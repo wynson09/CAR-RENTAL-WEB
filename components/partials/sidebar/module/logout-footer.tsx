@@ -1,9 +1,9 @@
-"use client";
-import { useSession, signIn, signOut } from "next-auth/react";
-import { Icon } from "@iconify/react";
+'use client';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import { Icon } from '@iconify/react';
 
-import { useState } from "react";
-import AddBlock from "../common/add-block";
+import { useState } from 'react';
+import AddBlock from '../common/add-block';
 const LogoutFooter = () => {
   const { data: session } = useSession();
 
@@ -16,9 +16,7 @@ const LogoutFooter = () => {
           <div className=" text-default-700 font-semibold text-sm capitalize mb-0.5 truncate">
             {session?.user?.name}
           </div>
-          <div className=" text-xs text-default-600  truncate">
-            {session?.user?.email}
-          </div>
+          <div className=" text-xs text-default-600  truncate">{session?.user?.email}</div>
         </div>
         <div className=" flex-none">
           <button
@@ -26,10 +24,7 @@ const LogoutFooter = () => {
             onClick={() => signOut()}
             className="  text-default-500 inline-flex h-9 w-9 rounded items-center  dark:bg-default-300 justify-center dark:text-default-900"
           >
-            <Icon
-              icon="heroicons:arrow-right-start-on-rectangle-20-solid"
-              className=" h-5 w-5"
-            />
+            <Icon icon="heroicons:arrow-right-start-on-rectangle-20-solid" className=" h-5 w-5" />
           </button>
         </div>
       </div>

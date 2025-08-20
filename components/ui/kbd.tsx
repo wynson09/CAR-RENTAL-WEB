@@ -1,33 +1,32 @@
-import * as React from "react";
-import { cn } from "@/lib/utils";
-import { cva, type VariantProps } from "class-variance-authority";
+import * as React from 'react';
+import { cn } from '@/lib/utils';
+import { cva, type VariantProps } from 'class-variance-authority';
 
 const kbdVariants = cva(
-  " px-3 h-8 inline-flex border leading-none [&>abbr]:leading-none  border-default-300 space-x-0.5 items-center  font-medium text-center    bg-default-100 leading-none   text-default-600 rounded-xl",
+  ' px-3 h-8 inline-flex border leading-none [&>abbr]:leading-none  border-default-300 space-x-0.5 items-center  font-medium text-center    bg-default-100 leading-none   text-default-600 rounded-xl',
   {
     variants: {
       variant: {
-        default: "iam-default",
+        default: 'iam-default',
       },
       size: {
-        sm: " h-7 text-xs [&>abbr]:text-sm rounded-lg",
-        md: " text-sm [&>abbr]:text-lg",
-        lg: " px-4 h-9  [&>abbr]:text-xl text-base",
-        xl: " px-4 h-10  [&>abbr]:text-2xl text-xl",
+        sm: ' h-7 text-xs [&>abbr]:text-sm rounded-lg',
+        md: ' text-sm [&>abbr]:text-lg',
+        lg: ' px-4 h-9  [&>abbr]:text-xl text-base',
+        xl: ' px-4 h-10  [&>abbr]:text-2xl text-xl',
       },
     },
     defaultVariants: {
-      variant: "default",
-      size: "md",
+      variant: 'default',
+      size: 'md',
     },
   }
 );
 
 interface KbdProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof kbdVariants> {
-  size?: "sm" | "md" | "lg" | "xl"
-  variant?: "default"
-  keys: string[]
-
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  variant?: 'default';
+  keys: string[];
 }
 const Kbd = React.forwardRef<HTMLDivElement, KbdProps>(
   (
@@ -43,25 +42,25 @@ const Kbd = React.forwardRef<HTMLDivElement, KbdProps>(
     ref
   ) => {
     const kbdKeysMap: Record<string, string> = {
-      command: "⌘",
-      shift: "⇧",
-      ctrl: "⌃",
-      option: "⌥",
-      enter: "↵",
-      delete: "⌫",
-      escape: "⎋",
-      tab: "⇥",
-      capslock: "⇪",
-      up: "↑",
-      right: "→",
-      down: "↓",
-      left: "←",
-      pageup: "⇞",
-      pagedown: "⇟",
-      home: "↖",
-      end: "↘",
-      help: "?",
-      space: "␣",
+      command: '⌘',
+      shift: '⇧',
+      ctrl: '⌃',
+      option: '⌥',
+      enter: '↵',
+      delete: '⌫',
+      escape: '⎋',
+      tab: '⇥',
+      capslock: '⇪',
+      up: '↑',
+      right: '→',
+      down: '↓',
+      left: '←',
+      pageup: '⇞',
+      pagedown: '⇟',
+      home: '↖',
+      end: '↘',
+      help: '?',
+      space: '␣',
     };
     const getKeys = keys.map((key) => {
       const keyLabel = kbdKeysMap[key];
@@ -79,5 +78,5 @@ const Kbd = React.forwardRef<HTMLDivElement, KbdProps>(
     );
   }
 );
-Kbd.displayName = "Kbd";
+Kbd.displayName = 'Kbd';
 export { Kbd };

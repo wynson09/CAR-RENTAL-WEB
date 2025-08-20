@@ -1,14 +1,14 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import BasicLineChart from "./line-chart";
-import LineChartWithDataLabels from "./line-with-datalabels";
-import ZoomableTimeSeries from "./zoomable-timeseries";
-import LineWithAnnonotations from "./line-with-annotations";
-import DashedLineChart from "./dashed-linechart";
-import StepLineChart from "./step-linechart";
-import GradiantLineChart from "./gradiant-linechart";
-import MissingDataLineChart from "./missingdata-linechart";
-import BrushLineChart from "./brush-linechart";
-import SynchronizedChart from "./synchronized-chart";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import BasicLineChart from './line-chart';
+import LineChartWithDataLabels from './line-with-datalabels';
+import ZoomableTimeSeries from './zoomable-timeseries';
+import LineWithAnnonotations from './line-with-annotations';
+import DashedLineChart from './dashed-linechart';
+import StepLineChart from './step-linechart';
+import GradiantLineChart from './gradiant-linechart';
+import MissingDataLineChart from './missingdata-linechart';
+import BrushLineChart from './brush-linechart';
+import SynchronizedChart from './synchronized-chart';
 
 const LineChartPage = () => {
   return (

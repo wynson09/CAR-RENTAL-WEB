@@ -1,50 +1,48 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus } from "lucide-react";
-import Github from "@/public/images/social/github-circle.png"
-import Dribble from "@/public/images/social/dribble-1.png"
-import Behance from "@/public/images/social/behance-1.png"
-import Pinterest from "@/public/images/social/pinterest-circle.png"
-import Web from "@/public/images/social/web.png"
-import Link from "next/link";
-import Image, { StaticImageData } from "next/image";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Plus } from 'lucide-react';
+import Github from '@/public/images/social/github-circle.png';
+import Dribble from '@/public/images/social/dribble-1.png';
+import Behance from '@/public/images/social/behance-1.png';
+import Pinterest from '@/public/images/social/pinterest-circle.png';
+import Web from '@/public/images/social/web.png';
+import Link from 'next/link';
+import Image, { StaticImageData } from 'next/image';
 
 interface PortfolioData {
   name: string;
   image: StaticImageData;
   link: string;
-
 }
 
 const Portfolio = () => {
-
   const data: PortfolioData[] = [
     {
-      name: "Github",
+      name: 'Github',
       image: Github,
-      link: "#",
+      link: '#',
     },
     {
-      name: "Dribble",
+      name: 'Dribble',
       image: Dribble,
-      link: "#",
+      link: '#',
     },
     {
-      name: "Behance",
+      name: 'Behance',
       image: Behance,
-      link: "#",
+      link: '#',
     },
     {
-      name: "Pinterest",
+      name: 'Pinterest',
       image: Pinterest,
-      link: "#",
+      link: '#',
     },
     {
-      name: "Web",
+      name: 'Web',
       image: Web,
-      link: "#",
+      link: '#',
     },
-  ]
+  ];
   return (
     <Card>
       <CardHeader className="flex-row items-center border-none mb-2">
@@ -58,13 +56,16 @@ const Portfolio = () => {
       </CardHeader>
       <CardContent>
         <div className="flex flex-wrap gap-4 items-center">
-          {
-            data.map((item, index) => (
-              <Link key={`portfolio-${index}`} href={item.link}>
-                <Image src={item.image} alt="image" className="h-9 w-9 rounded-full" priority={true} />
-              </Link>
-            ))
-          }
+          {data.map((item, index) => (
+            <Link key={`portfolio-${index}`} href={item.link}>
+              <Image
+                src={item.image}
+                alt="image"
+                className="h-9 w-9 rounded-full"
+                priority={true}
+              />
+            </Link>
+          ))}
         </div>
       </CardContent>
     </Card>

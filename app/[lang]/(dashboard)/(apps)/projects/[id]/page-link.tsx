@@ -1,40 +1,40 @@
-"use client";
-import React from "react";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
+'use client';
+import React from 'react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
 const pages = [
   {
-    text: "overview",
-    value: "overview",
+    text: 'overview',
+    value: 'overview',
   },
   {
-    text: "task",
-    value: "task",
+    text: 'task',
+    value: 'task',
   },
   {
-    text: "docs",
-    value: "documents",
+    text: 'docs',
+    value: 'documents',
   },
   {
-    text: "files",
-    value: "files",
+    text: 'files',
+    value: 'files',
   },
   {
-    text: "activity",
-    value: "activity",
+    text: 'activity',
+    value: 'activity',
   },
   {
-    text: "team",
-    value: "team",
+    text: 'team',
+    value: 'team',
   },
   {
-    text: "discussion",
-    value: "discussion",
+    text: 'discussion',
+    value: 'discussion',
   },
   {
-    text: "settings",
-    value: "settings",
+    text: 'settings',
+    value: 'settings',
   },
 ];
 const PageLink = ({ id }: { id: string }) => {
@@ -44,9 +44,9 @@ const PageLink = ({ id }: { id: string }) => {
       key={item.value}
       href={`/projects/${id}/${item.value}`}
       className={cn(
-        "text-sm font-semibold text-default-500 capitalize pb-3 border-b border-transparent cursor-pointer",
+        'text-sm font-semibold text-default-500 capitalize pb-3 border-b border-transparent cursor-pointer',
         {
-          "border-primary": locationName === `/projects/${id}/${item.value}`,
+          'border-primary': locationName === `/projects/${id}/${item.value}`,
         }
       )}
     >

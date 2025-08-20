@@ -1,9 +1,9 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
 
 const SemiCircleGauge = ({ height = 350 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -23,7 +23,7 @@ const SemiCircleGauge = ({ height = 350 }) => {
       },
     },
     stroke: {
-      curve: "smooth",
+      curve: 'smooth',
       width: 6,
     },
     plotOptions: {
@@ -31,15 +31,14 @@ const SemiCircleGauge = ({ height = 350 }) => {
         startAngle: -90,
         endAngle: 90,
         track: {
-          background: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].secondary
-            })`,
-          strokeWidth: "97%",
+          background: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].secondary})`,
+          strokeWidth: '97%',
           margin: 5,
           dropShadow: {
             enabled: true,
             top: 2,
             left: 0,
-            color: "#999",
+            color: '#999',
             opacity: 1,
             blur: 2,
           },
@@ -50,20 +49,19 @@ const SemiCircleGauge = ({ height = 350 }) => {
           },
           value: {
             offsetY: -2,
-            fontSize: "22px",
+            fontSize: '22px',
             fontWeight: 700,
-            color: `hsl(${theme?.cssVars[
-                mode === "dark" || mode === "system" ? "dark" : "light"
-              ].chartLabel
-              })`,
+            color: `hsl(${
+              theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+            })`,
           },
         },
       },
     },
     fill: {
-      type: "gradient",
+      type: 'gradient',
       gradient: {
-        shade: "light",
+        shade: 'light',
         shadeIntensity: 0.4,
         inverseColors: false,
         opacityFrom: 1,
@@ -71,10 +69,10 @@ const SemiCircleGauge = ({ height = 350 }) => {
         stops: [0, 50, 53, 91],
       },
     },
-    colors: [`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`],
-    labels: ["Average Results"],
+    colors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`],
+    labels: ['Average Results'],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
     padding: {
       top: 0,
@@ -84,13 +82,7 @@ const SemiCircleGauge = ({ height = 350 }) => {
     },
   };
   return (
-    <Chart
-      options={options}
-      series={series}
-      type="radialBar"
-      height={height}
-      width={"100%"}
-    />
+    <Chart options={options} series={series} type="radialBar" height={height} width={'100%'} />
   );
 };
 

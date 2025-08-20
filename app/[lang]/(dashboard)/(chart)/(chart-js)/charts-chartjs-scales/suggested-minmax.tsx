@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Chart as ChartJS,
@@ -9,23 +9,15 @@ import {
   Tooltip,
   Legend,
   PointElement,
-} from "chart.js";
+} from 'chart.js';
 
-import { hslToHex, hexToRGB } from "@/lib/utils";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { Line } from "react-chartjs-2";
+import { hslToHex, hexToRGB } from '@/lib/utils';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { Line } from 'react-chartjs-2';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  PointElement
-);
+ChartJS.register(CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend, PointElement);
 
 const LinearScaleSuggestedMinMax = ({ height = 350 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -33,23 +25,23 @@ const LinearScaleSuggestedMinMax = ({ height = 350 }) => {
 
   const theme = themes.find((theme) => theme.name === config);
 
-  const hslDestructive = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].destructive})`;
-  const hslPrimary = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`;
+  const hslDestructive = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].destructive})`;
+  const hslPrimary = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`;
 
   const hexDestructive = hslToHex(hslDestructive);
   const hexPrimary = hslToHex(hslPrimary);
   const data: any = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
     datasets: [
       {
-        label: "Dataset 1",
+        label: 'Dataset 1',
         data: [10, 30, 39, 20, 25, 34, -10],
         borderColor: hexToRGB(hexDestructive, 0.5),
         backgroundColor: hexToRGB(hexDestructive, 0.5),
         tension: 0.1,
       },
       {
-        label: "Dataset 2",
+        label: 'Dataset 2',
         data: [18, 33, 22, 19, 11, 39, 30],
         borderColor: hexToRGB(hexPrimary, 0.5),
         backgroundColor: hexToRGB(hexPrimary, 0.5),
@@ -60,16 +52,14 @@ const LinearScaleSuggestedMinMax = ({ height = 350 }) => {
   const options: any = {
     responsive: true,
     plugins: {
-
       legend: {
         labels: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
         display: true,
-        text: "Suggested Min and Max Settings",
+        text: 'Suggested Min and Max Settings',
       },
     },
 
@@ -77,16 +67,14 @@ const LinearScaleSuggestedMinMax = ({ height = 350 }) => {
       y: {
         grid: {
           drawTicks: false,
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartGird
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartGird
+          })`,
         },
         ticks: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
         suggestedMin: 30,
         suggestedMax: 50,
@@ -94,19 +82,17 @@ const LinearScaleSuggestedMinMax = ({ height = 350 }) => {
       x: {
         grid: {
           drawTicks: false,
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartGird
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartGird
+          })`,
         },
 
         ticks: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`
-        }
-      }
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
+        },
+      },
     },
 
     maintainAspectRatio: false,

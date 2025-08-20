@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Form Wizard",
+  title: 'Form Wizard',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

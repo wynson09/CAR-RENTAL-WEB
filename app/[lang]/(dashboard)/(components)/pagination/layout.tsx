@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Pagination",
+  title: 'Pagination',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

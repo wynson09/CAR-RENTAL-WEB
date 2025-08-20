@@ -1,33 +1,31 @@
-"use client";
+'use client';
 
-import RevinueChart from "./components/revinue-chart";
-import TopBrowserChart from "./components/top-browser-chart";
-import TopCustomers from "./components/top-customers";
-import VisitorsReportChart from "./components/visitors-chart";
-import CustomerStatistics from "./components/customer-statistics";
-import Transaction from "./components/transaction";
-import Orders from "./components/orders";
-import TopCountries from "./components/top-countries";
-import Products from "./components/products";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import DashboardSelect from "@/components/dasboard-select";
-import EcommerceStats from "./components/ecommerce-stats";
-import TopSell from "./components/top-sell";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import DashboardDropdown from "@/components/dashboard-dropdown";
-import DatePickerWithRange from "@/components/date-picker-with-range";
+import RevinueChart from './components/revinue-chart';
+import TopBrowserChart from './components/top-browser-chart';
+import TopCustomers from './components/top-customers';
+import VisitorsReportChart from './components/visitors-chart';
+import CustomerStatistics from './components/customer-statistics';
+import Transaction from './components/transaction';
+import Orders from './components/orders';
+import TopCountries from './components/top-countries';
+import Products from './components/products';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import DashboardSelect from '@/components/dasboard-select';
+import EcommerceStats from './components/ecommerce-stats';
+import TopSell from './components/top-sell';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import DashboardDropdown from '@/components/dashboard-dropdown';
+import DatePickerWithRange from '@/components/date-picker-with-range';
 interface EcommercePageViewProps {
   trans: {
     [key: string]: string;
   };
 }
-const EcommercePageView = ({ trans }:EcommercePageViewProps) => {
+const EcommercePageView = ({ trans }: EcommercePageViewProps) => {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap gap-4 items-center justify-between">
-        <div className="text-2xl font-medium text-default-800">
-          Ecommerce Dashboard
-        </div>
+        <div className="text-2xl font-medium text-default-800">Ecommerce Dashboard</div>
         <DatePickerWithRange />
       </div>
       <Card>
@@ -43,9 +41,7 @@ const EcommercePageView = ({ trans }:EcommercePageViewProps) => {
           <Card>
             <CardHeader className="border-none pb-0 mb-0">
               <div className="flex flex-wrap items-center gap-3">
-                <CardTitle className="flex-1 whitespace-nowrap">
-                  Average Revenue
-                </CardTitle>
+                <CardTitle className="flex-1 whitespace-nowrap">Average Revenue</CardTitle>
                 <div className="flex-none">
                   <DashboardSelect />
                 </div>
@@ -57,7 +53,6 @@ const EcommercePageView = ({ trans }:EcommercePageViewProps) => {
           </Card>
         </div>
         <div className="col-span-12 lg:col-span-4">
-
           <Card className="py-2.5">
             <CardHeader className="flex-row items-center justify-between gap-4 border-none">
               <CardTitle>Top Browser</CardTitle>
@@ -73,9 +68,7 @@ const EcommercePageView = ({ trans }:EcommercePageViewProps) => {
           <Card>
             <CardHeader className="mb-0">
               <div className="flex flex-wrap items-center gap-3">
-                <CardTitle className="flex-1 whitespace-nowrap">
-                  Top Sell
-                </CardTitle>
+                <CardTitle className="flex-1 whitespace-nowrap">Top Sell</CardTitle>
                 <div className="flex-none">
                   <DashboardSelect />
                 </div>
@@ -97,9 +90,7 @@ const EcommercePageView = ({ trans }:EcommercePageViewProps) => {
           <Card>
             <CardHeader className=" gap-4 border-none pb-0 mb-0">
               <div className="flex flex-wrap items-center gap-3">
-                <CardTitle className="flex-1 whitespace-nowrap">
-                  Visitors Report
-                </CardTitle>
+                <CardTitle className="flex-1 whitespace-nowrap">Visitors Report</CardTitle>
                 <div className="flex-none">
                   <DashboardSelect />
                 </div>
@@ -118,9 +109,7 @@ const EcommercePageView = ({ trans }:EcommercePageViewProps) => {
         <div className="col-span-12 lg:col-span-4">
           <Card>
             <CardHeader className="flex-row justify-between items-center gap-4 mb-0 border-none p-6 pb-4">
-              <CardTitle className="whitespace-nowrap">
-                Transaction History
-              </CardTitle>
+              <CardTitle className="whitespace-nowrap">Transaction History</CardTitle>
               <DashboardDropdown />
             </CardHeader>
             <CardContent className="px-0 pt-0 h-[580px] pb-0">

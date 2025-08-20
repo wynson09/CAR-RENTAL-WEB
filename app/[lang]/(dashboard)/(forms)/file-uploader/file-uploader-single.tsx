@@ -1,11 +1,11 @@
-" use client";
+' use client';
 
-import { useState } from "react";
-import { useDropzone } from "react-dropzone";
-import { Upload } from "lucide-react";
-import { Icon } from "@iconify/react";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { useState } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { Upload } from 'lucide-react';
+import { Icon } from '@iconify/react';
+import { Button } from '@/components/ui/button';
+import Image from 'next/image';
 interface FileWithPreview extends File {
   preview: string;
 }
@@ -15,7 +15,7 @@ const FileUploaderSingle = () => {
   const { getRootProps, getInputProps } = useDropzone({
     multiple: false,
     accept: {
-      "image/*": [".png", ".jpg", ".jpeg", ".gif"],
+      'image/*': ['.png', '.jpg', '.jpeg', '.gif'],
     },
     onDrop: (acceptedFiles) => {
       setFiles(acceptedFiles.map((file) => Object.assign(file)));
@@ -36,7 +36,7 @@ const FileUploaderSingle = () => {
   };
 
   return (
-    <div className={files.length ? "h-[300px] w-full" : ""}>
+    <div className={files.length ? 'h-[300px] w-full' : ''}>
       {files.length ? (
         <div className="w-full h-full relative">
           <Button
@@ -51,7 +51,7 @@ const FileUploaderSingle = () => {
           {img}
         </div>
       ) : (
-        <div {...getRootProps({ className: "dropzone" })}>
+        <div {...getRootProps({ className: 'dropzone' })}>
           <input {...getInputProps()} />
 
           <div className="w-full text-center border-dashed border rounded-md py-[52px] flex items-center flex-col">
@@ -62,8 +62,7 @@ const FileUploaderSingle = () => {
               Drop files here or click to upload.
             </h4>
             <div className="text-xs text-muted-foreground">
-              (This is just a demo drop zone. Selected files are not actually
-              uploaded.)
+              (This is just a demo drop zone. Selected files are not actually uploaded.)
             </div>
           </div>
         </div>

@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useCallback } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useState, useEffect, useCallback } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,18 +21,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Icon } from "@iconify/react";
-import { toast } from "sonner";
-import { carCategories } from "@/data/car-listings-data";
-import { CarFirebaseService } from "@/lib/firebase-car-service";
-import { 
-  collection, 
-  onSnapshot, 
-  query, 
-  orderBy 
-} from "firebase/firestore";
-import { db } from "@/lib/firebase";
+} from '@/components/ui/alert-dialog';
+import { Icon } from '@iconify/react';
+import { toast } from 'sonner';
+import { carCategories } from '@/data/car-listings-data';
+import { CarFirebaseService } from '@/lib/firebase-car-service';
+import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 import {
   LoadingSkeleton,
   EmptyState,
@@ -41,18 +36,18 @@ import {
   AddCarDialog,
   type ViewMode,
   type LoadingStates,
-  type CarListing
-} from "@/components/car-management";
+  type CarListing,
+} from '@/components/car-management';
 
 const CarListingsPage = () => {
   // Core state
   const [cars, setCars] = useState<CarListing[]>([]);
-  const [viewMode, setViewMode] = useState<ViewMode>("table");
+  const [viewMode, setViewMode] = useState<ViewMode>('table');
   const [selectedCars, setSelectedCars] = useState<string[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  
+
   // Loading and error states
   const [loading, setLoading] = useState<LoadingStates>({
     fetchingCars: true,
@@ -68,36 +63,36 @@ const CarListingsPage = () => {
 
     const setupRealtimeListener = () => {
       try {
-        const q = query(
-          collection(db, "car-listings"), 
-          orderBy("createdDate", "desc")
-        );
-        
+        const q = query(collection(db, 'car-listings'), orderBy('createdDate', 'desc'));
+
         unsubscribe = onSnapshot(
           q,
           (snapshot) => {
-            const updatedCars: CarListing[] = snapshot.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-              createdDate: doc.data().createdDate?.toDate() || new Date(),
-              updatedDate: doc.data().updatedDate?.toDate() || new Date(),
-            } as CarListing));
-            
+            const updatedCars: CarListing[] = snapshot.docs.map(
+              (doc) =>
+                ({
+                  id: doc.id,
+                  ...doc.data(),
+                  createdDate: doc.data().createdDate?.toDate() || new Date(),
+                  updatedDate: doc.data().updatedDate?.toDate() || new Date(),
+                }) as CarListing
+            );
+
             setCars(updatedCars);
-            setLoading(prev => ({ ...prev, fetchingCars: false }));
+            setLoading((prev) => ({ ...prev, fetchingCars: false }));
             setError(null);
           },
           (error) => {
-            console.error("Real-time listener error:", error);
-            setError("Failed to sync car data. Please refresh the page.");
-            setLoading(prev => ({ ...prev, fetchingCars: false }));
-            toast.error("Connection lost. Please refresh the page.");
+            console.error('Real-time listener error:', error);
+            setError('Failed to sync car data. Please refresh the page.');
+            setLoading((prev) => ({ ...prev, fetchingCars: false }));
+            toast.error('Connection lost. Please refresh the page.');
           }
         );
       } catch (error) {
-        console.error("Setup listener error:", error);
-        setError("Failed to connect to database");
-        setLoading(prev => ({ ...prev, fetchingCars: false }));
+        console.error('Setup listener error:', error);
+        setError('Failed to connect to database');
+        setLoading((prev) => ({ ...prev, fetchingCars: false }));
       }
     };
 
@@ -113,22 +108,21 @@ const CarListingsPage = () => {
 
   // Filter cars based on search and category
   const filteredCars = cars.filter((car) => {
-    const matchesSearch = car.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const matchesSearch =
+      car.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       car.category.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "All" || car.category === selectedCategory;
+    const matchesCategory = selectedCategory === 'All' || car.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
   // Helper functions for loading state management
   const updateLoading = useCallback((updates: Partial<LoadingStates>) => {
-    setLoading(prev => ({ ...prev, ...updates }));
+    setLoading((prev) => ({ ...prev, ...updates }));
   }, []);
 
   const handleSelectCar = useCallback((carId: string) => {
-    setSelectedCars(prev => 
-      prev.includes(carId) 
-        ? prev.filter(id => id !== carId)
-        : [...prev, carId]
+    setSelectedCars((prev) =>
+      prev.includes(carId) ? prev.filter((id) => id !== carId) : [...prev, carId]
     );
   }, []);
 
@@ -136,78 +130,87 @@ const CarListingsPage = () => {
     if (selectedCars.length === filteredCars.length) {
       setSelectedCars([]);
     } else {
-      setSelectedCars(filteredCars.map(car => car.id));
+      setSelectedCars(filteredCars.map((car) => car.id));
     }
   }, [selectedCars.length, filteredCars]);
 
-  const handleDeleteCar = useCallback(async (carId: string) => {
-    try {
-      updateLoading({ deletingCars: [carId] });
-      
-      await CarFirebaseService.deleteCar(carId);
-      
-      setSelectedCars(prev => prev.filter(id => id !== carId));
-      toast.success("Car deleted successfully");
-    } catch (error) {
-      console.error("Delete car error:", error);
-      toast.error("Failed to delete car. Please try again.");
-    } finally {
-      updateLoading({ deletingCars: [] });
-    }
-  }, [updateLoading]);
+  const handleDeleteCar = useCallback(
+    async (carId: string) => {
+      try {
+        updateLoading({ deletingCars: [carId] });
+
+        await CarFirebaseService.deleteCar(carId);
+
+        setSelectedCars((prev) => prev.filter((id) => id !== carId));
+        toast.success('Car deleted successfully');
+      } catch (error) {
+        console.error('Delete car error:', error);
+        toast.error('Failed to delete car. Please try again.');
+      } finally {
+        updateLoading({ deletingCars: [] });
+      }
+    },
+    [updateLoading]
+  );
 
   const handleDeleteSelected = useCallback(async () => {
     if (selectedCars.length === 0) return;
 
     try {
       updateLoading({ deletingCars: selectedCars });
-      
+
       await CarFirebaseService.deleteCars(selectedCars);
-      
+
       setSelectedCars([]);
       toast.success(`${selectedCars.length} car(s) deleted successfully`);
     } catch (error) {
-      console.error("Delete selected cars error:", error);
-      toast.error("Failed to delete cars. Please try again.");
+      console.error('Delete selected cars error:', error);
+      toast.error('Failed to delete cars. Please try again.');
     } finally {
       updateLoading({ deletingCars: [] });
     }
   }, [selectedCars, updateLoading]);
 
-  const handleAddCar = useCallback(async (newCar: Omit<CarListing, 'id'>) => {
-    try {
-      updateLoading({ addingCar: true });
-      
-      const carId = await CarFirebaseService.addCar(newCar);
-      
-      setIsAddDialogOpen(false);
-      toast.success("Car added successfully");
-      
-      // Clear selections since we have a new car
-      setSelectedCars([]);
-    } catch (error) {
-      console.error("Add car error:", error);
-      toast.error("Failed to add car. Please try again.");
-    } finally {
-      updateLoading({ addingCar: false });
-    }
-  }, [updateLoading]);
+  const handleAddCar = useCallback(
+    async (newCar: Omit<CarListing, 'id'>) => {
+      try {
+        updateLoading({ addingCar: true });
 
-  const handleUpdateCar = useCallback(async (updatedCar: CarListing) => {
-    try {
-      updateLoading({ updatingCar: updatedCar.id });
-      
-      const { id, createdDate, ...updateData } = updatedCar;
-      await CarFirebaseService.updateCar(id, updateData);
-      
-      toast.success("Car updated successfully");
-    } catch (error) {
-      console.error("Update car error:", error);
-      toast.error("Failed to update car. Please try again.");
-    } finally {
-      updateLoading({ updatingCar: null });
-    }
-  }, [updateLoading]);
+        const carId = await CarFirebaseService.addCar(newCar);
+
+        setIsAddDialogOpen(false);
+        toast.success('Car added successfully');
+
+        // Clear selections since we have a new car
+        setSelectedCars([]);
+      } catch (error) {
+        console.error('Add car error:', error);
+        toast.error('Failed to add car. Please try again.');
+      } finally {
+        updateLoading({ addingCar: false });
+      }
+    },
+    [updateLoading]
+  );
+
+  const handleUpdateCar = useCallback(
+    async (updatedCar: CarListing) => {
+      try {
+        updateLoading({ updatingCar: updatedCar.id });
+
+        const { id, createdDate, ...updateData } = updatedCar;
+        await CarFirebaseService.updateCar(id, updateData);
+
+        toast.success('Car updated successfully');
+      } catch (error) {
+        console.error('Update car error:', error);
+        toast.error('Failed to update car. Please try again.');
+      } finally {
+        updateLoading({ updatingCar: null });
+      }
+    },
+    [updateLoading]
+  );
 
   return (
     <div className="space-y-6">
@@ -222,7 +225,7 @@ const CarListingsPage = () => {
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <AddCarDialog 
+              <AddCarDialog
                 isOpen={isAddDialogOpen}
                 onOpenChange={setIsAddDialogOpen}
                 onAddCar={handleAddCar}
@@ -243,9 +246,9 @@ const CarListingsPage = () => {
                 <p className="font-medium">Connection Error</p>
                 <p className="text-sm">{error}</p>
               </div>
-              <Button 
-                variant="outline" 
-                size="sm" 
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={() => window.location.reload()}
                 className="ml-auto"
               >
@@ -264,9 +267,9 @@ const CarListingsPage = () => {
             {/* Search and Filter */}
             <div className="flex flex-col sm:flex-row gap-4 flex-1">
               <div className="relative flex-1 max-w-sm">
-                <Icon 
-                  icon="heroicons:magnifying-glass" 
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" 
+                <Icon
+                  icon="heroicons:magnifying-glass"
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4"
                 />
                 <Input
                   placeholder="Search cars..."
@@ -276,8 +279,8 @@ const CarListingsPage = () => {
                   disabled={loading.fetchingCars}
                 />
               </div>
-              <Select 
-                value={selectedCategory} 
+              <Select
+                value={selectedCategory}
                 onValueChange={setSelectedCategory}
                 disabled={loading.fetchingCars}
               >
@@ -299,11 +302,7 @@ const CarListingsPage = () => {
               {selectedCars.length > 0 && (
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      disabled={loading.deletingCars.length > 0}
-                    >
+                    <Button variant="outline" size="sm" disabled={loading.deletingCars.length > 0}>
                       {loading.deletingCars.length > 0 ? (
                         <Icon icon="heroicons:arrow-path" className="h-4 w-4 mr-2 animate-spin" />
                       ) : (
@@ -316,46 +315,50 @@ const CarListingsPage = () => {
                     <AlertDialogHeader>
                       <AlertDialogTitle>Delete Selected Cars</AlertDialogTitle>
                       <AlertDialogDescription>
-                        Are you sure you want to delete {selectedCars.length} selected car(s)? This action cannot be undone.
+                        Are you sure you want to delete {selectedCars.length} selected car(s)? This
+                        action cannot be undone.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel disabled={loading.deletingCars.length > 0}>
                         Cancel
                       </AlertDialogCancel>
-                      <AlertDialogAction 
-                        onClick={handleDeleteSelected} 
+                      <AlertDialogAction
+                        onClick={handleDeleteSelected}
                         className="bg-destructive hover:bg-destructive/80"
                         disabled={loading.deletingCars.length > 0}
                       >
                         {loading.deletingCars.length > 0 ? (
                           <>
-                            <Icon icon="heroicons:arrow-path" className="h-4 w-4 mr-2 animate-spin" />
+                            <Icon
+                              icon="heroicons:arrow-path"
+                              className="h-4 w-4 mr-2 animate-spin"
+                            />
                             Deleting...
                           </>
                         ) : (
-                          "Delete"
+                          'Delete'
                         )}
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
               )}
-              
+
               <div className="flex border rounded-lg">
                 <Button
-                  variant={viewMode === "table" ? "outline" : "ghost"}
+                  variant={viewMode === 'table' ? 'outline' : 'ghost'}
                   size="sm"
-                  onClick={() => setViewMode("table")}
+                  onClick={() => setViewMode('table')}
                   className="rounded-r-none"
                   disabled={loading.fetchingCars}
                 >
                   <Icon icon="heroicons:list-bullet" className="h-4 w-4" />
                 </Button>
                 <Button
-                  variant={viewMode === "grid" ? "outline" : "ghost"}
+                  variant={viewMode === 'grid' ? 'outline' : 'ghost'}
                   size="sm"
-                  onClick={() => setViewMode("grid")}
+                  onClick={() => setViewMode('grid')}
                   className="rounded-l-none"
                   disabled={loading.fetchingCars}
                 >
@@ -373,17 +376,17 @@ const CarListingsPage = () => {
           {loading.fetchingCars ? (
             <LoadingSkeleton viewMode={viewMode} />
           ) : filteredCars.length === 0 ? (
-            <EmptyState 
-              searchTerm={searchTerm} 
+            <EmptyState
+              searchTerm={searchTerm}
               selectedCategory={selectedCategory}
               onClearFilters={() => {
-                setSearchTerm("");
-                setSelectedCategory("All");
+                setSearchTerm('');
+                setSelectedCategory('All');
               }}
               onAddCar={() => setIsAddDialogOpen(true)}
             />
-          ) : viewMode === "table" ? (
-            <CarTableView 
+          ) : viewMode === 'table' ? (
+            <CarTableView
               cars={filteredCars}
               selectedCars={selectedCars}
               onSelectCar={handleSelectCar}
@@ -393,7 +396,7 @@ const CarListingsPage = () => {
               loading={loading}
             />
           ) : (
-            <CarGridView 
+            <CarGridView
               cars={filteredCars}
               selectedCars={selectedCars}
               onSelectCar={handleSelectCar}

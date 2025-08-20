@@ -1,5 +1,5 @@
-"use client";
-import { Slider } from "@/components/ui/slider";
+'use client';
+import { Slider } from '@/components/ui/slider';
 const DefaultSlider = () => {
   return (
     <div className="space-y-10">

@@ -1,11 +1,11 @@
-" use client";
-import { Fragment, useState } from "react";
-import { Icon } from "@iconify/react";
-import { useToast } from "@/components/ui/use-toast";
-import { useDropzone } from "react-dropzone";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import { Upload } from "lucide-react";
+' use client';
+import { Fragment, useState } from 'react';
+import { Icon } from '@iconify/react';
+import { useToast } from '@/components/ui/use-toast';
+import { useDropzone } from 'react-dropzone';
+import { Button } from '@/components/ui/button';
+import Image from 'next/image';
+import { Upload } from 'lucide-react';
 
 interface FileWithPreview extends File {
   preview: string;
@@ -17,22 +17,22 @@ const FileUploaderRestrictions = () => {
     maxFiles: 2,
     maxSize: 2000000,
     accept: {
-      "image/*": [".png", ".jpg", ".jpeg", ".gif"],
+      'image/*': ['.png', '.jpg', '.jpeg', '.gif'],
     },
     onDrop: (acceptedFiles) => {
       setFiles(acceptedFiles.map((file) => Object.assign(file)));
     },
     onDropRejected: () => {
       toast({
-        color: "destructive",
-        title: "Error",
-        description: "You can only upload 2 files & maximum size of 2 MB",
+        color: 'destructive',
+        title: 'Error',
+        description: 'You can only upload 2 files & maximum size of 2 MB',
       });
     },
   });
 
   const renderFilePreview = (file: FileWithPreview) => {
-    if (file.type.startsWith("image")) {
+    if (file.type.startsWith('image')) {
       return (
         <Image
           width={48}
@@ -54,10 +54,7 @@ const FileUploaderRestrictions = () => {
   };
 
   const fileList = files.map((file) => (
-    <div
-      key={file.name}
-      className=" flex justify-between border px-3.5 py-3 my-6 rounded-md"
-    >
+    <div key={file.name} className=" flex justify-between border px-3.5 py-3 my-6 rounded-md">
       <div className="flex gap-3 items-center">
         <div className="file-preview">{renderFilePreview(file)}</div>
         <div>
@@ -68,7 +65,7 @@ const FileUploaderRestrictions = () => {
             ) : (
               <>{(Math.round(file.size / 100) / 10).toFixed(1)}</>
             )}
-            {" kb"}
+            {' kb'}
           </div>
         </div>
       </div>
@@ -91,7 +88,7 @@ const FileUploaderRestrictions = () => {
 
   return (
     <Fragment>
-      <div {...getRootProps({ className: "dropzone" })}>
+      <div {...getRootProps({ className: 'dropzone' })}>
         <input {...getInputProps()} />
         <div className=" w-full text-center border-dashed border  rounded-md py-[52px] flex  items-center flex-col">
           <div className="h-12 w-12 inline-flex rounded-md bg-muted items-center justify-center mb-3">
@@ -101,8 +98,7 @@ const FileUploaderRestrictions = () => {
             Drop files here or click to upload.
           </h4>
           <div className=" text-xs text-muted-foreground">
-            ( This is just a demo drop zone. Selected files are not actually
-            uploaded.)
+            ( This is just a demo drop zone. Selected files are not actually uploaded.)
           </div>
         </div>
       </div>

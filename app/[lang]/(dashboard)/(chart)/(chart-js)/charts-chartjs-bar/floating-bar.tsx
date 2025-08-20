@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Chart as ChartJS,
@@ -8,21 +8,14 @@ import {
   Title,
   Tooltip,
   Legend,
-} from "chart.js";
-import { hslToHex, hexToRGB } from "@/lib/utils";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { Bar } from "react-chartjs-2";
+} from 'chart.js';
+import { hslToHex, hexToRGB } from '@/lib/utils';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { Bar } from 'react-chartjs-2';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const FloatingBar = ({ height = 350 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -30,19 +23,17 @@ const FloatingBar = ({ height = 350 }) => {
 
   const theme = themes.find((theme) => theme.name === config);
 
-  const hslInfo = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info
-    })`;
-  const hslWarning = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning
-    })`;
+  const hslInfo = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`;
+  const hslWarning = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`;
 
   const hexInfo = hslToHex(hslInfo);
   const hexWarning = hslToHex(hslWarning);
 
   const data: any = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
     datasets: [
       {
-        label: "data one",
+        label: 'data one',
         data: [
           [20, 50],
           [10, 80],
@@ -57,12 +48,12 @@ const FloatingBar = ({ height = 350 }) => {
         borderColor: hexToRGB(hexInfo, 1),
 
         borderWidth: 2,
-        borderRadius: "0",
-        borderSkipped: "bottom",
+        borderRadius: '0',
+        borderSkipped: 'bottom',
         barThickness: 25,
       },
       {
-        label: "data two",
+        label: 'data two',
         data: [
           [25, 40],
           [20, 60],
@@ -77,8 +68,8 @@ const FloatingBar = ({ height = 350 }) => {
         borderColor: hexToRGB(hexWarning, 0.9),
 
         borderWidth: 2,
-        borderRadius: "0",
-        borderSkipped: "bottom",
+        borderRadius: '0',
+        borderSkipped: 'bottom',
         barThickness: 25,
       },
     ],
@@ -88,10 +79,9 @@ const FloatingBar = ({ height = 350 }) => {
     plugins: {
       legend: {
         labels: {
-          color: `hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
     },
@@ -100,32 +90,28 @@ const FloatingBar = ({ height = 350 }) => {
       y: {
         grid: {
           drawTicks: false,
-          color: `hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartGird
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartGird
+          })`,
         },
         ticks: {
-          color: `hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
       x: {
         grid: {
           drawTicks: false,
-          color: `hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartGird
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartGird
+          })`,
         },
 
         ticks: {
-          color: `hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
     },
@@ -135,11 +121,7 @@ const FloatingBar = ({ height = 350 }) => {
 
   return (
     <div>
-      <Bar
-        options={options}
-        data={data}
-        height={height}
-      />
+      <Bar options={options} data={data} height={height} />
     </div>
   );
 };

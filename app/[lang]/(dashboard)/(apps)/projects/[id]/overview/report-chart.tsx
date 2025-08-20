@@ -1,17 +1,17 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 const ReportChart = ({ height = 300 }) => {
   const { theme: config, setTheme: setConfig, isRtl } = useThemeStore();
   const { theme: mode } = useTheme();
@@ -19,13 +19,12 @@ const ReportChart = ({ height = 300 }) => {
   const getLabel = (colors: string) => ({
     style: {
       colors: colors,
-      fontFamily: "Inter",
+      fontFamily: 'Inter',
     },
   });
   const getGridConfig = (colors: string) => ({
     show: true,
-    borderColor: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-      })`,
+    borderColor: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`,
     xaxis: {
       lines: {
         show: true,
@@ -37,7 +36,7 @@ const ReportChart = ({ height = 300 }) => {
       },
     },
     strokeDashArray: 0,
-    position: "back",
+    position: 'back',
     row: {
       colors: undefined,
       opacity: 0.5,
@@ -54,20 +53,19 @@ const ReportChart = ({ height = 300 }) => {
     },
   });
 
-
   const theme = themes.find((theme) => theme.name === config);
 
   const series = [
     {
-      name: "Completed Task",
+      name: 'Completed Task',
       data: [45, 52, 38, 24, 33, 40],
     },
     {
-      name: "Inprogress",
+      name: 'Inprogress',
       data: [35, 41, 62, 42, 13, 35],
     },
     {
-      name: "Overdue",
+      name: 'Overdue',
       data: [87, 57, 74, 99, 75, 50],
     },
   ];
@@ -86,23 +84,21 @@ const ReportChart = ({ height = 300 }) => {
     },
     stroke: {
       width: [2],
-      curve: "straight",
+      curve: 'straight',
     },
     colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`,
     ],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
 
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
     xaxis: {
-      type: "category",
-      categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+      type: 'category',
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
       axisTicks: {
         show: false,
       },
@@ -111,10 +107,7 @@ const ReportChart = ({ height = 300 }) => {
         show: true,
       },
       labels: getLabel(
-        `hsl(${theme?.cssVars[
-          mode === "dark" || mode === "system" ? "dark" : "light"
-        ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
     },
     yaxis: {
@@ -126,18 +119,14 @@ const ReportChart = ({ height = 300 }) => {
         show: true,
       },
       labels: getLabel(
-        `hsl(${theme?.cssVars[
-          mode === "dark" || mode === "system" ? "dark" : "light"
-        ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
     },
     legend: {
       labels: {
-        colors: `hsl(${theme?.cssVars[
-          mode === "dark" || mode === "system" ? "dark" : "light"
-        ].chartLabel
-          })`,
+        colors: `hsl(${
+          theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+        })`,
       },
       itemMargin: {
         horizontal: 5,
@@ -147,8 +136,8 @@ const ReportChart = ({ height = 300 }) => {
         width: 10,
         height: 10,
         radius: 10,
-        offsetX: isRtl ? 5 : -5
-      }
+        offsetX: isRtl ? 5 : -5,
+      },
     },
   };
   return (
@@ -170,13 +159,7 @@ const ReportChart = ({ height = 300 }) => {
         </div>
       </CardHeader>
       <CardContent>
-        <Chart
-          options={options}
-          series={series}
-          type="line"
-          height={height}
-          width={"100%"}
-        />
+        <Chart options={options} series={series} type="line" height={height} width={'100%'} />
       </CardContent>
     </Card>
   );

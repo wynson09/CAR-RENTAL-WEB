@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/react";
+import { Button } from '@/components/ui/button';
+import { Icon } from '@iconify/react';
 
 interface EmptyStateProps {
   searchTerm: string;
@@ -8,14 +8,14 @@ interface EmptyStateProps {
   onAddCar?: () => void;
 }
 
-export const EmptyState = ({ 
-  searchTerm, 
-  selectedCategory, 
+export const EmptyState = ({
+  searchTerm,
+  selectedCategory,
   onClearFilters,
-  onAddCar
+  onAddCar,
 }: EmptyStateProps) => {
-  const hasFilters = searchTerm || selectedCategory !== "All";
-  
+  const hasFilters = searchTerm || selectedCategory !== 'All';
+
   return (
     <div className="p-12 text-center">
       <div className="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6">
@@ -23,13 +23,12 @@ export const EmptyState = ({
       </div>
       <div className="space-y-2 max-w-md mx-auto">
         <h3 className="text-xl font-semibold">
-          {hasFilters ? "No cars found" : "No cars added yet"}
+          {hasFilters ? 'No cars found' : 'No cars added yet'}
         </h3>
         <p className="text-muted-foreground">
-          {hasFilters 
-            ? "Try adjusting your search criteria or filters to find cars."
-            : "Get started by adding your first car to the inventory."
-          }
+          {hasFilters
+            ? 'Try adjusting your search criteria or filters to find cars.'
+            : 'Get started by adding your first car to the inventory.'}
         </p>
       </div>
       <div className="flex gap-2 justify-center mt-6">

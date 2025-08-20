@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import React, { ChangeEvent, memo } from 'react';
 import { Handle, useReactFlow, useStoreApi, Position, NodeProps } from 'reactflow';
 

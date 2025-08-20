@@ -1,21 +1,16 @@
-"use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Pencil } from "lucide-react";
-import Flatpickr from "react-flatpickr";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import projectLogo from "@/public/images/projects/project-placeholder.jpg";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Switch } from "@/components/ui/switch";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+'use client';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Pencil } from 'lucide-react';
+import Flatpickr from 'react-flatpickr';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import projectLogo from '@/public/images/projects/project-placeholder.jpg';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Switch } from '@/components/ui/switch';
+import { Button } from '@/components/ui/button';
+import Image from 'next/image';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 const Settings = () => {
   return (
     <Card>
@@ -25,9 +20,7 @@ const Settings = () => {
       <CardContent className="px-7 mt-5 space-y-6">
         <div className="grid grid-cols-12 gap-5">
           <div className="col-span-12 md:col-span-3">
-            <div className="text-sm font-medium text-default-700">
-              Project Logo
-            </div>
+            <div className="text-sm font-medium text-default-700">Project Logo</div>
           </div>
           <div className="col-span-12 md:col-span-9">
             <div className="w-28 h-28 shadow-sm rounded-md relative">
@@ -73,11 +66,7 @@ const Settings = () => {
             </Label>
           </div>
           <div className="col-span-12 md:col-span-9">
-            <Input
-              defaultValue="Dashtail Dashboard Template"
-              size="lg"
-              id="projectName"
-            />
+            <Input defaultValue="Dashtail Dashboard Template" size="lg" id="projectName" />
           </div>
         </div>
         {/* project Type */}
@@ -101,7 +90,6 @@ const Settings = () => {
           <div className="col-span-12 md:col-span-9">
             <Textarea
               id="projectDescription"
-
               defaultValue="Elevate your web app with our sleek Next.js dashboard template. Packed with modern components, responsive design, and easy customization, it's the perfect foundation for crafting stunning, efficient dashboards. Boost productivity now!"
             />
           </div>
@@ -121,9 +109,7 @@ const Settings = () => {
         {/* Notifications */}
         <div className="grid grid-cols-12 items-center gap-5">
           <div className="col-span-12 md:col-span-3">
-            <div className="text-sm font-medium text-default-700">
-              Notifications
-            </div>
+            <div className="text-sm font-medium text-default-700">Notifications</div>
           </div>
           <div className="col-span-12 md:col-span-9">
             <div className="flex items-center gap-3">

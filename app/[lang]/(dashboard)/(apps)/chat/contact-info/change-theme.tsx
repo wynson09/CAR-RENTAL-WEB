@@ -1,15 +1,23 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useState } from "react";
-import { Label } from "@/components/ui/label";
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { useState } from 'react';
+import { Label } from '@/components/ui/label';
 const ChangeTheme = () => {
-  const [selected, setSelected] = useState<string>("apple");
+  const [selected, setSelected] = useState<string>('apple');
   const handleSelect = (value: string) => {
-    setSelected(value)
-  }
+    setSelected(value);
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -30,52 +38,34 @@ const ChangeTheme = () => {
         <div>
           <RadioGroup defaultValue="theme_1" onValueChange={handleSelect}>
             <div className="flex flex-wrap justify-center gap-7 mt-5">
-              <Label
-                htmlFor="theme_1"
-                className="h-16 w-16 rounded-full bg-primary block"
-              >
+              <Label htmlFor="theme_1" className="h-16 w-16 rounded-full bg-primary block">
                 <RadioGroupItem value="theme_1" id="theme_1" className="hidden">
-                  {" "}
+                  {' '}
                 </RadioGroupItem>
               </Label>
-              <Label
-                htmlFor="theme_6"
-                className="h-16 w-16 rounded-full bg-secondary block"
-              >
+              <Label htmlFor="theme_6" className="h-16 w-16 rounded-full bg-secondary block">
                 <RadioGroupItem value="theme_6" id="theme_6" className="hidden">
-                  {" "}
+                  {' '}
                 </RadioGroupItem>
               </Label>
-              <Label
-                htmlFor="theme_2"
-                className="h-16 w-16 rounded-full bg-info block"
-              >
+              <Label htmlFor="theme_2" className="h-16 w-16 rounded-full bg-info block">
                 <RadioGroupItem value="theme_2" id="theme_2" className="hidden">
-                  {" "}
+                  {' '}
                 </RadioGroupItem>
               </Label>
-              <Label
-                htmlFor="theme_3"
-                className="h-16 w-16 rounded-full bg-warning block"
-              >
+              <Label htmlFor="theme_3" className="h-16 w-16 rounded-full bg-warning block">
                 <RadioGroupItem value="theme_3" id="theme_3" className="hidden">
-                  {" "}
+                  {' '}
                 </RadioGroupItem>
               </Label>
-              <Label
-                htmlFor="theme_4"
-                className="h-16 w-16 rounded-full bg-success block"
-              >
+              <Label htmlFor="theme_4" className="h-16 w-16 rounded-full bg-success block">
                 <RadioGroupItem value="theme_4" id="theme_4" className="hidden">
-                  {" "}
+                  {' '}
                 </RadioGroupItem>
               </Label>
-              <Label
-                htmlFor="theme_5"
-                className="h-16 w-16 rounded-full bg-destructive block"
-              >
+              <Label htmlFor="theme_5" className="h-16 w-16 rounded-full bg-destructive block">
                 <RadioGroupItem value="theme_5" id="theme_5" className="hidden">
-                  {" "}
+                  {' '}
                 </RadioGroupItem>
               </Label>
             </div>

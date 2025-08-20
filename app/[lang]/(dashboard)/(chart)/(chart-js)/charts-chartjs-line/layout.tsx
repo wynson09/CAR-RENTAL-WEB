@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Chart-js Line Chart ",
+  title: 'Chart-js Line Chart ',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -7,4 +7,3 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default Layout;
-

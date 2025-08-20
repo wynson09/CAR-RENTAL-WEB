@@ -1,13 +1,13 @@
-"use client"
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+'use client';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { Switch } from "@/components/ui/switch";
-import { Icon } from "@iconify/react";
-import { Label } from "@/components/ui/label";
-import avatarImage from "@/public/images/avatar/avatar-5.jpg"
+import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+import { Switch } from '@/components/ui/switch';
+import { Icon } from '@iconify/react';
+import { Label } from '@/components/ui/label';
+import avatarImage from '@/public/images/avatar/avatar-5.jpg';
 
 const BadgeVisibility = () => {
   const [count, setCount] = useState(1);
@@ -28,11 +28,7 @@ const BadgeVisibility = () => {
             )}
           </div>
           <div className="flex items-center justify-start gap-x-2">
-            <Switch
-              id="airplane-mode"
-              checked={show}
-              onCheckedChange={() => setShow(!show)}
-            />
+            <Switch id="airplane-mode" checked={show} onCheckedChange={() => setShow(!show)} />
             <Label>Show</Label>
           </div>
         </div>

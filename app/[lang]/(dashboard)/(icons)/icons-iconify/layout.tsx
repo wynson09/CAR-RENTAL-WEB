@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Iconify Icon",
+  title: 'Iconify Icon',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -7,24 +7,24 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogClose,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Icon } from "@iconify/react";
-import { format } from "date-fns";
-import { carCategories } from "@/data/car-listings-data";
-import { ArrayInput } from "@/components/ui/array-input";
-import { ImageUpload } from "@/components/ui/image-upload";
-import { PromoToggle } from "@/components/ui/promo-toggle";
-import { type CarListing } from "./types";
+} from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Icon } from '@iconify/react';
+import { format } from 'date-fns';
+import { carCategories } from '@/data/car-listings-data';
+import { ArrayInput } from '@/components/ui/array-input';
+import { ImageUpload } from '@/components/ui/image-upload';
+import { PromoToggle } from '@/components/ui/promo-toggle';
+import { type CarListing } from './types';
 
 interface CarDetailsDialogProps {
   car: CarListing;
@@ -50,16 +50,14 @@ export const CarDetailsDialog = ({ car, onUpdateCar }: CarDetailsDialogProps) =>
       <DialogContent size="2xl" className="max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Car Details - {car.name}</DialogTitle>
-          <DialogDescription>
-            View and edit car information
-          </DialogDescription>
+          <DialogDescription>View and edit car information</DialogDescription>
         </DialogHeader>
-        
+
         <div className="space-y-6">
           {/* Car Image */}
           <div className="flex justify-center">
-            <img 
-              src={car.image} 
+            <img
+              src={car.image}
               alt={car.name}
               className="w-full max-w-md h-48 object-cover rounded-lg"
               onError={(e) => {
@@ -79,23 +77,28 @@ export const CarDetailsDialog = ({ car, onUpdateCar }: CarDetailsDialogProps) =>
                   onChange={(e) => setEditedCar({ ...editedCar, name: e.target.value })}
                 />
               </div>
-              
+
               <div>
                 <Label htmlFor="category">Category</Label>
-                <Select value={editedCar.category} onValueChange={(value) => setEditedCar({ ...editedCar, category: value })}>
+                <Select
+                  value={editedCar.category}
+                  onValueChange={(value) => setEditedCar({ ...editedCar, category: value })}
+                >
                   <SelectTrigger id="category">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {carCategories.filter(cat => cat !== "All").map((category) => (
-                      <SelectItem key={category} value={category}>
-                        {category}
-                      </SelectItem>
-                    ))}
+                    {carCategories
+                      .filter((cat) => cat !== 'All')
+                      .map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div>
                 <Label htmlFor="price">Price</Label>
                 <Input
@@ -104,10 +107,13 @@ export const CarDetailsDialog = ({ car, onUpdateCar }: CarDetailsDialogProps) =>
                   onChange={(e) => setEditedCar({ ...editedCar, price: e.target.value })}
                 />
               </div>
-              
+
               <div>
                 <Label htmlFor="transmission">Transmission</Label>
-                <Select value={editedCar.transmission} onValueChange={(value) => setEditedCar({ ...editedCar, transmission: value })}>
+                <Select
+                  value={editedCar.transmission}
+                  onValueChange={(value) => setEditedCar({ ...editedCar, transmission: value })}
+                >
                   <SelectTrigger id="transmission">
                     <SelectValue />
                   </SelectTrigger>
@@ -130,7 +136,7 @@ export const CarDetailsDialog = ({ car, onUpdateCar }: CarDetailsDialogProps) =>
                   onChange={(e) => setEditedCar({ ...editedCar, passengers: e.target.value })}
                 />
               </div>
-              
+
               <div>
                 <Label htmlFor="bags">Bags</Label>
                 <Input
@@ -139,12 +145,17 @@ export const CarDetailsDialog = ({ car, onUpdateCar }: CarDetailsDialogProps) =>
                   onChange={(e) => setEditedCar({ ...editedCar, bags: e.target.value })}
                 />
               </div>
-              
+
               <div>
                 <Label htmlFor="priorityLevel">Priority Level</Label>
-                <Select 
-                  value={editedCar.priorityLevel.toString()} 
-                  onValueChange={(value) => setEditedCar({ ...editedCar, priorityLevel: parseInt(value) as 1 | 2 | 3 | 4 | 5 })}
+                <Select
+                  value={editedCar.priorityLevel.toString()}
+                  onValueChange={(value) =>
+                    setEditedCar({
+                      ...editedCar,
+                      priorityLevel: parseInt(value) as 1 | 2 | 3 | 4 | 5,
+                    })
+                  }
                 >
                   <SelectTrigger id="priorityLevel">
                     <SelectValue />
@@ -158,7 +169,6 @@ export const CarDetailsDialog = ({ car, onUpdateCar }: CarDetailsDialogProps) =>
                   </SelectContent>
                 </Select>
               </div>
-              
             </div>
           </div>
 
@@ -177,7 +187,7 @@ export const CarDetailsDialog = ({ car, onUpdateCar }: CarDetailsDialogProps) =>
               maxItems={10}
               type="color"
             />
-            
+
             <ArrayInput
               label="Features"
               value={editedCar.features}
@@ -185,7 +195,7 @@ export const CarDetailsDialog = ({ car, onUpdateCar }: CarDetailsDialogProps) =>
               placeholder="Add feature (e.g., GPS Navigation, Bluetooth)"
               maxItems={15}
             />
-            
+
             <ImageUpload
               label="Car Image"
               value={editedCar.image}
@@ -197,10 +207,10 @@ export const CarDetailsDialog = ({ car, onUpdateCar }: CarDetailsDialogProps) =>
           {/* Metadata */}
           <div className="grid grid-cols-2 gap-4 pt-4 border-t text-sm text-muted-foreground">
             <div>
-              <span className="font-medium">Created:</span> {format(car.createdDate, "PPP")}
+              <span className="font-medium">Created:</span> {format(car.createdDate, 'PPP')}
             </div>
             <div>
-              <span className="font-medium">Updated:</span> {format(car.updatedDate, "PPP")}
+              <span className="font-medium">Updated:</span> {format(car.updatedDate, 'PPP')}
             </div>
           </div>
 

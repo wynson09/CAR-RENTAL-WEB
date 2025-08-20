@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Validation Useform",
+  title: 'Validation Useform',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

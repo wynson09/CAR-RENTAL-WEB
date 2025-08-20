@@ -1,61 +1,47 @@
-"use client";
-import * as React from "react";
-import * as SwitchPrimitives from "@radix-ui/react-switch";
-import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils";
+'use client';
+import * as React from 'react';
+import * as SwitchPrimitives from '@radix-ui/react-switch';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '@/lib/utils';
 
 const switchVariants = cva(
-  "peer relative inline-flex items-center [&_.content-box>svg]:h-4 [&_.content-box>svg]:w-4 [&_.content-box]:text-primary-foreground [&_.content-box]:text-[10px] justify-start group flex-shrink-0 cursor-pointer rounded-full transition-colors duration-200 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=unchecked]:bg-default-300",
+  'peer relative inline-flex items-center [&_.content-box>svg]:h-4 [&_.content-box>svg]:w-4 [&_.content-box]:text-primary-foreground [&_.content-box]:text-[10px] justify-start group flex-shrink-0 cursor-pointer rounded-full transition-colors duration-200 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=unchecked]:bg-default-300',
   {
     variants: {
       color: {
-        primary: "data-[state=checked]:bg-primary ",
-        secondary: "data-[state=checked]:bg-secondary ",
-        info: "data-[state=checked]:bg-info ",
-        warning: "data-[state=checked]:bg-warning ",
-        success: "data-[state=checked]:bg-success ",
-        destructive: "data-[state=checked]:bg-destructive ",
-        dark: "data-[state=checked]:bg-foreground ",
+        primary: 'data-[state=checked]:bg-primary ',
+        secondary: 'data-[state=checked]:bg-secondary ',
+        info: 'data-[state=checked]:bg-info ',
+        warning: 'data-[state=checked]:bg-warning ',
+        success: 'data-[state=checked]:bg-success ',
+        destructive: 'data-[state=checked]:bg-destructive ',
+        dark: 'data-[state=checked]:bg-foreground ',
       },
       size: {
-        sm: "h-4 w-[30px]  [&_.content-box]:text-[7px] [&_.content-box>svg]:h-2.5  [&_.content-box>svg]:w-2.5 ",
-        md: "h-5 w-[38px] ",
-        lg: "h-6 w-[42px]",
+        sm: 'h-4 w-[30px]  [&_.content-box]:text-[7px] [&_.content-box>svg]:h-2.5  [&_.content-box>svg]:w-2.5 ',
+        md: 'h-5 w-[38px] ',
+        lg: 'h-6 w-[42px]',
       },
     },
 
     defaultVariants: {
-      color: "primary",
-      size: "md",
+      color: 'primary',
+      size: 'md',
     },
   }
 );
 
-interface SwitchProps extends React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>, VariantProps<typeof switchVariants> {
-  thumbIcon?: React.ReactNode
-  thumbClass?: string
-  startContent?: React.ReactNode
-  endContent?: React.ReactNode
-  color?: 'primary' | 'secondary' | 'info' | 'warning' | 'success' | 'destructive' | 'dark'
-
+interface SwitchProps
+  extends React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>,
+    VariantProps<typeof switchVariants> {
+  thumbIcon?: React.ReactNode;
+  thumbClass?: string;
+  startContent?: React.ReactNode;
+  endContent?: React.ReactNode;
+  color?: 'primary' | 'secondary' | 'info' | 'warning' | 'success' | 'destructive' | 'dark';
 }
-const Switch = React.forwardRef<
-  React.ElementRef<typeof SwitchPrimitives.Root>,
-  SwitchProps
->(
-  (
-    {
-      className,
-      size,
-      color,
-      startContent,
-      endContent,
-      thumbClass,
-      thumbIcon,
-      ...props
-    },
-    ref
-  ) => (
+const Switch = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Root>, SwitchProps>(
+  ({ className, size, color, startContent, endContent, thumbClass, thumbIcon, ...props }, ref) => (
     <SwitchPrimitives.Root
       className={cn(switchVariants({ size, color }), className)}
       {...props}
@@ -68,12 +54,12 @@ const Switch = React.forwardRef<
       )}
       <SwitchPrimitives.Thumb
         className={cn(
-          "pointer-events-none z-[9999] h-4 w-4 rounded-full bg-background shadow-lg ring-0 transition-transform duration-200 ease-in-out flex items-center justify-center data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0",
+          'pointer-events-none z-[9999] h-4 w-4 rounded-full bg-background shadow-lg ring-0 transition-transform duration-200 ease-in-out flex items-center justify-center data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0',
           thumbClass,
           {
-            "h-3 w-3 data-[state=checked]:translate-x-4": size === "sm",
-            "h-4 w-4 data-[state=checked]:translate-x-5": size === "md",
-            "h-5 w-5 data-[state=checked]:translate-x-4": size === "lg",
+            'h-3 w-3 data-[state=checked]:translate-x-4': size === 'sm',
+            'h-4 w-4 data-[state=checked]:translate-x-5': size === 'md',
+            'h-5 w-5 data-[state=checked]:translate-x-4': size === 'lg',
           }
         )}
       >

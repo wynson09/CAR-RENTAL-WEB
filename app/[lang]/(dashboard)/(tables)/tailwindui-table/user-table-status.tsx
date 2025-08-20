@@ -1,5 +1,5 @@
-"use client"
-import { Switch } from "@/components/ui/switch";
+'use client';
+import { Switch } from '@/components/ui/switch';
 import {
   Table,
   TableBody,
@@ -8,47 +8,47 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { users } from "./data";
-import { Icon } from "@iconify/react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+} from '@/components/ui/table';
+import { users } from './data';
+import { Icon } from '@iconify/react';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 
 const UserTableStatus = () => {
-  const columns: { key: string, label: string }[] = [
+  const columns: { key: string; label: string }[] = [
     {
-      key: "user",
-      label: "user"
+      key: 'user',
+      label: 'user',
     },
     {
-      key: "email",
-      label: "email"
+      key: 'email',
+      label: 'email',
     },
     {
-      key: "title",
-      label: "title"
+      key: 'title',
+      label: 'title',
     },
     {
-      key: "role",
-      label: "role"
+      key: 'role',
+      label: 'role',
     },
     {
-      key: "status",
-      label: "status"
+      key: 'status',
+      label: 'status',
     },
     {
-      key: "action",
-      label: "action"
+      key: 'action',
+      label: 'action',
     },
-  ]
+  ];
   return (
     <Card>
       <Table>
         <TableHeader>
           <TableRow>
-            {columns.map(column => (
+            {columns.map((column) => (
               <TableHead key={column.key}> {column.label}</TableHead>
             ))}
           </TableRow>
@@ -62,9 +62,7 @@ const UserTableStatus = () => {
                     <AvatarImage src={item.avatar} />
                     <AvatarFallback>AB</AvatarFallback>
                   </Avatar>
-                  <span className="text-sm  text-default-600">
-                    {item.name}
-                  </span>
+                  <span className="text-sm  text-default-600">{item.name}</span>
                 </div>
               </TableCell>
               <TableCell>{item.email}</TableCell>
@@ -74,10 +72,11 @@ const UserTableStatus = () => {
                 <Badge
                   variant="soft"
                   color={
-                    (item.role === "admin" && "default") ||
-                    (item.role === "member" && "success") ||
-                    (item.role === "owner" && "info") ||
-                    (item.role === "editor" && "warning") || "default"
+                    (item.role === 'admin' && 'default') ||
+                    (item.role === 'member' && 'success') ||
+                    (item.role === 'owner' && 'info') ||
+                    (item.role === 'editor' && 'warning') ||
+                    'default'
                   }
                   className=" capitalize"
                 >
@@ -88,28 +87,13 @@ const UserTableStatus = () => {
                 <Switch id={item.email} />
               </TableCell>
               <TableCell className="flex gap-3  justify-end">
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className=" h-7 w-7"
-                  color="secondary"
-                >
+                <Button size="icon" variant="outline" className=" h-7 w-7" color="secondary">
                   <Icon icon="heroicons:pencil" className="h-4 w-4" />
                 </Button>
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className=" h-7 w-7"
-                  color="secondary"
-                >
+                <Button size="icon" variant="outline" className=" h-7 w-7" color="secondary">
                   <Icon icon="heroicons:eye" className="h-4 w-4" />
                 </Button>
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className=" h-7 w-7"
-                  color="secondary"
-                >
+                <Button size="icon" variant="outline" className=" h-7 w-7" color="secondary">
                   <Icon icon="heroicons:trash" className="h-4 w-4" />
                 </Button>
               </TableCell>

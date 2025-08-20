@@ -1,8 +1,8 @@
-"use client";
-import React from "react";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
+'use client';
+import React from 'react';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
 import {
   ComposedChart,
   Line,
@@ -15,7 +15,7 @@ import {
   Legend,
   Scatter,
   ResponsiveContainer,
-} from "recharts";
+} from 'recharts';
 
 const ReScatterAndLineOfBestFit = ({ height = 300 }) => {
   const { theme: config, setTheme: setConfig, isRtl } = useThemeStore();
@@ -59,59 +59,54 @@ const ReScatterAndLineOfBestFit = ({ height = 300 }) => {
         }}
       >
         <CartesianGrid
-          stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-            })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
           strokeDasharray="1 1"
           vertical={false}
         />
         <XAxis
           dataKey="index"
           type="number"
-          label={{ value: "Index", position: "insideBottomRight", offset: 0 }}
-          tick={{ fill: mode === "dark" ? "#cbd5e1" : "#64748b", fontSize: 12 }}
+          label={{ value: 'Index', position: 'insideBottomRight', offset: 0 }}
+          tick={{ fill: mode === 'dark' ? '#cbd5e1' : '#64748b', fontSize: 12 }}
           tickLine={false}
-          stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-            })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
           axisLine={false}
         />
         <YAxis
           unit="ms"
           type="number"
-          label={{ value: "Time", angle: -90, position: "insideLeft" }}
-          tick={{ fill: mode === "dark" ? "#cbd5e1" : "#64748b", fontSize: 12 }}
+          label={{ value: 'Time', angle: -90, position: 'insideLeft' }}
+          tick={{ fill: mode === 'dark' ? '#cbd5e1' : '#64748b', fontSize: 12 }}
           tickLine={false}
-          stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-            })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
           axisLine={false}
         />
         <Tooltip content={CustomTooltip} />
         <Legend
-          formatter={(value, entry) => <span style={{ color: entry.color, marginRight: isRtl ? "5px" : "0px" }}>{value}</span>}
+          formatter={(value, entry) => (
+            <span style={{ color: entry.color, marginRight: isRtl ? '5px' : '0px' }}>{value}</span>
+          )}
         />
         <Scatter
           name="red"
           dataKey="red"
           data={data}
-          fill={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].destructive
-            })`}
+          fill={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].destructive})`}
         />
         <Scatter
           name="blue"
           dataKey="blue"
           data={data}
-          fill={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary
-            })`}
+          fill={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`}
         />
 
         <Line
           type="monotone"
           strokeWidth={2}
           dataKey="blueLine"
-          stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary
-            })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`}
           dot={{
-            stroke: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary
-              })`,
+            stroke: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
             strokeWidth: 2,
           }}
         />
@@ -119,11 +114,9 @@ const ReScatterAndLineOfBestFit = ({ height = 300 }) => {
           type="monotone"
           strokeWidth={2}
           dataKey="redLine"
-          stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].destructive
-            })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].destructive})`}
           dot={{
-            stroke: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].destructive
-              })`,
+            stroke: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].destructive})`,
             strokeWidth: 2,
           }}
         />

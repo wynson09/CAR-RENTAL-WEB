@@ -1,25 +1,17 @@
-"use client";
-import React from "react";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-  AvatarGroup,
-} from "@/components/ui/avatar";
-import { faker } from "@faker-js/faker";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/react";
-import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
-import { ArrowRightLeft, Check, Tag, Trash2, X } from "lucide-react";
+'use client';
+import React from 'react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Avatar, AvatarFallback, AvatarImage, AvatarGroup } from '@/components/ui/avatar';
+import { faker } from '@faker-js/faker';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@iconify/react';
+import { Badge } from '@/components/ui/badge';
+import { useState } from 'react';
+import { ArrowRightLeft, Check, Tag, Trash2, X } from 'lucide-react';
 
-import AssignMembers from "../../common/assign-members";
-import { cn } from "@/lib/utils";
-import {
-  updateSubTaskAction,
-  deleteSubTaskAction,
-} from "@/action/project-action";
+import AssignMembers from '../../common/assign-members';
+import { cn } from '@/lib/utils';
+import { updateSubTaskAction, deleteSubTaskAction } from '@/action/project-action';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,10 +19,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
-import { type SubTask as SubTaskType } from "@/app/api/tasks/data";
-const TaskItem = ({ subtask, handlerSubSheet }: {
+} from '@/components/ui/dropdown-menu';
+import DeleteConfirmationDialog from '@/components/delete-confirmation-dialog';
+import { type SubTask as SubTaskType } from '@/app/api/tasks/data';
+const TaskItem = ({
+  subtask,
+  handlerSubSheet,
+}: {
   subtask: SubTaskType;
   handlerSubSheet: () => void;
 }) => {
@@ -65,27 +60,23 @@ const TaskItem = ({ subtask, handlerSubSheet }: {
       />
       <div
         className={cn(
-          "flex gap-2 border-b border-dashed border-default-200 py-3 px-6 cursor-pointer",
+          'flex gap-2 border-b border-dashed border-default-200 py-3 px-6 cursor-pointer',
           {
-            "bg-default-50": completed,
+            'bg-default-50': completed,
           }
         )}
         onClick={handlerSubSheet}
       >
         <div className="mt-1 flex-none">
           <div onClick={(e) => e.stopPropagation()}>
-            <Checkbox
-              size="sm"
-              checked={isDone}
-              onCheckedChange={handleIsComplete}
-            />
+            <Checkbox size="sm" checked={isDone} onCheckedChange={handleIsComplete} />
           </div>
         </div>
         <div className="flex-1">
           <div className="flex">
             <div
-              className={cn("flex-1 text-base font-medium text-default-900", {
-                "line-through": completed,
+              className={cn('flex-1 text-base font-medium text-default-900', {
+                'line-through': completed,
               })}
             >
               {subtask?.title}
@@ -94,11 +85,7 @@ const TaskItem = ({ subtask, handlerSubSheet }: {
               {/* assigned members */}
               {subtask?.assign?.length > 0 && (
                 <div>
-                  <AvatarGroup
-                    max={3}
-                    total={subtask.assign.length}
-                    countClass="w-7 h-7"
-                  >
+                  <AvatarGroup max={3} total={subtask.assign.length} countClass="w-7 h-7">
                     {subtask.assign?.map((user, i) => (
                       <Avatar
                         className=" ring-1 ring-background ring-offset-[2px]  ring-offset-background h-7 w-7"
@@ -136,10 +123,7 @@ const TaskItem = ({ subtask, handlerSubSheet }: {
                   {!completed && (
                     <>
                       <DropdownMenuItem className="gap-2">
-                        <Icon
-                          icon="heroicons:calendar"
-                          className="w-4 h-4 text-default-500"
-                        />
+                        <Icon icon="heroicons:calendar" className="w-4 h-4 text-default-500" />
                         Add a due date
                       </DropdownMenuItem>
 
@@ -192,10 +176,7 @@ const TaskItem = ({ subtask, handlerSubSheet }: {
             )}
 
             <div className="text-xs text-default-500 flex items-center gap-1">
-              <Icon
-                icon="heroicons:calendar"
-                className="w-3.5 h-3.5 text-default-500"
-              />
+              <Icon icon="heroicons:calendar" className="w-3.5 h-3.5 text-default-500" />
               <span>{assignDate}</span>
             </div>
           </div>

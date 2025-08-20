@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import {
   Table,
   TableBody,
@@ -6,12 +6,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { DataRows, users } from "./data";
-import { Icon } from "@iconify/react";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+} from '@/components/ui/table';
+import { DataRows, users } from './data';
+import { Icon } from '@iconify/react';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,42 +19,40 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Card } from "@/components/ui/card";
+} from '@/components/ui/dropdown-menu';
+import { Card } from '@/components/ui/card';
 const UserTable = () => {
-  const columns: { key: string, label: string }[] = [
+  const columns: { key: string; label: string }[] = [
     {
-      key: "avatar",
-      label: "avatar"
+      key: 'avatar',
+      label: 'avatar',
     },
     {
-      key: "name",
-      label: "name"
+      key: 'name',
+      label: 'name',
     },
     {
-      key: "email",
-      label: "email"
+      key: 'email',
+      label: 'email',
     },
     {
-      key: "role",
-      label: "role"
+      key: 'role',
+      label: 'role',
     },
     {
-      key: "action",
-      label: "action"
+      key: 'action',
+      label: 'action',
     },
-  ]
-  
+  ];
+
   return (
     <Card>
       <Table>
         <TableHeader>
           <TableRow>
-            {
-              columns.map(column => (
-                <TableHead key={column.key}>{column.label}</TableHead>
-              ))
-            }
+            {columns.map((column) => (
+              <TableHead key={column.key}>{column.label}</TableHead>
+            ))}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -66,20 +64,18 @@ const UserTable = () => {
                   <AvatarFallback>AB</AvatarFallback>
                 </Avatar>
               </TableCell>
-              <TableCell className="font-medium  text-card-foreground/80">
-                {item.name}
-              </TableCell>
+              <TableCell className="font-medium  text-card-foreground/80">{item.name}</TableCell>
               <TableCell>{item.email}</TableCell>
 
               <TableCell>
                 <Badge
                   variant="outline"
                   color={
-                    (item.role === "admin" && "default") ||
-                    (item.role === "member" && "success") ||
-                    (item.role === "owner" && "info") ||
-                    (item.role === "editor" && "warning") ||
-                    "default"
+                    (item.role === 'admin' && 'default') ||
+                    (item.role === 'member' && 'success') ||
+                    (item.role === 'owner' && 'info') ||
+                    (item.role === 'editor' && 'warning') ||
+                    'default'
                   }
                   className="capitalize"
                 >
@@ -94,20 +90,14 @@ const UserTable = () => {
                       color="secondary"
                       className=" h-7 rounded-full bg-transparent w-7 data-[state=open]:bg-primary data-[state=open]:text-primary-foreground  "
                     >
-                      <Icon
-                        icon="heroicons:ellipsis-horizontal"
-                        className=" h-6 w-6 "
-                      />
+                      <Icon icon="heroicons:ellipsis-horizontal" className=" h-6 w-6 " />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" avoidCollisions>
                     <DropdownMenuLabel>Action Center</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
-                      <Icon
-                        icon="heroicons:pencil"
-                        className=" h-4 w-4 mr-2 "
-                      />
+                      <Icon icon="heroicons:pencil" className=" h-4 w-4 mr-2 " />
                       Edit
                     </DropdownMenuItem>
                     <DropdownMenuItem>
@@ -126,7 +116,6 @@ const UserTable = () => {
         </TableBody>
       </Table>
     </Card>
-
   );
 };
 

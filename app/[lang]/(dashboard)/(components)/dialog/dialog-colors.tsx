@@ -1,5 +1,5 @@
-"use client";
-import { Button } from "@/components/ui/button";
+'use client';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 const DialogColors = () => {
   return (
     <div>
@@ -25,25 +25,21 @@ const DialogColors = () => {
             </DialogHeader>
             <div className="text-sm text-default-500  space-y-4">
               <p>
-                <span className="text-primary font-medium">Bangkok.</span> This
-                famous busy city in Thailand ranks as the top-visited city in
-                the world. Bangkok welcomed 21.2 million visitors! Imagine 21
-                million people flocking to one city, crazy! The review puts
-                Bangkok as the most visited city in the world, with
-                approximately 22 million international visitors. More detailed
-                studies reveal visitor patterns, such as an average of 4.7
-                nights stay and an average spending of USD $173 daily.
+                <span className="text-primary font-medium">Bangkok.</span> This famous busy city in
+                Thailand ranks as the top-visited city in the world. Bangkok welcomed 21.2 million
+                visitors! Imagine 21 million people flocking to one city, crazy! The review puts
+                Bangkok as the most visited city in the world, with approximately 22 million
+                international visitors. More detailed studies reveal visitor patterns, such as an
+                average of 4.7 nights stay and an average spending of USD $173 daily.
               </p>
             </div>
             <DialogFooter className="mt-8">
               <DialogClose asChild>
-                <Button  variant="outline" color="warning">
+                <Button variant="outline" color="warning">
                   close
                 </Button>
               </DialogClose>
-              <Button  >
-                Save
-              </Button>
+              <Button>Save</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -59,25 +55,21 @@ const DialogColors = () => {
             </DialogHeader>
             <div className="text-sm text-default-500  space-y-4">
               <p>
-                <span className="text-primary font-medium">Bangkok.</span> This
-                famous busy city in Thailand ranks as the top-visited city in
-                the world. Bangkok welcomed 21.2 million visitors! Imagine 21
-                million people flocking to one city, crazy! The review puts
-                Bangkok as the most visited city in the world, with
-                approximately 22 million international visitors. More detailed
-                studies reveal visitor patterns, such as an average of 4.7
-                nights stay and an average spending of USD $173 daily.
+                <span className="text-primary font-medium">Bangkok.</span> This famous busy city in
+                Thailand ranks as the top-visited city in the world. Bangkok welcomed 21.2 million
+                visitors! Imagine 21 million people flocking to one city, crazy! The review puts
+                Bangkok as the most visited city in the world, with approximately 22 million
+                international visitors. More detailed studies reveal visitor patterns, such as an
+                average of 4.7 nights stay and an average spending of USD $173 daily.
               </p>
             </div>
             <DialogFooter className="mt-8">
               <DialogClose asChild>
-                <Button  variant="outline" color="warning">
+                <Button variant="outline" color="warning">
                   close
                 </Button>
               </DialogClose>
-              <Button  >
-                Save
-              </Button>
+              <Button>Save</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -93,25 +85,21 @@ const DialogColors = () => {
             </DialogHeader>
             <div className="text-sm text-default-500  space-y-4">
               <p>
-                <span className="text-success font-medium">Bangkok.</span> This
-                famous busy city in Thailand ranks as the top-visited city in
-                the world. Bangkok welcomed 21.2 million visitors! Imagine 21
-                million people flocking to one city, crazy! The review puts
-                Bangkok as the most visited city in the world, with
-                approximately 22 million international visitors. More detailed
-                studies reveal visitor patterns, such as an average of 4.7
-                nights stay and an average spending of USD $173 daily.
+                <span className="text-success font-medium">Bangkok.</span> This famous busy city in
+                Thailand ranks as the top-visited city in the world. Bangkok welcomed 21.2 million
+                visitors! Imagine 21 million people flocking to one city, crazy! The review puts
+                Bangkok as the most visited city in the world, with approximately 22 million
+                international visitors. More detailed studies reveal visitor patterns, such as an
+                average of 4.7 nights stay and an average spending of USD $173 daily.
               </p>
             </div>
             <DialogFooter className="mt-8">
               <DialogClose asChild>
-                <Button  variant="outline" color="warning">
+                <Button variant="outline" color="warning">
                   close
                 </Button>
               </DialogClose>
-              <Button  color="success">
-                Save
-              </Button>
+              <Button color="success">Save</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -127,25 +115,21 @@ const DialogColors = () => {
             </DialogHeader>
             <div className="text-sm text-default-500  space-y-4">
               <p>
-                <span className="text-warning font-medium">Bangkok.</span> This
-                famous busy city in Thailand ranks as the top-visited city in
-                the world. Bangkok welcomed 21.2 million visitors! Imagine 21
-                million people flocking to one city, crazy! The review puts
-                Bangkok as the most visited city in the world, with
-                approximately 22 million international visitors. More detailed
-                studies reveal visitor patterns, such as an average of 4.7
-                nights stay and an average spending of USD $173 daily.
+                <span className="text-warning font-medium">Bangkok.</span> This famous busy city in
+                Thailand ranks as the top-visited city in the world. Bangkok welcomed 21.2 million
+                visitors! Imagine 21 million people flocking to one city, crazy! The review puts
+                Bangkok as the most visited city in the world, with approximately 22 million
+                international visitors. More detailed studies reveal visitor patterns, such as an
+                average of 4.7 nights stay and an average spending of USD $173 daily.
               </p>
             </div>
             <DialogFooter className="mt-8">
               <DialogClose asChild>
-                <Button  variant="outline" color="warning">
+                <Button variant="outline" color="warning">
                   close
                 </Button>
               </DialogClose>
-              <Button  color="warning">
-                Save
-              </Button>
+              <Button color="warning">Save</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -161,25 +145,21 @@ const DialogColors = () => {
             </DialogHeader>
             <div className="text-sm text-default-500  space-y-4">
               <p>
-                <span className="text-destructive font-medium">Bangkok.</span>{" "}
-                This famous busy city in Thailand ranks as the top-visited city
-                in the world. Bangkok welcomed 21.2 million visitors! Imagine 21
-                million people flocking to one city, crazy! The review puts
-                Bangkok as the most visited city in the world, with
-                approximately 22 million international visitors. More detailed
-                studies reveal visitor patterns, such as an average of 4.7
-                nights stay and an average spending of USD $173 daily.
+                <span className="text-destructive font-medium">Bangkok.</span> This famous busy city
+                in Thailand ranks as the top-visited city in the world. Bangkok welcomed 21.2
+                million visitors! Imagine 21 million people flocking to one city, crazy! The review
+                puts Bangkok as the most visited city in the world, with approximately 22 million
+                international visitors. More detailed studies reveal visitor patterns, such as an
+                average of 4.7 nights stay and an average spending of USD $173 daily.
               </p>
             </div>
             <DialogFooter className="mt-8">
               <DialogClose asChild>
-                <Button  variant="outline" color="warning">
+                <Button variant="outline" color="warning">
                   close
                 </Button>
               </DialogClose>
-              <Button  color="destructive">
-                Save
-              </Button>
+              <Button color="destructive">Save</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -195,25 +175,21 @@ const DialogColors = () => {
             </DialogHeader>
             <div className="text-sm text-default-500  space-y-4">
               <p>
-                <span className="text-info font-medium">Bangkok.</span> This
-                famous busy city in Thailand ranks as the top-visited city in
-                the world. Bangkok welcomed 21.2 million visitors! Imagine 21
-                million people flocking to one city, crazy! The review puts
-                Bangkok as the most visited city in the world, with
-                approximately 22 million international visitors. More detailed
-                studies reveal visitor patterns, such as an average of 4.7
-                nights stay and an average spending of USD $173 daily.
+                <span className="text-info font-medium">Bangkok.</span> This famous busy city in
+                Thailand ranks as the top-visited city in the world. Bangkok welcomed 21.2 million
+                visitors! Imagine 21 million people flocking to one city, crazy! The review puts
+                Bangkok as the most visited city in the world, with approximately 22 million
+                international visitors. More detailed studies reveal visitor patterns, such as an
+                average of 4.7 nights stay and an average spending of USD $173 daily.
               </p>
             </div>
             <DialogFooter className="mt-8">
               <DialogClose asChild>
-                <Button  variant="outline" color="warning">
+                <Button variant="outline" color="warning">
                   close
                 </Button>
               </DialogClose>
-              <Button  color="info">
-                Save
-              </Button>
+              <Button color="info">Save</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -232,24 +208,21 @@ const DialogColors = () => {
                 <span className="text-default-950 dark:text-primary-foreground font-medium">
                   Bangkok.
                 </span>
-                This famous busy city in Thailand ranks as the top-visited city
-                in the world. Bangkok welcomed 21.2 million visitors! Imagine 21
-                million people flocking to one city, crazy! The review puts
-                Bangkok as the most visited city in the world, with
-                approximately 22 million international visitors. More detailed
-                studies reveal visitor patterns, such as an average of 4.7
-                nights stay and an average spending of USD $173 daily.
+                This famous busy city in Thailand ranks as the top-visited city in the world.
+                Bangkok welcomed 21.2 million visitors! Imagine 21 million people flocking to one
+                city, crazy! The review puts Bangkok as the most visited city in the world, with
+                approximately 22 million international visitors. More detailed studies reveal
+                visitor patterns, such as an average of 4.7 nights stay and an average spending of
+                USD $173 daily.
               </p>
             </div>
             <DialogFooter className="mt-8">
               <DialogClose asChild>
-                <Button  variant="outline" color="warning">
+                <Button variant="outline" color="warning">
                   close
                 </Button>
               </DialogClose>
-              <Button  color="dark">
-                Save
-              </Button>
+              <Button color="dark">Save</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

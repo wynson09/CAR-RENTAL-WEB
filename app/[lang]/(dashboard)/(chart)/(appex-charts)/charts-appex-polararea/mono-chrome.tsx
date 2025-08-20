@@ -1,19 +1,19 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { getGridConfig, getXAxisConfig } from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getGridConfig, getXAxisConfig } from '@/lib/appex-chart-options';
 
 const MonChromePolarArea = ({ height = 300 }) => {
-  const { theme: config, setTheme: setConfig ,isRtl} = useThemeStore();
+  const { theme: config, setTheme: setConfig, isRtl } = useThemeStore();
   const { theme: mode } = useTheme();
   const theme = themes.find((theme) => theme.name === config);
 
   const series = [42, 47, 52, 58, 65];
 
-  const options:any = {
+  const options: any = {
     chart: {
       toolbar: {
         show: false,
@@ -22,7 +22,7 @@ const MonChromePolarArea = ({ height = 300 }) => {
     dataLabels: {
       enabled: false,
     },
-    labels: ["Rose A", "Rose B", "Rose C", "Rose D", "Rose E"],
+    labels: ['Rose A', 'Rose B', 'Rose C', 'Rose D', 'Rose E'],
     fill: {
       opacity: 1,
     },
@@ -30,21 +30,15 @@ const MonChromePolarArea = ({ height = 300 }) => {
       width: 1,
       colors: undefined,
     },
-    colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-    ],
+    colors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
     yaxis: {
       show: false,
     },
-    xaxis: getXAxisConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`
-    ),
+    xaxis: getXAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
     plotOptions: {
       polarArea: {
         rings: {
@@ -58,17 +52,15 @@ const MonChromePolarArea = ({ height = 300 }) => {
     theme: {
       monochrome: {
         enabled: true,
-        shadeTo: "light",
+        shadeTo: 'light',
         shadeIntensity: 0.6,
       },
     },
     legend: {
-      position: "bottom",
+      position: 'bottom',
       labels: {
         colors: `hsl(${
-          theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
+          theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
         })`,
       },
       itemMargin: {
@@ -79,8 +71,8 @@ const MonChromePolarArea = ({ height = 300 }) => {
         width: 10,
         height: 10,
         radius: 10,
-        offsetX: isRtl ? 5 : -5
-      }
+        offsetX: isRtl ? 5 : -5,
+      },
     },
     padding: {
       top: 0,
@@ -90,13 +82,7 @@ const MonChromePolarArea = ({ height = 300 }) => {
     },
   };
   return (
-      <Chart
-        options={options}
-        series={series}
-        type="polarArea"
-        height={height}
-        width={"100%"}
-      />
+    <Chart options={options} series={series} type="polarArea" height={height} width={'100%'} />
   );
 };
 

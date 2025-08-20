@@ -1,14 +1,10 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import {
-  getGridConfig,
-  getXAxisConfig,
-  getYAxisConfig
-} from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getGridConfig, getXAxisConfig, getYAxisConfig } from '@/lib/appex-chart-options';
 
 const StepLineChart = ({ height = 300 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -21,7 +17,7 @@ const StepLineChart = ({ height = 300 }) => {
       data: [34, 44, 54, 21, 12, 43, 33, 23, 66, 66, 58],
     },
   ];
-  const options:any = {
+  const options: any = {
     chart: {
       toolbar: {
         show: false,
@@ -31,24 +27,16 @@ const StepLineChart = ({ height = 300 }) => {
       enabled: false,
     },
     stroke: {
-      curve: "stepline",
+      curve: 'stepline',
     },
-    colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success})`,
-    ],
+    colors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
 
-    yaxis: getYAxisConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`
-    ),
-    xaxis: getXAxisConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`
-    ),
+    yaxis: getYAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
+    xaxis: getXAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
 
     padding: {
       top: 0,
@@ -62,15 +50,7 @@ const StepLineChart = ({ height = 300 }) => {
       },
     },
   };
-  return (
-      <Chart
-        options={options}
-        series={series}
-        type="line"
-        height={height}
-        width={"100%"}
-      />
-  );
+  return <Chart options={options} series={series} type="line" height={height} width={'100%'} />;
 };
 
 export default StepLineChart;

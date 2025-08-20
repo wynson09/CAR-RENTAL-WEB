@@ -1,10 +1,10 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { getGridConfig, getLabel } from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getGridConfig, getLabel } from '@/lib/appex-chart-options';
 
 const DumbbellTimelineChart = ({ height = 400 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -16,38 +16,38 @@ const DumbbellTimelineChart = ({ height = 400 }) => {
     {
       data: [
         {
-          x: "Operations",
+          x: 'Operations',
           y: [2800, 4500],
         },
         {
-          x: "Customer Success",
+          x: 'Customer Success',
           y: [3200, 4100],
         },
         {
-          x: "Engineering",
+          x: 'Engineering',
           y: [2950, 7800],
         },
         {
-          x: "Marketing",
+          x: 'Marketing',
           y: [3000, 4600],
         },
         {
-          x: "Product",
+          x: 'Product',
           y: [3500, 4100],
         },
         {
-          x: "Data Science",
+          x: 'Data Science',
           y: [4500, 6500],
         },
         {
-          x: "Sales",
+          x: 'Sales',
           y: [4100, 5600],
         },
       ],
     },
   ];
 
-  const options:any = {
+  const options: any = {
     chart: {
       toolbar: {
         show: false,
@@ -60,49 +60,33 @@ const DumbbellTimelineChart = ({ height = 400 }) => {
         isDumbbell: true,
         dumbbellColors: [
           [
-            `hsl(${
-              theme?.cssVars[mode === "dark" ? "dark" : "light"].warning
-            })`,
-            `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
+            `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`,
+            `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`,
           ],
         ],
       },
     },
     fill: {
-      type: "gradient",
+      type: 'gradient',
       gradient: {
-        gradientToColors: [
-          `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
-        ],
+        gradientToColors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`],
         inverseColors: false,
         stops: [0, 100],
       },
     },
-    colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-    ],
+    colors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
     yaxis: {
       labels: getLabel(
-        `hsl(${
-          theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
     },
     xaxis: {
       labels: getLabel(
-        `hsl(${
-          theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
       axisBorder: {
         show: false,
@@ -118,15 +102,7 @@ const DumbbellTimelineChart = ({ height = 400 }) => {
       left: 0,
     },
   };
-  return (
-      <Chart
-        options={options}
-        series={series}
-        type="rangeBar"
-        height={height}
-        width={"100%"}
-      />
-  );
+  return <Chart options={options} series={series} type="rangeBar" height={height} width={'100%'} />;
 };
 
 export default DumbbellTimelineChart;

@@ -1,7 +1,7 @@
-"use client";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
+'use client';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
 import {
   CartesianGrid,
   XAxis,
@@ -11,8 +11,8 @@ import {
   ScatterChart,
   Scatter,
   Cell,
-} from "recharts";
-import CustomTooltip from "./custom-tooltip";
+} from 'recharts';
+import CustomTooltip from './custom-tooltip';
 interface DataPoint {
   x: number;
   y: number;
@@ -33,19 +33,17 @@ const ScatterChartWithCells = ({ height = 300 }) => {
   const theme = themes.find((theme) => theme.name === config);
 
   const COLORS = [
-    `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-    `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
-    `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning})`,
-    `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success})`,
+    `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
+    `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`,
+    `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`,
+    `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`,
   ];
 
   return (
     <ResponsiveContainer width="100%" height={height}>
       <ScatterChart height={height}>
         <CartesianGrid
-          stroke={`hsl(${
-            theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-          })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
           strokeDasharray="3 3"
           vertical={false}
         />
@@ -55,15 +53,11 @@ const ScatterChartWithCells = ({ height = 300 }) => {
           name="stature"
           unit="cm"
           tick={{
-            fill: `hsl(${
-              theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel
-            })`,
-            fontSize: "12px",
+            fill: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
+            fontSize: '12px',
           }}
           tickLine={false}
-          stroke={`hsl(${
-            theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-          })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
           axisLine={false}
         />
         <YAxis
@@ -72,24 +66,18 @@ const ScatterChartWithCells = ({ height = 300 }) => {
           name="weight"
           unit="kg"
           tick={{
-            fill: `hsl(${
-              theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel
-            })`,
-            fontSize: "12px",
+            fill: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
+            fontSize: '12px',
           }}
           tickLine={false}
-          stroke={`hsl(${
-            theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-          })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
         />
 
         <Tooltip content={<CustomTooltip />} />
         <Scatter
           data={data}
           name="A school"
-          fill={`hsl(${
-            theme?.cssVars[mode === "dark" ? "dark" : "light"].primary
-          })`}
+          fill={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`}
         >
           {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

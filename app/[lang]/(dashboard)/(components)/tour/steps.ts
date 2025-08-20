@@ -20,11 +20,10 @@ type Step = {
   text: string | string[];
 };
 
-
-const steps:Step[] = [
+const steps: Step[] = [
   {
-    id: "intro",
-    attachTo: { element: "#logo-tour", on: "bottom" },
+    id: 'intro',
+    attachTo: { element: '#logo-tour', on: 'bottom' },
     beforeShowPromise: function () {
       return new Promise(function (resolve) {
         setTimeout(function () {
@@ -35,133 +34,133 @@ const steps:Step[] = [
     },
     buttons: [
       {
-        text: "Skip",
-        classes: "btn btn-warning",
+        text: 'Skip',
+        classes: 'btn btn-warning',
         action() {
           return this.complete();
         },
       },
       {
-        classes: "btn btn-success",
-        text: "Next",
+        classes: 'btn btn-success',
+        text: 'Next',
         action() {
           return this.next();
         },
       },
     ],
-    title: "Welcome Back !",
-    text: ["This is Step 1"],
+    title: 'Welcome Back !',
+    text: ['This is Step 1'],
   },
 
   {
-    id: "intro1",
-    attachTo: { element: "#register-tour", on: "left" },
+    id: 'intro1',
+    attachTo: { element: '#register-tour', on: 'left' },
 
     buttons: [
       {
-        text: "Back",
-        classes: "btn btn-light",
+        text: 'Back',
+        classes: 'btn btn-light',
         action() {
           return this.back();
         },
       },
       {
-        text: "Skip",
-        classes: "btn btn-warning",
+        text: 'Skip',
+        classes: 'btn btn-warning',
         action() {
           return this.complete();
         },
       },
       {
-        text: "Next",
-        classes: "btn btn-success",
+        text: 'Next',
+        classes: 'btn btn-success',
         action() {
           return this.next();
         },
       },
     ],
-    title: "Register your account",
-    text: "Get your Free DashTail account now.",
+    title: 'Register your account',
+    text: 'Get your Free DashTail account now.',
   },
   {
-    id: "intro2",
-    attachTo: { element: "#login-tour", on: "bottom" },
+    id: 'intro2',
+    attachTo: { element: '#login-tour', on: 'bottom' },
     buttons: [
       {
-        text: "Back",
-        classes: "btn btn-light",
+        text: 'Back',
+        classes: 'btn btn-light',
         action() {
           return this.back();
         },
       },
       {
-        text: "Skip",
-        classes: "btn btn-warning",
+        text: 'Skip',
+        classes: 'btn btn-warning',
         action() {
           return this.complete();
         },
       },
       {
-        text: "Next",
-        classes: "btn btn-success",
+        text: 'Next',
+        classes: 'btn btn-success',
         action() {
           return this.next();
         },
       },
     ],
-    title: "Login your account",
-    text: "Sign in to continue to DashTail.",
+    title: 'Login your account',
+    text: 'Sign in to continue to DashTail.',
   },
   {
-    id: "intro3",
-    attachTo: { element: "#getproduct-tour", on: "bottom" },
+    id: 'intro3',
+    attachTo: { element: '#getproduct-tour', on: 'bottom' },
     buttons: [
       {
-        text: "Back",
-        classes: "btn btn-light",
+        text: 'Back',
+        classes: 'btn btn-light',
         action() {
           return this.back();
         },
       },
       {
-        text: "Skip",
-        classes: "btn btn-warning",
+        text: 'Skip',
+        classes: 'btn btn-warning',
         action() {
           return this.complete();
         },
       },
       {
-        text: "Next",
-        classes: "btn btn-success",
+        text: 'Next',
+        classes: 'btn btn-success',
         action() {
           return this.next();
         },
       },
     ],
-    title: "Get yout Product",
-    text: "Sign in to continue to DashTail.",
+    title: 'Get yout Product',
+    text: 'Sign in to continue to DashTail.',
   },
   {
-    id: "intro4",
-    attachTo: { element: "#thankyou-tour", on: "top" },
+    id: 'intro4',
+    attachTo: { element: '#thankyou-tour', on: 'top' },
     buttons: [
       {
-        text: "Back",
-        classes: "btn btn-light",
+        text: 'Back',
+        classes: 'btn btn-light',
         action() {
           return this.back();
         },
       },
       {
-        text: "Thank you !",
-        classes: "btn btn-primary",
+        text: 'Thank you !',
+        classes: 'btn btn-primary',
         action() {
           return this.complete();
         },
       },
     ],
-    title: "Thank you !",
-    text: "Sign in to continue to DashTail.",
+    title: 'Thank you !',
+    text: 'Sign in to continue to DashTail.',
   },
 ];
 

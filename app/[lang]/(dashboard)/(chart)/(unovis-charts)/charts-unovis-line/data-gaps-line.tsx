@@ -1,18 +1,12 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useState, useMemo } from "react";
-import {
-  VisXYContainer,
-  VisLine,
-  VisAxis,
-  VisXYLabels,
-  VisBulletLegend,
-} from "@unovis/react";
-import { countries, countriesData, legendItems } from "./data";
-import { Country, DataRecord2 } from "./utils"
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
+import { useCallback, useEffect, useState, useMemo } from 'react';
+import { VisXYContainer, VisLine, VisAxis, VisXYLabels, VisBulletLegend } from '@unovis/react';
+import { countries, countriesData, legendItems } from './data';
+import { Country, DataRecord2 } from './utils';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
 
 const DataGapsLine = ({ height = 400 }) => {
   const [current, setCurrent] = useState<number>(0);
@@ -26,7 +20,6 @@ const DataGapsLine = ({ height = 400 }) => {
   const getY = useCallback((c: Country) => (d: any) => d[c.id], []);
 
   useEffect(() => {
-
     setFallbackValue(legendItems[current].value ?? 0);
 
     setLegendItems(
@@ -36,7 +29,6 @@ const DataGapsLine = ({ height = 400 }) => {
         color: countries[0].color,
       }))
     );
-
   }, [current]);
 
   return (
@@ -50,28 +42,19 @@ const DataGapsLine = ({ height = 400 }) => {
           onLegendItemClick={useCallback((_: any, i: any) => setCurrent(i), [])}
         />
       </div>
-      <VisXYContainer
-        duration={0}
-        height={height}
-        xDomain={[1961, 2022]}
-        yDomain={[0, 650]}
-      >
+      <VisXYContainer duration={0} height={height} xDomain={[1961, 2022]} yDomain={[0, 650]}>
         <VisLine
           data={countriesData}
           x={useCallback((d: DataRecord2) => d.year, [])}
           y={useMemo(() => countries.map(getY), [])}
           fallbackValue={fallbackValue}
-          color={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning
-            })`}
+          color={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`}
         />
 
         <VisXYLabels
           data={countries}
           x={2019.5}
-          y={useCallback(
-            (c: Country) => getY(c)(countriesData[countriesData.length - 1]),
-            []
-          )}
+          y={useCallback((c: Country) => getY(c)(countriesData[countriesData.length - 1]), [])}
           label={useCallback((c: Country) => c.label, [])}
           backgroundColor="none"
         />
@@ -79,19 +62,17 @@ const DataGapsLine = ({ height = 400 }) => {
         <VisAxis
           type="x"
           numTicks={10}
-          tickTextColor={`hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`}
+          tickTextColor={`hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`}
         />
         <VisAxis
           type="y"
-          tickFormat={(d) => `${d}${d ? "M" : ""}`}
+          tickFormat={(d) => `${d}${d ? 'M' : ''}`}
           tickValues={[0, 200, 400, fallbackValue || 0, 600]}
-          tickTextColor={`hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`}
+          tickTextColor={`hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`}
         />
       </VisXYContainer>
     </>

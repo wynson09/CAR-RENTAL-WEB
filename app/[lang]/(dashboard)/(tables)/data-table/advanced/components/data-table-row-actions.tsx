@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { MoreHorizontal } from "lucide-react";
-import { Row } from "@tanstack/react-table";
+import { MoreHorizontal } from 'lucide-react';
+import { Row } from '@tanstack/react-table';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,10 +16,10 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 
-import { labels } from "../data/data";
-import { taskSchema } from "../data/schema";
+import { labels } from '../data/data';
+import { taskSchema } from '../data/schema';
 
 interface DataTableRowActionsProps {
   row: Row<any>;
@@ -31,10 +31,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-        >
+        <Button variant="ghost" className="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
           <MoreHorizontal className="h-4 w-4" />
           <span className="sr-only">Open menu</span>
         </Button>

@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import ReactFlow, { Edge, MiniMap, Node } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -30,7 +30,7 @@ const initialEdges: Edge[] = [
   { id: 'e2-3', source: '2', target: '3', animated: true },
 ];
 
-const nodeColor = (node:any) => {
+const nodeColor = (node: any) => {
   switch (node.type) {
     case 'input':
       return '#6ede87';
@@ -48,7 +48,7 @@ function withMiniMap() {
         <CardTitle>Flow with Mini Map</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className='w-full h-[calc(100vh-280px)]'>
+        <div className="w-full h-[calc(100vh-280px)]">
           <ReactFlow defaultNodes={defaultNodes} defaultEdges={initialEdges} fitView>
             <MiniMap nodeColor={nodeColor} nodeStrokeWidth={3} zoomable pannable />
           </ReactFlow>

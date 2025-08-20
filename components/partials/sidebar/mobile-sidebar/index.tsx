@@ -1,17 +1,17 @@
-"use client";
-import React, { useState } from "react";
-import { cn, isLocationMatch } from "@/lib/utils";
-import { useSidebar, useThemeStore } from "@/store";
-import SidebarLogo from "../common/logo";
-import { menusConfig } from "@/config/menus";
-import MenuLabel from "../common/menu-label";
-import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { usePathname } from "next/navigation";
-import SingleMenuItem from "./single-menu-item";
-import SubMenuHandler from "./sub-menu-handler";
-import NestedSubMenu from "../common/nested-menus";
-const MobileSidebar = ({ className, trans }: { className?: string, trans: any }) => {
+'use client';
+import React, { useState } from 'react';
+import { cn, isLocationMatch } from '@/lib/utils';
+import { useSidebar, useThemeStore } from '@/store';
+import SidebarLogo from '../common/logo';
+import { menusConfig } from '@/config/menus';
+import MenuLabel from '../common/menu-label';
+import { Separator } from '@/components/ui/separator';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { usePathname } from 'next/navigation';
+import SingleMenuItem from './single-menu-item';
+import SubMenuHandler from './sub-menu-handler';
+import NestedSubMenu from '../common/nested-menus';
+const MobileSidebar = ({ className, trans }: { className?: string; trans: any }) => {
   const { sidebarBg, mobileMenu, setMobileMenu } = useSidebar();
   const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null);
   const [activeMultiMenu, setMultiMenu] = useState<number | null>(null);
@@ -64,16 +64,12 @@ const MobileSidebar = ({ className, trans }: { className?: string, trans: any })
   return (
     <>
       <div
-        className={cn(
-          "fixed top-0  bg-card h-full w-[248px] z-[9999] ",
-          className,
-          {
-            " -left-[300px] invisible opacity-0  ": !mobileMenu,
-            " left-0 visible opacity-100  ": mobileMenu,
-          }
-        )}
+        className={cn('fixed top-0  bg-card h-full w-[248px] z-[9999] ', className, {
+          ' -left-[300px] invisible opacity-0  ': !mobileMenu,
+          ' left-0 visible opacity-100  ': mobileMenu,
+        })}
       >
-        {sidebarBg !== "none" && (
+        {sidebarBg !== 'none' && (
           <div
             className=" absolute left-0 top-0   z-[-1] w-full h-full bg-cover bg-center opacity-[0.07]"
             style={{ backgroundImage: `url(${sidebarBg})` }}
@@ -81,13 +77,13 @@ const MobileSidebar = ({ className, trans }: { className?: string, trans: any })
         )}
         <SidebarLogo hovered={collapsed} />
         <ScrollArea
-          className={cn("sidebar-menu  h-[calc(100%-80px)] ", {
-            "px-4": !collapsed,
+          className={cn('sidebar-menu  h-[calc(100%-80px)] ', {
+            'px-4': !collapsed,
           })}
         >
           <ul
-            className={cn("", {
-              " space-y-2 text-center": collapsed,
+            className={cn('', {
+              ' space-y-2 text-center': collapsed,
             })}
           >
             {menus.map((item, i) => (
@@ -120,7 +116,10 @@ const MobileSidebar = ({ className, trans }: { className?: string, trans: any })
                         activeMultiMenu={activeMultiMenu}
                         activeSubmenu={activeSubmenu}
                         item={item}
-                        index={i} title={""} trans={undefined} />
+                        index={i}
+                        title={''}
+                        trans={undefined}
+                      />
                     )}
                   </>
                 )}

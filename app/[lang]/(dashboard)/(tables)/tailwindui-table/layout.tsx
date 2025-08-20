@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "TailwindUi Table",
+  title: 'TailwindUi Table',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -7,4 +7,3 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default Layout;
-

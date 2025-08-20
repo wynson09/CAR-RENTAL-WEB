@@ -1,12 +1,11 @@
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import BasicLine from "./basic-line";
-import InterpolationModes from "./interpolation-modes";
-import MultiAxisLineChart from "./multi-axisline-chart";
-import PointStyling from "./point-styling";
-import LineSegmentStyling from "./linesegment-styling";
-import SteppedLineCharts from "./steppedline-charts";
-import LineStyling from "./line-styling";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import BasicLine from './basic-line';
+import InterpolationModes from './interpolation-modes';
+import MultiAxisLineChart from './multi-axisline-chart';
+import PointStyling from './point-styling';
+import LineSegmentStyling from './linesegment-styling';
+import SteppedLineCharts from './steppedline-charts';
+import LineStyling from './line-styling';
 
 const ChartsChartJsBar = () => {
   return (

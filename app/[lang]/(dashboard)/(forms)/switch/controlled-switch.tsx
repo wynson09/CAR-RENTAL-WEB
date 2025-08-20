@@ -1,7 +1,7 @@
-"use client";
-import { useState } from "react";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
+'use client';
+import { useState } from 'react';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 
 const ControlledSwtich = () => {
   const [checked, setChecked] = useState<boolean>(false);
@@ -14,9 +14,7 @@ const ControlledSwtich = () => {
         <Switch onCheckedChange={handleCheckedChange} id="controlled_Switch" />
         <Label htmlFor="controlled_Switch">Designing</Label>
       </div>
-      <p className="mt-3 text-default-600 text-sm">
-        Value: {checked ? "Checked" : "Unchecked"}
-      </p>
+      <p className="mt-3 text-default-600 text-sm">Value: {checked ? 'Checked' : 'Unchecked'}</p>
     </div>
   );
 };

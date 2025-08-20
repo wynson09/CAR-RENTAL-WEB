@@ -1,36 +1,36 @@
-import React from "react";
-import { useSidebar, useThemeStore } from "@/store";
-import { cn } from "@/lib/utils";
-import { useMediaQuery } from "@/hooks/use-media-query";
-import MobileFooter from "./mobile-footer";
-import FooterLayout from "./footer-layout";
-import { useMounted } from "@/hooks/use-mounted";
+import React from 'react';
+import { useSidebar, useThemeStore } from '@/store';
+import { cn } from '@/lib/utils';
+import { useMediaQuery } from '@/hooks/use-media-query';
+import MobileFooter from './mobile-footer';
+import FooterLayout from './footer-layout';
+import { useMounted } from '@/hooks/use-mounted';
 
 const Footer = ({ handleOpenSearch }: { handleOpenSearch: () => void }) => {
   const { collapsed, sidebarType } = useSidebar();
   const { layout, footerType } = useThemeStore();
   const mounted = useMounted();
-  const isMobile = useMediaQuery("(min-width: 768px)");
+  const isMobile = useMediaQuery('(min-width: 768px)');
 
   if (!mounted) {
     return null;
   }
-  if (!isMobile && sidebarType === "module") {
+  if (!isMobile && sidebarType === 'module') {
     return <MobileFooter handleOpenSearch={handleOpenSearch} />;
   }
 
-  if (footerType === "hidden") {
+  if (footerType === 'hidden') {
     return null;
   }
 
-  if (layout === "semibox") {
+  if (layout === 'semibox') {
     return (
       <div className="xl:mx-20 mx-6">
         <FooterLayout
-          className={cn(" rounded-md border", {
-            "ltr:xl:ml-[72px] rtl:xl:mr-[72px]": collapsed,
-            "ltr:xl:ml-[272px] rtl:xl:mr-[272px]": !collapsed,
-            "sticky bottom-0": footerType === "sticky",
+          className={cn(' rounded-md border', {
+            'ltr:xl:ml-[72px] rtl:xl:mr-[72px]': collapsed,
+            'ltr:xl:ml-[272px] rtl:xl:mr-[272px]': !collapsed,
+            'sticky bottom-0': footerType === 'sticky',
           })}
         >
           <FooterContent />
@@ -38,13 +38,13 @@ const Footer = ({ handleOpenSearch }: { handleOpenSearch: () => void }) => {
       </div>
     );
   }
-  if (sidebarType !== "module" && layout !== "horizontal") {
+  if (sidebarType !== 'module' && layout !== 'horizontal') {
     return (
       <FooterLayout
-        className={cn("", {
-          "ltr:xl:ml-[248px] rtl:xl:mr-[248px]": !collapsed,
-          "ltr:xl:ml-[72px] rtl:xl:mr-[72px]": collapsed,
-          "sticky bottom-0": footerType === "sticky",
+        className={cn('', {
+          'ltr:xl:ml-[248px] rtl:xl:mr-[248px]': !collapsed,
+          'ltr:xl:ml-[72px] rtl:xl:mr-[72px]': collapsed,
+          'sticky bottom-0': footerType === 'sticky',
         })}
       >
         <FooterContent />
@@ -52,11 +52,11 @@ const Footer = ({ handleOpenSearch }: { handleOpenSearch: () => void }) => {
     );
   }
 
-  if (layout === "horizontal") {
+  if (layout === 'horizontal') {
     return (
       <FooterLayout
-        className={cn("", {
-          "sticky bottom-0": footerType === "sticky",
+        className={cn('', {
+          'sticky bottom-0': footerType === 'sticky',
         })}
       >
         <FooterContent />
@@ -66,10 +66,10 @@ const Footer = ({ handleOpenSearch }: { handleOpenSearch: () => void }) => {
 
   return (
     <FooterLayout
-      className={cn("", {
-        "ltr:xl:ml-[300px] rtl:xl:mr-[300px]": !collapsed,
-        "ltr:xl:ml-[72px] rtl:xl:mr-[72px]": collapsed,
-        "sticky bottom-0": footerType === "sticky",
+      className={cn('', {
+        'ltr:xl:ml-[300px] rtl:xl:mr-[300px]': !collapsed,
+        'ltr:xl:ml-[72px] rtl:xl:mr-[72px]': collapsed,
+        'sticky bottom-0': footerType === 'sticky',
       })}
     >
       <FooterContent />
@@ -86,12 +86,8 @@ const FooterContent = () => {
         COPYRIGHT © {new Date().getFullYear()} DashTail All rights Reserved
       </p>
       <p className="mb-0 text-xs md:text-sm">
-        Hand-crafted & Made by{" "}
-        <a
-          className="text-primary"
-          target="__blank"
-          href="https://codeshaper.net"
-        >
+        Hand-crafted & Made by{' '}
+        <a className="text-primary" target="__blank" href="https://codeshaper.net">
           Codeshaper
         </a>
       </p>

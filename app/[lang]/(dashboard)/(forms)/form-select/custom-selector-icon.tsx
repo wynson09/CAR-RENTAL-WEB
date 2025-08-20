@@ -1,13 +1,16 @@
-"use client"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ChevronsUpDown } from "lucide-react";
+'use client';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { ChevronsUpDown } from 'lucide-react';
 const CustomSelectorIcon = () => {
-
   return (
     <Select>
-      <SelectTrigger
-        icon={<ChevronsUpDown />}
-      >
+      <SelectTrigger icon={<ChevronsUpDown />}>
         <SelectValue placeholder="Select a subject" />
       </SelectTrigger>
       <SelectContent>

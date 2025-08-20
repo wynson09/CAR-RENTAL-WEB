@@ -1,6 +1,6 @@
-"use client";
-import { Check, Heart, X } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
+'use client';
+import { Check, Heart, X } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const IconsCheckbox = () => {
   return (
@@ -14,9 +14,7 @@ const IconsCheckbox = () => {
         </Checkbox>
       </div>
       <div className="space-y-5">
-        <p className="text-sm text-default-400 dark:text-default-600  mb-4">
-          Outline Icon
-        </p>
+        <p className="text-sm text-default-400 dark:text-default-600  mb-4">Outline Icon</p>
         <div className="flex gap-4 items-center ">
           <Checkbox
             id="custom_icon_3"
@@ -61,38 +59,12 @@ const IconsCheckbox = () => {
         </div>
       </div>
       <div className="color-icon">
-        <p className="text-sm text-default-400 dark:text-default-600  mb-4">
-          Outline Icon
-        </p>
+        <p className="text-sm text-default-400 dark:text-default-600  mb-4">Outline Icon</p>
         <div className="flex gap-4 items-center ">
-          <Checkbox
-            id="custom_icon_13"
-            color="default"
-            defaultChecked
-            icon={<Heart />}
-            size="xs"
-          />
-          <Checkbox
-            defaultChecked
-            id="custom_icon_14"
-            color="success"
-            icon={<Heart />}
-            size="sm"
-          />
-          <Checkbox
-            defaultChecked
-            id="custom_icon_15"
-            color="info"
-            icon={<Heart />}
-            size="md"
-          />
-          <Checkbox
-            defaultChecked
-            id="custom_icon_16"
-            color="dark"
-            icon={<Heart />}
-            size="lg"
-          />
+          <Checkbox id="custom_icon_13" color="default" defaultChecked icon={<Heart />} size="xs" />
+          <Checkbox defaultChecked id="custom_icon_14" color="success" icon={<Heart />} size="sm" />
+          <Checkbox defaultChecked id="custom_icon_15" color="info" icon={<Heart />} size="md" />
+          <Checkbox defaultChecked id="custom_icon_16" color="dark" icon={<Heart />} size="lg" />
           <Checkbox
             defaultChecked
             id="custom_icon_17"
@@ -103,26 +75,12 @@ const IconsCheckbox = () => {
         </div>
       </div>
       <div className="space-y-5">
-        <p className="text-sm text-default-400 dark:text-default-600  mb-4">
-          Disabled Icon
-        </p>
+        <p className="text-sm text-default-400 dark:text-default-600  mb-4">Disabled Icon</p>
         <div className="flex gap-4 items-center">
-          <Checkbox
-            id="custom_icon_8"
-            defaultChecked
-            disabled
-            color="success"
-            icon={<Check />}
-          >
+          <Checkbox id="custom_icon_8" defaultChecked disabled color="success" icon={<Check />}>
             Right
           </Checkbox>
-          <Checkbox
-            id="custom_icon_8"
-            defaultChecked
-            disabled
-            color="destructive"
-            icon={<X />}
-          >
+          <Checkbox id="custom_icon_8" defaultChecked disabled color="destructive" icon={<X />}>
             Wrong
           </Checkbox>
         </div>

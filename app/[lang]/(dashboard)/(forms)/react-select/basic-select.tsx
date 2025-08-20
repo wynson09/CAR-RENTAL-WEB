@@ -1,15 +1,14 @@
-
-import Select from "react-select";
-const furits: { value: string, label: string }[] = [
-  { value: "chocolate", label: "Chocolate" },
-  { value: "strawberry", label: "Strawberry" },
-  { value: "vanilla", label: "Vanilla" },
+import Select from 'react-select';
+const furits: { value: string; label: string }[] = [
+  { value: 'chocolate', label: 'Chocolate' },
+  { value: 'strawberry', label: 'Strawberry' },
+  { value: 'vanilla', label: 'Vanilla' },
 ];
 
 const styles = {
   option: (provided: any, state: any) => ({
     ...provided,
-    fontSize: "14px",
+    fontSize: '14px',
   }),
 };
 

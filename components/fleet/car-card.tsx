@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Users, Briefcase, Settings, Zap } from "lucide-react";
-import { cn } from "@/lib/utils";
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import { Users, Briefcase, Settings, Zap } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export interface Car {
   id: number;
@@ -31,10 +31,12 @@ export const CarCard = ({ car, onBookNow, className }: CarCardProps) => {
   };
 
   return (
-    <div className={cn(
-      "bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group border border-gray-200 dark:border-gray-700",
-      className
-    )}>
+    <div
+      className={cn(
+        'bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group border border-gray-200 dark:border-gray-700',
+        className
+      )}
+    >
       {/* Car Image */}
       <div className="h-64 relative bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
         {/* Promotional badge */}
@@ -43,7 +45,7 @@ export const CarCard = ({ car, onBookNow, className }: CarCardProps) => {
             PROMO
           </div>
         )}
-        
+
         <Image
           src={car.image}
           alt={car.name}
@@ -52,19 +54,20 @@ export const CarCard = ({ car, onBookNow, className }: CarCardProps) => {
           onError={(e) => {
             // Prevent infinite loop by only setting fallback once
             if (!e.currentTarget.src.includes('placeholder')) {
-              e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f3f4f6'/%3E%3Ctext x='200' y='150' text-anchor='middle' dy='0.3em' font-family='Arial, sans-serif' font-size='16' fill='%236b7280'%3ECar Image%3C/text%3E%3C/svg%3E";
+              e.currentTarget.src =
+                "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f3f4f6'/%3E%3Ctext x='200' y='150' text-anchor='middle' dy='0.3em' font-family='Arial, sans-serif' font-size='16' fill='%236b7280'%3ECar Image%3C/text%3E%3C/svg%3E";
             }
           }}
         />
       </div>
-      
+
       {/* Car Details */}
       <div className="p-4">
         {/* Car Name */}
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
           {car.name.replace('🔥 ', '')}
         </h3>
-        
+
         {/* Price */}
         <div>
           <span className="text-base text-gray-600 dark:text-gray-400">Price: </span>
@@ -74,7 +77,7 @@ export const CarCard = ({ car, onBookNow, className }: CarCardProps) => {
           <span className="text-base text-gray-600 dark:text-gray-400">Discounted Price: </span>
           <span className="text-lg font-bold text-blue-600 dark:text-blue-400">{car.price}</span>
         </div>
-        
+
         {/* Car Specs */}
         <div className="flex justify-center items-center gap-4 mb-4 text-base text-gray-600 dark:text-gray-400 border-y border-gray-200 dark:border-gray-700 py-4">
           <div className="flex items-center gap-1">
@@ -86,11 +89,11 @@ export const CarCard = ({ car, onBookNow, className }: CarCardProps) => {
             <span>{car.bags}</span>
           </div>
           <div className="flex items-center gap-1">
-            <Settings  className="h-5 w-5 text-primary-500" />
+            <Settings className="h-5 w-5 text-primary-500" />
             <span>{car.transmission}</span>
           </div>
         </div>
-        
+
         {/* Features */}
         <div className="mb-4">
           <div className="grid grid-cols-2 gap-1 text-base text-gray-600 dark:text-gray-400">
@@ -102,12 +105,9 @@ export const CarCard = ({ car, onBookNow, className }: CarCardProps) => {
             ))}
           </div>
         </div>
-        
+
         {/* Book Now Button */}
-        <Button 
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-          onClick={handleBookNow}
-        >
+        <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" onClick={handleBookNow}>
           BOOK NOW
         </Button>
       </div>

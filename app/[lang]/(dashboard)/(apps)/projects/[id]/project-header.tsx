@@ -1,31 +1,21 @@
-"use client";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/react";
-import projectImage from "@/public/images/projects/project-1.png";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarGroup,
-  AvatarImage,
-} from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Popover,
-  PopoverClose,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { X } from "lucide-react";
+'use client';
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@iconify/react';
+import projectImage from '@/public/images/projects/project-1.png';
+import { Avatar, AvatarFallback, AvatarGroup, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { X } from 'lucide-react';
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/command";
-import { faker } from "@faker-js/faker";
+} from '@/components/ui/command';
+import { faker } from '@faker-js/faker';
 
 import {
   DropdownMenu,
@@ -34,59 +24,59 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import avatar1 from "@/public/images/avatar/avatar-7.jpg";
-import avatar2 from "@/public/images/avatar/avatar-2.jpg";
-import avatar3 from "@/public/images/avatar/avatar-3.jpg";
-import avatar4 from "@/public/images/avatar/avatar-4.jpg";
-import { type Project } from "@/app/api/projects/data";
+} from '@/components/ui/dropdown-menu';
+import avatar1 from '@/public/images/avatar/avatar-7.jpg';
+import avatar2 from '@/public/images/avatar/avatar-2.jpg';
+import avatar3 from '@/public/images/avatar/avatar-3.jpg';
+import avatar4 from '@/public/images/avatar/avatar-4.jpg';
+import { type Project } from '@/app/api/projects/data';
 
 const ProjectHeader = ({ project }: { project: Project }) => {
   const data = [
     {
-      text: "assigned date",
-      date: "24 June 2023",
+      text: 'assigned date',
+      date: '24 June 2023',
     },
     {
-      text: "Due Date",
-      date: "09 Dec 2023",
+      text: 'Due Date',
+      date: '09 Dec 2023',
     },
     {
-      text: "Total Hours",
-      date: "09 Dec 2023",
+      text: 'Total Hours',
+      date: '09 Dec 2023',
     },
     {
-      text: "Total Person",
-      date: "09 Dec 2023",
+      text: 'Total Person',
+      date: '09 Dec 2023',
     },
   ];
   const users = [
     {
-      name: "Nick Jonas",
-      value: "userid1",
+      name: 'Nick Jonas',
+      value: 'userid1',
       image: avatar1,
-      lastMessage: "How are you?",
+      lastMessage: 'How are you?',
       isUserActive: true,
     },
     {
-      name: "Fahim",
-      value: "userid2",
+      name: 'Fahim',
+      value: 'userid2',
       image: avatar2,
-      lastMessage: "Are you okay?",
+      lastMessage: 'Are you okay?',
       isUserActive: false,
     },
     {
-      name: "Nayeem",
-      value: "userid3",
+      name: 'Nayeem',
+      value: 'userid3',
       image: avatar3,
-      lastMessage: "",
+      lastMessage: '',
       isUserActive: true,
     },
     {
-      name: "Iftekhar",
-      value: "userid4",
+      name: 'Iftekhar',
+      value: 'userid4',
       image: avatar4,
-      lastMessage: "Is everything fine?",
+      lastMessage: 'Is everything fine?',
       isUserActive: false,
     },
   ];
@@ -143,15 +133,13 @@ const ProjectHeader = ({ project }: { project: Project }) => {
                         </Avatar>
                         <Badge
                           className=" h-2 w-2 ring-1 ring-default-100  p-0  items-center justify-center absolute left-[calc(100%-8px)] top-[calc(100%-10px)]"
-                          color={item.isUserActive ? "success" : "secondary"}
+                          color={item.isUserActive ? 'success' : 'secondary'}
                         ></Badge>
                       </div>
                       <div className="flex flex-col ">
-                        <span className="font-base capitalize text-default-900">
-                          {item.name}
-                        </span>
+                        <span className="font-base capitalize text-default-900">{item.name}</span>
                         <span className="truncate text-xs text-default-600">
-                          {" "}
+                          {' '}
                           {item.lastMessage}
                         </span>
                       </div>
@@ -195,23 +183,23 @@ const ProjectHeader = ({ project }: { project: Project }) => {
           <div className="flex-1">
             <div className="flex flex-wrap justify-between gap-4">
               <div className="text-xl font-medium text-default-950 truncate">
-                {" "}
+                {' '}
                 Dashtail - Admin Template
               </div>
               <div className="space-x-3 rtl:space-x-reverse ">
                 <Badge color="warning" variant="soft">
-                  {" "}
-                  High{" "}
+                  {' '}
+                  High{' '}
                 </Badge>
                 <Badge color="info" variant="soft">
-                  {" "}
-                  In Progress{" "}
+                  {' '}
+                  In Progress{' '}
                 </Badge>
               </div>
             </div>
             <div className="text-sm text-default-600 w-full  mt-1">
-              Create a Brand logo design for a DashTail Admin. Logo should be
-              match our dashboard theme.
+              Create a Brand logo design for a DashTail Admin. Logo should be match our dashboard
+              theme.
             </div>
             <div className="mt-3 flex flex-wrap items-center gap-2 lg:gap-6">
               {data.map((item, index) => (
@@ -219,12 +207,8 @@ const ProjectHeader = ({ project }: { project: Project }) => {
                   key={index}
                   className="border border-dashed border-default-300 rounded py-2.5 px-3 min-w-fit lg:min-w-[148px]"
                 >
-                  <div className="text-sm font-medium text-default-500 capitalize">
-                    {item.text}
-                  </div>
-                  <div className="text-sm font-medium text-default-900">
-                    {item.date}
-                  </div>
+                  <div className="text-sm font-medium text-default-500 capitalize">{item.text}</div>
+                  <div className="text-sm font-medium text-default-900">{item.date}</div>
                 </div>
               ))}
               {project?.assign?.length > 0 && (

@@ -1,6 +1,4 @@
-
-
-"use client"
+'use client';
 import React, { MouseEvent, TouchEvent, useCallback, useRef } from 'react';
 import ReactFlow, {
   useNodesState,
@@ -57,7 +55,7 @@ const AddNodeOnEdgeDrop = () => {
     []
   );
 
-  const onConnectEnd:OnConnectEnd = useCallback(
+  const onConnectEnd: OnConnectEnd = useCallback(
     (event) => {
       if (!connectingNodeId.current) return;
 
@@ -84,12 +82,11 @@ const AddNodeOnEdgeDrop = () => {
           };
           setEdges((eds) => eds.concat(newEdge));
         }
-        connectingNodeId.current = null; 
+        connectingNodeId.current = null;
       }
     },
     [screenToFlowPosition, setNodes, setEdges]
   );
-
 
   return (
     <Card>
@@ -97,7 +94,7 @@ const AddNodeOnEdgeDrop = () => {
         <CardTitle>Add Node</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className='w-full h-[calc(100vh-280px)] react-add-node'>
+        <div className="w-full h-[calc(100vh-280px)] react-add-node">
           <div className="wrapper" ref={reactFlowWrapper}>
             <ReactFlow
               nodes={nodes}

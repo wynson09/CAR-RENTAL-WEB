@@ -1,7 +1,7 @@
-"use client";
-import React from "react";
-import { Progress } from "@/components/ui/progress";
-import { Label } from "@/components/ui/label";
+'use client';
+import React from 'react';
+import { Progress } from '@/components/ui/progress';
+import { Label } from '@/components/ui/label';
 
 const WidthValue = () => {
   const [value, setValue] = React.useState<number>(50);

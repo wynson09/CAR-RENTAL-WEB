@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Checkbox } from "@/components/ui/checkbox";
-import { useState } from "react";
+import { Checkbox } from '@/components/ui/checkbox';
+import { useState } from 'react';
 
 const ControlledCheckbox = () => {
   const [isSelected, setIsSelected] = useState<boolean>(false);
@@ -9,16 +9,11 @@ const ControlledCheckbox = () => {
     <div>
       <div className="space-y-5">
         <div className="flex items-center space-x-2.5">
-          <Checkbox
-            onCheckedChange={() => setIsSelected(!isSelected)}
-            id="option_38"
-          >
+          <Checkbox onCheckedChange={() => setIsSelected(!isSelected)} id="option_38">
             Large
           </Checkbox>
         </div>
-        <p className="text-default-500">
-          Selected: {isSelected ? "true" : "false"}
-        </p>
+        <p className="text-default-500">Selected: {isSelected ? 'true' : 'false'}</p>
       </div>
     </div>
   );

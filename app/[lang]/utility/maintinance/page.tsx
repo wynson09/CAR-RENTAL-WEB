@@ -1,44 +1,44 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import logo from "@/public/images/logo/logo-2.png";
-import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import LightImage from "@/public/images/utility/construction-light.png";
-import DarkImage from "@/public/images/utility/construction-dark.png";
-import { useTheme } from "next-themes";
+'use client';
+import { Button } from '@/components/ui/button';
+import logo from '@/public/images/logo/logo-2.png';
+import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import LightImage from '@/public/images/utility/construction-light.png';
+import DarkImage from '@/public/images/utility/construction-dark.png';
+import { useTheme } from 'next-themes';
 const CommingSoonPage = () => {
   const { theme } = useTheme();
   const socials = [
     {
-      link: "/",
+      link: '/',
       icon: <Twitter />,
     },
     {
-      link: "/",
+      link: '/',
       icon: <Facebook />,
     },
     {
-      link: "/",
+      link: '/',
       icon: <Linkedin />,
     },
     {
-      link: "/",
+      link: '/',
       icon: <Instagram />,
     },
   ];
   const menu = [
     {
-      label: "Privacy Policy",
-      link: "/",
+      label: 'Privacy Policy',
+      link: '/',
     },
     {
-      label: "FAQ",
-      link: "/",
+      label: 'FAQ',
+      link: '/',
     },
     {
-      label: "Email Us",
-      link: "/",
+      label: 'Email Us',
+      link: '/',
     },
   ];
   return (
@@ -57,7 +57,7 @@ const CommingSoonPage = () => {
         <div className="container flex flex-col items-center">
           <div className="w-full h-full lg:w-[700px] lg:h-[432px]">
             <Image
-              src={theme === "dark" ? DarkImage : LightImage}
+              src={theme === 'dark' ? DarkImage : LightImage}
               alt="construction"
               className="h-full w-full object-cover"
             />

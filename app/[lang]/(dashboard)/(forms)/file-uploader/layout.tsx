@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "File Uploader",
+  title: 'File Uploader',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -7,5 +7,3 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default Layout;
-
-

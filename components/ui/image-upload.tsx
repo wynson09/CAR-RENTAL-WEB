@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useState, useRef, useCallback } from "react";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Progress } from "@/components/ui/progress";
-import { Icon } from "@iconify/react";
-import { cn } from "@/lib/utils";
-import { storage } from "@/lib/firebase";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { useState, useRef, useCallback } from 'react';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Progress } from '@/components/ui/progress';
+import { Icon } from '@iconify/react';
+import { cn } from '@/lib/utils';
+import { storage } from '@/lib/firebase';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
 interface ImageUploadProps {
   label: string;
@@ -18,13 +18,13 @@ interface ImageUploadProps {
   folder?: string;
 }
 
-export const ImageUpload = ({ 
-  label, 
-  value, 
-  onChange, 
+export const ImageUpload = ({
+  label,
+  value,
+  onChange,
   className,
   required = false,
-  folder = "car-images"
+  folder = 'car-images',
 }: ImageUploadProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -99,18 +99,21 @@ export const ImageUpload = ({
 
   const handleFileSelect = useCallback((files: FileList | null) => {
     if (!files || files.length === 0) return;
-    
+
     const file = files[0];
     if (validateFile(file)) {
       uploadFile(file);
     }
   }, []);
 
-  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(false);
-    handleFileSelect(e.dataTransfer.files);
-  }, [handleFileSelect]);
+  const handleDrop = useCallback(
+    (e: React.DragEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      setIsDragging(false);
+      handleFileSelect(e.dataTransfer.files);
+    },
+    [handleFileSelect]
+  );
 
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -122,20 +125,23 @@ export const ImageUpload = ({
     setIsDragging(false);
   }, []);
 
-  const handleFileInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    handleFileSelect(e.target.files);
-  }, [handleFileSelect]);
+  const handleFileInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      handleFileSelect(e.target.files);
+    },
+    [handleFileSelect]
+  );
 
   const handleRemoveImage = () => {
-    onChange("");
+    onChange('');
     setError(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+      fileInputRef.current.value = '';
     }
   };
 
   return (
-    <div className={cn("space-y-3", className)}>
+    <div className={cn('space-y-3', className)}>
       <Label>
         {label} {required && <span className="text-red-500">*</span>}
       </Label>
@@ -143,10 +149,10 @@ export const ImageUpload = ({
       {/* Upload Area */}
       <div
         className={cn(
-          "relative border-2 border-dashed rounded-lg transition-colors",
-          isDragging && "border-primary bg-primary/5",
-          !isDragging && "border-muted-foreground/25 hover:border-muted-foreground/50",
-          isUploading && "pointer-events-none opacity-50"
+          'relative border-2 border-dashed rounded-lg transition-colors',
+          isDragging && 'border-primary bg-primary/5',
+          !isDragging && 'border-muted-foreground/25 hover:border-muted-foreground/50',
+          isUploading && 'pointer-events-none opacity-50'
         )}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
@@ -174,12 +180,7 @@ export const ImageUpload = ({
                   <Icon icon="heroicons:camera" className="h-4 w-4 mr-2" />
                   Change
                 </Button>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="outline"
-                  onClick={handleRemoveImage}
-                >
+                <Button type="button" size="sm" variant="outline" onClick={handleRemoveImage}>
                   <Icon icon="heroicons:trash" className="h-4 w-4 mr-2" />
                   Remove
                 </Button>
@@ -192,16 +193,18 @@ export const ImageUpload = ({
         {!value && (
           <div className="p-8 text-center">
             <div className="flex flex-col items-center gap-4">
-              <div className={cn(
-                "w-16 h-16 rounded-full flex items-center justify-center",
-                isDragging ? "bg-primary text-primary-foreground" : "bg-muted"
-              )}>
-                <Icon 
-                  icon={isUploading ? "heroicons:arrow-path" : "heroicons:cloud-arrow-up"} 
-                  className={cn("h-8 w-8", isUploading && "animate-spin")}
+              <div
+                className={cn(
+                  'w-16 h-16 rounded-full flex items-center justify-center',
+                  isDragging ? 'bg-primary text-primary-foreground' : 'bg-muted'
+                )}
+              >
+                <Icon
+                  icon={isUploading ? 'heroicons:arrow-path' : 'heroicons:cloud-arrow-up'}
+                  className={cn('h-8 w-8', isUploading && 'animate-spin')}
                 />
               </div>
-              
+
               {isUploading ? (
                 <div className="space-y-2 w-full max-w-xs">
                   <p className="text-sm font-medium">Uploading...</p>
@@ -213,7 +216,7 @@ export const ImageUpload = ({
               ) : (
                 <div className="space-y-2">
                   <p className="text-sm font-medium">
-                    Drop your image here, or{" "}
+                    Drop your image here, or{' '}
                     <button
                       type="button"
                       className="text-primary hover:underline"
@@ -222,9 +225,7 @@ export const ImageUpload = ({
                       browse
                     </button>
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    PNG, JPG, GIF up to 5MB
-                  </p>
+                  <p className="text-xs text-muted-foreground">PNG, JPG, GIF up to 5MB</p>
                 </div>
               )}
             </div>

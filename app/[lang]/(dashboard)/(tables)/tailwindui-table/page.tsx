@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import Card from "@/components/ui/card-snippet";
-import SimpleTable from "./simple-table";
-import { Button } from "@/components/ui/button";
-import UserTable from "./user-table";
-import UserTableStatus from "./user-table-status";
-import CollapsibleTable from "./collapsible-table";
-import VerticalLine from "./vertical-line";
-import WithCheckbox from "./with-checkbox";
-import RowEditingDialog from "./row-editing-dialog";
-import CheckboxWithAction from "./checkbox-with-action";
-import SelectionOperation from "./selection-operation";
-import ColumnSticky from "./column-sticky";
+import Card from '@/components/ui/card-snippet';
+import SimpleTable from './simple-table';
+import { Button } from '@/components/ui/button';
+import UserTable from './user-table';
+import UserTableStatus from './user-table-status';
+import CollapsibleTable from './collapsible-table';
+import VerticalLine from './vertical-line';
+import WithCheckbox from './with-checkbox';
+import RowEditingDialog from './row-editing-dialog';
+import CheckboxWithAction from './checkbox-with-action';
+import SelectionOperation from './selection-operation';
+import ColumnSticky from './column-sticky';
 const TailwindUiTable = () => {
   return (
     <div className=" space-y-6">

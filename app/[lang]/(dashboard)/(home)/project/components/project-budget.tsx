@@ -1,10 +1,9 @@
+'use client';
 
-"use client";
-
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
 import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import React from 'react';
 
@@ -62,7 +61,12 @@ const needle = ({ value, data, cx, cy, iR, oR, color }: NeedleProps) => {
   return (
     <>
       <circle key="needle-circle" cx={x0} cy={y0} r={r} fill={color} stroke="none" />
-      <path key="needle-path" d={`M${xba} ${yba}L${xbb} ${ybb} L${xp} ${yp} L${xba} ${yba}`} stroke="none" fill={color} />
+      <path
+        key="needle-path"
+        d={`M${xba} ${yba}L${xbb} ${ybb} L${xp} ${yp} L${xba} ${yba}`}
+        stroke="none"
+        fill={color}
+      />
     </>
   );
 };
@@ -89,14 +93,22 @@ const ProjectBudget: React.FC<ProjectBudgetProps> = ({ height = 200 }) => {
                 cy={cy}
                 innerRadius={iR}
                 outerRadius={oR}
-                fill={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`}
+                fill={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`}
                 stroke="none"
               >
                 {data.map((entry, index) => (
                   <Cell key={`project-budget-key-${index}`} fill={entry.color} />
                 ))}
               </Pie>
-              {needle({ value, data, cx, cy, iR, oR, color: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning})` })}
+              {needle({
+                value,
+                data,
+                cx,
+                cy,
+                iR,
+                oR,
+                color: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`,
+              })}
             </PieChart>
           </ResponsiveContainer>
         </div>
@@ -116,4 +128,3 @@ const ProjectBudget: React.FC<ProjectBudgetProps> = ({ height = 200 }) => {
 };
 
 export default ProjectBudget;
-
