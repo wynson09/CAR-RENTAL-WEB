@@ -13,6 +13,7 @@ import MobileSidebar from '@/components/partials/sidebar/mobile-sidebar';
 import HeaderSearch from '@/components/header-search';
 import { useMounted } from '@/hooks/use-mounted';
 import LayoutLoader from '@/components/layout-loader';
+import { UserInitializer } from '@/components/auth/user-initializer';
 const DashBoardLayoutProvider = ({
   children,
   trans,
@@ -31,7 +32,7 @@ const DashBoardLayoutProvider = ({
   }
   if (layout === 'semibox') {
     return (
-      <>
+      <UserInitializer>
         <Header handleOpenSearch={() => setOpen(true)} trans={trans} />
         <Sidebar trans={trans} />
 
@@ -57,12 +58,12 @@ const DashBoardLayoutProvider = ({
         </div>
         <Footer handleOpenSearch={() => setOpen(true)} />
         <ThemeCustomize />
-      </>
+      </UserInitializer>
     );
   }
   if (layout === 'horizontal') {
     return (
-      <>
+      <UserInitializer>
         <Header handleOpenSearch={() => setOpen(true)} trans={trans} />
 
         <div className={cn('content-wrapper transition-all duration-150 ')}>
@@ -80,13 +81,13 @@ const DashBoardLayoutProvider = ({
         </div>
         <Footer handleOpenSearch={() => setOpen(true)} />
         <ThemeCustomize />
-      </>
+      </UserInitializer>
     );
   }
 
   if (sidebarType !== 'module') {
     return (
-      <>
+      <UserInitializer>
         <Header handleOpenSearch={() => setOpen(true)} trans={trans} />
         <Sidebar trans={trans} />
 
@@ -110,11 +111,11 @@ const DashBoardLayoutProvider = ({
         </div>
         <Footer handleOpenSearch={() => setOpen(true)} />
         <ThemeCustomize />
-      </>
+      </UserInitializer>
     );
   }
   return (
-    <>
+    <UserInitializer>
       <Header handleOpenSearch={() => setOpen(true)} trans={trans} />
       <Sidebar trans={trans} />
 
@@ -138,7 +139,7 @@ const DashBoardLayoutProvider = ({
       </div>
       <Footer handleOpenSearch={() => setOpen(true)} />
       {isMobile && <ThemeCustomize />}
-    </>
+    </UserInitializer>
   );
 };
 

@@ -12,12 +12,18 @@ interface CarGridProps {
   defaultCategory?: CarCategory;
   className?: string;
   gridClassName?: string;
+  pickupDate?: Date;
+  returnDate?: Date;
+  driveOption?: 'self-drive' | 'with-driver';
 }
 
 export const CarGrid = ({
   cars,
   onBookNow,
   showFilter = true,
+  pickupDate,
+  returnDate,
+  driveOption = 'self-drive',
   defaultCategory = 'All',
   className,
   gridClassName,
@@ -62,7 +68,14 @@ export const CarGrid = ({
         className={cn('grid gap-6 grid-cols-[repeat(auto-fill,minmax(380px,1fr))]', gridClassName)}
       >
         {filteredCars.map((car) => (
-          <CarCard key={car.id} car={car} onBookNow={onBookNow} />
+          <CarCard
+            key={car.id}
+            car={car}
+            pickupDate={pickupDate}
+            returnDate={returnDate}
+            driveOption={driveOption}
+            onBookNow={onBookNow}
+          />
         ))}
       </div>
 

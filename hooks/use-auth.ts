@@ -20,14 +20,15 @@ export const useAuth = () => {
         return;
       }
 
-      if (status === 'authenticated' && session?.user?.email) {
+      if (status === 'authenticated' && session?.user?.id) {
         setLoading(true);
         try {
-          const userData = await fetchUserData(session.user.email);
+          const userData = await fetchUserData(session.user.id);
           if (userData) {
             setUser(userData);
           } else {
-            console.warn('User data not found in Firestore for:', session.user.email);
+            console.warn('User data not found in Firestore for UID:', session.user.id);
+            console.warn('Email:', session.user.email);
             clearUser();
           }
         } catch (error) {

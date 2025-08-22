@@ -40,6 +40,7 @@ const convertCarListingToCar = (carListing: CarListing): Car => {
     name: carListing.isPromo ? `🔥 ${carListing.name}` : carListing.name,
     image: imageUrl,
     price: carListing.price,
+    isPromo: carListing.isPromo,
     category: carListing.category,
     passengers: carListing.passengers,
     bags: carListing.bags,
@@ -50,10 +51,16 @@ const convertCarListingToCar = (carListing: CarListing): Car => {
 
 const FleetPage = () => {
   const [destination, setDestination] = useState('');
-  const [pickupDate, setPickupDate] = useState<Date>();
-  const [returnDate, setReturnDate] = useState<Date>();
+  // Set default dates: pickup = today, return = tomorrow
+  const [pickupDate, setPickupDate] = useState<Date>(new Date());
+  const [returnDate, setReturnDate] = useState<Date>(() => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow;
+  });
   const [pickupTime, setPickupTime] = useState('');
   const [returnTime, setReturnTime] = useState('');
+  const [driveOption, setDriveOption] = useState<'self-drive' | 'with-driver'>('self-drive');
 
   // Firebase data state
   const [cars, setCars] = useState<Car[]>([]);
@@ -266,142 +273,298 @@ const FleetPage = () => {
   return (
     <div className="space-y-5">
       <Card title="Car Rental Booking">
-        <div className="space-y-6">
+        <div className="space-y-8">
+          {/* Drive Option Selection */}
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 border border-blue-100 dark:border-gray-700">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-3 h-3 bg-blue-600 rounded-full"></div>
+              <Label className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                Choose Your Driving Experience
+              </Label>
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+              {/* Self Drive Option */}
+              <div
+                className={cn(
+                  'relative p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 hover:shadow-md',
+                  driveOption === 'self-drive'
+                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/20 ring-2 ring-blue-200 dark:ring-blue-800'
+                    : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 hover:border-blue-300'
+                )}
+                onClick={() => setDriveOption('self-drive')}
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className={cn(
+                      'w-5 h-5 rounded-full border-2 flex items-center justify-center',
+                      driveOption === 'self-drive'
+                        ? 'border-blue-500 bg-blue-500'
+                        : 'border-gray-300 dark:border-gray-600'
+                    )}
+                  >
+                    {driveOption === 'self-drive' && (
+                      <div className="w-2 h-2 bg-white rounded-full"></div>
+                    )}
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <svg
+                        className="w-5 h-5 text-blue-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v-2H7v-2H4a1 1 0 01-1-1v-4c0-5.523 4.477-10 10-10s10 4.477 10 10a4 4 0 01-4 4z"
+                        />
+                      </svg>
+                      <h3 className="font-semibold text-gray-800 dark:text-gray-200">Self Drive</h3>
+                    </div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      Drive the vehicle yourself with complete freedom
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* With Driver Option */}
+              <div
+                className={cn(
+                  'relative p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 hover:shadow-md',
+                  driveOption === 'with-driver'
+                    ? 'border-green-500 bg-green-50 dark:bg-green-950/20 ring-2 ring-green-200 dark:ring-green-800'
+                    : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 hover:border-green-300'
+                )}
+                onClick={() => setDriveOption('with-driver')}
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className={cn(
+                      'w-5 h-5 rounded-full border-2 flex items-center justify-center',
+                      driveOption === 'with-driver'
+                        ? 'border-green-500 bg-green-500'
+                        : 'border-gray-300 dark:border-gray-600'
+                    )}
+                  >
+                    {driveOption === 'with-driver' && (
+                      <div className="w-2 h-2 bg-white rounded-full"></div>
+                    )}
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <svg
+                        className="w-5 h-5 text-green-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                        />
+                      </svg>
+                      <h3 className="font-semibold text-gray-800 dark:text-gray-200">
+                        With Driver
+                      </h3>
+                    </div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      Professional driver included (+₱750/day)
+                    </p>
+                  </div>
+                </div>
+                {driveOption === 'with-driver' && (
+                  <div className="mt-3 pt-3 border-t border-green-200 dark:border-green-800">
+                    <div className="flex items-center gap-2 text-green-700 dark:text-green-300">
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="text-xs font-medium">Licensed & Experienced Driver</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
           {/* Destination */}
           <div>
-            <Label htmlFor="destination" className="mb-2 block">
+            <Label
+              htmlFor="destination"
+              className="mb-3 block text-base font-semibold text-gray-800 dark:text-gray-200"
+            >
               Destination <span className="text-red-500">*</span>
             </Label>
             <Textarea
               id="destination"
-              placeholder="Indicate your farthest destination"
+              placeholder="Indicate your farthest destination (e.g., Manila, Cebu, Davao, etc.)"
               value={destination}
               onChange={(e) => setDestination(e.target.value)}
               className={cn(
-                'min-h-[80px] resize-none',
-                destination && 'border-blue-500 bg-blue-50 dark:bg-blue-950/20 dark:border-blue-400'
+                'min-h-[100px] resize-none transition-all duration-200',
+                destination
+                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/20 dark:border-blue-400 ring-1 ring-blue-200 dark:ring-blue-800'
+                  : 'hover:border-blue-300 focus:border-blue-500'
               )}
-              rows={3}
+              rows={4}
             />
           </div>
 
           {/* Pickup Section */}
-          <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
-            <div>
-              <Label className="mb-2 block">
-                Pick up Address <span className="text-red-500">*</span>
-              </Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select pickup location" />
-                </SelectTrigger>
-                <SelectContent>
-                  {addressOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+          <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-3 h-3 bg-green-600 rounded-full"></div>
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                Pickup Details
+              </h3>
             </div>
+            <div className="grid md:grid-cols-3 grid-cols-1 gap-6">
+              <div>
+                <Label className="mb-3 block text-base font-medium text-gray-700 dark:text-gray-300">
+                  Pick up Address <span className="text-red-500">*</span>
+                </Label>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select pickup location" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {addressOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-            <div>
-              <Label className="mb-2 block">
-                Pick up Date <span className="text-red-500">*</span>
-              </Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={'outline'}
-                    className={cn(
-                      'w-full justify-start text-left font-normal',
-                      !pickupDate && 'text-muted-foreground'
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {pickupDate ? format(pickupDate, 'PPP') : <span>Pick a date</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    mode="single"
-                    selected={pickupDate}
-                    onSelect={setPickupDate}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
+              <div>
+                <Label className="mb-3 block text-base font-medium text-gray-700 dark:text-gray-300">
+                  Pick up Date <span className="text-red-500">*</span>
+                </Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={'outline'}
+                      className={cn(
+                        'w-full justify-start text-left font-normal',
+                        !pickupDate && 'text-muted-foreground'
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {pickupDate ? format(pickupDate, 'PPP') : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <Calendar
+                      mode="single"
+                      selected={pickupDate}
+                      onSelect={(date) => setPickupDate(date || new Date())}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
 
-            <div>
-              <Label className="mb-2 block">
-                Pick up Time <span className="text-red-500">*</span>
-              </Label>
-              <DrumRollTimePicker
-                selectedTime={pickupTime}
-                onTimeChange={setPickupTime}
-                placeholder="--:-- --"
-              />
+              <div>
+                <Label className="mb-3 block text-base font-medium text-gray-700 dark:text-gray-300">
+                  Pick up Time <span className="text-red-500">*</span>
+                </Label>
+                <DrumRollTimePicker
+                  selectedTime={pickupTime}
+                  onTimeChange={setPickupTime}
+                  placeholder="--:-- --"
+                />
+              </div>
             </div>
           </div>
 
           {/* Return Section */}
-          <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
-            <div>
-              <Label className="mb-2 block">
-                Return Address <span className="text-red-500">*</span>
-              </Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select return location" />
-                </SelectTrigger>
-                <SelectContent>
-                  {addressOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+          <div className="bg-orange-50 dark:bg-orange-900/20 rounded-xl p-6 border border-orange-200 dark:border-orange-800">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-3 h-3 bg-orange-600 rounded-full"></div>
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                Return Details
+              </h3>
             </div>
+            <div className="grid md:grid-cols-3 grid-cols-1 gap-6">
+              <div>
+                <Label className="mb-3 block text-base font-medium text-gray-700 dark:text-gray-300">
+                  Return Address <span className="text-red-500">*</span>
+                </Label>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select return location" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {addressOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-            <div>
-              <Label className="mb-2 block">
-                Return Date <span className="text-red-500">*</span>
-              </Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={'outline'}
-                    className={cn(
-                      'w-full justify-start text-left font-normal',
-                      !returnDate && 'text-muted-foreground'
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {returnDate ? format(returnDate, 'PPP') : <span>Pick a date</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    mode="single"
-                    selected={returnDate}
-                    onSelect={setReturnDate}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
+              <div>
+                <Label className="mb-3 block text-base font-medium text-gray-700 dark:text-gray-300">
+                  Return Date <span className="text-red-500">*</span>
+                </Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={'outline'}
+                      className={cn(
+                        'w-full justify-start text-left font-normal',
+                        !returnDate && 'text-muted-foreground'
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {returnDate ? format(returnDate, 'PPP') : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <Calendar
+                      mode="single"
+                      selected={returnDate}
+                      onSelect={(date) => {
+                        if (date) {
+                          setReturnDate(date);
+                        } else {
+                          const tomorrow = new Date();
+                          tomorrow.setDate(tomorrow.getDate() + 1);
+                          setReturnDate(tomorrow);
+                        }
+                      }}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
 
-            <div>
-              <Label className="mb-2 block">
-                Return Time <span className="text-red-500">*</span>
-              </Label>
-              <DrumRollTimePicker
-                selectedTime={returnTime}
-                onTimeChange={setReturnTime}
-                placeholder="--:-- --"
-              />
+              <div>
+                <Label className="mb-3 block text-base font-medium text-gray-700 dark:text-gray-300">
+                  Return Time <span className="text-red-500">*</span>
+                </Label>
+                <DrumRollTimePicker
+                  selectedTime={returnTime}
+                  onTimeChange={setReturnTime}
+                  placeholder="--:-- --"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -479,6 +642,9 @@ const FleetPage = () => {
                 cars={cars}
                 onBookNow={handleBookNow}
                 showFilter={true}
+                pickupDate={pickupDate}
+                returnDate={returnDate}
+                driveOption={driveOption}
                 defaultCategory="All"
               />
             </ErrorBoundary>
