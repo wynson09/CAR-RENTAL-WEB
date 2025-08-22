@@ -5,8 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Users, Briefcase, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { differenceInCalendarDays } from 'date-fns';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useUserStore } from '@/store';
+import { QuotationDialog } from './quotation-dialog';
 
 export interface Car {
   id: number;
@@ -21,14 +22,14 @@ export interface Car {
   features: string[];
 }
 
-interface DiscountItem {
+export interface DiscountItem {
   name: string;
   percentage: number;
   amount: number;
   type: 'base' | 'promo' | 'duration';
 }
 
-interface PricingResult {
+export interface PricingResult {
   originalPrice: number;
   discountedPrice: number;
   totalDiscount: number;
@@ -207,6 +208,9 @@ export const CarCard = ({
   // Get user verification status from Zustand store
   const { user } = useUserStore();
   const isVerifiedUser = user?.isVerified ?? false;
+
+  // Quotation dialog state
+  const [isQuotationOpen, setIsQuotationOpen] = useState(false);
 
   // Debug logging - remove in production
   // console.log('CarCard Debug:', { user, isVerifiedUser, userExists: !!user });
@@ -463,11 +467,47 @@ export const CarCard = ({
           </div>
         </div>
 
-        {/* Book Now Button */}
-        <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" onClick={handleBookNow}>
-          BOOK NOW
-        </Button>
+        {/* Action Buttons */}
+        <div className="grid grid-cols-2 gap-3">
+          <Button
+            variant="outline"
+            className="border-blue-600 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950 dark:border-blue-400 dark:text-blue-400"
+            onClick={() => setIsQuotationOpen(true)}
+          >
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            QUOTATION
+          </Button>
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={handleBookNow}>
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+            BOOK NOW
+          </Button>
+        </div>
       </div>
+
+      {/* Quotation Dialog */}
+      <QuotationDialog
+        isOpen={isQuotationOpen}
+        onClose={() => setIsQuotationOpen(false)}
+        car={car}
+        pickupDate={pickupDate}
+        returnDate={returnDate}
+        driveOption={driveOption}
+        pricing={pricing}
+      />
     </div>
   );
 };

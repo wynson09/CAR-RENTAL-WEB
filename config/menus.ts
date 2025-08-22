@@ -150,17 +150,22 @@ export const userMenuConfig = {
       },
       {
         title: 'Bookings',
-        icon: ClipBoard,
+        icon: Cart,
         child: [
           {
-            title: 'Current Rentals',
+            title: 'Start a Booking',
             icon: ClipBoard,
-            href: '/current-rentals',
+            href: '/start-a-booking',
           },
           {
-            title: 'Past Rentals',
+            title: 'Active Rentals',
             icon: ClipBoard,
-            href: '/past-rentals',
+            href: '/active-rentals',
+          },
+          {
+            title: 'Previous Rentals',
+            icon: ClipBoard,
+            href: '/previous-rentals',
           },
         ],
       },
