@@ -15,7 +15,7 @@ import {
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
+import { format, differenceInCalendarDays } from 'date-fns';
 import { CalendarIcon, Clock } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { CarGrid, Car } from '@/components/fleet';
@@ -24,6 +24,8 @@ import { CarListing } from '@/data/car-listings-data';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 import ErrorBoundary from '@/components/error-boundary';
+import { BookingConfirmationDialog, BookingFormData } from '@/components/booking/booking-confirmation-dialog';
+import { useUserStore } from '@/store';
 // Convert CarListing data to Car data format for fleet display
 const convertCarListingToCar = (carListing: CarListing): Car => {
   // Add promotional indicator to features if the car is promotional
@@ -61,11 +63,20 @@ const BookingPage = () => {
   const [pickupTime, setPickupTime] = useState('');
   const [returnTime, setReturnTime] = useState('');
   const [driveOption, setDriveOption] = useState<'self-drive' | 'with-driver'>('self-drive');
+  const [pickUpAddress, setPickUpAddress] = useState('');
+  const [returnAddress, setReturnAddress] = useState('');
+
+  // Confirmation dialog state
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [selectedCar, setSelectedCar] = useState<Car | null>(null);
 
   // Firebase data state
   const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // User store for verification status
+  const { user } = useUserStore();
 
   // Fetch cars from Firebase on component mount
   useEffect(() => {
@@ -102,10 +113,165 @@ const BookingPage = () => {
   const minutes = ['00', '10', '20', '30', '40', '50'];
   const periods = ['AM', 'PM'];
 
+  // Constants for discount configuration (matching CarCard logic)
+  const DISCOUNT_CONFIG = {
+    VERIFIED_USER: 0.05,
+    PROMO_CAR: 0.1,
+    DURATION_TIERS: [
+      { maxDays: 1, additionalDiscount: 0 },
+      { maxDays: 3, additionalDiscount: 0.025 },
+      { maxDays: 7, additionalDiscount: 0.05 },
+      { maxDays: 14, additionalDiscount: 0.1 },
+      { maxDays: 21, additionalDiscount: 0.2 },
+      { maxDays: 29, additionalDiscount: 0.25 },
+      { maxDays: Infinity, additionalDiscount: 0.3 },
+    ],
+  };
+
+  // Driver fee per day (matching CarCard)
+  const DRIVER_FEE_PER_DAY = 750;
+
+  const calculatePricingDetails = (car: Car) => {
+    const totalDays = Math.max(1, differenceInCalendarDays(returnDate, pickupDate));
+    const basePrice = parseInt(car.price.replace(/[^0-9]/g, ''));
+    const isVerifiedUser = user?.isVerified ?? false;
+    
+    if (basePrice === 0) {
+      return {
+        basePrice: 0,
+        totalDays,
+        discounts: [],
+        extraCharges: [],
+        totalAmount: 0,
+        totalSavings: 0,
+      };
+    }
+
+    const discounts = [];
+    let runningPrice = basePrice;
+
+    // Verified User Discount (applied to base car price only)
+    if (isVerifiedUser && DISCOUNT_CONFIG.VERIFIED_USER > 0) {
+      const discountAmount = basePrice * DISCOUNT_CONFIG.VERIFIED_USER;
+      discounts.push({
+        label: 'Verified User Discount',
+        type: 'verified_user',
+        percent: DISCOUNT_CONFIG.VERIFIED_USER * 100,
+        amount: discountAmount,
+        applied: true,
+      });
+      runningPrice -= discountAmount;
+    }
+
+    // Promotional Car Discount (applied to base car price only)
+    if (car.isPromo && DISCOUNT_CONFIG.PROMO_CAR > 0) {
+      const discountAmount = basePrice * DISCOUNT_CONFIG.PROMO_CAR;
+      discounts.push({
+        label: 'Promotional Vehicle',
+        type: 'promo_vehicle',
+        percent: DISCOUNT_CONFIG.PROMO_CAR * 100,
+        amount: discountAmount,
+        applied: true,
+      });
+      runningPrice -= discountAmount;
+    }
+
+    // Duration-based Discount (applied to base car price only)
+    const durationTier = DISCOUNT_CONFIG.DURATION_TIERS.find((tier) => totalDays <= tier.maxDays);
+    const additionalDiscount = durationTier?.additionalDiscount ?? 0;
+
+    if (additionalDiscount > 0) {
+      const discountAmount = basePrice * additionalDiscount;
+      let durationLabel = 'Extended Rental';
+
+      if (totalDays <= 3) durationLabel = 'Short-term Rental (1-3 days)';
+      else if (totalDays <= 7) durationLabel = 'Weekly Rental (4-7 days)';
+      else if (totalDays <= 14) durationLabel = 'Bi-weekly Rental (8-14 days)';
+      else if (totalDays <= 21) durationLabel = 'Long-term Rental (15-21 days)';
+      else if (totalDays <= 29) durationLabel = 'Monthly Rental (22-29 days)';
+      else durationLabel = 'Extended Monthly Rental (30+ days)';
+
+      discounts.push({
+        label: durationLabel,
+        type: 'duration',
+        percent: additionalDiscount * 100,
+        amount: discountAmount,
+        applied: true,
+      });
+      runningPrice -= discountAmount;
+    }
+
+    // Calculate total for duration
+    const totalCarPrice = runningPrice * totalDays;
+    const totalSavings = (basePrice - runningPrice) * totalDays;
+
+    // Add driver fee if with-driver option
+    const driverFee = driveOption === 'with-driver' ? DRIVER_FEE_PER_DAY * totalDays : 0;
+    const finalAmount = totalCarPrice + driverFee;
+
+    // Extra charges (can be extended based on business rules)
+    const extraCharges: Array<{
+      label: string;
+      type: string;
+      amount: number;
+    }> = [];
+
+    return {
+      basePrice,
+      totalDays,
+      discounts,
+      extraCharges,
+      totalAmount: Math.max(0, finalAmount),
+      totalSavings,
+    };
+  };
+
+  const validateBookingForm = () => {
+    const errors = [];
+
+    if (!destination.trim()) {
+      errors.push('Destination is required');
+    }
+
+    if (!pickUpAddress) {
+      errors.push('Pickup address is required');
+    }
+
+    if (!pickupTime) {
+      errors.push('Pickup time is required');
+    }
+
+    if (!returnAddress) {
+      errors.push('Return address is required');
+    }
+
+    if (!returnTime) {
+      errors.push('Return time is required');
+    }
+
+    if (!user?.uid) {
+      errors.push('Please sign in to make a booking');
+    }
+
+    if (differenceInCalendarDays(returnDate, pickupDate) < 1) {
+      errors.push('Return date must be at least 1 day after pickup date');
+    }
+
+    if (errors.length > 0) {
+      errors.forEach(error => toast.error(error));
+      return false;
+    }
+
+    return true;
+  };
+
   const handleBookNow = (car: Car) => {
-    // Handle booking logic here
-    console.log('Booking car:', car);
-    // You can navigate to booking page or open a modal
+    if (!validateBookingForm()) {
+      return;
+    }
+
+    setSelectedCar(car);
+    setIsConfirmationOpen(true);
   };
 
   const handleRefreshData = async () => {
@@ -437,7 +603,7 @@ const BookingPage = () => {
                 <Label className="mb-3 block text-base font-medium text-gray-700 dark:text-gray-300">
                   Pick up Address <span className="text-red-500">*</span>
                 </Label>
-                <Select>
+                <Select value={pickUpAddress} onValueChange={setPickUpAddress}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select pickup location" />
                   </SelectTrigger>
@@ -505,7 +671,7 @@ const BookingPage = () => {
                 <Label className="mb-3 block text-base font-medium text-gray-700 dark:text-gray-300">
                   Return Address <span className="text-red-500">*</span>
                 </Label>
-                <Select>
+                <Select value={returnAddress} onValueChange={setReturnAddress}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select return location" />
                   </SelectTrigger>
@@ -651,6 +817,30 @@ const BookingPage = () => {
           </div>
         )}
       </Card>
+
+      {/* Booking Confirmation Dialog */}
+      {selectedCar && (
+        <BookingConfirmationDialog
+          isOpen={isConfirmationOpen}
+          onClose={() => {
+            setIsConfirmationOpen(false);
+            setSelectedCar(null);
+          }}
+          car={selectedCar}
+          bookingData={{
+            destination,
+            pickUpAddress,
+            pickUpDate: pickupDate,
+            pickUpTime: pickupTime,
+            returnAddress,
+            returnDate,
+            returnTime,
+            driveOption,
+            driverPerDay: driveOption === 'with-driver' ? 750 : undefined,
+          }}
+          pricingDetails={calculatePricingDetails(selectedCar)}
+        />
+      )}
     </div>
   );
 };

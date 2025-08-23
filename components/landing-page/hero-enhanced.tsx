@@ -8,8 +8,8 @@ import CarImage from '@/public/images/landing-page/car.webp';
 
 const HeroEnhanced = () => {
   const trustStats = [
-    { icon: 'heroicons:users', value: '5,000+', label: 'Happy Customers' },
-    { icon: 'heroicons:truck', value: '150+', label: 'Vehicles Available' },
+    { icon: 'heroicons:users', value: '1,000+', label: 'Happy Customers' },
+    { icon: 'heroicons:truck', value: '10+', label: 'Vehicles Available' },
     { icon: 'heroicons:star', value: '4.9', label: 'Customer Rating' },
     { icon: 'heroicons:clock', value: '24/7', label: 'Support' },
   ];
@@ -48,7 +48,7 @@ const HeroEnhanced = () => {
               >
                 <Icon icon="heroicons:star" className="w-4 h-4 text-primary" />
                 <span className="text-sm font-medium text-primary">
-                  Trusted by 5,000+ customers
+                  Trusted by 1,000+ customers
                 </span>
                 <div className="flex">
                   {[...Array(5)].map((_, i) => (
@@ -81,7 +81,7 @@ const HeroEnhanced = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
               >
-                Experience premium car rental services in the Philippines. Choose from our fleet of
+                Experience premium car rental services in Pagadian City. Choose from our fleet of
                 <span className="text-primary font-semibold"> reliable vehicles</span> and explore
                 with confidence, comfort, and unbeatable value.
               </motion.p>

@@ -447,7 +447,7 @@ export const menus = [
     href: '#services',
   },
   {
-    title: 'Why NCR',
+    title: 'Why Nacs Car Rental',
     href: '#whyNacsCarRental',
   },
   {

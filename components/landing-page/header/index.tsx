@@ -48,7 +48,7 @@ const Header = () => {
                   className="text-sm font-semibold"
                 >
                   <Icon icon="heroicons:shopping-cart" className="w-4 h-4 mr-1.5" />
-                  Buy Now
+                  Book Now
                 </Link>
               </Button>
               <button type="button">
@@ -132,7 +132,7 @@ const Header = () => {
           <Button asChild size="sm">
             <Link href="/dashboard" className="text-sm font-semibold">
               <Icon icon="heroicons:shopping-cart" className="w-4 h-4 me-1.5" />
-              Buy Now
+              Book Now
             </Link>
           </Button>
         </div>
