@@ -112,23 +112,16 @@ export class BookingFirebaseService {
   // Test Firebase connection and permissions
   static async testConnection(): Promise<boolean> {
     try {
-      // Try to create a test document
       const testDoc = {
         test: true,
         timestamp: serverTimestamp(),
       };
       
-      console.log('Testing Firebase connection...');
       const docRef = await addDoc(collection(db, 'test-connection'), testDoc);
-      console.log('Test document created with ID:', docRef.id);
-      
-      // Clean up test document
       await deleteDoc(doc(db, 'test-connection', docRef.id));
-      console.log('Test document deleted successfully');
       
       return true;
     } catch (error) {
-      console.error('Firebase connection test failed:', error);
       return false;
     }
   }
@@ -143,10 +136,8 @@ export class BookingFirebaseService {
       };
 
       const docRef = await addDoc(collection(db, BOOKINGS_COLLECTION), bookingDoc);
-      console.log('Booking created with ID:', docRef.id);
       return docRef.id;
     } catch (error) {
-      console.error('Error creating booking:', error);
       throw new Error('Failed to create booking in database');
     }
   }
@@ -156,14 +147,21 @@ export class BookingFirebaseService {
     try {
       const q = query(
         collection(db, BOOKINGS_COLLECTION),
-        where('renterId', '==', userId),
-        orderBy('createdAt', 'desc')
+        where('renterId', '==', userId)
       );
       const querySnapshot = await getDocs(q);
 
-      return querySnapshot.docs.map(convertFirestoreDocToBooking);
+      const bookings = querySnapshot.docs.map(convertFirestoreDocToBooking);
+      
+      // Sort client-side instead of server-side
+      bookings.sort((a, b) => {
+        const dateA = new Date(a.createdAt || 0).getTime();
+        const dateB = new Date(b.createdAt || 0).getTime();
+        return dateB - dateA;
+      });
+
+      return bookings;
     } catch (error) {
-      console.error('Error fetching user bookings:', error);
       throw new Error('Failed to fetch user bookings from database');
     }
   }
@@ -180,7 +178,7 @@ export class BookingFirebaseService {
         return null;
       }
     } catch (error) {
-      console.error('Error fetching booking:', error);
+
       throw new Error('Failed to fetch booking from database');
     }
   }
@@ -203,9 +201,9 @@ export class BookingFirebaseService {
       }
 
       await updateDoc(docRef, updateData);
-      console.log('Booking status updated successfully');
+
     } catch (error) {
-      console.error('Error updating booking status:', error);
+
       throw new Error('Failed to update booking status in database');
     }
   }
@@ -213,17 +211,12 @@ export class BookingFirebaseService {
   // Get active bookings for a user
   static async getActiveBookings(userId: string): Promise<BookingData[]> {
     try {
-      const q = query(
-        collection(db, BOOKINGS_COLLECTION),
-        where('renterId', '==', userId),
-        where('status', 'in', ['processing', 'reserved', 'ongoing']),
-        orderBy('createdAt', 'desc')
+      const allBookings = await this.getUserBookings(userId);
+      const activeBookings = allBookings.filter(booking => 
+        ['processing', 'reserved', 'ongoing'].includes(booking.status)
       );
-      const querySnapshot = await getDocs(q);
-
-      return querySnapshot.docs.map(convertFirestoreDocToBooking);
+      return activeBookings;
     } catch (error) {
-      console.error('Error fetching active bookings:', error);
       throw new Error('Failed to fetch active bookings from database');
     }
   }
@@ -233,9 +226,9 @@ export class BookingFirebaseService {
     try {
       const docRef = doc(db, BOOKINGS_COLLECTION, bookingId);
       await deleteDoc(docRef);
-      console.log('Booking deleted successfully');
+
     } catch (error) {
-      console.error('Error deleting booking:', error);
+
       throw new Error('Failed to delete booking from database');
     }
   }
@@ -248,7 +241,7 @@ export class BookingFirebaseService {
 
       return querySnapshot.docs.map(convertFirestoreDocToBooking);
     } catch (error) {
-      console.error('Error fetching all bookings:', error);
+
       throw new Error('Failed to fetch all bookings from database');
     }
   }
@@ -265,7 +258,7 @@ export class BookingFirebaseService {
 
       return querySnapshot.docs.map(convertFirestoreDocToBooking);
     } catch (error) {
-      console.error('Error fetching bookings by status:', error);
+
       throw new Error('Failed to fetch bookings by status from database');
     }
   }
@@ -278,9 +271,9 @@ export class BookingFirebaseService {
         payment,
         updatedAt: serverTimestamp(),
       });
-      console.log('Payment information updated successfully');
+
     } catch (error) {
-      console.error('Error updating payment:', error);
+
       throw new Error('Failed to update payment information in database');
     }
   }
@@ -316,9 +309,9 @@ export class BookingFirebaseService {
         updatedAt: serverTimestamp(),
       });
       
-      console.log('Booking extension added successfully');
+
     } catch (error) {
-      console.error('Error adding booking extension:', error);
+
       throw new Error('Failed to add booking extension in database');
     }
   }
@@ -336,7 +329,7 @@ export class BookingFirebaseService {
         throw new Error('Booking not found');
       }
     } catch (error) {
-      console.error('Error fetching booking extensions:', error);
+
       throw new Error('Failed to fetch booking extensions from database');
     }
   }
@@ -379,9 +372,9 @@ export class BookingFirebaseService {
       }
 
       await updateDoc(docRef, updateData);
-      console.log('Booking totals updated successfully');
+
     } catch (error) {
-      console.error('Error updating booking totals:', error);
+
       throw new Error('Failed to update booking totals in database');
     }
   }

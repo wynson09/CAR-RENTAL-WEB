@@ -26,6 +26,11 @@ import { toast } from 'sonner';
 import ErrorBoundary from '@/components/error-boundary';
 import { BookingConfirmationDialog, BookingFormData } from '@/components/booking/booking-confirmation-dialog';
 import { useUserStore } from '@/store';
+
+// Cache for car data to avoid unnecessary fetches
+const carsCache = new Map<string, { data: Car[], timestamp: number }>();
+const CARS_CACHE_DURATION = 10 * 60 * 1000; // 10 minutes cache
+
 // Convert CarListing data to Car data format for fleet display
 const convertCarListingToCar = (carListing: CarListing): Car => {
   // Add promotional indicator to features if the car is promotional
@@ -85,16 +90,32 @@ const BookingPage = () => {
         setLoading(true);
         setError(null);
 
+        // Check cache first
+        const cacheKey = 'all_cars';
+        const cached = carsCache.get(cacheKey);
+        const now = Date.now();
+
+        if (cached && (now - cached.timestamp) < CARS_CACHE_DURATION) {
+          setCars(cached.data);
+          setLoading(false);
+          return;
+        }
+
         const carListings = await CarFirebaseService.getAllCars();
         const convertedCars = carListings.map(convertCarListingToCar);
 
+        // Cache the results
+        carsCache.set(cacheKey, {
+          data: convertedCars,
+          timestamp: now
+        });
+
         setCars(convertedCars);
-        toast.success(`Loaded ${convertedCars.length} vehicles from database`);
+        toast.success(`Loaded ${convertedCars.length} vehicles`);
       } catch (err) {
-        console.error('Error fetching cars:', err);
         setError('Failed to load vehicles. Please try again.');
-        toast.error('Failed to load vehicles from database');
-        setCars([]); // Set empty array as fallback
+        toast.error('Failed to load vehicles');
+        setCars([]);
       } finally {
         setLoading(false);
       }
@@ -279,13 +300,22 @@ const BookingPage = () => {
       setLoading(true);
       setError(null);
 
+      // Clear cache and fetch fresh data
+      const cacheKey = 'all_cars';
+      carsCache.delete(cacheKey);
+
       const carListings = await CarFirebaseService.getAllCars();
       const convertedCars = carListings.map(convertCarListingToCar);
+
+      // Update cache with fresh data
+      carsCache.set(cacheKey, {
+        data: convertedCars,
+        timestamp: Date.now()
+      });
 
       setCars(convertedCars);
       toast.success(`Refreshed! Loaded ${convertedCars.length} vehicles`);
     } catch (err) {
-      console.error('Error refreshing cars:', err);
       setError('Failed to refresh vehicles. Please try again.');
       toast.error('Failed to refresh vehicles');
     } finally {

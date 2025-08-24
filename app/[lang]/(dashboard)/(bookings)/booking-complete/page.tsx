@@ -24,6 +24,10 @@ import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useUserStore } from '@/store';
 
+// Cache for booking details to avoid unnecessary fetches
+const bookingDetailsCache = new Map<string, { data: BookingData, timestamp: number }>();
+const BOOKING_CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
+
 const BookingCompletePage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -42,15 +46,30 @@ const BookingCompletePage = () => {
         return;
       }
 
+      // Check cache first
+      const cached = bookingDetailsCache.get(bookingId);
+      const now = Date.now();
+
+      if (cached && (now - cached.timestamp) < BOOKING_CACHE_DURATION) {
+        setBooking(cached.data);
+        setError(null);
+        setIsLoading(false);
+        return;
+      }
+
       try {
         const bookingData = await BookingFirebaseService.getBookingById(bookingId);
         if (bookingData) {
+          // Cache the results
+          bookingDetailsCache.set(bookingId, {
+            data: bookingData,
+            timestamp: now
+          });
           setBooking(bookingData);
         } else {
           setError('Booking not found');
         }
       } catch (error) {
-        console.error('Error fetching booking:', error);
         setError('Failed to load booking details');
       } finally {
         setIsLoading(false);

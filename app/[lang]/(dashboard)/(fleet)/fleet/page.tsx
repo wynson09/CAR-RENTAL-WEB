@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Card from '@/components/ui/card-snippet';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -50,6 +51,7 @@ const convertCarListingToCar = (carListing: CarListing): Car => {
 };
 
 const FleetPage = () => {
+  const router = useRouter();
   const [destination, setDestination] = useState('');
   // Set default dates: pickup = today, return = tomorrow
   const [pickupDate, setPickupDate] = useState<Date>(new Date());
@@ -74,16 +76,32 @@ const FleetPage = () => {
         setLoading(true);
         setError(null);
 
+        // Check cache first
+        const cacheKey = 'fleet_cars';
+        const cached = fleetCarsCache.get(cacheKey);
+        const now = Date.now();
+
+        if (cached && (now - cached.timestamp) < FLEET_CACHE_DURATION) {
+          setCars(cached.data);
+          setLoading(false);
+          return;
+        }
+
         const carListings = await CarFirebaseService.getAllCars();
         const convertedCars = carListings.map(convertCarListingToCar);
 
+        // Cache the results
+        fleetCarsCache.set(cacheKey, {
+          data: convertedCars,
+          timestamp: now
+        });
+
         setCars(convertedCars);
-        toast.success(`Loaded ${convertedCars.length} vehicles from database`);
+        toast.success(`Loaded ${convertedCars.length} vehicles`);
       } catch (err) {
-        console.error('Error fetching cars:', err);
         setError('Failed to load vehicles. Please try again.');
-        toast.error('Failed to load vehicles from database');
-        setCars([]); // Set empty array as fallback
+        toast.error('Failed to load vehicles');
+        setCars([]);
       } finally {
         setLoading(false);
       }
@@ -103,9 +121,8 @@ const FleetPage = () => {
   const periods = ['AM', 'PM'];
 
   const handleBookNow = (car: Car) => {
-    // Handle booking logic here
-    console.log('Booking car:', car);
-    // You can navigate to booking page or open a modal
+    // Navigate to booking page with selected car
+    router.push('/start-a-booking');
   };
 
   const handleRefreshData = async () => {
@@ -113,13 +130,22 @@ const FleetPage = () => {
       setLoading(true);
       setError(null);
 
+      // Clear cache and fetch fresh data
+      const cacheKey = 'fleet_cars';
+      fleetCarsCache.delete(cacheKey);
+
       const carListings = await CarFirebaseService.getAllCars();
       const convertedCars = carListings.map(convertCarListingToCar);
+
+      // Update cache with fresh data
+      fleetCarsCache.set(cacheKey, {
+        data: convertedCars,
+        timestamp: Date.now()
+      });
 
       setCars(convertedCars);
       toast.success(`Refreshed! Loaded ${convertedCars.length} vehicles`);
     } catch (err) {
-      console.error('Error refreshing cars:', err);
       setError('Failed to refresh vehicles. Please try again.');
       toast.error('Failed to refresh vehicles');
     } finally {
