@@ -81,7 +81,7 @@ const BookingCompletePage = () => {
     switch (status) {
       case 'processing':
         return 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200';
-      case 'approved':
+      case 'reserved':
         return 'bg-green-100 text-green-800 hover:bg-green-200';
       case 'ongoing':
         return 'bg-blue-100 text-blue-800 hover:bg-blue-200';
@@ -314,7 +314,7 @@ const BookingCompletePage = () => {
                     Review & Approval
                   </p>
                   <p className="text-blue-600 dark:text-blue-300 text-sm">
-                    Our team will review your booking request within 24 hours
+                    Our team will promptly review your booking request, typically within 30 minutes to 2 hours.
                   </p>
                 </div>
               </div>
@@ -328,7 +328,7 @@ const BookingCompletePage = () => {
                     Confirmation
                   </p>
                   <p className="text-blue-600 dark:text-blue-300 text-sm">
-                    You'll receive an email confirmation with vehicle details and pickup instructions
+                    You will receive a text message or phone call with the vehicle details and pickup instructions.
                   </p>
                 </div>
               </div>

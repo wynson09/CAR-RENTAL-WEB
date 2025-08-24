@@ -30,7 +30,7 @@ import { Car } from '@/components/fleet';
 import { BookingData, BookingFirebaseService } from '@/lib/firebase-booking-service';
 import { useUserStore } from '@/store';
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 export interface BookingFormData {
   destination: string;
@@ -79,6 +79,7 @@ export const BookingConfirmationDialog = ({
   const [isConfirming, setIsConfirming] = useState(false);
   const { user } = useUserStore();
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleConfirmBooking = async () => {
     console.log('Starting booking confirmation process...');
@@ -112,6 +113,8 @@ export const BookingConfirmationDialog = ({
       console.log('Preparing booking data...');
       
       // Prepare booking data for Firebase (avoiding undefined values)
+      const totalAmount = pricingDetails.totalAmount || 0;
+      
       const baseBookingData = {
         renterId: user.uid,
         driveOption: bookingData.driveOption,
@@ -123,15 +126,22 @@ export const BookingConfirmationDialog = ({
         returnDate: format(bookingData.returnDate, 'yyyy-MM-dd'),
         returnTime: bookingData.returnTime,
         selectedVehicles: {
-          vehicleId: car.image, // Using car image URL as vehicleId for better identification
+          vehicleUrl: car.image, // Using car image URL as vehicleUrl for better identification
           name: car.name,
           basePrice: parseInt(car.price.replace(/[^0-9]/g, '')) || 0,
           pricePerDay: parseInt(car.price.replace(/[^0-9]/g, '')) || 0,
           totalDuration: pricingDetails.totalDays,
           extraCharges: pricingDetails.extraCharges || [],
           discounts: pricingDetails.discounts || [],
-          totalAmount: pricingDetails.totalAmount || 0,
+          totalAmount: totalAmount,
         },
+        payment: {
+          totalAmount: totalAmount,
+          paid: 0, // No payment made yet
+          balance: totalAmount,
+          status: 'unpaid' as const,
+        },
+        extensions: [], // Initialize empty extensions array
         status: 'processing' as const,
       };
 
@@ -154,8 +164,11 @@ export const BookingConfirmationDialog = ({
       toast.success('Booking submitted successfully!');
       onClose();
       
-      // Redirect to completion page
-      router.push(`/booking-complete?bookingId=${bookingId}`);
+      // Get current language from pathname
+      const currentLang = pathname.split('/')[1] || 'en';
+      
+      // Redirect to completion page with language parameter
+      router.push(`/${currentLang}/booking-complete?bookingId=${bookingId}`);
       
     } catch (error: any) {
       console.error('Error creating booking:', error);

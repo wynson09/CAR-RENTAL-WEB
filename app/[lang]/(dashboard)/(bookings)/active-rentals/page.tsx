@@ -41,12 +41,33 @@ const ActiveRentalsPage = () => {
       }
 
       try {
+        console.log('Fetching active bookings for user:', user.uid);
         const bookings = await BookingFirebaseService.getActiveBookings(user.uid);
+        console.log('Fetched bookings:', bookings);
         setActiveBookings(bookings);
-      } catch (error) {
+        
+        if (bookings.length === 0) {
+          console.log('No active bookings found for user');
+        }
+      } catch (error: any) {
         console.error('Error fetching active bookings:', error);
-        setError('Failed to load your active bookings');
-        toast.error('Failed to load active bookings');
+        console.error('Error details:', {
+          message: error.message,
+          code: error.code,
+          name: error.name
+        });
+        
+        let errorMessage = 'Failed to load your active bookings';
+        if (error.code === 'permission-denied') {
+          errorMessage = 'Permission denied. Please check your account access.';
+        } else if (error.code === 'unavailable') {
+          errorMessage = 'Database temporarily unavailable. Please try again.';
+        } else if (error.message?.includes('network')) {
+          errorMessage = 'Network error. Please check your connection.';
+        }
+        
+        setError(errorMessage);
+        toast.error(errorMessage);
       } finally {
         setIsLoading(false);
       }
@@ -76,7 +97,7 @@ const ActiveRentalsPage = () => {
     switch (status) {
       case 'processing':
         return 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200';
-      case 'approved':
+      case 'reserved':
         return 'bg-green-100 text-green-800 hover:bg-green-200';
       case 'ongoing':
         return 'bg-blue-100 text-blue-800 hover:bg-blue-200';
@@ -107,7 +128,7 @@ const ActiveRentalsPage = () => {
       };
     }
 
-    if (booking.status === 'approved') {
+    if (booking.status === 'reserved') {
       if (isBefore(today, pickupDate)) {
         return {
           message: 'Booking confirmed - Prepare for pickup',
@@ -340,6 +361,52 @@ const ActiveRentalsPage = () => {
                           <p className="text-sm text-gray-500">
                             Vehicle details will be assigned once your booking is approved.
                           </p>
+                        </div>
+                      )}
+
+                      {/* Payment Information */}
+                      {booking.payment && (
+                        <div className="bg-green-50 dark:bg-green-950/20 p-3 rounded-lg">
+                          <h4 className="font-medium text-green-800 dark:text-green-200 mb-2">Payment Status</h4>
+                          <div className="space-y-1 text-sm">
+                            <div className="flex justify-between">
+                              <span>Total:</span>
+                              <span className="font-medium">{formatCurrency(booking.payment.totalAmount)}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Paid:</span>
+                              <span className="font-medium text-green-600">{formatCurrency(booking.payment.paid)}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Balance:</span>
+                              <span className="font-medium text-orange-600">{formatCurrency(booking.payment.balance)}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Status:</span>
+                              <Badge variant={booking.payment.status === 'paid' ? 'default' : 'outline'} className="capitalize text-xs">
+                                {booking.payment.status}
+                              </Badge>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Extensions Information */}
+                      {booking.extensions && booking.extensions.length > 0 && (
+                        <div className="bg-purple-50 dark:bg-purple-950/20 p-3 rounded-lg">
+                          <h4 className="font-medium text-purple-800 dark:text-purple-200 mb-2">Extensions</h4>
+                          <div className="space-y-2">
+                            {booking.extensions.slice(-2).map((extension, index) => (
+                              <div key={index} className="text-xs border-l-2 border-purple-300 pl-2">
+                                <p className="font-medium">Extension #{booking.extensions!.length - 1 + index}</p>
+                                <p>+{extension.additionalDays} days</p>
+                                <p className="text-purple-600">+{formatCurrency(extension.additionalAmount)}</p>
+                              </div>
+                            ))}
+                            {booking.extensions.length > 2 && (
+                              <p className="text-xs text-purple-600">...and {booking.extensions.length - 2} more</p>
+                            )}
+                          </div>
                         </div>
                       )}
                       

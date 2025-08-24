@@ -33,7 +33,7 @@ export interface Discount {
 }
 
 export interface SelectedVehicle {
-  vehicleId: string; // Car image URL for better vehicle identification
+  vehicleUrl: string; // Car image URL for better vehicle identification
   name: string;
   basePrice: number;
   pricePerDay: number;
@@ -56,6 +56,21 @@ export interface AssignedVehicle {
   driverAssigned?: AssignedDriver;
 }
 
+export interface Payment {
+  totalAmount: number;
+  paid: number;
+  balance: number;
+  status: 'unpaid' | 'partial' | 'paid' | 'refunded';
+}
+
+export interface Extension {
+  previousReturnDate: string;
+  newReturnDate: string;
+  additionalDays: number;
+  additionalAmount: number;
+  extendedAt: any; // Firestore timestamp
+}
+
 export interface BookingData {
   renterId: string;
   driveOption: 'self-drive' | 'with-driver';
@@ -68,7 +83,9 @@ export interface BookingData {
   returnDate: string;
   returnTime: string;
   selectedVehicles: SelectedVehicle;
-  status: 'processing' | 'approved' | 'cancelled' | 'completed' | 'ongoing' | 'refunded';
+  payment?: Payment; // Payment tracking information
+  extensions?: Extension[]; // Array of booking extensions
+  status: 'processing' | 'reserved' | 'cancelled' | 'completed' | 'ongoing' | 'refunded';
   assignedVehicle?: AssignedVehicle;
   createdAt?: any;
   updatedAt?: any;
@@ -199,7 +216,7 @@ export class BookingFirebaseService {
       const q = query(
         collection(db, BOOKINGS_COLLECTION),
         where('renterId', '==', userId),
-        where('status', 'in', ['processing', 'approved', 'ongoing']),
+        where('status', 'in', ['processing', 'reserved', 'ongoing']),
         orderBy('createdAt', 'desc')
       );
       const querySnapshot = await getDocs(q);
@@ -250,6 +267,122 @@ export class BookingFirebaseService {
     } catch (error) {
       console.error('Error fetching bookings by status:', error);
       throw new Error('Failed to fetch bookings by status from database');
+    }
+  }
+
+  // Update payment information
+  static async updatePayment(bookingId: string, payment: Payment): Promise<void> {
+    try {
+      const docRef = doc(db, BOOKINGS_COLLECTION, bookingId);
+      await updateDoc(docRef, {
+        payment,
+        updatedAt: serverTimestamp(),
+      });
+      console.log('Payment information updated successfully');
+    } catch (error) {
+      console.error('Error updating payment:', error);
+      throw new Error('Failed to update payment information in database');
+    }
+  }
+
+  // Add booking extension
+  static async addExtension(
+    bookingId: string, 
+    extension: Omit<Extension, 'extendedAt'>,
+    newReturnDate: string,
+    newReturnTime: string
+  ): Promise<void> {
+    try {
+      const docRef = doc(db, BOOKINGS_COLLECTION, bookingId);
+      const bookingDoc = await getDoc(docRef);
+      
+      if (!bookingDoc.exists()) {
+        throw new Error('Booking not found');
+      }
+
+      const currentData = bookingDoc.data();
+      const extensionWithTimestamp = {
+        ...extension,
+        extendedAt: serverTimestamp(),
+      };
+
+      const currentExtensions = currentData.extensions || [];
+      const updatedExtensions = [...currentExtensions, extensionWithTimestamp];
+
+      await updateDoc(docRef, {
+        extensions: updatedExtensions,
+        returnDate: newReturnDate,
+        returnTime: newReturnTime,
+        updatedAt: serverTimestamp(),
+      });
+      
+      console.log('Booking extension added successfully');
+    } catch (error) {
+      console.error('Error adding booking extension:', error);
+      throw new Error('Failed to add booking extension in database');
+    }
+  }
+
+  // Get booking extensions
+  static async getBookingExtensions(bookingId: string): Promise<Extension[]> {
+    try {
+      const docRef = doc(db, BOOKINGS_COLLECTION, bookingId);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        return data.extensions || [];
+      } else {
+        throw new Error('Booking not found');
+      }
+    } catch (error) {
+      console.error('Error fetching booking extensions:', error);
+      throw new Error('Failed to fetch booking extensions from database');
+    }
+  }
+
+  // Update booking totals after extension
+  static async updateBookingTotals(
+    bookingId: string,
+    newTotalAmount: number,
+    updatedVehicleData?: Partial<SelectedVehicle>
+  ): Promise<void> {
+    try {
+      const docRef = doc(db, BOOKINGS_COLLECTION, bookingId);
+      const bookingDoc = await getDoc(docRef);
+      
+      if (!bookingDoc.exists()) {
+        throw new Error('Booking not found');
+      }
+
+      const currentData = bookingDoc.data();
+      const updateData: any = {
+        updatedAt: serverTimestamp(),
+      };
+
+      // Update vehicle data if provided
+      if (updatedVehicleData) {
+        updateData.selectedVehicles = {
+          ...currentData.selectedVehicles,
+          ...updatedVehicleData,
+        };
+      }
+
+      // Update payment totals if payment exists
+      if (currentData.payment) {
+        const currentPayment = currentData.payment;
+        updateData.payment = {
+          ...currentPayment,
+          totalAmount: newTotalAmount,
+          balance: newTotalAmount - currentPayment.paid,
+        };
+      }
+
+      await updateDoc(docRef, updateData);
+      console.log('Booking totals updated successfully');
+    } catch (error) {
+      console.error('Error updating booking totals:', error);
+      throw new Error('Failed to update booking totals in database');
     }
   }
 }
