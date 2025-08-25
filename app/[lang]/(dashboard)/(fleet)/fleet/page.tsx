@@ -25,6 +25,11 @@ import { CarListing } from '@/data/car-listings-data';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 import ErrorBoundary from '@/components/error-boundary';
+
+// Cache configuration
+const FLEET_CACHE_DURATION = 60 * 60 * 1000; // 1 hour
+const fleetCarsCache = new Map<string, { data: Car[]; timestamp: number }>();
+
 // Convert CarListing data to Car data format for fleet display
 const convertCarListingToCar = (carListing: CarListing): Car => {
   // Add promotional indicator to features if the car is promotional
@@ -81,7 +86,7 @@ const FleetPage = () => {
         const cached = fleetCarsCache.get(cacheKey);
         const now = Date.now();
 
-        if (cached && (now - cached.timestamp) < FLEET_CACHE_DURATION) {
+        if (cached && now - cached.timestamp < FLEET_CACHE_DURATION) {
           setCars(cached.data);
           setLoading(false);
           return;
@@ -93,7 +98,7 @@ const FleetPage = () => {
         // Cache the results
         fleetCarsCache.set(cacheKey, {
           data: convertedCars,
-          timestamp: now
+          timestamp: now,
         });
 
         setCars(convertedCars);
@@ -140,7 +145,7 @@ const FleetPage = () => {
       // Update cache with fresh data
       fleetCarsCache.set(cacheKey, {
         data: convertedCars,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       });
 
       setCars(convertedCars);

@@ -19,7 +19,7 @@ export const CarFilter = ({ selectedCategory, onCategoryChange, className }: Car
       {categories.map((category) => (
         <Button
           key={category}
-          variant={selectedCategory === category ? 'default' : 'outline'}
+          variant={selectedCategory === category ? null : 'outline'}
           size="sm"
           onClick={() => onCategoryChange(category)}
           className={cn(

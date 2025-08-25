@@ -10,6 +10,7 @@ import {
   orderBy,
   serverTimestamp,
   Timestamp,
+  FieldValue,
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { CarListing } from '@/data/car-listings-data';
@@ -37,7 +38,10 @@ const convertFirestoreDocToCarListing = (doc: any): CarListing => {
 // Convert CarListing to Firestore document
 const convertCarListingToFirestoreDoc = (
   car: Omit<CarListing, 'id'>
-): Omit<CarDocument, 'createdDate'> & { createdDate?: any; updatedDate: any } => {
+): Omit<CarDocument, 'createdDate' | 'updatedDate'> & {
+  createdDate?: FieldValue | Timestamp;
+  updatedDate: FieldValue;
+} => {
   return {
     ...car,
     createdDate: car.createdDate ? Timestamp.fromDate(car.createdDate) : serverTimestamp(),

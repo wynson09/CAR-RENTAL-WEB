@@ -10,6 +10,7 @@ export const fleetData: Car[] = [
     passengers: '7 Seater',
     bags: '4 Luggages',
     transmission: 'Automatic',
+    isPromo: false,
     features: [
       'ABS',
       'Audio System',
@@ -30,6 +31,7 @@ export const fleetData: Car[] = [
     passengers: '5 Seater',
     bags: '3 Luggages',
     transmission: 'Automatic',
+    isPromo: true,
     features: [
       'ABS',
       'Audio System',
@@ -50,6 +52,7 @@ export const fleetData: Car[] = [
     passengers: '5 Seater',
     bags: '2 Luggages',
     transmission: 'Manual',
+    isPromo: false,
     features: [
       'ABS',
       'Audio System',
@@ -69,6 +72,7 @@ export const fleetData: Car[] = [
     passengers: '15 Seater',
     bags: '8 Luggages',
     transmission: 'Automatic',
+    isPromo: false,
     features: [
       'ABS',
       'Audio System',
@@ -89,6 +93,7 @@ export const fleetData: Car[] = [
     passengers: '5 Seater',
     bags: '5 Luggages',
     transmission: 'Manual',
+    isPromo: false,
     features: [
       'ABS',
       'Audio System',
@@ -108,6 +113,7 @@ export const fleetData: Car[] = [
     passengers: '8 Seater',
     bags: '4 Luggages',
     transmission: 'Automatic',
+    isPromo: false,
     features: [
       'ABS',
       'Audio System',
@@ -129,6 +135,7 @@ export const fleetData: Car[] = [
     passengers: '5 Seater',
     bags: '3 Luggages',
     transmission: 'Automatic',
+    isPromo: false,
     features: [
       'ABS',
       'Audio System',
@@ -149,6 +156,7 @@ export const fleetData: Car[] = [
     passengers: '7 Seater',
     bags: '5 Luggages',
     transmission: 'Automatic',
+    isPromo: true,
     features: [
       'ABS',
       'Audio System',
@@ -169,6 +177,7 @@ export const fleetData: Car[] = [
     passengers: '7 Seater',
     bags: '4 Luggages',
     transmission: 'Automatic',
+    isPromo: false,
     features: [
       'ABS',
       'Audio System',
