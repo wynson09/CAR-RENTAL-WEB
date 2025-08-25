@@ -1,0 +1,61 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Existing collections rules (keep your current rules here)
+    
+    // Chat conversations rules
+    match /conversations/{conversationId} {
+      // Allow users to read/write conversations they participate in
+      allow read, write: if request.auth != null && 
+        (resource.data.participants[0].userId == request.auth.uid ||
+         resource.data.participants[1].userId == request.auth.uid ||
+         request.auth.token.role == 'admin');
+      
+      // Allow admin to read all conversations
+      allow read: if request.auth != null && request.auth.token.role == 'admin';
+      
+      // Allow creating new conversations with proper participant validation
+      allow create: if request.auth != null && 
+        (request.resource.data.participants[0].userId == request.auth.uid ||
+         request.resource.data.participants[1].userId == request.auth.uid);
+    }
+    
+    // Chat messages rules
+    match /messages/{messageId} {
+      // Allow users to read messages in conversations they participate in
+      allow read: if request.auth != null && 
+        (getUserConversationAccess(resource.data.conversationId) ||
+         request.auth.token.role == 'admin');
+      
+      // Allow users to create messages in conversations they participate in
+      allow create: if request.auth != null && 
+        request.resource.data.senderId == request.auth.uid &&
+        getUserConversationAccess(request.resource.data.conversationId);
+      
+      // Allow message updates (for read status, editing) by sender or admin
+      allow update: if request.auth != null && 
+        (resource.data.senderId == request.auth.uid || 
+         request.auth.token.role == 'admin');
+      
+      // Allow message deletion by sender or admin
+      allow delete: if request.auth != null && 
+        (resource.data.senderId == request.auth.uid || 
+         request.auth.token.role == 'admin');
+    }
+    
+    // Helper function to check if user has access to a conversation
+    function getUserConversationAccess(conversationId) {
+      return exists(/databases/$(database)/documents/conversations/$(conversationId)) &&
+        get(/databases/$(database)/documents/conversations/$(conversationId)).data.participants.hasAny([
+          {'userId': request.auth.uid, 'userRole': 'user'},
+          {'userId': request.auth.uid, 'userRole': 'admin'},
+          {'userId': request.auth.uid, 'userRole': 'moderator'}
+        ]);
+    }
+    
+    // Default rule for other collections - adjust as needed
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
