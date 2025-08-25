@@ -18,6 +18,7 @@ import {
   and,
   or,
   setDoc,
+  runTransaction,
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
@@ -71,76 +72,82 @@ export class FirebaseChatService {
       // Use predictable ID to check if conversation already exists
       const predictableId = `user_${userId}_admin`;
       const conversationRef = doc(db, CONVERSATIONS_COLLECTION, predictableId);
-      const conversationSnap = await getDoc(conversationRef);
+      
+      // Use a transaction to prevent race conditions
+      return await runTransaction(db, async (transaction) => {
+        const conversationSnap = await transaction.get(conversationRef);
 
-      if (conversationSnap.exists()) {
-        console.log('Found existing conversation for user:', userId);
-        return predictableId;
-      }
+        if (conversationSnap.exists()) {
+          console.log('Found existing conversation for user:', userId);
+          return predictableId;
+        }
 
-      console.log('Creating new conversation for user:', userId);
+        console.log('Creating new conversation for user:', userId);
 
-      // Create new conversation with admin
-      const conversationData: Omit<Conversation, 'id'> = {
-        participants: [
-          {
-            userId: userId,
-            userName: userName,
-            userRole: 'user',
-            userAvatar: userAvatar || '',
-          },
-          {
-            userId: 'admin',
-            userName: 'Admin Support',
-            userRole: 'admin',
-            userAvatar: '',
-          },
-        ],
-        lastMessage:
-          'Welcome to NACS Car Rental! We are here to assist you with any questions or concerns you may have. How can we help you today?',
-        lastMessageTimestamp: serverTimestamp() as Timestamp,
-        unreadCount: {
-          [userId]: 1, // User has 1 unread welcome message
-          admin: 0,
-        },
-        isActive: true,
-        createdAt: serverTimestamp() as Timestamp,
-        updatedAt: serverTimestamp() as Timestamp,
-      };
+        // Check if messages already exist for this conversation ID
+        const messagesQuery = query(
+          collection(db, MESSAGES_COLLECTION),
+          where('conversationId', '==', predictableId),
+          limit(1)
+        );
+        const existingMessages = await getDocs(messagesQuery);
 
-      // Use the same predictable document ID
-      const docRef = doc(db, CONVERSATIONS_COLLECTION, predictableId);
-      await setDoc(docRef, conversationData);
-
-      // Create welcome message from admin (only if no messages exist yet)
-      const messagesQuery = query(
-        collection(db, MESSAGES_COLLECTION),
-        where('conversationId', '==', predictableId)
-      );
-      const existingMessages = await getDocs(messagesQuery);
-
-      if (existingMessages.empty) {
-        const welcomeMessage: Omit<ChatMessage, 'id'> = {
-          conversationId: predictableId,
-          senderId: 'admin',
-          senderName: 'Admin Support',
-          senderRole: 'admin',
-          senderAvatar: '',
-          content:
+        // Create new conversation with admin
+        const conversationData: Omit<Conversation, 'id'> = {
+          participants: [
+            {
+              userId: userId,
+              userName: userName,
+              userRole: 'user',
+              userAvatar: userAvatar || '',
+            },
+            {
+              userId: 'admin',
+              userName: 'Admin Support',
+              userRole: 'admin',
+              userAvatar: '',
+            },
+          ],
+          lastMessage:
             'Welcome to NACS Car Rental! We are here to assist you with any questions or concerns you may have. How can we help you today?',
-          messageType: 'text',
-          timestamp: serverTimestamp() as Timestamp,
-          isRead: false,
-          isEdited: false,
+          lastMessageTimestamp: serverTimestamp() as Timestamp,
+          unreadCount: {
+            [userId]: 1, // User has 1 unread welcome message
+            admin: 0,
+          },
+          isActive: true,
+          createdAt: serverTimestamp() as Timestamp,
+          updatedAt: serverTimestamp() as Timestamp,
         };
 
-        await addDoc(collection(db, MESSAGES_COLLECTION), welcomeMessage);
-        console.log('Created welcome message for conversation:', predictableId);
-      } else {
-        console.log('Welcome message already exists for conversation:', predictableId);
-      }
+        // Create conversation within transaction
+        transaction.set(conversationRef, conversationData);
 
-      return predictableId;
+        // Create welcome message only if no messages exist
+        if (existingMessages.empty) {
+          const welcomeMessageRef = doc(collection(db, MESSAGES_COLLECTION));
+          const welcomeMessage: Omit<ChatMessage, 'id'> = {
+            conversationId: predictableId,
+            senderId: 'admin',
+            senderName: 'Admin Support',
+            senderRole: 'admin',
+            senderAvatar: '',
+            content:
+              'Welcome to NACS Car Rental! We are here to assist you with any questions or concerns you may have. How can we help you today?',
+            messageType: 'text',
+            timestamp: serverTimestamp() as Timestamp,
+            isRead: false,
+            isEdited: false,
+          };
+
+          transaction.set(welcomeMessageRef, welcomeMessage);
+          console.log('Creating welcome message for conversation:', predictableId);
+        } else {
+          console.log('Welcome message already exists for conversation:', predictableId);
+        }
+
+        return predictableId;
+      });
     } catch (error) {
       console.error('Error creating conversation:', error);
       throw error;
