@@ -4,6 +4,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Car, PricingResult, DiscountItem } from './car-card';
 import { format, differenceInCalendarDays } from 'date-fns';
+import { DetailedPriceBreakdown } from '@/components/pricing/detailed-price-breakdown';
+import { createDetailedPricing } from '@/lib/pricing-utils';
 
 interface QuotationDialogProps {
   isOpen: boolean;
@@ -245,124 +247,25 @@ export const QuotationDialog = ({
               </div>
             )}
 
-            {/* Pricing Breakdown */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-8 border border-gray-200 dark:border-gray-700 shadow-sm">
-              <h4 className="text-2xl font-semibold text-gray-900 dark:text-white mb-8 flex items-center gap-3">
-                <svg
-                  className="w-8 h-8 text-green-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-                  />
-                </svg>
-                Pricing Breakdown
-              </h4>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                {/* Left Column - Itemized Costs */}
-                <div className="space-y-4">
-                  <h5 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-3 border-b pb-2">
-                    Cost Breakdown
-                  </h5>
-
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center py-2">
-                      <span className="text-gray-600 dark:text-gray-400">
-                        Car Rental ({dayDuration} day{dayDuration !== 1 ? 's' : ''})
-                      </span>
-                      <span className="font-semibold text-gray-900 dark:text-white">
-                        ₱{totalCarPrice.toLocaleString()}
-                      </span>
-                    </div>
-
-                    {driveOption === 'with-driver' && (
-                      <div className="flex justify-between items-center py-2">
-                        <span className="text-gray-600 dark:text-gray-400">
-                          Driver Fee ({dayDuration} day{dayDuration !== 1 ? 's' : ''})
-                        </span>
-                        <span className="font-semibold text-gray-900 dark:text-white">
-                          ₱{totalDriverFee.toLocaleString()}
-                        </span>
-                      </div>
-                    )}
-
-                    <div className="border-t pt-2 mt-3">
-                      <div className="flex justify-between items-center py-2">
-                        <span className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                          Subtotal
-                        </span>
-                        <span className="text-lg font-bold text-gray-900 dark:text-white">
-                          ₱{(totalCarPrice + totalDriverFee).toLocaleString()}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right Column - Savings & Total */}
-                <div className="space-y-4">
-                  <h5 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-3 border-b pb-2">
-                    Savings & Total
-                  </h5>
-
-                  <div className="space-y-3">
-                    {/* Applied Discounts */}
-                    {pricing.discountBreakdown.length > 0 && (
-                      <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg border border-green-200 dark:border-green-800">
-                        <h6 className="text-sm font-semibold text-green-800 dark:text-green-200 mb-2">
-                          Applied Discounts:
-                        </h6>
-                        {pricing.discountBreakdown.map((discount: DiscountItem, index: number) => (
-                          <div key={index} className="flex justify-between items-center text-sm">
-                            <span className="text-green-700 dark:text-green-300">
-                              {discount.name}
-                            </span>
-                            <span className="font-medium text-green-800 dark:text-green-200">
-                              -₱{(discount.amount * dayDuration).toLocaleString()}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {totalSavings > 0 && (
-                      <div className="flex justify-between items-center py-2 bg-yellow-50 dark:bg-yellow-900/20 px-3 rounded-lg">
-                        <span className="font-semibold text-yellow-800 dark:text-yellow-200">
-                          Total Savings
-                        </span>
-                        <span className="font-bold text-yellow-900 dark:text-yellow-100">
-                          ₱{totalSavings.toLocaleString()}
-                        </span>
-                      </div>
-                    )}
-
-                    <div className="border-t pt-3 mt-4">
-                      <div className="flex justify-between items-center py-3 bg-blue-50 dark:bg-blue-900/20 px-4 rounded-lg">
-                        <span className="text-xl font-bold text-blue-800 dark:text-blue-200">
-                          Final Total
-                        </span>
-                        <span className="text-2xl font-bold text-blue-900 dark:text-blue-100">
-                          ₱{(totalCarPrice + totalDriverFee).toLocaleString()}
-                        </span>
-                      </div>
-                      {totalSavings > 0 && (
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 text-center">
-                          You save ₱{totalSavings.toLocaleString()} (
-                          {((totalSavings / totalOriginalPrice) * 100).toFixed(1)}%) with this
-                          booking!
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* Detailed Pricing Breakdown */}
+            <DetailedPriceBreakdown
+              pricing={createDetailedPricing({
+                basePricePerDay: pricing.originalPrice,
+                totalDays: dayDuration,
+                driverFeePerDay: driveOption === 'with-driver' ? driverFeePerDay : 0,
+                discounts: pricing.discountBreakdown.map((discount) => ({
+                  label: discount.name,
+                  type: discount.type,
+                  percentageOff: discount.percentage,
+                  appliedTo: 'vehicle',
+                  applied: true,
+                })),
+                extraCharges: [],
+              })}
+              vehicleName={car.name}
+              showHeader={true}
+              compact={false}
+            />
 
             {/* Important Notes */}
             <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-xl p-4 sm:p-6 border border-yellow-200 dark:border-yellow-800">

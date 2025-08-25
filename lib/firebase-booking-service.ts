@@ -11,6 +11,7 @@ import {
   orderBy,
   serverTimestamp,
   Timestamp,
+  onSnapshot,
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
@@ -116,10 +117,10 @@ export class BookingFirebaseService {
         test: true,
         timestamp: serverTimestamp(),
       };
-      
+
       const docRef = await addDoc(collection(db, 'test-connection'), testDoc);
       await deleteDoc(doc(db, 'test-connection', docRef.id));
-      
+
       return true;
     } catch (error) {
       return false;
@@ -127,7 +128,9 @@ export class BookingFirebaseService {
   }
 
   // Create a new booking
-  static async createBooking(bookingData: Omit<BookingData, 'createdAt' | 'updatedAt'>): Promise<string> {
+  static async createBooking(
+    bookingData: Omit<BookingData, 'createdAt' | 'updatedAt'>
+  ): Promise<string> {
     try {
       const bookingDoc = {
         ...bookingData,
@@ -145,14 +148,11 @@ export class BookingFirebaseService {
   // Get all bookings for a user
   static async getUserBookings(userId: string): Promise<BookingData[]> {
     try {
-      const q = query(
-        collection(db, BOOKINGS_COLLECTION),
-        where('renterId', '==', userId)
-      );
+      const q = query(collection(db, BOOKINGS_COLLECTION), where('renterId', '==', userId));
       const querySnapshot = await getDocs(q);
 
       const bookings = querySnapshot.docs.map(convertFirestoreDocToBooking);
-      
+
       // Sort client-side instead of server-side
       bookings.sort((a, b) => {
         const dateA = new Date(a.createdAt || 0).getTime();
@@ -163,6 +163,44 @@ export class BookingFirebaseService {
       return bookings;
     } catch (error) {
       throw new Error('Failed to fetch user bookings from database');
+    }
+  }
+
+  // Set up real-time listener for user bookings
+  static setupUserBookingsListener(
+    userId: string,
+    callback: (bookings: BookingData[]) => void,
+    errorCallback: (error: any) => void
+  ): () => void {
+    try {
+      const q = query(collection(db, BOOKINGS_COLLECTION), where('renterId', '==', userId));
+
+      const unsubscribe = onSnapshot(
+        q,
+        (snapshot) => {
+          const bookings = snapshot.docs.map(convertFirestoreDocToBooking);
+
+          // Sort client-side instead of server-side
+          bookings.sort((a, b) => {
+            const dateA = new Date(a.createdAt || 0).getTime();
+            const dateB = new Date(b.createdAt || 0).getTime();
+            return dateB - dateA;
+          });
+
+          callback(bookings);
+        },
+        (error) => {
+          console.error('Real-time bookings listener error:', error);
+          errorCallback(error);
+        }
+      );
+
+      return unsubscribe;
+    } catch (error) {
+      console.error('Setup bookings listener error:', error);
+      errorCallback(error);
+      // Return a no-op function if setup fails
+      return () => {};
     }
   }
 
@@ -178,7 +216,6 @@ export class BookingFirebaseService {
         return null;
       }
     } catch (error) {
-
       throw new Error('Failed to fetch booking from database');
     }
   }
@@ -201,9 +238,7 @@ export class BookingFirebaseService {
       }
 
       await updateDoc(docRef, updateData);
-
     } catch (error) {
-
       throw new Error('Failed to update booking status in database');
     }
   }
@@ -212,7 +247,7 @@ export class BookingFirebaseService {
   static async getActiveBookings(userId: string): Promise<BookingData[]> {
     try {
       const allBookings = await this.getUserBookings(userId);
-      const activeBookings = allBookings.filter(booking => 
+      const activeBookings = allBookings.filter((booking) =>
         ['processing', 'reserved', 'ongoing'].includes(booking.status)
       );
       return activeBookings;
@@ -226,9 +261,7 @@ export class BookingFirebaseService {
     try {
       const docRef = doc(db, BOOKINGS_COLLECTION, bookingId);
       await deleteDoc(docRef);
-
     } catch (error) {
-
       throw new Error('Failed to delete booking from database');
     }
   }
@@ -241,7 +274,6 @@ export class BookingFirebaseService {
 
       return querySnapshot.docs.map(convertFirestoreDocToBooking);
     } catch (error) {
-
       throw new Error('Failed to fetch all bookings from database');
     }
   }
@@ -258,7 +290,6 @@ export class BookingFirebaseService {
 
       return querySnapshot.docs.map(convertFirestoreDocToBooking);
     } catch (error) {
-
       throw new Error('Failed to fetch bookings by status from database');
     }
   }
@@ -271,16 +302,14 @@ export class BookingFirebaseService {
         payment,
         updatedAt: serverTimestamp(),
       });
-
     } catch (error) {
-
       throw new Error('Failed to update payment information in database');
     }
   }
 
   // Add booking extension
   static async addExtension(
-    bookingId: string, 
+    bookingId: string,
     extension: Omit<Extension, 'extendedAt'>,
     newReturnDate: string,
     newReturnTime: string
@@ -288,7 +317,7 @@ export class BookingFirebaseService {
     try {
       const docRef = doc(db, BOOKINGS_COLLECTION, bookingId);
       const bookingDoc = await getDoc(docRef);
-      
+
       if (!bookingDoc.exists()) {
         throw new Error('Booking not found');
       }
@@ -308,10 +337,7 @@ export class BookingFirebaseService {
         returnTime: newReturnTime,
         updatedAt: serverTimestamp(),
       });
-      
-
     } catch (error) {
-
       throw new Error('Failed to add booking extension in database');
     }
   }
@@ -329,7 +355,6 @@ export class BookingFirebaseService {
         throw new Error('Booking not found');
       }
     } catch (error) {
-
       throw new Error('Failed to fetch booking extensions from database');
     }
   }
@@ -343,7 +368,7 @@ export class BookingFirebaseService {
     try {
       const docRef = doc(db, BOOKINGS_COLLECTION, bookingId);
       const bookingDoc = await getDoc(docRef);
-      
+
       if (!bookingDoc.exists()) {
         throw new Error('Booking not found');
       }
@@ -372,9 +397,7 @@ export class BookingFirebaseService {
       }
 
       await updateDoc(docRef, updateData);
-
     } catch (error) {
-
       throw new Error('Failed to update booking totals in database');
     }
   }

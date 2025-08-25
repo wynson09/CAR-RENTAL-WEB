@@ -13,21 +13,25 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  CalendarIcon, 
-  Clock, 
-  MapPin, 
-  Car as CarIcon, 
-  Users, 
+import {
+  CalendarIcon,
+  Clock,
+  MapPin,
+  Car as CarIcon,
+  Users,
   Briefcase,
   CheckCircle,
   AlertCircle,
-  Loader2
+  Loader2,
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { Car } from '@/components/fleet';
 import { BookingData, BookingFirebaseService } from '@/lib/firebase-booking-service';
+import {
+  DetailedPriceBreakdown,
+  DetailedPricingData,
+} from '@/components/pricing/detailed-price-breakdown';
 import { useUserStore } from '@/store';
 import { toast } from 'sonner';
 import { useRouter, usePathname } from 'next/navigation';
@@ -49,24 +53,7 @@ interface BookingConfirmationDialogProps {
   onClose: () => void;
   car: Car;
   bookingData: BookingFormData;
-  pricingDetails: {
-    basePrice: number;
-    totalDays: number;
-    discounts: Array<{
-      label: string;
-      type: string;
-      percent: number;
-      amount: number;
-      applied: boolean;
-    }>;
-    extraCharges: Array<{
-      label: string;
-      type: string;
-      amount: number;
-    }>;
-    totalAmount: number;
-    totalSavings: number;
-  };
+  pricingDetails: DetailedPricingData;
 }
 
 export const BookingConfirmationDialog = ({
@@ -84,7 +71,7 @@ export const BookingConfirmationDialog = ({
   const handleConfirmBooking = async () => {
     console.log('Starting booking confirmation process...');
     console.log('User:', user);
-    
+
     if (!user?.uid) {
       console.error('User not authenticated');
       toast.error('Please sign in to make a booking');
@@ -111,10 +98,10 @@ export const BookingConfirmationDialog = ({
 
     try {
       console.log('Preparing booking data...');
-      
+
       // Prepare booking data for Firebase (avoiding undefined values)
       const totalAmount = pricingDetails.totalAmount || 0;
-      
+
       const baseBookingData = {
         renterId: user.uid,
         driveOption: bookingData.driveOption,
@@ -146,8 +133,8 @@ export const BookingConfirmationDialog = ({
       };
 
       // Only add driverPerDay if it's a with-driver booking
-      const firebaseBookingData: Omit<BookingData, 'createdAt' | 'updatedAt'> = 
-        bookingData.driveOption === 'with-driver' 
+      const firebaseBookingData: Omit<BookingData, 'createdAt' | 'updatedAt'> =
+        bookingData.driveOption === 'with-driver'
           ? {
               ...baseBookingData,
               driverPerDay: bookingData.driverPerDay || 750,
@@ -159,17 +146,16 @@ export const BookingConfirmationDialog = ({
       // Save to Firebase
       console.log('Saving to Firebase...');
       const bookingId = await BookingFirebaseService.createBooking(firebaseBookingData);
-      
+
       console.log('Booking created successfully with ID:', bookingId);
       toast.success('Booking submitted successfully!');
       onClose();
-      
+
       // Get current language from pathname
       const currentLang = pathname.split('/')[1] || 'en';
-      
+
       // Redirect to completion page with language parameter
       router.push(`/${currentLang}/booking-complete?bookingId=${bookingId}`);
-      
     } catch (error: any) {
       console.error('Error creating booking:', error);
       console.error('Error details:', {
@@ -178,10 +164,10 @@ export const BookingConfirmationDialog = ({
         name: error.name,
         stack: error.stack,
       });
-      
+
       // More specific error messages
       let errorMessage = 'Failed to submit booking. Please try again.';
-      
+
       if (error.code === 'permission-denied') {
         errorMessage = 'Permission denied. Please ensure you are signed in with proper access.';
       } else if (error.code === 'network-request-failed') {
@@ -191,7 +177,7 @@ export const BookingConfirmationDialog = ({
       } else if (error.message.includes('quota')) {
         errorMessage = 'Service temporarily unavailable. Please try again later.';
       }
-      
+
       toast.error(errorMessage);
     } finally {
       setIsConfirming(false);
@@ -225,7 +211,7 @@ export const BookingConfirmationDialog = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent 
+      <DialogContent
         className="w-[95vw] max-w-[1200px] max-h-[90vh] overflow-y-auto"
         style={{ width: '95vw', maxWidth: '1200px' }}
       >
@@ -235,7 +221,8 @@ export const BookingConfirmationDialog = ({
             Confirm Your Booking
           </DialogTitle>
           <DialogDescription>
-            Please review your booking details before confirming. Once confirmed, you'll receive a confirmation email and can track your booking status.
+            Please review your booking details before confirming. Once confirmed, you'll receive a
+            confirmation email and can track your booking status.
           </DialogDescription>
         </DialogHeader>
 
@@ -249,22 +236,18 @@ export const BookingConfirmationDialog = ({
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex gap-4">
-                <div className="w-32 h-24 relative overflow-hidden rounded-lg">
-                  <img
-                    src={car.image}
-                    alt={car.name}
-                    className="w-full h-full object-cover"
-                  />
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="sm:w-32 sm:h-24 w-full h-auto relative overflow-hidden rounded-lg">
+                  <img src={car.image} alt={car.name} className="w-full h-full object-contain" />
                   {car.isPromo && (
                     <Badge className="absolute top-1 left-1 bg-red-500 hover:bg-red-600 text-xs px-1 py-0">
                       PROMO
                     </Badge>
                   )}
                 </div>
-                <div className="flex-1 space-y-2">
+                <div className="flex flex-col sm:flex-1 space-y-2">
                   <h3 className="font-semibold text-lg">{car.name}</h3>
-                  <div className="flex items-center gap-4 text-sm text-gray-600">
+                  <div className="flex flex-col sm:flex-row sm:items-center items-start gap-4 text-sm text-gray-600">
                     <div className="flex items-center gap-1">
                       <Users className="h-4 w-4" />
                       {car.passengers} passengers
@@ -300,7 +283,9 @@ export const BookingConfirmationDialog = ({
                       {bookingData.driveOption === 'self-drive' ? 'Self Drive' : 'With Driver'}
                     </Badge>
                     {bookingData.driveOption === 'with-driver' && (
-                      <span className="text-sm text-green-600">+₱{bookingData.driverPerDay || 750}/day</span>
+                      <span className="text-sm text-green-600">
+                        +₱{bookingData.driverPerDay || 750}/day
+                      </span>
                     )}
                   </div>
                 </div>
@@ -312,7 +297,9 @@ export const BookingConfirmationDialog = ({
 
                 <div>
                   <label className="text-sm font-medium text-gray-600">Duration</label>
-                  <p className="mt-1">{pricingDetails.totalDays} day{pricingDetails.totalDays !== 1 ? 's' : ''}</p>
+                  <p className="mt-1">
+                    {pricingDetails.totalDays} day{pricingDetails.totalDays !== 1 ? 's' : ''}
+                  </p>
                 </div>
 
                 {/* Pickup Details */}
@@ -359,61 +346,13 @@ export const BookingConfirmationDialog = ({
               </CardContent>
             </Card>
 
-            {/* Price Breakdown */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Price Breakdown</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex justify-between">
-                  <span>Base Price ({pricingDetails.totalDays} day{pricingDetails.totalDays !== 1 ? 's' : ''})</span>
-                  <span>{formatCurrency(pricingDetails.basePrice * pricingDetails.totalDays)}</span>
-                </div>
-
-                {bookingData.driveOption === 'with-driver' && (
-                  <div className="flex justify-between text-green-600">
-                    <span>Driver ({pricingDetails.totalDays} day{pricingDetails.totalDays !== 1 ? 's' : ''})</span>
-                    <span>+{formatCurrency((bookingData.driverPerDay || 750) * pricingDetails.totalDays)}</span>
-                  </div>
-                )}
-
-                {pricingDetails.extraCharges.map((charge, index) => (
-                  <div key={index} className="flex justify-between text-orange-600">
-                    <span>{charge.label}</span>
-                    <span>+{formatCurrency(charge.amount)}</span>
-                  </div>
-                ))}
-
-                {pricingDetails.discounts.filter(d => d.applied).length > 0 && (
-                  <>
-                    <Separator />
-                    <div className="text-sm font-medium text-green-600">Applied Discounts</div>
-                    {pricingDetails.discounts
-                      .filter(d => d.applied)
-                      .map((discount, index) => (
-                        <div key={index} className="flex justify-between text-green-600">
-                          <span>{discount.label} ({discount.percent}%)</span>
-                          <span>-{formatCurrency(discount.amount)}</span>
-                        </div>
-                      ))}
-                  </>
-                )}
-
-                <Separator />
-                
-                {pricingDetails.totalSavings > 0 && (
-                  <div className="flex justify-between text-green-600 font-medium">
-                    <span>Total Savings</span>
-                    <span>-{formatCurrency(pricingDetails.totalSavings)}</span>
-                  </div>
-                )}
-
-                <div className="flex justify-between text-lg font-bold">
-                  <span>Total Amount</span>
-                  <span>{formatCurrency(pricingDetails.totalAmount)}</span>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Detailed Price Breakdown */}
+            <DetailedPriceBreakdown
+              pricing={pricingDetails}
+              vehicleName={car.name}
+              showHeader={true}
+              compact={false}
+            />
           </div>
 
           {/* Important Notice */}
@@ -442,11 +381,7 @@ export const BookingConfirmationDialog = ({
           <Button variant="outline" onClick={onClose} disabled={isConfirming}>
             Review Again
           </Button>
-          <Button 
-            onClick={handleConfirmBooking} 
-            disabled={isConfirming}
-            className="min-w-32"
-          >
+          <Button onClick={handleConfirmBooking} disabled={isConfirming} className="min-w-32">
             {isConfirming ? (
               <>
                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />

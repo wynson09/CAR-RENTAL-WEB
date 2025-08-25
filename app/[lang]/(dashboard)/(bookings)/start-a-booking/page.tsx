@@ -24,11 +24,15 @@ import { CarListing } from '@/data/car-listings-data';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 import ErrorBoundary from '@/components/error-boundary';
-import { BookingConfirmationDialog, BookingFormData } from '@/components/booking/booking-confirmation-dialog';
+import {
+  BookingConfirmationDialog,
+  BookingFormData,
+} from '@/components/booking/booking-confirmation-dialog';
 import { useUserStore } from '@/store';
+import { createDetailedPricing } from '@/lib/pricing-utils';
 
 // Cache for car data to avoid unnecessary fetches
-const carsCache = new Map<string, { data: Car[], timestamp: number }>();
+const carsCache = new Map<string, { data: Car[]; timestamp: number }>();
 const CARS_CACHE_DURATION = 10 * 60 * 1000; // 10 minutes cache
 
 // Convert CarListing data to Car data format for fleet display
@@ -95,7 +99,7 @@ const BookingPage = () => {
         const cached = carsCache.get(cacheKey);
         const now = Date.now();
 
-        if (cached && (now - cached.timestamp) < CARS_CACHE_DURATION) {
+        if (cached && now - cached.timestamp < CARS_CACHE_DURATION) {
           setCars(cached.data);
           setLoading(false);
           return;
@@ -107,7 +111,7 @@ const BookingPage = () => {
         // Cache the results
         carsCache.set(cacheKey, {
           data: convertedCars,
-          timestamp: now
+          timestamp: now,
         });
 
         setCars(convertedCars);
@@ -154,58 +158,52 @@ const BookingPage = () => {
 
   const calculatePricingDetails = (car: Car) => {
     const totalDays = Math.max(1, differenceInCalendarDays(returnDate, pickupDate));
-    const basePrice = parseInt(car.price.replace(/[^0-9]/g, ''));
+    const basePricePerDay = parseInt(car.price.replace(/[^0-9]/g, ''));
     const isVerifiedUser = user?.isVerified ?? false;
-    
-    if (basePrice === 0) {
-      return {
-        basePrice: 0,
+
+    if (basePricePerDay === 0) {
+      return createDetailedPricing({
+        basePricePerDay: 0,
         totalDays,
+        driverFeePerDay: 0,
         discounts: [],
         extraCharges: [],
-        totalAmount: 0,
-        totalSavings: 0,
-      };
+      });
     }
 
+    // Build discounts array for detailed pricing
     const discounts = [];
-    let runningPrice = basePrice;
 
-    // Verified User Discount (applied to base car price only)
+    // Verified User Discount (5% off vehicle rental)
     if (isVerifiedUser && DISCOUNT_CONFIG.VERIFIED_USER > 0) {
-      const discountAmount = basePrice * DISCOUNT_CONFIG.VERIFIED_USER;
       discounts.push({
         label: 'Verified User Discount',
         type: 'verified_user',
-        percent: DISCOUNT_CONFIG.VERIFIED_USER * 100,
-        amount: discountAmount,
+        percentageOff: DISCOUNT_CONFIG.VERIFIED_USER * 100,
+        appliedTo: 'vehicle' as const,
         applied: true,
       });
-      runningPrice -= discountAmount;
     }
 
-    // Promotional Car Discount (applied to base car price only)
+    // Promotional Car Discount (10% off vehicle rental)
     if (car.isPromo && DISCOUNT_CONFIG.PROMO_CAR > 0) {
-      const discountAmount = basePrice * DISCOUNT_CONFIG.PROMO_CAR;
       discounts.push({
         label: 'Promotional Vehicle',
         type: 'promo_vehicle',
-        percent: DISCOUNT_CONFIG.PROMO_CAR * 100,
-        amount: discountAmount,
+        percentageOff: DISCOUNT_CONFIG.PROMO_CAR * 100,
+        appliedTo: 'vehicle' as const,
         applied: true,
       });
-      runningPrice -= discountAmount;
     }
 
-    // Duration-based Discount (applied to base car price only)
+    // Duration-based Discount
     const durationTier = DISCOUNT_CONFIG.DURATION_TIERS.find((tier) => totalDays <= tier.maxDays);
     const additionalDiscount = durationTier?.additionalDiscount ?? 0;
 
     if (additionalDiscount > 0) {
-      const discountAmount = basePrice * additionalDiscount;
       let durationLabel = 'Extended Rental';
 
-      if (totalDays <= 3) durationLabel = 'Short-term Rental (1-3 days)';
+      if (totalDays <= 3) durationLabel = 'Short-term Rental (2-3 days)';
       else if (totalDays <= 7) durationLabel = 'Weekly Rental (4-7 days)';
       else if (totalDays <= 14) durationLabel = 'Bi-weekly Rental (8-14 days)';
       else if (totalDays <= 21) durationLabel = 'Long-term Rental (15-21 days)';
@@ -215,36 +213,20 @@ const BookingPage = () => {
       discounts.push({
         label: durationLabel,
         type: 'duration',
-        percent: additionalDiscount * 100,
-        amount: discountAmount,
+        percentageOff: additionalDiscount * 100,
+        appliedTo: 'vehicle' as const,
         applied: true,
       });
-      runningPrice -= discountAmount;
     }
 
-    // Calculate total for duration
-    const totalCarPrice = runningPrice * totalDays;
-    const totalSavings = (basePrice - runningPrice) * totalDays;
-
-    // Add driver fee if with-driver option
-    const driverFee = driveOption === 'with-driver' ? DRIVER_FEE_PER_DAY * totalDays : 0;
-    const finalAmount = totalCarPrice + driverFee;
-
-    // Extra charges (can be extended based on business rules)
-    const extraCharges: Array<{
-      label: string;
-      type: string;
-      amount: number;
-    }> = [];
-
-    return {
-      basePrice,
+    // Create detailed pricing with proper per-day calculations
+    return createDetailedPricing({
+      basePricePerDay,
       totalDays,
+      driverFeePerDay: driveOption === 'with-driver' ? DRIVER_FEE_PER_DAY : 0,
       discounts,
-      extraCharges,
-      totalAmount: Math.max(0, finalAmount),
-      totalSavings,
-    };
+      extraCharges: [], // Can be extended based on business rules
+    });
   };
 
   const validateBookingForm = () => {
@@ -279,7 +261,7 @@ const BookingPage = () => {
     }
 
     if (errors.length > 0) {
-      errors.forEach(error => toast.error(error));
+      errors.forEach((error) => toast.error(error));
       return false;
     }
 
@@ -310,7 +292,7 @@ const BookingPage = () => {
       // Update cache with fresh data
       carsCache.set(cacheKey, {
         data: convertedCars,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       });
 
       setCars(convertedCars);

@@ -33,85 +33,88 @@ import {
 
 type ViewMode = 'table' | 'grid';
 
-// Cache for active bookings to avoid unnecessary fetches
-const bookingsCache = new Map<string, { data: BookingData[], timestamp: number }>();
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
+// Real-time listener for active bookings - no caching needed
 
 const ActiveRentalsPage = () => {
   const router = useRouter();
   const { user } = useUserStore();
-  
+
   const [activeBookings, setActiveBookings] = useState<BookingData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Memoized active statuses to ensure consistency
   const activeStatuses = useMemo(() => ['processing', 'reserved', 'ongoing'], []);
 
   useEffect(() => {
-    const fetchActiveBookings = async () => {
-      if (!user) {
-        return;
-      }
+    let unsubscribe: (() => void) | undefined;
 
-      if (!user.uid) {
+    const setupRealtimeListener = () => {
+      if (!user?.uid) {
         setError('Please sign in to view your bookings');
         setIsLoading(false);
         return;
       }
 
-      // Check cache first
-      const cacheKey = `active_bookings_${user.uid}`;
-      const cached = bookingsCache.get(cacheKey);
-      const now = Date.now();
-
-      if (cached && (now - cached.timestamp) < CACHE_DURATION) {
-        setActiveBookings(cached.data);
-        setError(null);
-        setIsLoading(false);
-        return;
-      }
-
       try {
-        const allBookings = await BookingFirebaseService.getUserBookings(user.uid);
-        const activeBookings = allBookings.filter(booking => 
-          activeStatuses.includes(booking.status)
+        unsubscribe = BookingFirebaseService.setupUserBookingsListener(
+          user.uid,
+          (allBookings) => {
+            // Filter for active bookings in real-time
+            const activeBookings = allBookings.filter((booking) =>
+              activeStatuses.includes(booking.status)
+            );
+
+            setActiveBookings(activeBookings);
+            setError(null);
+            setIsLoading(false);
+
+            // Show toast only for new bookings (optional)
+            // if (activeBookings.length > prevActiveBookings.length) {
+            //   toast.success('New booking received!');
+            // }
+          },
+          (error) => {
+            console.error('Real-time listener error:', error);
+
+            let errorMessage = 'Unable to load your bookings';
+
+            if (error.code === 'permission-denied') {
+              errorMessage = 'Please sign in to view your bookings';
+            } else if (error.code === 'unauthenticated') {
+              errorMessage = 'Authentication required. Please sign in again.';
+            } else if (error.code === 'unavailable') {
+              errorMessage = 'Service temporarily unavailable. Please try again later.';
+            } else if (error.message?.includes('network')) {
+              errorMessage = 'Network error. Please check your connection.';
+            }
+
+            setError(errorMessage);
+            setIsLoading(false);
+
+            if (!['permission-denied', 'unauthenticated'].includes(error.code)) {
+              toast.error(errorMessage);
+            }
+          }
         );
-        
-        // Cache the results
-        bookingsCache.set(cacheKey, {
-          data: activeBookings,
-          timestamp: now
-        });
-        
-        setActiveBookings(activeBookings);
-        setError(null);
-        
-      } catch (error: any) {
-        let errorMessage = 'Unable to load your bookings';
-        
-        if (error.code === 'permission-denied') {
-          errorMessage = 'Please sign in to view your bookings';
-        } else if (error.code === 'unauthenticated') {
-          errorMessage = 'Authentication required. Please sign in again.';
-        } else if (error.code === 'unavailable') {
-          errorMessage = 'Service temporarily unavailable. Please try again later.';
-        } else if (error.message?.includes('network')) {
-          errorMessage = 'Network error. Please check your connection.';
-        }
-        
-        setError(errorMessage);
-        if (!['permission-denied', 'unauthenticated'].includes(error.code)) {
-          toast.error(errorMessage);
-        }
-      } finally {
+      } catch (error) {
+        console.error('Setup listener error:', error);
+        setError('Failed to connect to database');
         setIsLoading(false);
       }
     };
 
-    fetchActiveBookings();
-  }, [user, activeStatuses]);
+    setupRealtimeListener();
+
+    // Cleanup listener on unmount or user change
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, [user?.uid, activeStatuses]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-PH', {
@@ -127,6 +130,27 @@ const ActiveRentalsPage = () => {
       return format(date, 'MMM dd, yyyy');
     } catch {
       return dateString;
+    }
+  };
+
+  const handleManualRefresh = async () => {
+    if (!user?.uid || isRefreshing) return;
+
+    setIsRefreshing(true);
+    try {
+      // Force a fresh fetch by bypassing the real-time listener momentarily
+      const allBookings = await BookingFirebaseService.getUserBookings(user.uid);
+      const activeBookings = allBookings.filter((booking) =>
+        activeStatuses.includes(booking.status)
+      );
+      setActiveBookings(activeBookings);
+      setError(null);
+      toast.success('Active rentals refreshed successfully');
+    } catch (error: any) {
+      console.error('Manual refresh error:', error);
+      toast.error('Failed to refresh data');
+    } finally {
+      setIsRefreshing(false);
     }
   };
 
@@ -182,43 +206,35 @@ const ActiveRentalsPage = () => {
       <p className="text-gray-600 dark:text-gray-400 mb-6">
         You don't have any active or upcoming rentals at the moment.
       </p>
-      <Button onClick={() => router.push('/start-a-booking')}>
-        Start a New Booking
-      </Button>
+      <Button onClick={() => router.push('/start-a-booking')}>Start a New Booking</Button>
     </div>
   );
 
   // Error state
   const ErrorState = () => {
     const isAuthError = error?.includes('sign in') || error?.includes('Authentication');
-    
+
     return (
       <div className="text-center py-16">
         <AlertCircle className="h-16 w-16 mx-auto text-red-500 mb-4" />
         <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
           {isAuthError ? 'Authentication Required' : 'Error Loading Bookings'}
         </h3>
-        <p className="text-gray-600 dark:text-gray-400 mb-6">
-          {error}
-        </p>
+        <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
         <div className="space-x-4">
           {isAuthError ? (
             <>
               <Button onClick={() => router.push('/auth/login')} variant="outline">
                 Sign In
               </Button>
-              <Button onClick={() => router.push('/dashboard')}>
-                Go to Dashboard
-              </Button>
+              <Button onClick={() => router.push('/dashboard')}>Go to Dashboard</Button>
             </>
           ) : (
             <>
               <Button onClick={() => window.location.reload()} variant="outline">
                 Try Again
               </Button>
-              <Button onClick={() => router.push('/start-a-booking')}>
-                Start a Booking
-              </Button>
+              <Button onClick={() => router.push('/start-a-booking')}>Start a Booking</Button>
             </>
           )}
         </div>
@@ -289,18 +305,10 @@ const ActiveRentalsPage = () => {
             </TableCell>
             <TableCell>
               <div className="flex gap-2">
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => handleViewDetails(booking)}
-                >
+                <Button variant="outline" size="sm" onClick={() => handleViewDetails(booking)}>
                   View Details
                 </Button>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={handleChatSupport}
-                >
+                <Button variant="outline" size="sm" onClick={handleChatSupport}>
                   <MessageCircle className="h-4 w-4" />
                 </Button>
               </div>
@@ -311,7 +319,7 @@ const ActiveRentalsPage = () => {
     </Table>
   );
 
-  // Grid view component  
+  // Grid view component
   const BookingGridView = () => (
     <div className="grid gap-6 p-6">
       {activeBookings.map((booking, index) => (
@@ -328,9 +336,7 @@ const ActiveRentalsPage = () => {
                   }}
                 />
                 <div>
-                  <CardTitle className="mb-2">
-                    {booking.selectedVehicles.name}
-                  </CardTitle>
+                  <CardTitle className="mb-2">{booking.selectedVehicles.name}</CardTitle>
                   <div className="flex items-center gap-2">
                     <Badge className={cn('capitalize', getStatusBadgeColor(booking.status))}>
                       {booking.status}
@@ -346,7 +352,7 @@ const ActiveRentalsPage = () => {
               </div>
             </div>
           </CardHeader>
-          
+
           <CardContent>
             <div className="grid md:grid-cols-3 gap-6">
               {/* Trip Details */}
@@ -449,17 +455,10 @@ const ActiveRentalsPage = () => {
                 )}
 
                 <div className="space-y-2">
-                  <Button 
-                    className="w-full" 
-                    onClick={() => handleViewDetails(booking)}
-                  >
+                  <Button className="w-full" onClick={() => handleViewDetails(booking)}>
                     View Full Details
                   </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full"
-                    onClick={handleChatSupport}
-                  >
+                  <Button variant="outline" className="w-full" onClick={handleChatSupport}>
                     <MessageCircle className="h-4 w-4 mr-2" />
                     Contact Support
                   </Button>
@@ -476,11 +475,10 @@ const ActiveRentalsPage = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-          Active Rentals
-        </h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Active Rentals</h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">
-          Track your current and upcoming car rentals
+          Track your current and upcoming car rentals •{' '}
+          <span className="text-green-600 dark:text-green-400 font-medium">Real-time updates</span>
         </p>
       </div>
 
@@ -491,12 +489,27 @@ const ActiveRentalsPage = () => {
             <h2 className="text-lg font-semibold">
               {activeBookings.length} Active Rental{activeBookings.length !== 1 ? 's' : ''}
             </h2>
-            <div className="text-sm text-muted-foreground">
-              (Processing, Reserved, Ongoing)
-            </div>
+            <div className="text-sm text-muted-foreground">(Processing, Reserved, Ongoing)</div>
           </div>
-          
+
           <div className="flex items-center gap-4">
+            {/* Manual Refresh Button */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleManualRefresh}
+              disabled={isLoading || isRefreshing}
+              className="flex items-center gap-2"
+            >
+              {isRefreshing ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Icon icon="heroicons:arrow-path" className="h-4 w-4" />
+              )}
+              {isRefreshing ? 'Refreshing...' : 'Refresh'}
+            </Button>
+
+            {/* View Mode Toggle */}
             <div className="flex border rounded-lg">
               <Button
                 variant={viewMode === 'table' ? 'outline' : 'ghost'}
