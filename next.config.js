@@ -56,7 +56,17 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'storage.googleapis.com',
       },
+      // Allow any domain for vehicle images
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
     ],
+    // Add fallback behavior for images that fail to load
+    minimumCacheTTL: 1800,
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 };
 

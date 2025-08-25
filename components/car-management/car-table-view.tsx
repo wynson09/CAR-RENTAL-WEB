@@ -6,6 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import Image from 'next/image';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -66,13 +67,14 @@ export const CarTableView = ({
             </TableCell>
             <TableCell>
               <div className="flex items-center gap-3">
-                <img
-                  src={car.image}
+                <Image
+                  src={car.image || '/images/all-img/comming-soon.png'}
                   alt={car.name}
-                  className="w-12 h-12 rounded-lg object-contain"
-                  onError={(e) => {
-                    e.currentTarget.src = '/images/all-img/comming-soon.png';
-                  }}
+                  width={48}
+                  height={48}
+                  className="rounded-lg object-contain bg-gray-50"
+                  placeholder="blur"
+                  blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Crect width='100%25' height='100%25' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='10' fill='%239ca3af'%3ECar%3C/text%3E%3C/svg%3E"
                 />
                 <div>
                   <p className="font-medium">{car.name}</p>

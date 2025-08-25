@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { BookingFirebaseService, BookingData } from '@/lib/firebase-booking-service';
 import { useUserStore } from '@/store';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { format, parseISO } from 'date-fns';
 import { cn } from '@/lib/utils';
 import {
@@ -28,7 +29,6 @@ import {
   User,
   Phone,
   AlertCircle,
-  Loader2,
 } from 'lucide-react';
 
 type ViewMode = 'table' | 'grid';
@@ -42,8 +42,8 @@ const ActiveRentalsPage = () => {
   const [activeBookings, setActiveBookings] = useState<BookingData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<ViewMode>('grid');
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>('table');
+  // Removed isRefreshing state
 
   // Memoized active statuses to ensure consistency
   const activeStatuses = useMemo(() => ['processing', 'reserved', 'ongoing'], []);
@@ -133,26 +133,7 @@ const ActiveRentalsPage = () => {
     }
   };
 
-  const handleManualRefresh = async () => {
-    if (!user?.uid || isRefreshing) return;
-
-    setIsRefreshing(true);
-    try {
-      // Force a fresh fetch by bypassing the real-time listener momentarily
-      const allBookings = await BookingFirebaseService.getUserBookings(user.uid);
-      const activeBookings = allBookings.filter((booking) =>
-        activeStatuses.includes(booking.status)
-      );
-      setActiveBookings(activeBookings);
-      setError(null);
-      toast.success('Active rentals refreshed successfully');
-    } catch (error: any) {
-      console.error('Manual refresh error:', error);
-      toast.error('Failed to refresh data');
-    } finally {
-      setIsRefreshing(false);
-    }
-  };
+  // Manual refresh functionality removed
 
   const getStatusBadgeColor = (status: BookingData['status']) => {
     switch (status) {
@@ -261,13 +242,14 @@ const ActiveRentalsPage = () => {
           <TableRow key={index}>
             <TableCell>
               <div className="flex items-center gap-3">
-                <img
-                  src={booking.selectedVehicles.vehicleUrl}
+                <Image
+                  src={booking.selectedVehicles.vehicleUrl || '/images/all-img/comming-soon.png'}
                   alt={booking.selectedVehicles.name}
-                  className="w-12 h-12 rounded-lg object-cover"
-                  onError={(e) => {
-                    e.currentTarget.src = '/images/all-img/comming-soon.png';
-                  }}
+                  width={48}
+                  height={48}
+                  className="rounded-lg object-contain bg-gray-100"
+                  placeholder="blur"
+                  blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Crect width='100%25' height='100%25' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='12' fill='%239ca3af'%3ECar%3C/text%3E%3C/svg%3E"
                 />
                 <div>
                   <p className="font-medium">{booking.selectedVehicles.name}</p>
@@ -327,13 +309,14 @@ const ActiveRentalsPage = () => {
           <CardHeader>
             <div className="flex items-start justify-between">
               <div className="flex items-start gap-3">
-                <img
-                  src={booking.selectedVehicles.vehicleUrl}
+                <Image
+                  src={booking.selectedVehicles.vehicleUrl || '/images/all-img/comming-soon.png'}
                   alt={booking.selectedVehicles.name}
-                  className="w-16 h-16 rounded-lg object-cover"
-                  onError={(e) => {
-                    e.currentTarget.src = '/images/all-img/comming-soon.png';
-                  }}
+                  width={64}
+                  height={64}
+                  className="rounded-lg object-contain bg-gray-100"
+                  placeholder="blur"
+                  blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Crect width='100%25' height='100%25' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='12' fill='%239ca3af'%3ECar%3C/text%3E%3C/svg%3E"
                 />
                 <div>
                   <CardTitle className="mb-2">{booking.selectedVehicles.name}</CardTitle>
@@ -477,8 +460,7 @@ const ActiveRentalsPage = () => {
       <div>
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Active Rentals</h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">
-          Track your current and upcoming car rentals •{' '}
-          <span className="text-green-600 dark:text-green-400 font-medium">Real-time updates</span>
+          Track your current and upcoming car rentals
         </p>
       </div>
 
@@ -493,22 +475,6 @@ const ActiveRentalsPage = () => {
           </div>
 
           <div className="flex items-center gap-4">
-            {/* Manual Refresh Button */}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleManualRefresh}
-              disabled={isLoading || isRefreshing}
-              className="flex items-center gap-2"
-            >
-              {isRefreshing ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Icon icon="heroicons:arrow-path" className="h-4 w-4" />
-              )}
-              {isRefreshing ? 'Refreshing...' : 'Refresh'}
-            </Button>
-
             {/* View Mode Toggle */}
             <div className="flex border rounded-lg">
               <Button

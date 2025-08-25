@@ -1,4 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card';
+import Image from 'next/image';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -39,13 +40,14 @@ export const CarGridView = ({
             <CardContent className="p-0">
               {/* Image */}
               <div className="relative">
-                <img
-                  src={car.image}
+                <Image
+                  src={car.image || '/images/all-img/comming-soon.png'}
                   alt={car.name}
+                  width={400}
+                  height={192}
                   className="w-full h-48 object-cover rounded-t-lg"
-                  onError={(e) => {
-                    e.currentTarget.src = '/images/all-img/comming-soon.png';
-                  }}
+                  placeholder="blur"
+                  blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='192' viewBox='0 0 400 192'%3E%3Crect width='100%25' height='100%25' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='18' fill='%239ca3af'%3ECar Image%3C/text%3E%3C/svg%3E"
                 />
                 {car.isPromo && <Badge className="absolute top-2 left-2 bg-blue-600">Promo</Badge>}
                 <Badge

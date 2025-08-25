@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Image from 'next/image';
 import {
   Dialog,
   DialogContent,
@@ -56,13 +57,14 @@ export const CarDetailsDialog = ({ car, onUpdateCar }: CarDetailsDialogProps) =>
         <div className="space-y-6">
           {/* Car Image */}
           <div className="flex justify-center">
-            <img
-              src={car.image}
+            <Image
+              src={car.image || '/images/all-img/placeholder-car.jpg'}
               alt={car.name}
+              width={500}
+              height={192}
               className="w-full max-w-md h-48 object-cover rounded-lg"
-              onError={(e) => {
-                e.currentTarget.src = '/images/all-img/placeholder-car.jpg';
-              }}
+              placeholder="blur"
+              blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='192' viewBox='0 0 500 192'%3E%3Crect width='100%25' height='100%25' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='18' fill='%239ca3af'%3ECar Details%3C/text%3E%3C/svg%3E"
             />
           </div>
 
