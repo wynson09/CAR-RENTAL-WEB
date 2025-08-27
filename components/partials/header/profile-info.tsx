@@ -16,42 +16,47 @@ import {
 import { Icon } from '@iconify/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useUserStore } from '@/store';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const ProfileInfo = () => {
   const { data: session } = useSession();
+  const { user } = useUserStore();
+
+  // Use Zustand store data as primary source, fallback to session
+  const userImage = user?.image || session?.user?.image;
+  const userName = user?.name || session?.user?.name || 'User';
+  const userEmail = user?.email || session?.user?.email;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className=" cursor-pointer">
         <div className=" flex items-center  ">
-          {session?.user?.image && (
-            <Image
-              src={session?.user?.image}
-              alt={session?.user?.name ?? ''}
-              width={36}
-              height={36}
-              className="rounded-full"
-            />
-          )}
+          <Avatar className="w-9 h-9">
+            <AvatarImage src={userImage || ''} alt={userName} />
+            <AvatarFallback className="bg-primary text-primary-foreground text-sm font-medium">
+              {userName.charAt(0).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 p-0" align="end">
         <DropdownMenuLabel className="flex gap-2 items-center mb-1 p-3">
-          {session?.user?.image && (
-            <Image
-              src={session?.user?.image}
-              alt={session?.user?.name ?? ''}
-              width={36}
-              height={36}
-              className="rounded-full"
-            />
-          )}
+          <Avatar className="w-9 h-9">
+            <AvatarImage src={userImage || ''} alt={userName} />
+            <AvatarFallback className="bg-primary text-primary-foreground text-sm font-medium">
+              {userName.charAt(0).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
           <div>
-            <div className="text-sm font-medium text-default-800 capitalize ">
-              {session?.user?.name ?? 'Mcc Callem'}
+            <div className="text-sm font-medium text-default-800 capitalize ">{userName}</div>
+            <div className="text-xs text-default-600">
+              {user?.role && (
+                <span className="capitalize bg-primary/10 text-primary px-2 py-1 rounded-full mr-2">
+                  {user.role}
+                </span>
+              )}
+              {userEmail}
             </div>
-            <Link href="/dashboard" className="text-xs text-default-600 hover:text-primary">
-              @uxuidesigner
-            </Link>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuGroup>
