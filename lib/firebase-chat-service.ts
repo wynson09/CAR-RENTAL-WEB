@@ -350,10 +350,26 @@ export class FirebaseChatService {
       // Reverse to show chronological order
       messages.reverse();
 
+      // Better hasMore detection: check if there are actually more messages
+      let hasMore = false;
+      if (snapshot.docs.length === 30) {
+        // Check if there are older messages beyond our current batch
+        const oldestDoc = snapshot.docs[snapshot.docs.length - 1];
+        const olderQuery = query(
+          collection(db, MESSAGES_COLLECTION),
+          where('conversationId', '==', conversationId),
+          orderBy('timestamp', 'desc'),
+          startAfter(oldestDoc),
+          limit(1)
+        );
+        const olderSnapshot = await getDocs(olderQuery);
+        hasMore = olderSnapshot.docs.length > 0;
+      }
+
       return {
         messages,
         lastDoc: snapshot.docs.length > 0 ? snapshot.docs[snapshot.docs.length - 1] : null,
-        hasMore: snapshot.docs.length === 30,
+        hasMore,
       };
     } catch (error) {
       console.error('Error getting initial messages:', error);
@@ -387,10 +403,26 @@ export class FirebaseChatService {
       // Reverse to show chronological order
       messages.reverse();
 
+      // Better hasMore detection: check if there are actually more messages
+      let hasMore = false;
+      if (snapshot.docs.length === 30) {
+        // Check if there are even older messages beyond our current batch
+        const oldestDoc = snapshot.docs[snapshot.docs.length - 1];
+        const olderQuery = query(
+          collection(db, MESSAGES_COLLECTION),
+          where('conversationId', '==', conversationId),
+          orderBy('timestamp', 'desc'),
+          startAfter(oldestDoc),
+          limit(1)
+        );
+        const olderSnapshot = await getDocs(olderQuery);
+        hasMore = olderSnapshot.docs.length > 0;
+      }
+
       return {
         messages,
         lastDoc: snapshot.docs.length > 0 ? snapshot.docs[snapshot.docs.length - 1] : null,
-        hasMore: snapshot.docs.length === 30,
+        hasMore,
       };
     } catch (error) {
       console.error('Error getting older messages:', error);

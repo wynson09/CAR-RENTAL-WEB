@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -54,6 +55,7 @@ export const ChatWindow = ({
   const [paginationData, setPaginationData] = useState<PaginatedMessages | null>(null);
   const [isLoadingOlder, setIsLoadingOlder] = useState(false);
   const [hasScrolledToBottom, setHasScrolledToBottom] = useState(true);
+  const [newlyLoadedMessageIds, setNewlyLoadedMessageIds] = useState<Set<string>>(new Set());
 
   // Spam prevention state
   const [spamState, setSpamState] = useState<SpamPreventionState>({
@@ -80,6 +82,19 @@ export const ChatWindow = ({
     [hasScrolledToBottom]
   );
 
+  // Check if we've reached the very first message (welcome message)
+  const hasReachedFirstMessage = useCallback(() => {
+    // Only check if we have enough messages to potentially have reached the beginning
+    if (messages.length < 10) return false;
+
+    return messages.some(
+      (message) =>
+        message.senderRole === 'admin' &&
+        (message.content.toLowerCase().includes('welcome to nacs') ||
+          message.content.toLowerCase().includes('here to assist you'))
+    );
+  }, [messages]);
+
   // Handle scroll events for infinite loading and auto-scroll detection
   const handleScroll = useCallback(() => {
     const scrollElement = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]');
@@ -89,37 +104,106 @@ export const ChatWindow = ({
     const isAtBottom = scrollHeight - scrollTop - clientHeight < 100; // 100px threshold
     setHasScrolledToBottom(isAtBottom);
 
-    // Load older messages when scrolled to top
-    if (scrollTop < 100 && paginationData?.hasMore && !isLoadingOlder) {
-      // Trigger load older messages
-      setIsLoadingOlder(true);
+    // More precise trigger for loading older messages (like Messenger)
+    // Trigger when user is within 50px of the top
+    if (scrollTop < 50 && paginationData?.hasMore && !isLoadingOlder && !hasReachedFirstMessage()) {
+      // Add slight delay to prevent accidental triggers
+      setTimeout(() => {
+        if (scrollElement.scrollTop < 50 && !isLoadingOlder) {
+          setIsLoadingOlder(true);
+        }
+      }, 100);
     }
-  }, [paginationData?.hasMore, isLoadingOlder]);
+  }, [paginationData?.hasMore, isLoadingOlder, hasReachedFirstMessage]);
 
-  // Load older messages
+  // Load older messages with smooth scroll position maintenance
   const loadOlderMessages = useCallback(async () => {
-    if (!paginationData?.lastDoc || isLoadingOlder) return;
+    if (!paginationData?.lastDoc || isLoadingOlder || hasReachedFirstMessage()) return;
 
     setIsLoadingOlder(true);
+
+    // Save current scroll position and reference message before loading
+    const scrollElement = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]');
+    const beforeScrollTop = scrollElement?.scrollTop || 0;
+    const beforeScrollHeight = scrollElement?.scrollHeight || 0;
+
+    // Find the topmost visible message as a reference point
+    const messagesContainer = messagesContainerRef.current;
+    let referenceMessageElement: Element | null = null;
+    if (messagesContainer) {
+      const messageElements = messagesContainer.querySelectorAll('[data-message-id]');
+      for (const element of messageElements) {
+        const rect = element.getBoundingClientRect();
+        const containerRect = scrollElement?.getBoundingClientRect();
+        if (containerRect && rect.top >= containerRect.top) {
+          referenceMessageElement = element;
+          break;
+        }
+      }
+    }
+
     try {
       const olderMessages = await FirebaseChatService.getOlderMessages(
         chatId,
         paginationData.lastDoc
       );
 
+      // Track newly loaded message IDs for animation
+      const newMessageIds = new Set(olderMessages.messages.map((msg) => msg.id));
+      setNewlyLoadedMessageIds(newMessageIds);
+
+      // Update messages and pagination
       setMessages((prev) => [...olderMessages.messages, ...prev]);
       setPaginationData((prev) => ({
         messages: [...olderMessages.messages, ...(prev?.messages || [])],
         lastDoc: olderMessages.lastDoc,
         hasMore: olderMessages.hasMore,
       }));
+
+      // Clear animation tracking after animation completes
+      setTimeout(() => {
+        setNewlyLoadedMessageIds(new Set());
+      }, 300);
+
+      // Maintain scroll position after DOM update using requestAnimationFrame
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (scrollElement) {
+            // Try to use reference element first (more accurate)
+            if (referenceMessageElement) {
+              const updatedReferenceElement = messagesContainer?.querySelector(
+                `[data-message-id="${referenceMessageElement.getAttribute('data-message-id')}"]`
+              );
+              if (updatedReferenceElement) {
+                updatedReferenceElement.scrollIntoView({
+                  behavior: 'auto',
+                  block: 'start',
+                });
+                return;
+              }
+            }
+
+            // Fallback to height-based method
+            const afterScrollHeight = scrollElement.scrollHeight;
+            const heightDifference = afterScrollHeight - beforeScrollHeight;
+
+            if (heightDifference > 0) {
+              const newScrollTop = beforeScrollTop + heightDifference;
+              scrollElement.scrollTo({
+                top: newScrollTop,
+                behavior: 'auto',
+              });
+            }
+          }
+        });
+      });
     } catch (error) {
       console.error('Error loading older messages:', error);
       toast.error('Failed to load older messages');
     } finally {
       setIsLoadingOlder(false);
     }
-  }, [chatId, paginationData?.lastDoc]);
+  }, [chatId, paginationData?.lastDoc, hasReachedFirstMessage]);
 
   // Handle loading older messages when triggered by scroll
   useEffect(() => {
@@ -127,6 +211,13 @@ export const ChatWindow = ({
       loadOlderMessages();
     }
   }, [isLoadingOlder, loadOlderMessages, paginationData?.lastDoc]);
+
+  // Auto-disable pagination when first message is loaded
+  useEffect(() => {
+    if (hasReachedFirstMessage() && paginationData?.hasMore) {
+      setPaginationData((prev) => (prev ? { ...prev, hasMore: false } : null));
+    }
+  }, [messages, hasReachedFirstMessage, paginationData?.hasMore]);
 
   // Initialize chat and load initial messages
   useEffect(() => {
@@ -158,56 +249,63 @@ export const ChatWindow = ({
           messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
         }, 100);
 
-        // Set up real-time listener for ALL messages with optimistic update handling
-        unsubscribeMessages = FirebaseChatService.listenToMessages(
+        // Set up real-time listener for NEW messages only (preserves pagination)
+        const latestMessage = initialMessages.messages[initialMessages.messages.length - 1];
+        unsubscribeMessages = FirebaseChatService.listenToNewMessages(
           conversationId,
-          (serverMessages) => {
-            setMessages((prevMessages) => {
-              // Separate optimistic and real messages
-              const optimisticMessages = prevMessages.filter((msg) => msg.id.startsWith('temp_'));
-              const realMessages = prevMessages.filter((msg) => !msg.id.startsWith('temp_'));
+          latestMessage?.timestamp || null,
+          (newMessages) => {
+            if (newMessages.length > 0) {
+              setMessages((prevMessages) => {
+                // Remove any optimistic messages that have been confirmed
+                const optimisticMessages = prevMessages.filter((msg) => msg.id.startsWith('temp_'));
+                const realMessages = prevMessages.filter((msg) => !msg.id.startsWith('temp_'));
 
-              // Merge server messages with optimistic messages
-              const allMessages = [...serverMessages];
+                // Find confirmed optimistic messages
+                const confirmedOptimisticIds: string[] = [];
+                optimisticMessages.forEach((optimisticMsg) => {
+                  const hasServerVersion = newMessages.find(
+                    (serverMsg) =>
+                      serverMsg.content === optimisticMsg.content &&
+                      serverMsg.senderId === optimisticMsg.senderId &&
+                      Math.abs(
+                        (serverMsg.timestamp?.toDate?.()?.getTime() || 0) -
+                          (optimisticMsg.timestamp?.toDate?.()?.getTime() || 0)
+                      ) < 5000 // Within 5 seconds
+                  );
 
-              // Add optimistic messages that don't have server counterparts yet
-              optimisticMessages.forEach((optimisticMsg) => {
-                const hasServerVersion = serverMessages.find(
-                  (serverMsg) =>
-                    serverMsg.content === optimisticMsg.content &&
-                    serverMsg.senderId === optimisticMsg.senderId &&
-                    Math.abs(
-                      (serverMsg.timestamp?.toDate?.()?.getTime() || 0) -
-                        (optimisticMsg.timestamp?.toDate?.()?.getTime() || 0)
-                    ) < 5000 // Within 5 seconds
+                  if (hasServerVersion) {
+                    confirmedOptimisticIds.push(optimisticMsg.id);
+                  }
+                });
+
+                // Remove confirmed optimistic messages and add new real messages
+                const filteredOptimistic = optimisticMessages.filter(
+                  (msg) => !confirmedOptimisticIds.includes(msg.id)
                 );
 
-                if (!hasServerVersion) {
-                  allMessages.push(optimisticMsg);
-                }
+                const allMessages = [...realMessages, ...newMessages, ...filteredOptimistic];
+
+                // Sort by timestamp
+                allMessages.sort((a, b) => {
+                  const timeA = a.timestamp?.toDate?.()?.getTime() || 0;
+                  const timeB = b.timestamp?.toDate?.()?.getTime() || 0;
+                  return timeA - timeB;
+                });
+
+                return allMessages;
               });
 
-              // Sort by timestamp
-              allMessages.sort((a, b) => {
-                const timeA = a.timestamp?.toDate?.()?.getTime() || 0;
-                const timeB = b.timestamp?.toDate?.()?.getTime() || 0;
-                return timeA - timeB;
-              });
-
-              return allMessages;
-            });
-
-            // Update pagination data with latest info
-            if (serverMessages.length > 0) {
-              const latestMessage = serverMessages[serverMessages.length - 1];
-              setLastMessageTimestamp(latestMessage.timestamp);
+              // Update latest timestamp for future listeners
+              const latestNewMessage = newMessages[newMessages.length - 1];
+              setLastMessageTimestamp(latestNewMessage.timestamp);
             }
 
             // Mark messages as read
             FirebaseChatService.markMessagesAsRead(conversationId, currentUserId);
           },
           (error) => {
-            console.error('Messages listener error:', error);
+            console.error('New messages listener error:', error);
             if (error.code === 'permission-denied') {
               setError('Access denied. Please sign in again.');
             } else if (error.code === 'unavailable') {
@@ -441,12 +539,16 @@ export const ChatWindow = ({
           </div>
         ) : (
           <>
-            {/* Load older messages indicator */}
+            {/* Load older messages indicator - Messenger style */}
             {isLoadingOlder && (
-              <div className="absolute top-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm p-2">
-                <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Loading older messages...
+              <div className="absolute top-0 left-0 right-0 z-10">
+                <div className="flex items-center justify-center py-3">
+                  <div className="bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg border">
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
+                      <span className="font-medium">Loading messages...</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
@@ -459,7 +561,7 @@ export const ChatWindow = ({
             >
               <div className="p-4 space-y-4" ref={messagesContainerRef}>
                 {/* Load more indicator */}
-                {paginationData?.hasMore && !isLoadingOlder && (
+                {paginationData?.hasMore && !isLoadingOlder && !hasReachedFirstMessage() && (
                   <div className="text-center py-2 mb-4">
                     <Button
                       variant="ghost"
@@ -493,8 +595,17 @@ export const ChatWindow = ({
                               messages[index - 1].timestamp?.toDate?.()?.getTime()
                           ) > 300000); // 5 minutes
 
+                      const isNewlyLoaded = newlyLoadedMessageIds.has(message.id);
+
                       return (
-                        <div key={message.id}>
+                        <div
+                          key={message.id}
+                          data-message-id={message.id}
+                          className={cn(
+                            'transition-all duration-300 ease-out',
+                            isNewlyLoaded ? 'animate-pulse opacity-90' : 'opacity-100'
+                          )}
+                        >
                           {showTime && (
                             <div className="text-center my-3">
                               <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
