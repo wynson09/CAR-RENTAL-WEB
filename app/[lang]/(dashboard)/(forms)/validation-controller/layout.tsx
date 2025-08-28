@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Validation Controller",
+  title: 'Validation Controller',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

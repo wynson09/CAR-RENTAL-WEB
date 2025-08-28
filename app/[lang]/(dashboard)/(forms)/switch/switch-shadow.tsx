@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@radix-ui/react-label";
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@radix-ui/react-label';
 
 const SwitchShadow = () => {
   return (

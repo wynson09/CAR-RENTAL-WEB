@@ -1,10 +1,9 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from 'react';
 
 interface AffixProps {
   children: React.ReactNode;
   offsetTop: number;
   target: React.RefObject<HTMLElement>;
-
 }
 const Affix = ({ children, offsetTop, target }: AffixProps) => {
   const [isFixed, setIsFixed] = useState<boolean>(false);
@@ -22,26 +21,23 @@ const Affix = ({ children, offsetTop, target }: AffixProps) => {
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, [offsetTop]);
 
   const affixStyles: React.CSSProperties = {
-    position: isFixed ? "fixed" : "static",
-    top: isFixed ? offsetTop + "px" : "auto",
-    width: "100%",
+    position: isFixed ? 'fixed' : 'static',
+    top: isFixed ? offsetTop + 'px' : 'auto',
+    width: '100%',
     zIndex: 1000, // adjust z-index as needed
   };
 
   return (
-    <div
-      ref={containerRef}
-      style={{ height: "300px", margin: "20px", width: "200px" }}
-    >
+    <div ref={containerRef} style={{ height: '300px', margin: '20px', width: '200px' }}>
       {/* Add a placeholder div with the same height as the affixed element */}
-      {isFixed && <div style={{ height: "50px" }}></div>}
+      {isFixed && <div style={{ height: '50px' }}></div>}
       <div ref={ref} style={affixStyles}>
         {children}
       </div>

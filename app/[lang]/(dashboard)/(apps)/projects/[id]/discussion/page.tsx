@@ -1,9 +1,9 @@
-"use client";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import Messages from "./messages";
-import MessageFooter from "./messages-footer";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { messages } from "./data";
+'use client';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import Messages from './messages';
+import MessageFooter from './messages-footer';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { messages } from './data';
 const Discussion = () => {
   return (
     <Card>

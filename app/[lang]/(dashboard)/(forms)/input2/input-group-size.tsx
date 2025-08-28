@@ -1,9 +1,9 @@
-"use client";
-import React from "react";
-import { Input } from "@/components/ui/input";
-import { InputGroup, InputGroupText } from "@/components/ui/input-group";
+'use client';
+import React from 'react';
+import { Input } from '@/components/ui/input';
+import { InputGroup, InputGroupText } from '@/components/ui/input-group';
 
-import { Icon } from "@iconify/react";
+import { Icon } from '@iconify/react';
 
 const InputGroupSize = () => {
   return (

@@ -1,17 +1,17 @@
-import Card from "@/components/ui/card-snippet";
-import BasicTimeline from "./basic-timeline";
-import LineSpaceTimeline from "./line-space-timeline";
-import OutlinedTimeline from "./outlined-timeline";
-import TimelineWithPing from "./timeline-with-ping";
-import PingAndLineSpace from "./ping-line-space";
-import AdvancedTimeline from "./advanced-timeline";
-import TimelineWithCard from "./timeline-with-card";
-import LeftTimeline from "./left-timeline";
-import AlternativeTimeline from "./alternative-timeline";
-import AlternativeReverseTimeline from "./alternative-reverse-timeline";
-import ColorDotTimeline from "./color-dot-timeline";
+import Card from '@/components/ui/card-snippet';
+import BasicTimeline from './basic-timeline';
+import LineSpaceTimeline from './line-space-timeline';
+import OutlinedTimeline from './outlined-timeline';
+import TimelineWithPing from './timeline-with-ping';
+import PingAndLineSpace from './ping-line-space';
+import AdvancedTimeline from './advanced-timeline';
+import TimelineWithCard from './timeline-with-card';
+import LeftTimeline from './left-timeline';
+import AlternativeTimeline from './alternative-timeline';
+import AlternativeReverseTimeline from './alternative-reverse-timeline';
+import ColorDotTimeline from './color-dot-timeline';
 
-import TimelineWithIcon from "./timeline-with-icon";
+import TimelineWithIcon from './timeline-with-icon';
 import {
   advancedTimeline,
   alternativeReverseTimeline,
@@ -25,8 +25,7 @@ import {
   timelineWithCard,
   timelineWithIcon,
   timelineWithPing,
-} from "./source-code";
-
+} from './source-code';
 
 const TimelinePage = () => {
   return (
@@ -41,7 +40,8 @@ const TimelinePage = () => {
       </Card>
       <Card title="Left Timeline" code={leftTimeline}>
         <p className="text-sm text-default-500  mb-4">
-          Use <span className="text-primary">position="left"</span> props on timeline component to display left align timeline.
+          Use <span className="text-primary">position="left"</span> props on timeline component to
+          display left align timeline.
         </p>
         <div className="w-full flex justify-center items-center">
           <LeftTimeline />
@@ -49,19 +49,22 @@ const TimelinePage = () => {
       </Card>
       <Card title="Alternative Timeline" code={alternativeTimeline}>
         <p className="text-sm text-default-500  mb-4">
-          Use <span className="text-primary">position="alternative"</span> props on timeline component to display alternative timeline.
+          Use <span className="text-primary">position="alternative"</span> props on timeline
+          component to display alternative timeline.
         </p>
-          <AlternativeTimeline />
+        <AlternativeTimeline />
       </Card>
-      <Card title="Alternative Reverse Timeline" code={alternativeReverseTimeline} >
+      <Card title="Alternative Reverse Timeline" code={alternativeReverseTimeline}>
         <p className="text-sm text-default-500  mb-4">
-          Use <span className="text-primary"> position="alternate-reverse"</span> props on timeline component to display alternate-reverse timeline.
+          Use <span className="text-primary"> position="alternate-reverse"</span> props on timeline
+          component to display alternate-reverse timeline.
         </p>
         <AlternativeReverseTimeline />
       </Card>
       <Card title="Color Dot Timeline" code={colorDotTimeline}>
         <p className="text-sm text-default-500  mb-4">
-          Adjust dot color in the <span className="text-primary">TimelineDot component</span> by using the <span className="text-primary">color</span> prop with options including
+          Adjust dot color in the <span className="text-primary">TimelineDot component</span> by
+          using the <span className="text-primary">color</span> prop with options including
           <span className="text-primary"> primary, success, info, warning, and destructive.</span>
         </p>
         <div className="w-full flex justify-center items-center">
@@ -71,7 +74,8 @@ const TimelinePage = () => {
 
       <Card title="Timeline With Icon" code={timelineWithIcon}>
         <p className="text-sm text-default-500  mb-4">
-          Utilize the "ghost" variant <span className="text-primary">"ghost" variant</span> on the TimelineDot component to place an icon on the timeline.
+          Utilize the "ghost" variant <span className="text-primary">"ghost" variant</span> on the
+          TimelineDot component to place an icon on the timeline.
         </p>
         <TimelineWithIcon />
       </Card>
@@ -94,7 +98,6 @@ const TimelinePage = () => {
       <Card title="Advanced Timeline With Card" code={timelineWithCard}>
         <TimelineWithCard />
       </Card>
-
     </div>
   );
 };

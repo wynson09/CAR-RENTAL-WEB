@@ -1,18 +1,13 @@
-"use client";
+'use client';
 
-import { useCallback } from "react";
-import {
-  VisXYContainer,
-  VisGroupedBar,
-  VisAxis,
-  VisBulletLegend,
-} from "@unovis/react";
-import { BulletLegend } from "@unovis/ts";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { data } from "./data";
-import { EducationDatum } from "./utils";
+import { useCallback } from 'react';
+import { VisXYContainer, VisGroupedBar, VisAxis, VisBulletLegend } from '@unovis/react';
+import { BulletLegend } from '@unovis/ts';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { data } from './data';
+import { EducationDatum } from './utils';
 
 const BasicGroupedBar = ({ height = 400 }: { height?: number }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -20,12 +15,10 @@ const BasicGroupedBar = ({ height = 400 }: { height?: number }) => {
   const theme = themes.find((theme) => theme.name === config);
 
   const colors = {
-    republican: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary
-      })`,
-    democrat: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
-    other: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning})`,
-    libertarian: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success
-      })`,
+    republican: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
+    democrat: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`,
+    other: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`,
+    libertarian: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`,
   };
   const legendItems = Object.entries(colors).map(([n, c]) => ({
     name: n.toUpperCase(),
@@ -49,27 +42,23 @@ const BasicGroupedBar = ({ height = 400 }: { height?: number }) => {
           type="x"
           label="Election Year"
           numTicks={data.length}
-          tickTextColor={`hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`}
-          labelColor={`hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`}
+          tickTextColor={`hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`}
+          labelColor={`hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`}
         />
         <VisAxis
           type="y"
           tickFormat={useCallback((value: any) => (value / 10 ** 6).toFixed(1), [])}
           label="Number of Votes (millions)"
-          tickTextColor={`hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`}
-          labelColor={`hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`}
+          tickTextColor={`hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`}
+          labelColor={`hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`}
         />
       </VisXYContainer>
     </>

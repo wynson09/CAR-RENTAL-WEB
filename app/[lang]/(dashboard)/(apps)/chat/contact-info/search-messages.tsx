@@ -1,18 +1,16 @@
-"use client"
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Icon } from "@iconify/react";
-import { useState } from "react";
-const SearchMessages = ({ handleSetIsOpenSearch }: {
-  handleSetIsOpenSearch: () => void
-}) => {
-  const [values, setValues] = useState("");
+'use client';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Icon } from '@iconify/react';
+import { useState } from 'react';
+const SearchMessages = ({ handleSetIsOpenSearch }: { handleSetIsOpenSearch: () => void }) => {
+  const [values, setValues] = useState('');
   const handleChangeValues = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValues(e.target.value)
-  }
+    setValues(e.target.value);
+  };
   const handleClearValues = () => {
-    setValues("")
-  }
+    setValues('');
+  };
   return (
     <div className="px-4 pb-6 pt-5 border-b border-default-300 flex items-center gap-2">
       <div className="relative flex-1">
@@ -30,8 +28,7 @@ const SearchMessages = ({ handleSetIsOpenSearch }: {
           onChange={handleChangeValues}
           value={values}
         />
-        {
-          values.length > 0 &&
+        {values.length > 0 && (
           <Button
             type="button"
             size="icon"
@@ -40,23 +37,12 @@ const SearchMessages = ({ handleSetIsOpenSearch }: {
           >
             <Icon icon="lucide:yasd" className="text-lg" />
           </Button>
-        }
-
+        )}
       </div>
-      <Button
-        type="button"
-        size="icon"
-        className="rounded-full bg-default-300"
-        disabled
-      >
+      <Button type="button" size="icon" className="rounded-full bg-default-300" disabled>
         <Icon icon="mdi:chevron-down" className="text-xl text-primary-foreground" />
       </Button>
-      <Button
-        type="button"
-        size="icon"
-        className="rounded-full bg-default-300"
-        disabled
-      >
+      <Button type="button" size="icon" className="rounded-full bg-default-300" disabled>
         <Icon icon="mdi:chevron-up" className="text-xl text-primary-foreground" />
       </Button>
       <Button

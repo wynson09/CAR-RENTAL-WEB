@@ -1,5 +1,5 @@
-"use client"
-import { CircularProgress } from "@/components/ui/progress";
+'use client';
+import { CircularProgress } from '@/components/ui/progress';
 
 const LoadingProgressbar = () => {
   return (

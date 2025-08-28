@@ -1,5 +1,5 @@
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 const BasicFileUploader = () => {
   return (
     <div className="flex flex-col gap-3">

@@ -1,13 +1,22 @@
-"use client"
+'use client';
 import React, { useCallback } from 'react';
-import ReactFlow, { useNodesState, useEdgesState, addEdge, MiniMap, Controls, Node, Edge, OnConnect } from 'reactflow';
+import ReactFlow, {
+  useNodesState,
+  useEdgesState,
+  addEdge,
+  MiniMap,
+  Controls,
+  Node,
+  Edge,
+  OnConnect,
+} from 'reactflow';
 import 'reactflow/dist/base.css';
 import CustomNode from './custom-node';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import avatar1 from "@/public/images/avatar/avatar-2.jpg";
-import avatar2 from "@/public/images/avatar/avatar-3.jpg";
-import avatar3 from "@/public/images/avatar/avatar-4.jpg";
-import avatar4 from "@/public/images/avatar/avatar-5.jpg";
+import avatar1 from '@/public/images/avatar/avatar-2.jpg';
+import avatar2 from '@/public/images/avatar/avatar-3.jpg';
+import avatar3 from '@/public/images/avatar/avatar-4.jpg';
+import avatar4 from '@/public/images/avatar/avatar-5.jpg';
 const nodeTypes = {
   custom: CustomNode,
 };
@@ -54,7 +63,7 @@ const initEdges: Edge[] = [
     id: 'e1-4',
     source: '1',
     target: '4',
-  }
+  },
 ];
 
 const OrganizationTree = () => {
@@ -69,7 +78,7 @@ const OrganizationTree = () => {
         <CardTitle>Organization Tree</CardTitle>
       </CardHeader>
       <CardContent className="overflow-auto">
-        <div className='w-full h-[calc(100vh-280px)]'>
+        <div className="w-full h-[calc(100vh-280px)]">
           <ReactFlow
             nodes={nodes}
             edges={edges}
@@ -85,7 +94,6 @@ const OrganizationTree = () => {
         </div>
       </CardContent>
     </Card>
-
   );
 };
 

@@ -1,32 +1,32 @@
-"use client";
-import React from "react";
-import { Stepper, Step, StepLabel } from "@/components/ui/steps";
-import { toast } from "@/components/ui/use-toast";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+'use client';
+import React from 'react';
+import { Stepper, Step, StepLabel } from '@/components/ui/steps';
+import { toast } from '@/components/ui/use-toast';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/select';
+import { cn } from '@/lib/utils';
 const VStepForm = () => {
   const [activeStep, setActiveStep] = React.useState<number>(0);
 
   const steps = [
     {
-      label: "Account Details",
-      content: "Set up your account details",
+      label: 'Account Details',
+      content: 'Set up your account details',
     },
     {
-      label: "Personal Info",
-      content: "Add your personal info",
+      label: 'Personal Info',
+      content: 'Add your personal info',
     },
     {
-      label: "Social Links",
-      content: "Add your social links",
+      label: 'Social Links',
+      content: 'Add your social links',
     },
   ];
 
@@ -55,7 +55,7 @@ const VStepForm = () => {
 
   const onSubmit = () => {
     toast({
-      title: "You submitted the following values:",
+      title: 'You submitted the following values:',
       description: (
         <div className="mt-2 w-[340px] rounded-md bg-slate-950 p-4 top-0 right-0">
           <p className="text-primary-foreground">Done</p>
@@ -72,9 +72,7 @@ const VStepForm = () => {
             const stepProps: any = {};
             const labelProps: any = {};
             if (isStepOptional(index)) {
-              labelProps.optional = (
-                <StepLabel>Optional</StepLabel>
-              );
+              labelProps.optional = <StepLabel>Optional</StepLabel>;
             }
             return (
               <Step key={label.label} {...stepProps}>
@@ -187,28 +185,19 @@ const VStepForm = () => {
                       </p>
                     </div>
                     <div className="col-span-12 lg:col-span-6">
-                      <Input
-                        type="text"
-                        placeholder="http://facebook.com/abc"
-                      />
+                      <Input type="text" placeholder="http://facebook.com/abc" />
                     </div>
                     <div className="col-span-12 lg:col-span-6">
                       <Input type="text" placeholder="http://twitter.com/abc" />
                     </div>
                     <div className="col-span-12 lg:col-span-6">
-                      <Input
-                        type="text"
-                        placeholder="http://linkedin.com/abc"
-                      />
+                      <Input type="text" placeholder="http://linkedin.com/abc" />
                     </div>
                     <div className="col-span-12 lg:col-span-6">
                       <Input type="text" placeholder="http://youtube.com/abc" />
                     </div>
                     <div className="col-span-12 lg:col-span-6">
-                      <Input
-                        type="text"
-                        placeholder="http://instagram.com/abc"
-                      />
+                      <Input type="text" placeholder="http://instagram.com/abc" />
                     </div>
                   </>
                 )}
@@ -220,7 +209,7 @@ const VStepForm = () => {
                 size="xs"
                 variant="outline"
                 color="secondary"
-                className={cn("cursor-pointer", {
+                className={cn('cursor-pointer', {
                   hidden: activeStep === 0,
                 })}
                 onClick={handleBack}

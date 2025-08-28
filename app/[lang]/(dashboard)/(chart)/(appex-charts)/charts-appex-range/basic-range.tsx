@@ -1,10 +1,10 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { getGridConfig, getXAxisConfig } from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getGridConfig, getXAxisConfig } from '@/lib/appex-chart-options';
 
 const BasicRange = ({ height = 300 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -14,54 +14,54 @@ const BasicRange = ({ height = 300 }) => {
 
   const series = [
     {
-      name: "New York Temperature",
+      name: 'New York Temperature',
       data: [
         {
-          x: "Jan",
+          x: 'Jan',
           y: [-2, 4],
         },
         {
-          x: "Feb",
+          x: 'Feb',
           y: [-1, 6],
         },
         {
-          x: "Mar",
+          x: 'Mar',
           y: [3, 10],
         },
         {
-          x: "Apr",
+          x: 'Apr',
           y: [8, 16],
         },
         {
-          x: "May",
+          x: 'May',
           y: [13, 22],
         },
         {
-          x: "Jun",
+          x: 'Jun',
           y: [18, 26],
         },
         {
-          x: "Jul",
+          x: 'Jul',
           y: [21, 29],
         },
         {
-          x: "Aug",
+          x: 'Aug',
           y: [21, 28],
         },
         {
-          x: "Sep",
+          x: 'Sep',
           y: [17, 24],
         },
         {
-          x: "Oct",
+          x: 'Oct',
           y: [11, 18],
         },
         {
-          x: "Nov",
+          x: 'Nov',
           y: [6, 12],
         },
         {
-          x: "Dec",
+          x: 'Dec',
           y: [1, 7],
         },
       ],
@@ -73,10 +73,10 @@ const BasicRange = ({ height = 300 }) => {
       toolbar: {
         show: false,
       },
-      type: "rangeArea",
+      type: 'rangeArea',
     },
     stroke: {
-      curve: "straight",
+      curve: 'straight',
     },
     markers: {
       hover: {
@@ -86,34 +86,27 @@ const BasicRange = ({ height = 300 }) => {
     dataLabels: {
       enabled: false,
     },
-    colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-    ],
+    colors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
 
     yaxis: {
       labels: {
         formatter: (val: number) => {
-          return val + "°C";
+          return val + '°C';
         },
         style: {
           colors: [
-            `hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`
-          ]
-        }
-      }
+            `hsl(${
+              theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+            })`,
+          ],
+        },
+      },
     },
-    xaxis: getXAxisConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`
-    ),
+    xaxis: getXAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
 
     padding: {
       top: 0,
@@ -123,13 +116,7 @@ const BasicRange = ({ height = 300 }) => {
     },
   };
   return (
-    <Chart
-      options={options}
-      series={series}
-      type="rangeArea"
-      height={height}
-      width={"100%"}
-    />
+    <Chart options={options} series={series} type="rangeArea" height={height} width={'100%'} />
   );
 };
 

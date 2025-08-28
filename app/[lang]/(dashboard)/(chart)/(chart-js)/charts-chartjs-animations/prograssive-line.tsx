@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,22 +8,14 @@ import {
   Tooltip,
   Legend,
   PointElement,
-} from "chart.js";
-import { hslToHex, hexToRGB } from "@/lib/utils";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { Line } from "react-chartjs-2";
+} from 'chart.js';
+import { hslToHex, hexToRGB } from '@/lib/utils';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { Line } from 'react-chartjs-2';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  PointElement
-);
+ChartJS.register(CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend, PointElement);
 
 const ProgressiveLine = ({ height = 350 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -31,21 +23,13 @@ const ProgressiveLine = ({ height = 350 }) => {
 
   const theme = themes.find((theme) => theme.name === config);
 
-  const hslDestructive = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].destructive})`;
-  const hslInfo = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`;
+  const hslDestructive = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].destructive})`;
+  const hslInfo = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`;
 
   const hexDestructive = hslToHex(hslDestructive);
   const hexInfo = hslToHex(hslInfo);
 
-  const labels = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-  ];
+  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
   var data = [];
   let data2 = [];
@@ -63,17 +47,15 @@ const ProgressiveLine = ({ height = 350 }) => {
   const previousY = (ctx: any) =>
     ctx.index === 0
       ? ctx.chart.scales.y.getPixelForValue(100)
-      : ctx.chart
-        .getDatasetMeta(ctx.datasetIndex)
-        .data[ctx.index - 1].getProps(["y"], true).y;
+      : ctx.chart.getDatasetMeta(ctx.datasetIndex).data[ctx.index - 1].getProps(['y'], true).y;
   const animation = {
     x: {
-      type: "number",
-      easing: "linear",
+      type: 'number',
+      easing: 'linear',
       duration: delayBetweenPoints,
       from: NaN, // the point is initially skipped
       delay(ctx: any) {
-        if (ctx.type !== "data" || ctx.xStarted) {
+        if (ctx.type !== 'data' || ctx.xStarted) {
           return 0;
         }
         ctx.xStarted = true;
@@ -81,12 +63,12 @@ const ProgressiveLine = ({ height = 350 }) => {
       },
     },
     y: {
-      type: "number",
-      easing: "linear",
+      type: 'number',
+      easing: 'linear',
       duration: delayBetweenPoints,
       from: previousY,
       delay(ctx: any) {
-        if (ctx.type !== "data" || ctx.yStarted) {
+        if (ctx.type !== 'data' || ctx.yStarted) {
           return 0;
         }
         ctx.yStarted = true;
@@ -99,14 +81,14 @@ const ProgressiveLine = ({ height = 350 }) => {
     labels: labels,
     datasets: [
       {
-        label: "Dataset 1",
+        label: 'Dataset 1',
         data: data,
         borderColor: hexToRGB(hexDestructive, 0.5),
         borderWidth: 1,
         radius: 0,
       },
       {
-        label: "Dataset 2",
+        label: 'Dataset 2',
         data: data2,
         borderColor: hexToRGB(hexInfo, 0.5),
         borderWidth: 1,
@@ -121,10 +103,9 @@ const ProgressiveLine = ({ height = 350 }) => {
       legend: {
         legend: false,
         labels: {
-          color: `hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
         display: true,
       },
@@ -134,7 +115,7 @@ const ProgressiveLine = ({ height = 350 }) => {
       intersect: false,
     },
     hover: {
-      mode: "index",
+      mode: 'index',
       intersect: false,
     },
     scales: {
@@ -142,43 +123,38 @@ const ProgressiveLine = ({ height = 350 }) => {
         stacked: true,
         grid: {
           drawTicks: false,
-          color: `hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartGird
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartGird
+          })`,
         },
         ticks: {
-          color: `hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
       x: {
-        type: "linear",
+        type: 'linear',
         stacked: true,
         title: {
-          color: `hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
           display: true,
         },
         grid: {
           drawTicks: false,
-          color: `hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartGird
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartGird
+          })`,
         },
 
         ticks: {
-          color: `hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`,
-        }
-      }
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
+        },
+      },
     },
 
     maintainAspectRatio: false,

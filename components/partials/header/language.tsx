@@ -1,32 +1,32 @@
-"use client";
-import React from "react";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
+'use client';
+import React from 'react';
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import flag1 from "@/public/images/all-img/flag-1.png";
-import flag2 from "@/public/images/all-img/flag-2.png";
-import flag3 from "@/public/images/all-img/flag-3.png";
-import { useState } from "react";
-import { Check } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useRouter, usePathname } from "next/navigation";
-import { useThemeStore } from "@/store";
+} from '@/components/ui/dropdown-menu';
+import flag1 from '@/public/images/all-img/flag-1.png';
+import flag2 from '@/public/images/all-img/flag-2.png';
+import flag3 from '@/public/images/all-img/flag-3.png';
+import { useState } from 'react';
+import { Check } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { useRouter, usePathname } from 'next/navigation';
+import { useThemeStore } from '@/store';
 const languages = [
   {
-    name: "en",
+    name: 'en',
     flag: flag1,
   },
   {
-    name: "bn",
+    name: 'bn',
     flag: flag2,
   },
   {
-    name: "ar",
+    name: 'ar',
     flag: flag3,
   },
 ];
@@ -41,19 +41,17 @@ const Language = () => {
   const pathname = usePathname();
   const { isRtl, setRtl } = useThemeStore();
   const found = pathname ? languages.find((lang) => pathname.includes(lang.name)) : null;
-  const [selectedLanguage, setSelectedLanguage] = useState<Language>(
-    found ?? languages[0]
-  );
+  const [selectedLanguage, setSelectedLanguage] = useState<Language>(found ?? languages[0]);
 
   const handleSelected = (lang: string) => {
     setSelectedLanguage({
       ...selectedLanguage,
       name: lang,
-      language: lang === "en" ? "En" : "Bn",
+      language: lang === 'en' ? 'En' : 'Bn',
     });
-    setRtl(lang === "ar");
+    setRtl(lang === 'ar');
     if (pathname) {
-      router.push(`/${lang}/${pathname.split("/")[2]}`);
+      router.push(`/${lang}/${pathname.split('/')[2]}`);
     }
   };
   return (
@@ -68,7 +66,7 @@ const Language = () => {
             />
           </span>
           <span className="text-sm text-default-600 capitalize">
-            {selectedLanguage ? selectedLanguage.name : "En"}
+            {selectedLanguage ? selectedLanguage.name : 'En'}
           </span>
         </Button>
       </DropdownMenuTrigger>
@@ -77,24 +75,17 @@ const Language = () => {
           <DropdownMenuItem
             key={`flag-${index}`}
             className={cn(
-              "py-1.5 px-2 cursor-pointer dark:hover:bg-background mb-[2px] last:mb-0",
+              'py-1.5 px-2 cursor-pointer dark:hover:bg-background mb-[2px] last:mb-0',
               {
-                "bg-primary-100 ":
-                  selectedLanguage && selectedLanguage.name === item.name,
+                'bg-primary-100 ': selectedLanguage && selectedLanguage.name === item.name,
               }
             )}
             onClick={() => handleSelected(item.name)}
           >
             <span className="w-6 h-6 rounded-full me-1.5">
-              <Image
-                src={item.flag}
-                alt=""
-                className="w-full h-full object-cover rounded-full"
-              />
+              <Image src={item.flag} alt="" className="w-full h-full object-cover rounded-full" />
             </span>
-            <span className="text-sm text-default-600 capitalize">
-              {item.name}
-            </span>
+            <span className="text-sm text-default-600 capitalize">{item.name}</span>
             {selectedLanguage && selectedLanguage.name === item.name && (
               <Check className="w-4 h-4 flex-none ltr:ml-auto rtl:mr-auto text-default-700" />
             )}

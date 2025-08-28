@@ -1,12 +1,5 @@
-"use client";
-import {
-  Calculator,
-  Calendar,
-  CreditCard,
-  Settings,
-  Smile,
-  User,
-} from "lucide-react";
+'use client';
+import { Calculator, Calendar, CreditCard, Settings, Smile, User } from 'lucide-react';
 
 import {
   Command,
@@ -17,7 +10,7 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
-} from "@/components/ui/command";
+} from '@/components/ui/command';
 
 const BasicCommand = () => {
   return (

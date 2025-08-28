@@ -1,9 +1,9 @@
-import React from "react";
-import Link from "next/link";
-import ErrorBlock from "@/components/error-block";
+import React from 'react';
+import Link from 'next/link';
+import ErrorBlock from '@/components/error-block';
 
 const PageNotFound = () => {
-  return <ErrorBlock />
+  return <ErrorBlock />;
 };
 
 export default PageNotFound;

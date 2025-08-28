@@ -1,12 +1,9 @@
 /** @type {import('next').NextConfig} */
 
-
 const nextConfig = {
   webpack(config) {
     // Grab the existing rule that handles SVG imports
-    const fileLoaderRule = config.module.rules.find((rule) =>
-      rule.test?.test?.(".svg")
-    );
+    const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.('.svg'));
 
     config.module.rules.push(
       // Reapply the existing rule, but only for svg imports ending in ?url
@@ -20,7 +17,7 @@ const nextConfig = {
         test: /\.svg$/i,
         issuer: fileLoaderRule.issuer,
         resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] }, // exclude if *.svg?url
-        use: ["@svgr/webpack"],
+        use: ['@svgr/webpack'],
       }
     );
 
@@ -32,24 +29,45 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "api.lorem.space",
+        protocol: 'https',
+        hostname: 'api.lorem.space',
       },
       {
-        protocol: "https",
-        hostname: "lh3.googleusercontent.com",
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
       },
       {
-        protocol: "https",
-        hostname: "a0.muscache.com",
+        protocol: 'https',
+        hostname: 'a0.muscache.com',
       },
       {
-        protocol: "https",
-        hostname: "avatars.githubusercontent.com",
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'platform-lookaside.fbsbx.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'firebasestorage.googleapis.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+      },
+      // Allow any domain for vehicle images
+      {
+        protocol: 'https',
+        hostname: '**',
       },
     ],
+    // Add fallback behavior for images that fail to load
+    minimumCacheTTL: 1800,
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 };
-
 
 module.exports = nextConfig;

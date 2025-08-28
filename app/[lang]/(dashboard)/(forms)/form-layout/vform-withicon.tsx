@@ -1,16 +1,21 @@
-"use client"
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { Button } from '@/components/ui/button'
-import { InputGroup, InputGroupText } from "@/components/ui/input-group";
+'use client';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { InputGroup, InputGroupText } from '@/components/ui/input-group';
 import { Icon } from '@iconify/react';
 const VFormWithIcon = () => {
   return (
     <form>
       <div className="grid grid-cols-2 gap-4">
-
         <div className="col-span-2  flex flex-col gap-2">
           <Label htmlFor="viFullName3">Full Name</Label>
           <InputGroup merged>
@@ -68,7 +73,7 @@ const VFormWithIcon = () => {
         </div>
         <div className="col-span-2 lg:col-span-1  flex flex-col gap-2">
           <Label htmlFor="viCode3">Zip Code</Label>
-          <InputGroup merged >
+          <InputGroup merged>
             <InputGroupText>
               <Icon icon="humbleicons:box" />
             </InputGroupText>
@@ -78,10 +83,7 @@ const VFormWithIcon = () => {
         <div className="col-span-2">
           <div className="flex items-center gap-1.5">
             <Checkbox id="term4" size="sm" color="default" />
-            <Label
-              htmlFor="term4"
-              className="text-base text-muted-foreground font-normal"
-            >
+            <Label htmlFor="term4" className="text-base text-muted-foreground font-normal">
               Agree to terms and conditions
             </Label>
           </div>

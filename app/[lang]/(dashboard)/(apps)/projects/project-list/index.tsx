@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { flexRender, ColumnDef } from "@tanstack/react-table";
+import * as React from 'react';
+import { flexRender, ColumnDef } from '@tanstack/react-table';
 
 import {
   Table,
@@ -10,17 +10,20 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/react";
-import { type Project } from "@/app/api/projects/data";
-export default function ProjectList({ data, table, columns }: {
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@iconify/react';
+import { type Project } from '@/app/api/projects/data';
+export default function ProjectList({
+  data,
+  table,
+  columns,
+}: {
   data: Project[];
-  table: any
-  columns: ColumnDef<Project, any>
-
+  table: any;
+  columns: ColumnDef<Project, any>;
 }) {
   return (
     <Card className="rounded-lg">
@@ -38,10 +41,7 @@ export default function ProjectList({ data, table, columns }: {
                     >
                       {header.isPlaceholder
                         ? null
-                        : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   );
                 })}
@@ -51,31 +51,17 @@ export default function ProjectList({ data, table, columns }: {
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row: any) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
+                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell: any) => (
-                    <TableCell
-                      key={cell.id}
-                      className="border border-default-200"
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                    <TableCell key={cell.id} className="border border-default-200">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell
-
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
+                <TableCell className="h-24 text-center">No results.</TableCell>
               </TableRow>
             )}
           </TableBody>
@@ -84,7 +70,7 @@ export default function ProjectList({ data, table, columns }: {
       <CardFooter className="flex-none mt-4">
         <div className="flex items-center gap-4 flex-wrap  w-full">
           <div className="flex-1 text-sm whitespace-nowrap text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
+            {table.getFilteredSelectedRowModel().rows.length} of{' '}
             {table.getFilteredRowModel().rows.length} row(s) selected.
           </div>
 
@@ -101,11 +87,7 @@ export default function ProjectList({ data, table, columns }: {
             <ul className=" flex gap-3 items-center">
               {table.getPageOptions().map((page: number, pageIdx: number) => (
                 <li key={pageIdx}>
-                  <Button
-                    onClick={() => table.setPageIndex(pageIdx)}
-                    className={`w-8 h-8`}
-
-                  >
+                  <Button onClick={() => table.setPageIndex(pageIdx)} className={`w-8 h-8`}>
                     {page + 1}
                   </Button>
                 </li>

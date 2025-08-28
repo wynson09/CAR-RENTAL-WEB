@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { Icon } from "@iconify/react";
-import { Button } from "@/components/ui/button";
+import React, { useState } from 'react';
+import { Icon } from '@iconify/react';
+import { Button } from '@/components/ui/button';
 import {
   Table,
   TableBody,
@@ -10,11 +10,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { DataRows, users } from "./data";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+} from '@/components/ui/table';
+import { DataRows, users } from './data';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,7 +22,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 
 const SelectionOperation = () => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
@@ -45,16 +45,12 @@ const SelectionOperation = () => {
     setSelectedRows(updatedSelectedRows);
   };
   const selectEvenRows = () => {
-    const evenRowIds = users
-      .filter((_, index) => index % 2 !== 0)
-      .map((row) => row.id);
+    const evenRowIds = users.filter((_, index) => index % 2 !== 0).map((row) => row.id);
     setSelectedRows(evenRowIds);
   };
 
   const selectOddRows = () => {
-    const oddRowIds = users
-      .filter((_, index) => index % 2 === 0)
-      .map((row) => row.id);
+    const oddRowIds = users.filter((_, index) => index % 2 === 0).map((row) => row.id);
     setSelectedRows(oddRowIds);
   };
   return (
@@ -64,9 +60,7 @@ const SelectionOperation = () => {
           <TableHead>
             <div className="flex items-center gap-1">
               <Checkbox
-                checked={
-                  selectedRows.length === users.length || "indeterminate"
-                }
+                checked={selectedRows.length === users.length || 'indeterminate'}
                 onCheckedChange={handleSelectAll}
               />
               <DropdownMenu>
@@ -82,21 +76,15 @@ const SelectionOperation = () => {
                 <DropdownMenuContent align="start" avoidCollisions>
                   <DropdownMenuLabel>Action Center</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleSelectAll}>
-                    Select All Data
-                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleSelectAll}>Select All Data</DropdownMenuItem>
                   <DropdownMenuItem onClick={() => setSelectedRows([])}>
                     Invert Current Page
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => setSelectedRows([])}>
                     Clear All Data
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={selectOddRows}>
-                    Select Odd Row
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={selectEvenRows}>
-                    Select Even Row
-                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={selectOddRows}>Select Odd Row</DropdownMenuItem>
+                  <DropdownMenuItem onClick={selectEvenRows}>Select Even Row</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -114,7 +102,7 @@ const SelectionOperation = () => {
           <TableRow
             key={item.email}
             className="hover:bg-muted"
-            data-state={selectedRows.includes(item.id) && "selected"}
+            data-state={selectedRows.includes(item.id) && 'selected'}
           >
             <TableCell>
               <Checkbox
@@ -128,9 +116,7 @@ const SelectionOperation = () => {
                   <AvatarImage src={item.avatar} />
                   <AvatarFallback>AB</AvatarFallback>
                 </Avatar>
-                <span className=" text-sm   text-card-foreground">
-                  {item.name}
-                </span>
+                <span className=" text-sm   text-card-foreground">{item.name}</span>
               </div>
             </TableCell>
 
@@ -140,10 +126,11 @@ const SelectionOperation = () => {
               <Badge
                 variant="outline"
                 color={
-                  (item.role === "admin" && "default") ||
-                  (item.role === "member" && "success") ||
-                  (item.role === "owner" && "info") ||
-                  (item.role === "editor" && "warning") || "default"
+                  (item.role === 'admin' && 'default') ||
+                  (item.role === 'member' && 'success') ||
+                  (item.role === 'owner' && 'info') ||
+                  (item.role === 'editor' && 'warning') ||
+                  'default'
                 }
                 className=" capitalize"
               >
@@ -153,28 +140,13 @@ const SelectionOperation = () => {
 
             <TableCell className="flex justify-end">
               <div className="flex gap-3">
-                <Button
-                  size="icon"
-                  variant="outline"
-                  color="secondary"
-                  className="h-7 w-7"
-                >
+                <Button size="icon" variant="outline" color="secondary" className="h-7 w-7">
                   <Icon icon="heroicons:pencil" className="h-4 w-4" />
                 </Button>
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className=" h-7 w-7"
-                  color="secondary"
-                >
+                <Button size="icon" variant="outline" className=" h-7 w-7" color="secondary">
                   <Icon icon="heroicons:eye" className="h-4 w-4" />
                 </Button>
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className=" h-7 w-7"
-                  color="secondary"
-                >
+                <Button size="icon" variant="outline" className=" h-7 w-7" color="secondary">
                   <Icon icon="heroicons:trash" className="h-4 w-4" />
                 </Button>
               </div>

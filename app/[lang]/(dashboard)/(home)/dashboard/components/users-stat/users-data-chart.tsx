@@ -1,10 +1,10 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { getGridConfig } from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getGridConfig } from '@/lib/appex-chart-options';
 
 const UsersDataChart = ({ height = 160 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -17,7 +17,7 @@ const UsersDataChart = ({ height = 160 }) => {
     },
   ];
 
-  const options:any = {
+  const options: any = {
     chart: {
       toolbar: {
         show: false,
@@ -27,24 +27,20 @@ const UsersDataChart = ({ height = 160 }) => {
       enabled: false,
     },
     stroke: {
-      curve: "smooth",
+      curve: 'smooth',
       width: 0,
     },
-    colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-    ],
+    colors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
     yaxis: {
       show: false,
     },
     bar: {
-      columnWidth: "100%",
-      barHeight: "100%",
+      columnWidth: '100%',
+      barHeight: '100%',
     },
 
     xaxis: {
@@ -70,15 +66,7 @@ const UsersDataChart = ({ height = 160 }) => {
       left: 0,
     },
   };
-  return (
-      <Chart
-        options={options}
-        series={series}
-        type="bar"
-        height={height}
-        width={"100%"}
-      />
-  );
+  return <Chart options={options} series={series} type="bar" height={height} width={'100%'} />;
 };
 
 export default UsersDataChart;

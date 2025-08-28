@@ -1,20 +1,20 @@
-"use client";
-import Card from "@/components/ui/card-snippet";
-import BasicTable from "./basic-table";
-import StripedRows from "./striped-rows";
-import StripedColumns from "./striped-columns";
-import ColorTable from "./color-table";
-import HoverableRows from "./hoverable-rows";
-import BorderedTables from "./bordered-tables";
-import TablesBorderColors from "./tables-border-colors";
-import TablesWithoutBorders from "./tables-without-borders";
-import SmallTable from "./small-table";
-import TableHead from "./table-head";
-import TableFoot from "./table-foot";
-import CaptionsTable from "./captions-table";
-import NestedTable from "./nested-table";
-import HeightTable from "./height-table";
-import FixedHeader from "./fixed-header";
+'use client';
+import Card from '@/components/ui/card-snippet';
+import BasicTable from './basic-table';
+import StripedRows from './striped-rows';
+import StripedColumns from './striped-columns';
+import ColorTable from './color-table';
+import HoverableRows from './hoverable-rows';
+import BorderedTables from './bordered-tables';
+import TablesBorderColors from './tables-border-colors';
+import TablesWithoutBorders from './tables-without-borders';
+import SmallTable from './small-table';
+import TableHead from './table-head';
+import TableFoot from './table-foot';
+import CaptionsTable from './captions-table';
+import NestedTable from './nested-table';
+import HeightTable from './height-table';
+import FixedHeader from './fixed-header';
 
 const SimpleTablePage = () => {
   return (

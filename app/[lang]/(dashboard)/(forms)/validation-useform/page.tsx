@@ -1,9 +1,9 @@
-import Card from "@/components/ui/card-snippet";
-import SimpleForm from "./simple-form";
-import ValidateWithTooltip from "./validate-with-tooltip";
-import MultipleTypes from "./multiple-types";
-import ValidateRadio from "./validate-radio";
-import ValidateCheckbox from "./validate-checkbox";
+import Card from '@/components/ui/card-snippet';
+import SimpleForm from './simple-form';
+import ValidateWithTooltip from './validate-with-tooltip';
+import MultipleTypes from './multiple-types';
+import ValidateRadio from './validate-radio';
+import ValidateCheckbox from './validate-checkbox';
 
 const ValidationUseForm = () => {
   return (

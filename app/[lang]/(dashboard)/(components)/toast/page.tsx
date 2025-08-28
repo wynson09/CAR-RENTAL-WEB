@@ -1,9 +1,9 @@
-"use client";
-import Card from "@/components/ui/card-snippet";
-import { toast as reToast } from "react-hot-toast";
-import { toast } from "@/components/ui/use-toast";
-import { toast as stoast } from "sonner";
-import { Button } from "@/components/ui/button";
+'use client';
+import Card from '@/components/ui/card-snippet';
+import { toast as reToast } from 'react-hot-toast';
+import { toast } from '@/components/ui/use-toast';
+import { toast as stoast } from 'sonner';
+import { Button } from '@/components/ui/button';
 import {
   dangerToast,
   defaultToast,
@@ -24,16 +24,16 @@ import {
   successToast,
   successrehToast,
   warningToast,
-} from "./source-code";
+} from './source-code';
 
-const defaultToasts = () => reToast("Here is your toast.");
+const defaultToasts = () => reToast('Here is your toast.');
 const darkToast = () =>
-  reToast("Hello Darkness!", {
-    icon: "👏",
+  reToast('Hello Darkness!', {
+    icon: '👏',
     style: {
-      borderRadius: "10px",
-      background: "#333",
-      color: "#fff",
+      borderRadius: '10px',
+      background: '#333',
+      color: '#fff',
     },
   });
 const newLineToast = () =>
@@ -47,43 +47,39 @@ const promiseToast = () => {
   const myPromise = new Promise((resolve, reject) => {
     setTimeout(() => {
       if (Math.random() < 0.5) {
-        resolve("foo");
+        resolve('foo');
       } else {
-        reject("fox");
+        reject('fox');
       }
     }, 1000);
   });
 
   return reToast.promise(myPromise, {
-    loading: "Loading",
-    success: "Got the data",
-    error: "Error when fetching",
+    loading: 'Loading',
+    success: 'Got the data',
+    error: 'Error when fetching',
   });
 };
 const customJsx = () => {
   reToast((t) => (
     <span className="space-x-4">
       Custom and <b>bold</b>
-      <Button
-        size="sm"
-        color="destructive"
-        onClick={() => reToast.dismiss(t.id)}
-      >
+      <Button size="sm" color="destructive" onClick={() => reToast.dismiss(t.id)}>
         Dismiss
       </Button>
     </span>
   ));
 };
 const themToast = () => {
-  reToast.success("Look at my styles.", {
+  reToast.success('Look at my styles.', {
     style: {
-      border: "1px solid #713200",
-      padding: "16px",
-      color: "#713200",
+      border: '1px solid #713200',
+      padding: '16px',
+      color: '#713200',
     },
     iconTheme: {
-      primary: "#713200",
-      secondary: "#FFFAEE",
+      primary: '#713200',
+      secondary: '#FFFAEE',
     },
   });
 };
@@ -91,7 +87,7 @@ const tailwindClass = () => {
   reToast.custom((t) => (
     <div
       className={`${
-        t.visible ? "animate-enter" : "animate-leave"
+        t.visible ? 'animate-enter' : 'animate-leave'
       } max-w-md w-full bg-background shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
     >
       <div className="flex-1 w-0 p-4">
@@ -105,9 +101,7 @@ const tailwindClass = () => {
           </div>
           <div className="ml-3 flex-1">
             <p className="text-sm font-medium text-gray-900">Emilia Gates</p>
-            <p className="mt-1 text-sm text-gray-500">
-              Sure! 8:30pm works great!
-            </p>
+            <p className="mt-1 text-sm text-gray-500">Sure! 8:30pm works great!</p>
           </div>
         </div>
       </div>
@@ -125,33 +119,32 @@ const tailwindClass = () => {
 
 const defaultt = () =>
   toast({
-    title: "You submitted the following values:",
+    title: 'You submitted the following values:',
     description: <>Life is beautiful</>,
   });
 const success = () =>
   toast({
-    title: "Success",
-    color: "success",
+    title: 'Success',
+    color: 'success',
   });
 const warning = () =>
   toast({
-    title: "This Could be dangerous",
-    color: "warning",
+    title: 'This Could be dangerous',
+    color: 'warning',
   });
 const destructive = () =>
   toast({
-    title: "This is wrong",
+    title: 'This is wrong',
     description: <>Please Choose Right Toast</>,
-    color: "destructive",
+    color: 'destructive',
   });
 const info = () =>
   toast({
-    title: "This is a toast",
-    color: "info",
+    title: 'This is a toast',
+    color: 'info',
   });
 
-const promise = () =>
-  new Promise((resolve) => setTimeout(() => resolve({ name: "Sonner" }), 2000));
+const promise = () => new Promise((resolve) => setTimeout(() => resolve({ name: 'Sonner' }), 2000));
 
 const ToasterPage = () => {
   return (
@@ -172,10 +165,7 @@ const ToasterPage = () => {
               Creates a notification with an animated error icon.
             </p>
             <div className="flex items-center justify-center">
-              <Button
-                color="destructive"
-                onClick={() => reToast.error("This didn't work.")}
-              >
+              <Button color="destructive" onClick={() => reToast.error("This didn't work.")}>
                 Error
               </Button>
             </div>
@@ -185,12 +175,9 @@ const ToasterPage = () => {
               Creates a notification with an animated checkmark.
             </p>
             <div className="flex items-center justify-center">
-              {" "}
-              <Button
-                color="success"
-                onClick={() => reToast.success("Successfully toasted!")}
-              >
-                Success 
+              {' '}
+              <Button color="success" onClick={() => reToast.success('Successfully toasted!')}>
+                Success
               </Button>
             </div>
           </Card>
@@ -199,7 +186,7 @@ const ToasterPage = () => {
               Update automatically when promise resolves / fails.
             </p>
             <div className="flex items-center justify-center">
-              {" "}
+              {' '}
               <Button variant="outline" onClick={promiseToast}>
                 Promise Toast
               </Button>
@@ -210,7 +197,7 @@ const ToasterPage = () => {
               The most basic variant with longer texts
             </p>
             <div className="flex items-center justify-center">
-              {" "}
+              {' '}
               <Button variant="soft" onClick={newLineToast}>
                 New Line Toast
               </Button>
@@ -221,11 +208,8 @@ const ToasterPage = () => {
               Add any emoji instead of an icon
             </p>
             <div className="flex items-center justify-center">
-              {" "}
-              <Button
-                color="info"
-                onClick={() => reToast("Good Job!", { icon: "👏" })}
-              >
+              {' '}
+              <Button color="info" onClick={() => reToast('Good Job!', { icon: '👏' })}>
                 Emoji Toast
               </Button>
             </div>
@@ -247,7 +231,7 @@ const ToasterPage = () => {
             <div className="flex items-center justify-center">
               <Button variant="outline" onClick={customJsx}>
                 Custom Jsx
-              </Button>{" "}
+              </Button>{' '}
             </div>
           </Card>
           <Card title="Theme Toast" code={rehtheamToast}>
@@ -268,8 +252,8 @@ const ToasterPage = () => {
               <Button
                 variant="outline"
                 onClick={() =>
-                  reToast.success("Always at the bottom.", {
-                    position: "bottom-center",
+                  reToast.success('Always at the bottom.', {
+                    position: 'bottom-center',
                   })
                 }
               >
@@ -282,7 +266,7 @@ const ToasterPage = () => {
               Make a toast using any custom content
             </p>
             <div className="flex items-center justify-center">
-              {" "}
+              {' '}
               <Button variant="soft" color="info" onClick={tailwindClass}>
                 Tailwind Css
               </Button>
@@ -299,7 +283,7 @@ const ToasterPage = () => {
             </p>
             <div className="flex items-center justify-center">
               <Button variant="outline" onClick={defaultt}>
-                {" "}
+                {' '}
                 Default Toast
               </Button>
             </div>
@@ -310,7 +294,7 @@ const ToasterPage = () => {
             </p>
             <div className="flex items-center justify-center">
               <Button color="destructive" onClick={destructive}>
-                {" "}
+                {' '}
                 Error Toast
               </Button>
             </div>
@@ -320,7 +304,7 @@ const ToasterPage = () => {
               The variant does show success message with green background.
             </p>
             <div className="flex items-center justify-center">
-              {" "}
+              {' '}
               <Button color="success" variant="outline" onClick={success}>
                 Success Toast
               </Button>
@@ -331,9 +315,9 @@ const ToasterPage = () => {
               The variant does show warning message with yellow background.
             </p>
             <div className="flex items-center justify-center">
-              {" "}
+              {' '}
               <Button color="warning" onClick={warning}>
-                {" "}
+                {' '}
                 Warning Toast
               </Button>
             </div>
@@ -343,9 +327,9 @@ const ToasterPage = () => {
               The variant does show info message with blue background.
             </p>
             <div className="flex items-center justify-center">
-              {" "}
+              {' '}
               <Button color="info" variant="soft" onClick={info}>
-                {" "}
+                {' '}
                 Info Toast
               </Button>
             </div>
@@ -360,73 +344,60 @@ const ToasterPage = () => {
               The variant does show different type of message toasts.
             </p>
             <div className="flex gap-4 flex-wrap">
-              <Button
-                variant="outline"
-                onClick={() => stoast("Event has been created")}
-              >
+              <Button variant="outline" onClick={() => stoast('Event has been created')}>
                 Default Toast
               </Button>
               <Button
                 variant="outline"
                 onClick={() =>
-                  stoast.message("Event has been created", {
-                    description: "Monday, January 3rd at 6:00pm",
+                  stoast.message('Event has been created', {
+                    description: 'Monday, January 3rd at 6:00pm',
                   })
                 }
               >
                 Description Toast
               </Button>
-              <Button
-                variant="outline"
-                onClick={() => stoast.success("Event has been created")}
-              >
+              <Button variant="outline" onClick={() => stoast.success('Event has been created')}>
                 Success Toast
               </Button>
               <Button
                 variant="outline"
-                onClick={() =>
-                  stoast.info("Be at the area 10 minutes before the event time")
-                }
+                onClick={() => stoast.info('Be at the area 10 minutes before the event time')}
               >
                 Info Toast
               </Button>
               <Button
                 variant="outline"
-                onClick={() =>
-                  stoast.warning("Event start time cannot be earlier than 8am")
-                }
+                onClick={() => stoast.warning('Event start time cannot be earlier than 8am')}
               >
                 Warning Toast
               </Button>
-              <Button
-                variant="outline"
-                onClick={() => stoast.error("Event has not been created")}
-              >
+              <Button variant="outline" onClick={() => stoast.error('Event has not been created')}>
                 Error Toast
               </Button>
               <Button
                 variant="outline"
                 onClick={() =>
-                  stoast("Event has been created", {
+                  stoast('Event has been created', {
                     action: {
-                      label: "Undo",
-                      onClick: () => console.log("Undo"),
+                      label: 'Undo',
+                      onClick: () => console.log('Undo'),
                     },
                   })
                 }
               >
                 Action Toast
               </Button>
-              
+
               <Button
                 variant="outline"
                 onClick={() =>
                   stoast.promise(promise, {
-                    loading: "Loading...",
-                    success: (data:any) => {
+                    loading: 'Loading...',
+                    success: (data: any) => {
                       return `${data.name} toast has been added`;
                     },
-                    error: "Error",
+                    error: 'Error',
                   })
                 }
               >
@@ -450,15 +421,14 @@ const ToasterPage = () => {
           </Card>
           <Card title="Different Position Toast" code={differentPositionToast}>
             <p className="text-sm text-default-400 dark:text-default-600  mb-4">
-              The variant does show different type of message toasts in
-              different position.
+              The variant does show different type of message toasts in different position.
             </p>
             <div className="flex gap-4 flex-wrap">
               <Button
                 variant="outline"
                 onClick={() =>
-                  stoast("Event has been created", {
-                    position: "top-right",
+                  stoast('Event has been created', {
+                    position: 'top-right',
                   })
                 }
               >
@@ -467,8 +437,8 @@ const ToasterPage = () => {
               <Button
                 variant="outline"
                 onClick={() =>
-                  stoast.message("Event has been created", {
-                    position: "top-left",
+                  stoast.message('Event has been created', {
+                    position: 'top-left',
                   })
                 }
               >
@@ -477,8 +447,8 @@ const ToasterPage = () => {
               <Button
                 variant="outline"
                 onClick={() =>
-                  stoast.message("Event has been created", {
-                    position: "top-center",
+                  stoast.message('Event has been created', {
+                    position: 'top-center',
                   })
                 }
               >
@@ -487,12 +457,9 @@ const ToasterPage = () => {
               <Button
                 variant="outline"
                 onClick={() =>
-                  stoast.message(
-                    "Be at the area 10 minutes before the event time",
-                    {
-                      position: "bottom-right",
-                    }
-                  )
+                  stoast.message('Be at the area 10 minutes before the event time', {
+                    position: 'bottom-right',
+                  })
                 }
               >
                 Bottom Right
@@ -500,12 +467,9 @@ const ToasterPage = () => {
               <Button
                 variant="outline"
                 onClick={() =>
-                  stoast.message(
-                    "Event start time cannot be earlier than 8am",
-                    {
-                      position: "bottom-left",
-                    }
-                  )
+                  stoast.message('Event start time cannot be earlier than 8am', {
+                    position: 'bottom-left',
+                  })
                 }
               >
                 Bottom Left
@@ -513,8 +477,8 @@ const ToasterPage = () => {
               <Button
                 variant="outline"
                 onClick={() =>
-                  stoast.message("Event has not been created", {
-                    position: "bottom-center",
+                  stoast.message('Event has not been created', {
+                    position: 'bottom-center',
                   })
                 }
               >
@@ -524,16 +488,15 @@ const ToasterPage = () => {
           </Card>
           <Card title="Rich Color Toast" code={richColorToast}>
             <p className="text-sm text-default-400 dark:text-default-600  mb-4">
-              The variant does show different type of message toasts in
-              different color.
+              The variant does show different type of message toasts in different color.
             </p>
             <div className="flex gap-4 flex-wrap">
               <Button
                 color="success"
                 variant="outline"
                 onClick={() =>
-                  stoast.success("Event has been created", {
-                    position: "top-right",
+                  stoast.success('Event has been created', {
+                    position: 'top-right',
                   })
                 }
               >
@@ -543,8 +506,8 @@ const ToasterPage = () => {
                 color="destructive"
                 variant="outline"
                 onClick={() =>
-                  stoast.error("Event has been created", {
-                    position: "top-left",
+                  stoast.error('Event has been created', {
+                    position: 'top-left',
                   })
                 }
               >
@@ -554,8 +517,8 @@ const ToasterPage = () => {
                 color="info"
                 variant="outline"
                 onClick={() =>
-                  stoast.info("Event has been created", {
-                    position: "top-center",
+                  stoast.info('Event has been created', {
+                    position: 'top-center',
                   })
                 }
               >
@@ -565,12 +528,9 @@ const ToasterPage = () => {
                 color="warning"
                 variant="outline"
                 onClick={() =>
-                  stoast.warning(
-                    "Be at the area 10 minutes before the event time",
-                    {
-                      position: "bottom-right",
-                    }
-                  )
+                  stoast.warning('Be at the area 10 minutes before the event time', {
+                    position: 'bottom-right',
+                  })
                 }
               >
                 Rich Colors Warning

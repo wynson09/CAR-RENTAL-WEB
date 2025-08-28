@@ -1,12 +1,7 @@
-"use client";
-import React from "react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
+'use client';
+import React from 'react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Button } from '@/components/ui/button';
 
 const ControlTooltip = () => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
@@ -22,9 +17,7 @@ const ControlTooltip = () => {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <p className="text-sm text-muted-foreground">
-        Open: {isOpen ? "true" : "false"}
-      </p>
+      <p className="text-sm text-muted-foreground">Open: {isOpen ? 'true' : 'false'}</p>
     </div>
   );
 };

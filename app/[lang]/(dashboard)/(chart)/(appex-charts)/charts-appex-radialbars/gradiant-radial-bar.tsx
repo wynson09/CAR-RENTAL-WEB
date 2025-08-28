@@ -1,9 +1,9 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
 
 const GradiantRadialBar = ({ height = 350 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -13,14 +13,14 @@ const GradiantRadialBar = ({ height = 350 }) => {
 
   const series = [75];
 
-  const options:any = {
+  const options: any = {
     chart: {
       toolbar: {
         show: false,
       },
     },
     stroke: {
-      lineCap: "round",
+      lineCap: 'round',
     },
     plotOptions: {
       radialBar: {
@@ -28,12 +28,12 @@ const GradiantRadialBar = ({ height = 350 }) => {
         endAngle: 225,
         hollow: {
           margin: 0,
-          size: "70%",
-          background: "transparent",
+          size: '70%',
+          background: 'transparent',
           image: undefined,
           imageOffsetX: 0,
           imageOffsetY: 0,
-          position: "front",
+          position: 'front',
           dropShadow: {
             enabled: true,
             top: 3,
@@ -47,47 +47,39 @@ const GradiantRadialBar = ({ height = 350 }) => {
           name: {
             offsetY: -10,
             show: true,
-            color: `hsl(${
-              theme?.cssVars[mode === "dark" ? "dark" : "light"].success
-            })`,
-            fontSize: "20px",
+            color: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`,
+            fontSize: '20px',
           },
           value: {
             formatter: function (val: string) {
               return parseInt(val);
             },
             color: `hsl(${
-              theme?.cssVars[
-                mode === "dark" || mode === "system" ? "dark" : "light"
-              ].chartLabel
+              theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
             })`,
-            fontSize: "36px",
+            fontSize: '36px',
             show: true,
-          }
-        }
-      }
+          },
+        },
+      },
     },
     fill: {
-      type: "gradient",
+      type: 'gradient',
       gradient: {
-        shade: "dark",
-        type: "horizontal",
+        shade: 'dark',
+        type: 'horizontal',
         shadeIntensity: 0.5,
-        gradientToColors: [
-          `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-        ],
+        gradientToColors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`],
         inverseColors: true,
         opacityFrom: 1,
         opacityTo: 1,
         stops: [0, 100],
       },
     },
-    colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-    ],
-    labels: ["Cricket"],
+    colors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`],
+    labels: ['Cricket'],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
 
     padding: {
@@ -98,13 +90,7 @@ const GradiantRadialBar = ({ height = 350 }) => {
     },
   };
   return (
-      <Chart
-        options={options}
-        series={series}
-        type="radialBar"
-        height={height}
-        width={"100%"}
-      />
+    <Chart options={options} series={series} type="radialBar" height={height} width={'100%'} />
   );
 };
 

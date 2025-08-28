@@ -1,5 +1,5 @@
-"use client";
-import { Button } from "@/components/ui/button";
+'use client';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -8,8 +8,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import BasicTimeline from "../timeline/basic-timeline";
+} from '@/components/ui/dialog';
+import BasicTimeline from '../timeline/basic-timeline';
 const DialogWithTimeline = () => {
   return (
     <Dialog>
@@ -18,16 +18,16 @@ const DialogWithTimeline = () => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-base font-medium ">
-            Submit Your Weekly Report
-          </DialogTitle>
+          <DialogTitle className="text-base font-medium ">Submit Your Weekly Report</DialogTitle>
         </DialogHeader>
         <BasicTimeline />
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline" color="warning">Close</Button>
+            <Button variant="outline" color="warning">
+              Close
+            </Button>
           </DialogClose>
-          <Button >Okay</Button>
+          <Button>Okay</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

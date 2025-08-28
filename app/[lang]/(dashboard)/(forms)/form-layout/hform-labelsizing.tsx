@@ -1,15 +1,17 @@
-"use client"
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { InputGroup, InputGroupText } from "@/components/ui/input-group";
+'use client';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { InputGroup, InputGroupText } from '@/components/ui/input-group';
 import { Icon } from '@iconify/react';
 const HrFormLabelSizing = () => {
   return (
     <form>
       <div className="grid grid-cols-2 gap-4">
         <div className="col-span-2  flex flex-col lg:items-center lg:flex-row lg:gap-0 gap-2">
-          <Label htmlFor="hriFullName" className="text-xs lg:min-w-[160px]">Full Name</Label>
-          <InputGroup merged >
+          <Label htmlFor="hriFullName" className="text-xs lg:min-w-[160px]">
+            Full Name
+          </Label>
+          <InputGroup merged>
             <InputGroupText>
               <Icon icon="mdi:user" />
             </InputGroupText>
@@ -17,7 +19,9 @@ const HrFormLabelSizing = () => {
           </InputGroup>
         </div>
         <div className="col-span-2  flex flex-col lg:items-center lg:flex-row lg:gap-0 gap-2">
-          <Label htmlFor="hriEmail" className="text-sm lg:min-w-[160px]">Email Address</Label>
+          <Label htmlFor="hriEmail" className="text-sm lg:min-w-[160px]">
+            Email Address
+          </Label>
           <InputGroup merged>
             <InputGroupText>
               <Icon icon="ic:outline-email" />
@@ -26,7 +30,9 @@ const HrFormLabelSizing = () => {
           </InputGroup>
         </div>
         <div className="col-span-2  flex flex-col lg:items-center lg:flex-row lg:gap-0 gap-2">
-          <Label htmlFor="hriPassword" className="text-base lg:min-w-[160px]">Password</Label>
+          <Label htmlFor="hriPassword" className="text-base lg:min-w-[160px]">
+            Password
+          </Label>
           <InputGroup merged>
             <InputGroupText>
               <Icon icon="material-symbols:lock-outline" />

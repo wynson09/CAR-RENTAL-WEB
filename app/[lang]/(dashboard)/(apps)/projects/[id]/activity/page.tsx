@@ -1,5 +1,5 @@
-"use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+'use client';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Timeline,
   TimelineItem,
@@ -7,34 +7,29 @@ import {
   TimelineDot,
   TimelineConnector,
   TimelineSeparator,
-} from "@/components/ui/timeline";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-  AvatarGroup,
-} from "@/components/ui/avatar";
-import { Icon } from "@iconify/react";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/timeline';
+import { Avatar, AvatarFallback, AvatarImage, AvatarGroup } from '@/components/ui/avatar';
+import { Icon } from '@iconify/react';
+import { Button } from '@/components/ui/button';
 
 // images
-import img1 from "@/public/images/all-img/banana.jpg";
-import img2 from "@/public/images/all-img/headphone.png";
-import img3 from "@/public/images/all-img/baby.jpg";
-import img4 from "@/public/images/all-img/busket.jpg";
-import img5 from "@/public/images/all-img/mic.jpg";
-import img6 from "@/public/images/all-img/orange.jpg";
-import img7 from "@/public/images/all-img/orange-2.jpg";
+import img1 from '@/public/images/all-img/banana.jpg';
+import img2 from '@/public/images/all-img/headphone.png';
+import img3 from '@/public/images/all-img/baby.jpg';
+import img4 from '@/public/images/all-img/busket.jpg';
+import img5 from '@/public/images/all-img/mic.jpg';
+import img6 from '@/public/images/all-img/orange.jpg';
+import img7 from '@/public/images/all-img/orange-2.jpg';
 
-import avatar7 from "@/public/images/avatar/avatar-7.jpg";
-import avatar9 from "@/public/images/avatar/avatar-9.jpg";
-import avatar8 from "@/public/images/avatar/avatar-8.jpg";
-import avatar6 from "@/public/images/avatar/avatar-6.jpg";
-import avatar5 from "@/public/images/avatar/avatar-5.jpg";
-import avatar4 from "@/public/images/avatar/avatar-4.jpg";
-import avatar3 from "@/public/images/avatar/avatar-3.jpg";
-import avatar2 from "@/public/images/avatar/avatar-2.jpg";
-import Image from "next/image";
+import avatar7 from '@/public/images/avatar/avatar-7.jpg';
+import avatar9 from '@/public/images/avatar/avatar-9.jpg';
+import avatar8 from '@/public/images/avatar/avatar-8.jpg';
+import avatar6 from '@/public/images/avatar/avatar-6.jpg';
+import avatar5 from '@/public/images/avatar/avatar-5.jpg';
+import avatar4 from '@/public/images/avatar/avatar-4.jpg';
+import avatar3 from '@/public/images/avatar/avatar-3.jpg';
+import avatar2 from '@/public/images/avatar/avatar-2.jpg';
+import Image from 'next/image';
 
 const Activities = () => {
   return (
@@ -53,17 +48,13 @@ const Activities = () => {
               <TimelineContent>
                 <div className="md:flex gap-4">
                   <div className="grow">
-                    <h5 className="font-medium text-sm text-default-600 ">
-                      User Photo Changed
-                    </h5>
+                    <h5 className="font-medium text-sm text-default-600 ">User Photo Changed</h5>
                   </div>
                   <div className="text-default-400 text-xs md:min-w-[90px] md:max-w-[120px] md:text-right">
                     12 minutes ago
                   </div>
                 </div>
-                <p className="text-sm text-default-500  mt-1">
-                  Jone Doe changed his avatar photo
-                </p>
+                <p className="text-sm text-default-500  mt-1">Jone Doe changed his avatar photo</p>
               </TimelineContent>
             </TimelineItem>
             <TimelineItem>
@@ -75,9 +66,7 @@ const Activities = () => {
                 <div className="tm-content">
                   <div className="md:flex gap-4">
                     <div className="grow">
-                      <h5 className="font-medium text-sm text-default-600 ">
-                        Video Added
-                      </h5>
+                      <h5 className="font-medium text-sm text-default-600 ">Video Added</h5>
                     </div>
                     <div className="text-default-400 text-xs md:min-w-[90px] md:max-w-[120px] md:text-right">
                       1 hour ago
@@ -113,9 +102,7 @@ const Activities = () => {
                 <div className="tm-content">
                   <div className="md:flex gap-4">
                     <div className="grow">
-                      <h5 className="font-medium text-sm text-default-600 ">
-                        Image Added
-                      </h5>
+                      <h5 className="font-medium text-sm text-default-600 ">Image Added</h5>
                     </div>
                     <div className="text-default-400 text-xs md:min-w-[90px] md:max-w-[120px] md:text-right">
                       9 hours ago
@@ -125,36 +112,12 @@ const Activities = () => {
                     Mores Clarke added new video
                   </p>
                   <div className="grid grid-cols-3 gap-3">
-                    <Image
-                      src={img1}
-                      className="w-full h-full object-cover"
-                      alt=""
-                    />
-                    <Image
-                      src={img2}
-                      className="w-full h-full object-cover"
-                      alt=""
-                    />
-                    <Image
-                      src={img3}
-                      className="w-full h-full object-cover"
-                      alt=""
-                    />
-                    <Image
-                      src={img4}
-                      className="w-full h-full object-cover"
-                      alt=""
-                    />
-                    <Image
-                      src={img5}
-                      className="w-full h-full object-cover"
-                      alt=""
-                    />
-                    <Image
-                      src={img6}
-                      className="w-full h-full object-cover"
-                      alt=""
-                    />
+                    <Image src={img1} className="w-full h-full object-cover" alt="" />
+                    <Image src={img2} className="w-full h-full object-cover" alt="" />
+                    <Image src={img3} className="w-full h-full object-cover" alt="" />
+                    <Image src={img4} className="w-full h-full object-cover" alt="" />
+                    <Image src={img5} className="w-full h-full object-cover" alt="" />
+                    <Image src={img6} className="w-full h-full object-cover" alt="" />
                   </div>
                 </div>
               </TimelineContent>
@@ -169,20 +132,14 @@ const Activities = () => {
                   <div className="flex flex-col md:flex-row gap-2 ">
                     <div>
                       <div className="h-14 w-14">
-                        <Image
-                          src={img7}
-                          alt=""
-                          className="w-full h-full object-cover"
-                        />
+                        <Image src={img7} alt="" className="w-full h-full object-cover" />
                       </div>
                     </div>
                     <div>
-                      <h5 className="text-sm font-medium text-default-600  ">
-                        This a Orange
-                      </h5>
+                      <h5 className="text-sm font-medium text-default-600  ">This a Orange</h5>
                       <p className="text-sm text-default-500  mt-1">
-                        Orange S.A. formerly France S.A. is a French Multi -
-                        national telecommunications corporation.
+                        Orange S.A. formerly France S.A. is a French Multi - national
+                        telecommunications corporation.
                       </p>
                     </div>
                   </div>
@@ -208,15 +165,9 @@ const Activities = () => {
                     </thead>
                     <tbody>
                       <tr>
-                        <td className="text-sm text-default-400 text-center">
-                          Micheal Jr. Scott
-                        </td>
-                        <td className="text-sm text-default-400 text-center">
-                          $320.00
-                        </td>
-                        <td className="text-sm text-default-400 text-center">
-                          1
-                        </td>
+                        <td className="text-sm text-default-400 text-center">Micheal Jr. Scott</td>
+                        <td className="text-sm text-default-400 text-center">$320.00</td>
+                        <td className="text-sm text-default-400 text-center">1</td>
                       </tr>
                     </tbody>
                   </table>
@@ -231,17 +182,15 @@ const Activities = () => {
               <TimelineContent>
                 <div className="md:flex gap-4">
                   <div className="grow">
-                    <h5 className="font-medium text-sm text-default-600 ">
-                      Interview Schedule
-                    </h5>
+                    <h5 className="font-medium text-sm text-default-600 ">Interview Schedule</h5>
                   </div>
                   <div className="text-default-400 text-xs md:min-w-[90px] md:max-w-[120px] md:text-right">
                     9th October
                   </div>
                 </div>
                 <p className="text-sm text-default-500  mt-1">
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Possimus quos, voluptates voluptas rem veniam expedita.
+                  Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus quos,
+                  voluptates voluptas rem veniam expedita.
                 </p>
                 <hr className="my-3" />
                 <div className="flex items-center gap-4">
@@ -252,12 +201,8 @@ const Activities = () => {
                         <AvatarFallback>SN</AvatarFallback>
                       </Avatar>
                       <div>
-                        <span className="text-sm text-default-500  block">
-                          Permanent Delete
-                        </span>
-                        <span className="text-xs text-default-500  block">
-                          UX/UI Designer
-                        </span>
+                        <span className="text-sm text-default-500  block">Permanent Delete</span>
+                        <span className="text-xs text-default-500  block">UX/UI Designer</span>
                       </div>
                     </div>
                   </div>
@@ -279,17 +224,15 @@ const Activities = () => {
               <TimelineContent>
                 <div className="md:flex gap-4">
                   <div className="grow">
-                    <h5 className="font-medium text-sm text-default-600 ">
-                      2 notifications
-                    </h5>
+                    <h5 className="font-medium text-sm text-default-600 ">2 notifications</h5>
                   </div>
                   <div className="text-default-400 text-xs md:min-w-[90px] md:max-w-[120px] md:text-right">
                     11th October
                   </div>
                 </div>
                 <p className="text-sm text-default-500  mt-1">
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Possimus quos, voluptates voluptas rem veniam expedita.
+                  Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus quos,
+                  voluptates voluptas rem veniam expedita.
                 </p>
                 <hr className="my-3" />
                 {/* comment list */}
@@ -333,9 +276,7 @@ const Activities = () => {
                         <AvatarFallback>AB</AvatarFallback>
                       </Avatar>
                     </AvatarGroup>
-                    <p className=" text-xs text-default-600 ">
-                      Commented on your post.
-                    </p>
+                    <p className=" text-xs text-default-600 ">Commented on your post.</p>
                   </div>
                   <div>
                     <Button type="button" size="xs">
@@ -352,18 +293,12 @@ const Activities = () => {
                         <AvatarFallback>AB</AvatarFallback>
                       </Avatar>
                       <div>
-                        <span className="text-sm text-default-500  block">
-                          Prantik repaid you
-                        </span>
-                        <span className="text-xs text-default-500  block">
-                          30 minutes ago
-                        </span>
+                        <span className="text-sm text-default-500  block">Prantik repaid you</span>
+                        <span className="text-xs text-default-500  block">30 minutes ago</span>
                       </div>
                     </div>
                   </div>
-                  <span className="text-sm font-semibold text-default-700 ">
-                    $20
-                  </span>
+                  <span className="text-sm font-semibold text-default-700 ">$20</span>
                 </div>
               </TimelineContent>
             </TimelineItem>

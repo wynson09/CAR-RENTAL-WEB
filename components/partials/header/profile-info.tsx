@@ -1,5 +1,5 @@
-"use client";
-import { useSession, signOut } from "next-auth/react";
+'use client';
+import { useSession, signOut } from 'next-auth/react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,79 +12,77 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Icon } from "@iconify/react";
-import Image from "next/image";
-import Link from "next/link";
+} from '@/components/ui/dropdown-menu';
+import { Icon } from '@iconify/react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useUserStore } from '@/store';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const ProfileInfo = () => {
   const { data: session } = useSession();
+  const { user } = useUserStore();
+
+  // Use Zustand store data as primary source, fallback to session
+  const userImage = user?.image || session?.user?.image;
+  const userName = user?.name || session?.user?.name || 'User';
+  const userEmail = user?.email || session?.user?.email;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className=" cursor-pointer">
         <div className=" flex items-center  ">
-          {session?.user?.image && (
-            <Image
-              src={session?.user?.image}
-              alt={session?.user?.name ?? ""}
-              width={36}
-              height={36}
-              className="rounded-full"
-            />
-          )}
+          <Avatar className="w-9 h-9">
+            <AvatarImage src={userImage || ''} alt={userName} />
+            <AvatarFallback className="bg-primary text-primary-foreground text-sm font-medium">
+              {userName.charAt(0).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 p-0" align="end">
         <DropdownMenuLabel className="flex gap-2 items-center mb-1 p-3">
-          {session?.user?.image && (
-            <Image
-              src={session?.user?.image}
-              alt={session?.user?.name ?? ""}
-              width={36}
-              height={36}
-              className="rounded-full"
-            />
-          )}
+          <Avatar className="w-9 h-9">
+            <AvatarImage src={userImage || ''} alt={userName} />
+            <AvatarFallback className="bg-primary text-primary-foreground text-sm font-medium">
+              {userName.charAt(0).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
           <div>
-            <div className="text-sm font-medium text-default-800 capitalize ">
-              {session?.user?.name ?? "Mcc Callem"}
+            <div className="text-sm font-medium text-default-800 capitalize ">{userName}</div>
+            <div className="text-xs text-default-600">
+              {user?.role && (
+                <span className="capitalize bg-primary/10 text-primary px-2 py-1 rounded-full mr-2">
+                  {user.role}
+                </span>
+              )}
+              {userEmail}
             </div>
-            <Link
-              href="/dashboard"
-              className="text-xs text-default-600 hover:text-primary"
-            >
-              @uxuidesigner
-            </Link>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuGroup>
           {[
             {
-              name: "profile",
-              icon: "heroicons:user",
-              href:"/user-profile"
+              name: 'profile',
+              icon: 'heroicons:user',
+              href: '/user-profile',
             },
             {
-              name: "Billing",
-              icon: "heroicons:megaphone",
-              href:"/dashboard"
+              name: 'Billing',
+              icon: 'heroicons:megaphone',
+              href: '/dashboard',
             },
             {
-              name: "Settings",
-              icon: "heroicons:paper-airplane",
-              href:"/dashboard"
+              name: 'Settings',
+              icon: 'heroicons:paper-airplane',
+              href: '/dashboard',
             },
             {
-              name: "Keyboard shortcuts",
-              icon: "heroicons:language",
-              href:"/dashboard"
+              name: 'Keyboard shortcuts',
+              icon: 'heroicons:language',
+              href: '/dashboard',
             },
           ].map((item, index) => (
-            <Link
-              href={item.href}
-              key={`info-menu-${index}`}
-              className="cursor-pointer"
-            >
+            <Link href={item.href} key={`info-menu-${index}`} className="cursor-pointer">
               <DropdownMenuItem className="flex items-center gap-2 text-sm font-medium text-default-600 capitalize px-3 py-1.5 dark:hover:bg-background cursor-pointer">
                 <Icon icon={item.icon} className="w-4 h-4" />
                 {item.name}
@@ -109,20 +107,16 @@ const ProfileInfo = () => {
               <DropdownMenuSubContent>
                 {[
                   {
-                    name: "email",
+                    name: 'email',
                   },
                   {
-                    name: "message",
+                    name: 'message',
                   },
                   {
-                    name: "facebook",
+                    name: 'facebook',
                   },
                 ].map((item, index) => (
-                  <Link
-                    href="/dashboard"
-                    key={`message-sub-${index}`}
-                    className="cursor-pointer"
-                  >
+                  <Link href="/dashboard" key={`message-sub-${index}`} className="cursor-pointer">
                     <DropdownMenuItem className="text-sm font-medium text-default-600 capitalize px-3 py-1.5 dark:hover:bg-background cursor-pointer">
                       {item.name}
                     </DropdownMenuItem>
@@ -147,13 +141,13 @@ const ProfileInfo = () => {
               <DropdownMenuSubContent>
                 {[
                   {
-                    name: "portal",
+                    name: 'portal',
                   },
                   {
-                    name: "slack",
+                    name: 'slack',
                   },
                   {
-                    name: "whatsapp",
+                    name: 'whatsapp',
                   },
                 ].map((item, index) => (
                   <Link href="/dashboard" key={`message-sub-${index}`}>

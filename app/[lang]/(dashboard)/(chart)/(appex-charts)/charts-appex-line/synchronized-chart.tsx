@@ -1,10 +1,10 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { getLabel, getGridConfig, getYAxisConfig } from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getLabel, getGridConfig, getYAxisConfig } from '@/lib/appex-chart-options';
 interface DataRange {
   min: number;
   max: number;
@@ -18,8 +18,7 @@ const SynchronizedChart = ({ height = 300 }) => {
     var series: [number, number][] = [];
     while (i < count) {
       var x = baseval;
-      var y =
-        Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+      var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
 
       series.push([x, y]);
       baseval += 86400000;
@@ -30,7 +29,7 @@ const SynchronizedChart = ({ height = 300 }) => {
 
   const series = [
     {
-      data: generateDayWiseTimeSeries(new Date("11 Feb 2017").getTime(), 20, {
+      data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {
         min: 10,
         max: 60,
       }),
@@ -42,24 +41,17 @@ const SynchronizedChart = ({ height = 300 }) => {
       toolbar: {
         show: false,
       },
-      id: "fb",
-      group: "social",
+      id: 'fb',
+      group: 'social',
 
       height: 160,
     },
-    colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-    ],
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    colors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`],
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
     xaxis: {
-      type: "datetime",
+      type: 'datetime',
       labels: getLabel(
-        `hsl(${theme?.cssVars[
-          mode === "dark" || mode === "system" ? "dark" : "light"
-        ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
       axisBorder: {
         show: false,
@@ -68,13 +60,11 @@ const SynchronizedChart = ({ height = 300 }) => {
         show: false,
       },
     },
-    yaxis: getYAxisConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`
-    ),
+    yaxis: getYAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
   };
   const seriesLine2 = [
     {
-      data: generateDayWiseTimeSeries(new Date("11 Feb 2017").getTime(), 20, {
+      data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {
         min: 10,
         max: 30,
       }),
@@ -86,24 +76,17 @@ const SynchronizedChart = ({ height = 300 }) => {
       toolbar: {
         show: false,
       },
-      id: "tw",
-      group: "social",
+      id: 'tw',
+      group: 'social',
 
       height: 160,
     },
-    colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].destructive})`,
-    ],
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    colors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].destructive})`],
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
     xaxis: {
-      type: "datetime",
+      type: 'datetime',
       labels: getLabel(
-        `hsl(${theme?.cssVars[
-          mode === "dark" || mode === "system" ? "dark" : "light"
-        ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
       axisBorder: {
         show: false,
@@ -114,17 +97,14 @@ const SynchronizedChart = ({ height = 300 }) => {
     },
     yaxis: {
       labels: getLabel(
-        `hsl(${theme?.cssVars[
-          mode === "dark" || mode === "system" ? "dark" : "light"
-        ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
     },
   };
 
   const seriesArea = [
     {
-      data: generateDayWiseTimeSeries(new Date("11 Feb 2017").getTime(), 20, {
+      data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {
         min: 10,
         max: 60,
       }),
@@ -135,11 +115,11 @@ const SynchronizedChart = ({ height = 300 }) => {
       toolbar: {
         show: false,
       },
-      id: "yt",
-      group: "social",
+      id: 'yt',
+      group: 'social',
     },
     stroke: {
-      curve: "straight",
+      curve: 'straight',
       width: 3,
     },
 
@@ -149,26 +129,18 @@ const SynchronizedChart = ({ height = 300 }) => {
         size: 6,
       },
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
-    colors: [`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`],
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
+    colors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`],
     xaxis: {
-      type: "datetime",
+      type: 'datetime',
       labels: getLabel(
-        `hsl(${theme?.cssVars[
-          mode === "dark" || mode === "system" ? "dark" : "light"
-        ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
     },
     yaxis: {
       tickAmount: 2,
       labels: getLabel(
-        `hsl(${theme?.cssVars[
-          mode === "dark" || mode === "system" ? "dark" : "light"
-        ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
     },
   };
@@ -176,13 +148,7 @@ const SynchronizedChart = ({ height = 300 }) => {
   return (
     <div id="wrapper">
       <div id="chart-line">
-        <Chart
-          options={options}
-          series={series}
-          type="line"
-          height={160}
-          width={"100%"}
-        />
+        <Chart options={options} series={series} type="line" height={160} width={'100%'} />
       </div>
       <div id="chart-line2">
         <Chart
@@ -190,17 +156,11 @@ const SynchronizedChart = ({ height = 300 }) => {
           series={seriesLine2}
           type="line"
           height={160}
-          width={"100%"}
+          width={'100%'}
         />
       </div>
       <div id="chart-area">
-        <Chart
-          options={optionsArea}
-          series={seriesArea}
-          type="area"
-          height={160}
-          width={"100%"}
-        />
+        <Chart options={optionsArea} series={seriesArea} type="area" height={160} width={'100%'} />
       </div>
     </div>
   );

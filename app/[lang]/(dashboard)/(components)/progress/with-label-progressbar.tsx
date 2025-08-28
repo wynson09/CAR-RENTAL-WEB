@@ -1,7 +1,7 @@
-"use client";
-import { Label } from "@/components/ui/label";
-import { CircularProgress, Progress } from "@/components/ui/progress";
-import React from "react";
+'use client';
+import { Label } from '@/components/ui/label';
+import { CircularProgress, Progress } from '@/components/ui/progress';
+import React from 'react';
 
 const WithLabelProgressbar = () => {
   return (
@@ -10,12 +10,7 @@ const WithLabelProgressbar = () => {
         <Label>Loading....</Label>
         <Progress value={50} color="success" />
       </div>
-      <CircularProgress
-        value={50}
-        color="success"
-        showValue
-        customContent="...."
-      />
+      <CircularProgress value={50} color="success" showValue customContent="...." />
     </>
   );
 };

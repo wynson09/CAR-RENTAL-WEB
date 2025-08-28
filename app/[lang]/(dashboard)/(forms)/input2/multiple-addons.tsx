@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Input } from "@/components/ui/input";
-import { InputGroup, InputGroupText } from "@/components/ui/input-group";
+import { Input } from '@/components/ui/input';
+import { InputGroup, InputGroupText } from '@/components/ui/input-group';
 
 const MultipleAddons = () => {
   return (

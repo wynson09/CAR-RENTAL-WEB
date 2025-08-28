@@ -1,18 +1,25 @@
-"use client"
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { Button } from '@/components/ui/button'
-import { InputGroup, InputGroupText } from "@/components/ui/input-group";
+'use client';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { InputGroup, InputGroupText } from '@/components/ui/input-group';
 import { Icon } from '@iconify/react';
 const hriFormWithIcon = () => {
   return (
     <form>
       <div className="grid grid-cols-2 gap-4">
-
         <div className="col-span-2  flex flex-col lg:items-center lg:flex-row lg:gap-0 gap-2">
-          <Label htmlFor="hriFullName1" className="lg:min-w-[160px]">Full Name</Label>
+          <Label htmlFor="hriFullName1" className="lg:min-w-[160px]">
+            Full Name
+          </Label>
           <InputGroup merged>
             <InputGroupText>
               <Icon icon="mdi:user" />
@@ -21,7 +28,9 @@ const hriFormWithIcon = () => {
           </InputGroup>
         </div>
         <div className="col-span-2  flex flex-col lg:items-center lg:flex-row lg:gap-0 gap-2">
-          <Label htmlFor="hriEmail1" className="lg:min-w-[160px]">Email Address</Label>
+          <Label htmlFor="hriEmail1" className="lg:min-w-[160px]">
+            Email Address
+          </Label>
           <InputGroup merged>
             <InputGroupText>
               <Icon icon="ic:outline-email" />
@@ -30,7 +39,9 @@ const hriFormWithIcon = () => {
           </InputGroup>
         </div>
         <div className="col-span-2  flex flex-col lg:items-center lg:flex-row lg:gap-0 gap-2">
-          <Label htmlFor="hriPassword1" className="lg:min-w-[160px]">Password</Label>
+          <Label htmlFor="hriPassword1" className="lg:min-w-[160px]">
+            Password
+          </Label>
           <InputGroup merged>
             <InputGroupText>
               <Icon icon="material-symbols:lock-outline" />
@@ -42,7 +53,9 @@ const hriFormWithIcon = () => {
           </InputGroup>
         </div>
         <div className="col-span-2  flex flex-col lg:items-center lg:flex-row lg:gap-0 gap-2">
-          <Label htmlFor="hriPhone1" className="lg:min-w-[160px]">Phone Number</Label>
+          <Label htmlFor="hriPhone1" className="lg:min-w-[160px]">
+            Phone Number
+          </Label>
           <InputGroup merged className="flex">
             <InputGroupText>
               <Icon icon="tdesign:call" />
@@ -52,7 +65,9 @@ const hriFormWithIcon = () => {
         </div>
 
         <div className="col-span-2  flex flex-col lg:items-center lg:flex-row lg:gap-0 gap-2">
-          <Label htmlFor="state" className="lg:min-w-[160px]">State</Label>
+          <Label htmlFor="state" className="lg:min-w-[160px]">
+            State
+          </Label>
           <Select>
             <SelectTrigger>
               <SelectValue placeholder="Select State" />
@@ -70,10 +85,7 @@ const hriFormWithIcon = () => {
         <div className="col-span-2 lg:pl-[160px]">
           <div className="flex lg:items-center gap-1.5">
             <Checkbox id="term6" size="sm" color="default" />
-            <Label
-              htmlFor="term6"
-              className="text-base text-muted-foreground font-normal"
-            >
+            <Label htmlFor="term6" className="text-base text-muted-foreground font-normal">
               Agree to terms and conditions
             </Label>
           </div>

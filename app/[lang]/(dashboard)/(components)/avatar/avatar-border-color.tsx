@@ -1,8 +1,8 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import avatar1 from "@/public/images/avatar/avatar-1.jpg";
-import avatar4 from "@/public/images/avatar/avatar-4.jpg";
-import avatar3 from "@/public/images/avatar/avatar-3.jpg";
-import avatar2 from "@/public/images/avatar/avatar-2.jpg";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import avatar1 from '@/public/images/avatar/avatar-1.jpg';
+import avatar4 from '@/public/images/avatar/avatar-4.jpg';
+import avatar3 from '@/public/images/avatar/avatar-3.jpg';
+import avatar2 from '@/public/images/avatar/avatar-2.jpg';
 const AvatarBorderColor = () => {
   return (
     <>
@@ -23,9 +23,7 @@ const AvatarBorderColor = () => {
         <AvatarFallback>GH</AvatarFallback>
       </Avatar>
       <Avatar className=" ring-1 ring-info ring-offset-[3px]  ring-offset-background">
-        <AvatarFallback className=" bg-success  text-success-foreground">
-          IJ
-        </AvatarFallback>
+        <AvatarFallback className=" bg-success  text-success-foreground">IJ</AvatarFallback>
       </Avatar>
       <Avatar className=" ring-1 ring-dark ring-offset-[3px]  ring-offset-background">
         <AvatarFallback className=" bg-info/10  text-info">FK</AvatarFallback>

@@ -5,11 +5,11 @@ import {
   TimelineDot,
   TimelineConnector,
   TimelineSeparator,
-} from "@/components/ui/timeline";
+} from '@/components/ui/timeline';
 
 const OutlineWithoutTextTimeline = () => {
   return (
-    <div >
+    <div>
       <Timeline>
         <TimelineItem>
           <TimelineSeparator>

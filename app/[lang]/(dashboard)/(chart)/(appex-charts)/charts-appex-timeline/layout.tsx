@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Appex Timeline Chart ",
+  title: 'Appex Timeline Chart ',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

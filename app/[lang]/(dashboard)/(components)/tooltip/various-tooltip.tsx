@@ -1,15 +1,10 @@
-"use client";
+'use client';
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import avatar6 from "@/public/images/avatar/avatar-6.jpg";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@iconify/react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import avatar6 from '@/public/images/avatar/avatar-6.jpg';
 
 const VariousTooltip = () => {
   return (

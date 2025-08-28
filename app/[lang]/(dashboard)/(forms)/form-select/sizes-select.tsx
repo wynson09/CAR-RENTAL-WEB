@@ -1,7 +1,12 @@
-"use client"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+'use client';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 const SizesSelect = () => {
-
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2  gap-y-4 gap-x-6">
       <Select>
@@ -52,7 +57,6 @@ const SizesSelect = () => {
           <SelectItem value="biology">Biology</SelectItem>
         </SelectContent>
       </Select>
-
     </div>
   );
 };

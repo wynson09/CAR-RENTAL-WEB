@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,22 +8,14 @@ import {
   Tooltip,
   Legend,
   ArcElement,
-} from "chart.js";
+} from 'chart.js';
 
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { Radar } from "react-chartjs-2";
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { Radar } from 'react-chartjs-2';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement
-);
+ChartJS.register(CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend, ArcElement);
 
 const RadarChart = ({ height = 350 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -31,23 +23,15 @@ const RadarChart = ({ height = 350 }) => {
 
   const theme = themes.find((theme) => theme.name === config);
 
-  const hslPrimary = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`;
-  const hslInfo = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`;
-  const hslWarning = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning})`;
+  const hslPrimary = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`;
+  const hslInfo = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`;
+  const hslWarning = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`;
 
   const data: any = {
-    labels: [
-      "Eating",
-      "Drinking",
-      "Sleeping",
-      "Designing",
-      "Coding",
-      "Cycling",
-      "Running",
-    ],
+    labels: ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'],
     datasets: [
       {
-        label: "My First Dataset",
+        label: 'My First Dataset',
         data: [65, 59, 90, 81, 56, 55, 40],
         fill: true,
         backgroundColor: hslPrimary,
@@ -58,7 +42,7 @@ const RadarChart = ({ height = 350 }) => {
         pointHoverBorderColor: hslPrimary,
       },
       {
-        label: "My Second Dataset",
+        label: 'My Second Dataset',
         data: [28, 48, 40, 19, 96, 27, 100],
         fill: true,
         backgroundColor: hslInfo,
@@ -75,10 +59,9 @@ const RadarChart = ({ height = 350 }) => {
     plugins: {
       legend: {
         labels: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
     },
@@ -87,11 +70,7 @@ const RadarChart = ({ height = 350 }) => {
 
   return (
     <div>
-      <Radar
-        options={options}
-        data={data}
-        height={height}
-      />
+      <Radar options={options} data={data} height={height} />
     </div>
   );
 };

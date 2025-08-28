@@ -1,1 +1,1 @@
-export { default as Watermark } from "./watermark";
+export { default as Watermark } from './watermark';

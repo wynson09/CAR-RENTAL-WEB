@@ -1,11 +1,10 @@
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import LinearScaleMinMax from "./linearscale-minmax";
-import LinearScaleSuggestedMinMax from "./suggested-minmax";
-import LinearScaleStepSize from "./linearscale-stepsize";
-import StackedLinearCategory from "./stackedlinear-category";
-import LogScaleChart from "./logscale-chart";
-import TimeScaleChart from "./timescale-chart";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import LinearScaleMinMax from './linearscale-minmax';
+import LinearScaleSuggestedMinMax from './suggested-minmax';
+import LinearScaleStepSize from './linearscale-stepsize';
+import StackedLinearCategory from './stackedlinear-category';
+import LogScaleChart from './logscale-chart';
+import TimeScaleChart from './timescale-chart';
 
 const ChartsChartJsScales = () => {
   return (

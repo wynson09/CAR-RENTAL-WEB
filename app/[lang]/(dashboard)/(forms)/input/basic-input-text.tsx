@@ -1,9 +1,7 @@
-"use client";
-import { Input } from "@/components/ui/input";
+'use client';
+import { Input } from '@/components/ui/input';
 const BasicInputText = () => {
-  return (
-    <Input type="text" placeholder="Username" />
-  );
+  return <Input type="text" placeholder="Username" />;
 };
 
 export default BasicInputText;

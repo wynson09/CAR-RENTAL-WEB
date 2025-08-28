@@ -1,14 +1,10 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import {
-  getGridConfig,
-  getXAxisConfig,
-  getYAxisConfig,
-} from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getGridConfig, getXAxisConfig, getYAxisConfig } from '@/lib/appex-chart-options';
 
 const SplineArea = ({ height = 300 }) => {
   const { theme: config, setTheme: setConfig, isRtl } = useThemeStore();
@@ -17,16 +13,16 @@ const SplineArea = ({ height = 300 }) => {
 
   const series = [
     {
-      name: "series1",
+      name: 'series1',
       data: [31, 40, 28, 51, 42, 109, 100],
     },
     {
-      name: "series2",
+      name: 'series2',
       data: [11, 32, 45, 32, 34, 52, 41],
     },
   ];
 
-  const options:any = {
+  const options: any = {
     chart: {
       toolbar: {
         show: false,
@@ -36,25 +32,23 @@ const SplineArea = ({ height = 300 }) => {
       enabled: false,
     },
     stroke: {
-      curve: "smooth",
+      curve: 'smooth',
       width: 4,
     },
     colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`,
     ],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
 
     fill: {
-      type: "gradient",
+      type: 'gradient',
       colors: [
-        `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-        `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success})`,
+        `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
+        `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`,
       ],
       gradient: {
         shadeIntensity: 1,
@@ -63,12 +57,8 @@ const SplineArea = ({ height = 300 }) => {
         stops: [50, 100, 0],
       },
     },
-    yaxis: getYAxisConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`
-    ),
-    xaxis: getXAxisConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`
-    ),
+    yaxis: getYAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
+    xaxis: getXAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
     padding: {
       top: 0,
       right: 0,
@@ -77,10 +67,9 @@ const SplineArea = ({ height = 300 }) => {
     },
     legend: {
       labels: {
-        colors: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-          })`,
+        colors: `hsl(${
+          theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+        })`,
       },
       itemMargin: {
         horizontal: 5,
@@ -90,19 +79,11 @@ const SplineArea = ({ height = 300 }) => {
         width: 10,
         height: 10,
         radius: 10,
-        offsetX: isRtl ? 5 : -5
-      }
+        offsetX: isRtl ? 5 : -5,
+      },
     },
   };
-  return (
-    <Chart
-      options={options}
-      series={series}
-      type="area"
-      height={height}
-      width={"100%"}
-    />
-  );
+  return <Chart options={options} series={series} type="area" height={height} width={'100%'} />;
 };
 
 export default SplineArea;

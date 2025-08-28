@@ -1,6 +1,6 @@
-"use client";
-import { render } from "@react-email/render";
-import BasicTemplate from "./basic-template";
+'use client';
+import { render } from '@react-email/render';
+import BasicTemplate from './basic-template';
 const Basic = () => {
   const basicHtmlContent = render(<BasicTemplate />);
   return (

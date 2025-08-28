@@ -1,9 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import LeafletFlowMap from "./leaflet-flow-map";
-import ParticleColorMap from "./particle-colors";
-import ParticleRadiusMap from "./particle-radius-map";
-import ParticleSpeedMap from "./particle-speed";
-import ParticleDensityMap from "./flow-particle-density";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import LeafletFlowMap from './leaflet-flow-map';
+import ParticleColorMap from './particle-colors';
+import ParticleRadiusMap from './particle-radius-map';
+import ParticleSpeedMap from './particle-speed';
+import ParticleDensityMap from './flow-particle-density';
 
 const MapUnovisFlowPage = () => {
   return (

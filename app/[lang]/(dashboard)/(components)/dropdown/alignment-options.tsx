@@ -1,6 +1,6 @@
-"use client"
-import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/react";
+'use client';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@iconify/react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,7 +8,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 const AlignmentOptions = () => {
   return (
     <>
@@ -16,7 +16,10 @@ const AlignmentOptions = () => {
         <DropdownMenuTrigger asChild>
           <Button>
             Left-align
-            <Icon icon="heroicons:chevron-right" className=" h-5 w-5 ltr:ml-2 rtl:mr-2 rtl:rotate-180" />
+            <Icon
+              icon="heroicons:chevron-right"
+              className=" h-5 w-5 ltr:ml-2 rtl:mr-2 rtl:rotate-180"
+            />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[196px]" align="start">
@@ -32,7 +35,10 @@ const AlignmentOptions = () => {
         <DropdownMenuTrigger asChild>
           <Button>
             Right-align
-            <Icon icon="heroicons:chevron-right" className=" h-5 w-5 ltr:ml-2 rtl:mr-2 rtl:rotate-180 " />
+            <Icon
+              icon="heroicons:chevron-right"
+              className=" h-5 w-5 ltr:ml-2 rtl:mr-2 rtl:rotate-180 "
+            />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[196px]" align="end" avoidCollisions>
@@ -61,7 +67,10 @@ const AlignmentOptions = () => {
         <DropdownMenuTrigger asChild>
           <Button>
             Left Side
-            <Icon icon="heroicons:chevron-right" className=" h-5 w-5 ltr:ml-2 rtl:mr-2 rtl:rotate-180" />
+            <Icon
+              icon="heroicons:chevron-right"
+              className=" h-5 w-5 ltr:ml-2 rtl:mr-2 rtl:rotate-180"
+            />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[196px]" side="left">
@@ -76,9 +85,12 @@ const AlignmentOptions = () => {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button>
-          <Icon icon="heroicons:chevron-right" className=" h-5 w-5 ltr:hidden rtl:mr-2 " />
+            <Icon icon="heroicons:chevron-right" className=" h-5 w-5 ltr:hidden rtl:mr-2 " />
             Right Side
-            <Icon icon="heroicons:chevron-right" className=" h-5 w-5 ltr:ml-2 rtl:mr-2 rtl:hidden" />
+            <Icon
+              icon="heroicons:chevron-right"
+              className=" h-5 w-5 ltr:ml-2 rtl:mr-2 rtl:hidden"
+            />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[196px]" side="right">

@@ -1,9 +1,9 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
 
 interface AreaChartProps {
   series: any;
@@ -16,10 +16,10 @@ const AreaChart = ({ series, color }: AreaChartProps) => {
   const theme = themes.find((theme) => theme.name === config);
 
   const themeColors: { [key: string]: string } = {
-    primary: "#3B82F6",
-    success: "#22C55E",
-    warning: "#F97316",
-    destructive: "#EF4444"
+    primary: '#3B82F6',
+    success: '#22C55E',
+    warning: '#F97316',
+    destructive: '#EF4444',
   };
 
   let themeColor = themeColors[color] || themeColors.primary;
@@ -27,7 +27,7 @@ const AreaChart = ({ series, color }: AreaChartProps) => {
   const options: any = {
     chart: {
       toolbar: {
-        autoSelected: "pan",
+        autoSelected: 'pan',
         show: false,
       },
       offsetX: 0,
@@ -43,18 +43,16 @@ const AreaChart = ({ series, color }: AreaChartProps) => {
       enabled: false,
     },
     stroke: {
-      curve: "smooth",
+      curve: 'smooth',
       width: 2,
     },
-    colors: [
-      themeColor,
-    ],
+    colors: [themeColor],
     tooltip: {
-      theme: "light",
+      theme: 'light',
     },
     fill: {
-      type: "solid",
-      opacity: 0.1
+      type: 'solid',
+      opacity: 0.1,
     },
     grid: {
       show: false,
@@ -85,16 +83,8 @@ const AreaChart = ({ series, color }: AreaChartProps) => {
         show: false,
       },
     },
-  }
-  return (
-    <Chart
-      options={options}
-      series={series}
-      type="area"
-      height={40}
-      width={74}
-    />
-  );
+  };
+  return <Chart options={options} series={series} type="area" height={40} width={74} />;
 };
 
 export default AreaChart;

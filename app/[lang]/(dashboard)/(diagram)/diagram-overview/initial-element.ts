@@ -1,4 +1,3 @@
-
 import { Edge, MarkerType, Node, Position } from 'reactflow';
 
 export const nodes: Node[] = [
@@ -73,7 +72,7 @@ export const nodes: Node[] = [
     data: {
       label: `
           On the bottom left you see the <strong>Controls</strong> and the bottom right the{' '}
-          <strong>MiniMap</strong>. This is also just a node 🥳 `
+          <strong>MiniMap</strong>. This is also just a node 🥳 `,
     },
     draggable: false,
     selectable: false,
@@ -108,6 +107,6 @@ export const edges: Edge[] = [
     },
     markerEnd: {
       type: MarkerType.ArrowClosed,
-    }
-  }
+    },
+  },
 ];

@@ -1,8 +1,8 @@
-"use client";
-import { Input } from "@/components/ui/input";
-import { ChangeEvent, useState } from "react";
+'use client';
+import { Input } from '@/components/ui/input';
+import { ChangeEvent, useState } from 'react';
 const InputControlled = () => {
-  const [value, setValue] = useState<string>("UserName");
+  const [value, setValue] = useState<string>('UserName');
   const handleValue = (event: ChangeEvent<HTMLInputElement>) => setValue(event.target.value);
   return (
     <div>

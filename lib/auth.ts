@@ -1,24 +1,31 @@
-import Credentials from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
-import GithubProvider from "next-auth/providers/github";
-import FacebookProvider from "next-auth/providers/facebook";
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, GithubAuthProvider } from "firebase/auth";
-import { auth, db } from "./firebase";
-import { doc, setDoc, getDoc } from "firebase/firestore";
-import { createUserData, removeUndefinedFields } from "./user-utils";
-import { Session } from "next-auth";
-import { JWT } from "next-auth/jwt";
-import { Account, Profile, User } from "next-auth";
+import Credentials from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google';
+import GithubProvider from 'next-auth/providers/github';
+import FacebookProvider from 'next-auth/providers/facebook';
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  GithubAuthProvider,
+} from 'firebase/auth';
+import { auth, db } from './firebase';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { createUserData, removeUndefinedFields } from './user-utils';
+import { Session } from 'next-auth';
+import { JWT } from 'next-auth/jwt';
+import { Account, Profile, User } from 'next-auth';
 
-// Extend the Session type to include user ID
-declare module "next-auth" {
+// Extend the Session type to include user ID and role
+declare module 'next-auth' {
   interface Session {
     user: {
       id?: string;
       name?: string | null;
       email?: string | null;
       image?: string | null;
-    }
+      role?: 'user' | 'admin' | 'moderator';
+    };
   }
 }
 
@@ -27,20 +34,27 @@ const syncUserToFirestore = async (user: any) => {
   try {
     const userRef = doc(db, 'users', user.id);
     const userDoc = await getDoc(userRef);
-    
+
     if (!userDoc.exists()) {
       // Parse first and last name from full name for OAuth users
       const nameParts = user.name ? user.name.split(' ') : ['', ''];
       const firstName = nameParts[0] || '';
       const lastName = nameParts.slice(1).join(' ') || '';
-      
+
+      // Determine role based on email - admin accounts
+      const isAdmin =
+        user.email === 'admin@nacscarrental.com' ||
+        user.email?.includes('admin@') ||
+        user.email?.includes('@admin.');
+
       // Create consistent user data structure
       const userData = createUserData(user.id, user.email, user.provider, {
         firstName,
         lastName,
         name: user.name,
         image: user.image,
-        isVerified: true, // OAuth users are typically verified
+        role: isAdmin ? 'admin' : 'user',
+        isVerified: isAdmin ? true : false, // Auto-verify admin accounts
       });
 
       // Clean and save user data (remove undefined fields)
@@ -53,12 +67,12 @@ const syncUserToFirestore = async (user: any) => {
         email: user.email,
         updatedAt: new Date(),
       };
-      
+
       // Only add image field if it has a value
       if (user.image) {
         updateData.image = user.image;
       }
-      
+
       // Clean and save update data (remove undefined fields)
       const cleanUpdateData = removeUndefinedFields(updateData);
       await setDoc(userRef, cleanUpdateData, { merge: true });
@@ -83,50 +97,54 @@ export const authOptions = {
       clientSecret: process.env.AUTH_GITHUB_SECRET as string,
     }),
     Credentials({
-      name: "credentials",
+      name: 'credentials',
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         const { email, password } = credentials as {
-          email: string,
-          password: string,
+          email: string;
+          password: string;
         };
-        
+
         try {
           // Use Firebase authentication for email/password
           const userCredential = await signInWithEmailAndPassword(auth, email, password);
           const user = userCredential.user;
-          
+
           if (user) {
             const userData = {
               id: user.uid,
               name: user.displayName || user.email?.split('@')[0],
               email: user.email,
               image: user.photoURL,
-              provider: 'credentials'
+              provider: 'credentials',
             };
-            
+
             // Sync user to Firestore
             await syncUserToFirestore(userData);
-            
+
             return userData;
           }
-          
+
           return null;
         } catch (error) {
-          console.error("Firebase auth error:", error);
+          console.error('Firebase auth error:', error);
           return null;
         }
-      }
+      },
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
 
   callbacks: {
     async signIn({ user, account }: { user: User; account: Account | null; profile?: Profile }) {
-      if (account?.provider === 'google' || account?.provider === 'facebook' || account?.provider === 'github') {
+      if (
+        account?.provider === 'google' ||
+        account?.provider === 'facebook' ||
+        account?.provider === 'github'
+      ) {
         try {
           // For OAuth providers, sync user data to Firestore
           const userData = {
@@ -134,9 +152,9 @@ export const authOptions = {
             name: user.name,
             email: user.email,
             image: user.image,
-            provider: account.provider
+            provider: account.provider,
           };
-          
+
           await syncUserToFirestore(userData);
           return true;
         } catch (error) {
@@ -150,6 +168,22 @@ export const authOptions = {
       // Send properties to the client
       if (token && session.user) {
         session.user.id = token.sub;
+
+        // Enrich session with Firestore user data for better UX
+        try {
+          const userDocRef = doc(db, 'users', token.sub!);
+          const userDocSnap = await getDoc(userDocRef);
+
+          if (userDocSnap.exists()) {
+            const userData = userDocSnap.data();
+            // Add additional user data to session
+            session.user.role = userData.role;
+            session.user.image = userData.image || session.user.image;
+            session.user.name = userData.name || session.user.name;
+          }
+        } catch (error) {
+          console.error('Error enriching session with Firestore data:', error);
+        }
       }
       return session;
     },
@@ -162,13 +196,13 @@ export const authOptions = {
   },
 
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
   },
-  
+
   pages: {
     signIn: '/auth/login',
     signUp: '/auth/register',
   },
-  
-  debug: process.env.NODE_ENV !== "production",
+
+  debug: process.env.NODE_ENV !== 'production',
 };

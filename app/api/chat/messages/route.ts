@@ -1,5 +1,5 @@
-import { NextResponse, NextRequest } from "next/server";
-import { chats } from "../data";
+import { NextResponse, NextRequest } from 'next/server';
+import { chats } from '../data';
 
 export async function POST(request: NextRequest, response: NextResponse) {
   const obj = await request.json();

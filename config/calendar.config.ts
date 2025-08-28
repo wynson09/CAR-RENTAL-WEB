@@ -1,4 +1,4 @@
-import { api } from "@/config/axios.config";
+import { api } from '@/config/axios.config';
 
 export const getEvents = async () => {
   try {
@@ -10,7 +10,7 @@ export const getEvents = async () => {
 };
 export const getCategories = async () => {
   try {
-    const response = await api.get("/calendars/categories");
+    const response = await api.get('/calendars/categories');
     return response.data;
   } catch (error: any) {
     return error.response.data;
@@ -18,7 +18,7 @@ export const getCategories = async () => {
 };
 export const createEvent = async (data: any) => {
   try {
-    const response = await api.post("/calendars", data);
+    const response = await api.post('/calendars', data);
     return response.data;
   } catch (error: any) {
     return error.response.data;

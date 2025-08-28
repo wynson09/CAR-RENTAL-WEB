@@ -1,11 +1,11 @@
-import avatar3 from "@/public/images/avatar/avatar-3.jpg";
+import avatar3 from '@/public/images/avatar/avatar-3.jpg';
 export const user = [
   {
     id: 1,
-    name: "dashtail",
+    name: 'dashtail',
     image: avatar3,
-    password: "password",
-    email: "dashtail@codeshaper.net",
+    password: 'password',
+    email: 'dashtail@codeshaper.net',
     resetToken: null,
     resetTokenExpiry: null,
     profile: null,

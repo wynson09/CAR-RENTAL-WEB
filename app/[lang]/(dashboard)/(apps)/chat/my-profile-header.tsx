@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,13 +6,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/react";
-import { InputGroup, InputGroupText } from "@/components/ui/input-group";
-import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { type ProfileUser as ProfileUserType } from "@/app/api/chat/data";
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@iconify/react';
+import { InputGroup, InputGroupText } from '@/components/ui/input-group';
+import { Input } from '@/components/ui/input';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { type ProfileUser as ProfileUserType } from '@/app/api/chat/data';
 const MyProfileHeader = ({ profile }: { profile: ProfileUserType }) => {
   return (
     <>
@@ -34,23 +34,11 @@ const MyProfileHeader = ({ profile }: { profile: ProfileUserType }) => {
         <div className="hidden lg:block">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                type="button"
-                color="secondary"
-                size="icon"
-                className="rounded-full"
-              >
-                <Icon
-                  icon="heroicons:ellipsis-horizontal-20-solid"
-                  className=" h-5 w-5"
-                />
+              <Button type="button" color="secondary" size="icon" className="rounded-full">
+                <Icon icon="heroicons:ellipsis-horizontal-20-solid" className=" h-5 w-5" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent
-              className="w-[196px]"
-              align="end"
-              avoidCollisions
-            >
+            <DropdownMenuContent className="w-[196px]" align="end" avoidCollisions>
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="focus:bg-primary/10 focus:text-primary">

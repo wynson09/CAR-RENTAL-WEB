@@ -1,43 +1,34 @@
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge";
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
-
-
-
-export const isLocationMatch = (
-  targetLocation: any,
-  locationName: any
-): boolean => {
-  return (
-    locationName === targetLocation ||
-    locationName.startsWith(`${targetLocation}/`)
-  );
+export const isLocationMatch = (targetLocation: any, locationName: any): boolean => {
+  return locationName === targetLocation || locationName.startsWith(`${targetLocation}/`);
 };
 
 export const RGBToHex = (r: number, g: number, b: number): string => {
   const componentToHex = (c: number): string => {
     const hex = c.toString(16);
-    return hex.length === 1 ? "0" + hex : hex;
+    return hex.length === 1 ? '0' + hex : hex;
   };
 
   const redHex: string = componentToHex(r);
   const greenHex: string = componentToHex(g);
   const blueHex: string = componentToHex(b);
 
-  return "#" + redHex + greenHex + blueHex;
+  return '#' + redHex + greenHex + blueHex;
 };
 
 export function hslToHex(hsl: string): string {
   // Remove "hsla(" and ")" from the HSL string
-  let hslValues = hsl.replace("hsla(", "").replace(")", "");
+  let hslValues = hsl.replace('hsla(', '').replace(')', '');
 
   // Split the HSL string into an array of H, S, and L values
-  const [h, s, l] = hslValues.split(" ").map((value) => {
-    if (value.endsWith("%")) {
+  const [h, s, l] = hslValues.split(' ').map((value) => {
+    if (value.endsWith('%')) {
       // Remove the "%" sign and parse as a float
       return parseFloat(value.slice(0, -1));
     } else {
@@ -81,7 +72,7 @@ export function hslToHex(hsl: string): string {
     // Convert RGB values to a hex color code
     const rgbToHex = (value: number): string => {
       const hex = value.toString(16);
-      return hex.length === 1 ? "0" + hex : hex;
+      return hex.length === 1 ? '0' + hex : hex;
     };
 
     return `#${rgbToHex(rInt)}${rgbToHex(gInt)}${rgbToHex(bInt)}`;
@@ -90,7 +81,6 @@ export function hslToHex(hsl: string): string {
   // Call the hslToRgb function and return the hex color code
   return hslToRgb(h, s, l);
 }
-
 
 export const hexToRGB = (hex: string, alpha?: number): string => {
   const r = parseInt(hex.slice(1, 3), 16);
@@ -105,12 +95,12 @@ export const hexToRGB = (hex: string, alpha?: number): string => {
 };
 
 export const formatTime = (time: number | Date | string): string => {
-  if (!time) return "";
+  if (!time) return '';
 
   const date = new Date(time);
   const formattedTime = date.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
+    hour: '2-digit',
+    minute: '2-digit',
     hour12: true,
   });
 
@@ -119,32 +109,29 @@ export const formatTime = (time: number | Date | string): string => {
 
 // object check
 export function isObjectNotEmpty(obj: any): boolean {
-  if (typeof obj !== "object" || obj === null) {
+  if (typeof obj !== 'object' || obj === null) {
     return false;
   }
   return Object.keys(obj).length > 0;
 }
 
 export const formatDate = (date: string | number | Date): string => {
-  const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "long", day: "numeric" };
-  return new Date(date).toLocaleDateString("en-US", options);
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(date).toLocaleDateString('en-US', options);
 };
-
-
 
 // random word
 export function getWords(inputString: string): string {
   // Remove spaces from the input string
-  const stringWithoutSpaces = inputString.replace(/\s/g, "");
+  const stringWithoutSpaces = inputString.replace(/\s/g, '');
 
   // Extract the first three characters
   return stringWithoutSpaces.substring(0, 3);
 }
 
-
 // for path name
 export function getDynamicPath(pathname: any): any {
-  const prefixes = ["en", "bn", "ar"];
+  const prefixes = ['en', 'bn', 'ar'];
 
   for (const prefix of prefixes) {
     if (pathname.startsWith(`/${prefix}/`)) {
@@ -170,4 +157,3 @@ export const translate = (title: string, trans: Translations): string => {
 
   return title;
 };
-

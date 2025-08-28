@@ -1,14 +1,10 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import {
-  getGridConfig,
-  getYAxisConfig,
-  getLabel,
-} from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getGridConfig, getYAxisConfig, getLabel } from '@/lib/appex-chart-options';
 
 const BasicCandle = ({ height = 300 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -262,7 +258,7 @@ const BasicCandle = ({ height = 300 }) => {
     },
   ];
 
-  const options:any = {
+  const options: any = {
     chart: {
       toolbar: {
         show: false,
@@ -272,31 +268,23 @@ const BasicCandle = ({ height = 300 }) => {
       enabled: false,
     },
     stroke: {
-      curve: "smooth",
+      curve: 'smooth',
       width: 4,
     },
     colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`,
     ],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
 
-    yaxis: getYAxisConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`
-    ),
+    yaxis: getYAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
     xaxis: {
-      type: "datetime",
+      type: 'datetime',
       labels: getLabel(
-        `hsl(${
-          theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
       axisBorder: {
         show: false,
@@ -313,13 +301,7 @@ const BasicCandle = ({ height = 300 }) => {
     },
   };
   return (
-      <Chart
-        options={options}
-        series={series}
-        type="candlestick"
-        height={height}
-        width={"100%"}
-      />
+    <Chart options={options} series={series} type="candlestick" height={height} width={'100%'} />
   );
 };
 

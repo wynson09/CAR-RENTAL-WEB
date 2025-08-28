@@ -1,14 +1,12 @@
-"use client"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+'use client';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 const SizesRadio = () => {
   return (
-    <RadioGroup
-      defaultValue="xs"
-    >
+    <RadioGroup defaultValue="xs">
       <RadioGroupItem value="xs" id="size_1" size="xs">
         Extra Small
       </RadioGroupItem>
-      <RadioGroupItem value="sm" id="size_2" size="sm" >
+      <RadioGroupItem value="sm" id="size_2" size="sm">
         Small
       </RadioGroupItem>
       <RadioGroupItem value="md" id="size_3" size="md">

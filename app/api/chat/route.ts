@@ -1,8 +1,6 @@
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse, NextRequest } from 'next/server';
 
-import { profileUser, contacts, chats } from "./data";
-
-
+import { profileUser, contacts, chats } from './data';
 
 export async function GET(request: NextRequest, response: NextResponse) {
   const contactsData = contacts; // Assuming this fetches all contacts data
@@ -18,9 +16,7 @@ export async function GET(request: NextRequest, response: NextResponse) {
         id: chat ? chat.id : null,
         unseenMsgs: chat ? chat.unseenMsgs : null,
         lastMessage: lastMessage ? lastMessage.message : null,
-        lastMessageTime: lastMessageTime
-          ? new Date(lastMessageTime).toISOString()
-          : null,
+        lastMessageTime: lastMessageTime ? new Date(lastMessageTime).toISOString() : null,
       },
     };
   });

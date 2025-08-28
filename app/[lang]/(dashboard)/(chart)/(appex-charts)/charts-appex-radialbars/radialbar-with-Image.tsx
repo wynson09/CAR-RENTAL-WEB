@@ -1,9 +1,9 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
 
 const RadialBarWithImage = ({ height = 350 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -23,8 +23,8 @@ const RadialBarWithImage = ({ height = 350 }) => {
       radialBar: {
         hollow: {
           margin: 15,
-          size: "70%",
-          image: "/images/chart/rocket.png",
+          size: '70%',
+          image: '/images/chart/rocket.png',
           imageWidth: 64,
           imageHeight: 64,
           imageClipped: false,
@@ -32,35 +32,32 @@ const RadialBarWithImage = ({ height = 350 }) => {
         dataLabels: {
           name: {
             show: false,
-            color: "#fff",
+            color: '#fff',
           },
           value: {
             show: true,
-            color: `hsl(${theme?.cssVars[
-                mode === "dark" || mode === "system" ? "dark" : "light"
-              ].chartLabel
-              })`,
+            color: `hsl(${
+              theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+            })`,
             offsetY: 70,
-            fontSize: "22px",
+            fontSize: '22px',
           },
         },
       },
     },
     fill: {
-      type: "image",
+      type: 'image',
       image: {
-        src: ["/images/chart/paint.png"],
+        src: ['/images/chart/paint.png'],
       },
     },
     stroke: {
-      lineCap: "round",
+      lineCap: 'round',
     },
-    labels: ["Volatility"],
-    colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success})`,
-    ],
+    labels: ['Volatility'],
+    colors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
     padding: {
       top: 0,
@@ -70,13 +67,7 @@ const RadialBarWithImage = ({ height = 350 }) => {
     },
   };
   return (
-    <Chart
-      options={options}
-      series={series}
-      type="radialBar"
-      height={height}
-      width={"100%"}
-    />
+    <Chart options={options} series={series} type="radialBar" height={height} width={'100%'} />
   );
 };
 

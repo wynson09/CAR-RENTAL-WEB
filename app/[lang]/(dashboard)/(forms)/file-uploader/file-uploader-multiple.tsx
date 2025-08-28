@@ -1,11 +1,11 @@
-"use client";
-import { Fragment, useState } from "react";
-import { Icon } from "@iconify/react";
+'use client';
+import { Fragment, useState } from 'react';
+import { Icon } from '@iconify/react';
 
-import { useDropzone } from "react-dropzone";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import { Upload } from "lucide-react";
+import { useDropzone } from 'react-dropzone';
+import { Button } from '@/components/ui/button';
+import Image from 'next/image';
+import { Upload } from 'lucide-react';
 
 interface FileWithPreview extends File {
   preview: string;
@@ -20,7 +20,7 @@ const FileUploaderMultiple = () => {
   });
 
   const renderFilePreview = (file: FileWithPreview) => {
-    if (file.type.startsWith("image")) {
+    if (file.type.startsWith('image')) {
       return (
         <Image
           width={48}
@@ -35,17 +35,14 @@ const FileUploaderMultiple = () => {
     }
   };
 
-  const handleRemoveFile = (file:FileWithPreview) => {
+  const handleRemoveFile = (file: FileWithPreview) => {
     const uploadedFiles = files;
     const filtered = uploadedFiles.filter((i) => i.name !== file.name);
     setFiles([...filtered]);
   };
 
   const fileList = files.map((file) => (
-    <div
-      key={file.name}
-      className=" flex justify-between border px-3.5 py-3 my-6 rounded-md"
-    >
+    <div key={file.name} className=" flex justify-between border px-3.5 py-3 my-6 rounded-md">
       <div className="flex gap-3 items-center">
         <div className="file-preview">{renderFilePreview(file)}</div>
         <div>
@@ -56,7 +53,7 @@ const FileUploaderMultiple = () => {
             ) : (
               <>{(Math.round(file.size / 100) / 10).toFixed(1)}</>
             )}
-            {" kb"}
+            {' kb'}
           </div>
         </div>
       </div>
@@ -79,7 +76,7 @@ const FileUploaderMultiple = () => {
 
   return (
     <Fragment>
-      <div {...getRootProps({ className: "dropzone" })}>
+      <div {...getRootProps({ className: 'dropzone' })}>
         <input {...getInputProps()} />
         <div className=" w-full text-center border-dashed border  rounded-md py-[52px] flex  items-center flex-col">
           <div className="h-12 w-12 inline-flex rounded-md bg-muted items-center justify-center mb-3">
@@ -89,8 +86,7 @@ const FileUploaderMultiple = () => {
             Drop files here or click to upload.
           </h4>
           <div className=" text-xs text-muted-foreground">
-            ( This is just a demo drop zone. Selected files are not actually
-            uploaded.)
+            ( This is just a demo drop zone. Selected files are not actually uploaded.)
           </div>
         </div>
       </div>

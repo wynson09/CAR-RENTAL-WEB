@@ -1,5 +1,5 @@
-import { Rating } from "@/components/ui/rating";
-import { useState } from "react";
+import { Rating } from '@/components/ui/rating';
+import { useState } from 'react';
 
 const RadioGroupRating = () => {
   const MoreSadFace = (
@@ -31,10 +31,10 @@ const RadioGroupRating = () => {
     </>
   );
 
-  const customStyles:any = {
+  const customStyles: any = {
     itemShapes: [MoreSadFace, SadFace, NeutralFace, SmilingFace, HappyFace],
-    activeFillColor: ["#da1600", "#dcb000", "#06B6D4", "#61bb00", "#009664"],
-    inactiveFillColor: "#a8a8a8",
+    activeFillColor: ['#da1600', '#dcb000', '#06B6D4', '#61bb00', '#009664'],
+    inactiveFillColor: '#a8a8a8',
   };
 
   const [rating, setRating] = useState<number>(0);

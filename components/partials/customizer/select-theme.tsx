@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { useTheme } from "next-themes";
-import { cn } from "@/lib/utils";
-import { Label } from "@/components/ui/label";
-import { Icon } from "@iconify/react";
-import { themes } from "@/config/thems";
-import { useThemeStore } from "@/store";
-import { Check } from "lucide-react";
+import * as React from 'react';
+import { useTheme } from 'next-themes';
+import { cn } from '@/lib/utils';
+import { Label } from '@/components/ui/label';
+import { Icon } from '@iconify/react';
+import { themes } from '@/config/thems';
+import { useThemeStore } from '@/store';
+import { Check } from 'lucide-react';
 
 const allThemes = [
-  { key: "light", label: "Light", icon: "heroicons:sun" },
-  { key: "dark", label: "Dark", icon: "heroicons:moon" },
+  { key: 'light', label: 'Light', icon: 'heroicons:sun' },
+  { key: 'dark', label: 'Dark', icon: 'heroicons:moon' },
 ];
 
 const SelectTheme = () => {
@@ -21,10 +21,12 @@ const SelectTheme = () => {
 
   return (
     <div
-      style={{
-        "--theme-primary": `hsl(${newTheme?.cssVars[mode === "dark" ? "dark" : "light"].primary
+      style={
+        {
+          '--theme-primary': `hsl(${
+            newTheme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary
           })`,
-      } as React.CSSProperties
+        } as React.CSSProperties
       }
     >
       <div className="mb-2 relative inline-block px-3 py-[3px] rounded-md before:bg-[--theme-primary] before:absolute before:top-0 before:left-0 before:w-full  before:h-full before:rounded before:opacity-10 before:z-[-1]  text-[--theme-primary]  text-xs font-medium">
@@ -39,11 +41,10 @@ const SelectTheme = () => {
             <button
               onClick={() => setTheme(themeOption.key)}
               className={cn(
-                "border  flex  w-full text-center items-center justify-center py-[14px]  px-10 rounded relative",
+                'border  flex  w-full text-center items-center justify-center py-[14px]  px-10 rounded relative',
                 {
-                  "text-[--theme-primary] border-[--theme-primary]":
-                    theme === themeOption.key,
-                  "text-default-400": theme !== themeOption.key,
+                  'text-[--theme-primary] border-[--theme-primary]': theme === themeOption.key,
+                  'text-default-400': theme !== themeOption.key,
                 }
               )}
             >

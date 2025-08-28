@@ -1,11 +1,11 @@
-"use client"
-import { Breadcrumbs, BreadcrumbItem } from "@/components/ui/breadcrumbs";
+'use client';
+import { Breadcrumbs, BreadcrumbItem } from '@/components/ui/breadcrumbs';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Icon } from "@iconify/react";
+} from '@/components/ui/dropdown-menu';
+import { Icon } from '@iconify/react';
 const CustomizeCollapsingBreadcrumb = () => {
   return (
     <Breadcrumbs
@@ -16,10 +16,7 @@ const CustomizeCollapsingBreadcrumb = () => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <span className=" cursor-pointer bg-muted px-2 rounded-full inline-flex items-center">
-              <Icon
-                icon="heroicons:ellipsis-horizontal"
-                className=" h-5 w-5  "
-              />
+              <Icon icon="heroicons:ellipsis-horizontal" className=" h-5 w-5  " />
             </span>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-[196px]" align="start">

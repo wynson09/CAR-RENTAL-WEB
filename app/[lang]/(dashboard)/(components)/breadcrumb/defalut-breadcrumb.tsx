@@ -1,5 +1,5 @@
-"use client"
-import { Breadcrumbs, BreadcrumbItem } from "@/components/ui/breadcrumbs";
+'use client';
+import { Breadcrumbs, BreadcrumbItem } from '@/components/ui/breadcrumbs';
 
 const DefaultBreadCrumb = () => {
   return (
@@ -9,7 +9,7 @@ const DefaultBreadCrumb = () => {
       <BreadcrumbItem>Component</BreadcrumbItem>
       <BreadcrumbItem>Breadcrumb</BreadcrumbItem>
     </Breadcrumbs>
-  )
-}
+  );
+};
 
 export default DefaultBreadCrumb;

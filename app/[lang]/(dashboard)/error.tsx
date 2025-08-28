@@ -1,12 +1,15 @@
-"use client"; // Error components must be Client Components
+'use client'; // Error components must be Client Components
 
-import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Info } from "lucide-react";
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Info } from 'lucide-react';
 
-export default function Error({ error, reset }: {
-  error: Error & { digest?: string }
-  reset: () => void
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
 }) {
   return (
     <div className="space-y-4">

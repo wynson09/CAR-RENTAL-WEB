@@ -1,34 +1,30 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import {
-  getGridConfig,
-  getXAxisConfig,
-  getYAxisConfig,
-} from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getGridConfig, getXAxisConfig, getYAxisConfig } from '@/lib/appex-chart-options';
 
 const IrregularTimeSeries = ({ height = 300 }) => {
-  const { theme: config, setTheme: setConfig,isRtl } = useThemeStore();
+  const { theme: config, setTheme: setConfig, isRtl } = useThemeStore();
   const { theme: mode } = useTheme();
   const theme = themes.find((theme) => theme.name === config);
   const series = [
     {
-      name: "product A",
+      name: 'product A',
       data: [100, 200, 300, 400, 500, 200, 100],
     },
     {
-      name: "product B",
+      name: 'product B',
       data: [600, 700, 300, 500],
     },
     {
-      name: "product C",
+      name: 'product C',
       data: [500, 100, 400, 700, 400, 700],
     },
   ];
-  const options:any = {
+  const options: any = {
     chart: {
       toolbar: {
         show: false,
@@ -38,27 +34,25 @@ const IrregularTimeSeries = ({ height = 300 }) => {
       enabled: false,
     },
     stroke: {
-      curve: "smooth",
+      curve: 'smooth',
       width: 4,
     },
     colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`,
     ],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
 
     fill: {
-      type: "gradient",
+      type: 'gradient',
       colors: [
-        `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-        `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success})`,
-        `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
+        `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
+        `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`,
+        `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`,
       ],
       gradient: {
         shadeIntensity: 1,
@@ -67,12 +61,8 @@ const IrregularTimeSeries = ({ height = 300 }) => {
         stops: [20, 100, 100, 100],
       },
     },
-    yaxis: getYAxisConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`
-    ),
-    xaxis: getXAxisConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`
-    ),
+    yaxis: getYAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
+    xaxis: getXAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
     padding: {
       top: 0,
       right: 0,
@@ -82,9 +72,7 @@ const IrregularTimeSeries = ({ height = 300 }) => {
     legend: {
       labels: {
         colors: `hsl(${
-          theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
+          theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
         })`,
       },
       itemMargin: {
@@ -95,19 +83,11 @@ const IrregularTimeSeries = ({ height = 300 }) => {
         width: 10,
         height: 10,
         radius: 10,
-        offsetX: isRtl ? 5 : -5
-      }
+        offsetX: isRtl ? 5 : -5,
+      },
     },
   };
-  return (
-      <Chart
-        options={options}
-        series={series}
-        type="area"
-        height={height}
-        width={"100%"}
-      />
-  );
+  return <Chart options={options} series={series} type="area" height={height} width={'100%'} />;
 };
 
 export default IrregularTimeSeries;

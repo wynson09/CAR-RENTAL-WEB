@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useCallback } from "react";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { VisXYContainer, VisLine, VisAxis } from "@unovis/react";
-import { DataRecord } from "./utils"
+import { useCallback } from 'react';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { VisXYContainer, VisLine, VisAxis } from '@unovis/react';
+import { DataRecord } from './utils';
 
 const BasicLine = ({ height = 350 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -22,26 +22,23 @@ const BasicLine = ({ height = 350 }) => {
         <VisLine
           data={data}
           lineWidth={2}
-          color={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary
-            })`}
+          color={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`}
           x={useCallback((d: DataRecord) => d.x, [])}
           y={useCallback((d: DataRecord) => d.y, [])}
         />
         <VisAxis
           type="x"
-          tickTextColor={`hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`}
+          tickTextColor={`hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`}
           gridLine={false}
           tickLine={undefined}
         />
         <VisAxis
           type="y"
-          tickTextColor={`hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`}
+          tickTextColor={`hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`}
         />
       </VisXYContainer>
     </div>

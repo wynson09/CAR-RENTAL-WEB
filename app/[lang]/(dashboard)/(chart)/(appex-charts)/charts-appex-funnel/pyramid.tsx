@@ -1,10 +1,10 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { getGridConfig } from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getGridConfig } from '@/lib/appex-chart-options';
 
 const PyramidChart = ({ height = 350 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -13,7 +13,7 @@ const PyramidChart = ({ height = 350 }) => {
 
   const series = [
     {
-      name: "",
+      name: '',
       data: [200, 330, 548, 740, 880, 990, 1100, 1380],
     },
   ];
@@ -28,39 +28,37 @@ const PyramidChart = ({ height = 350 }) => {
         borderRadius: 0,
         horizontal: true,
         distributed: true,
-        barHeight: "100%",
+        barHeight: '100%',
         isFunnel: true,
       },
     },
     dataLabels: {
       enabled: true,
-      formatter: function (val:string, opt:any) {
-        return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val;
+      formatter: function (val: string, opt: any) {
+        return opt.w.globals.labels[opt.dataPointIndex] + ':  ' + val;
       },
       dropShadow: {
         enabled: true,
       },
     },
     colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`,
     ],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
 
     fill: {
-      type: "gradient",
+      type: 'gradient',
       colors: [
-        `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-        `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
-        `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning})`,
-        `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success})`,
+        `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
+        `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`,
+        `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`,
+        `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`,
       ],
     },
     yaxis: {
@@ -68,14 +66,14 @@ const PyramidChart = ({ height = 350 }) => {
     },
     xaxis: {
       categories: [
-        "Sweets",
-        "Processed Foods",
-        "Healthy Fats",
-        "Meat",
-        "Beans & Legumes",
-        "Dairy",
-        "Fruits & Vegetables",
-        "Grains",
+        'Sweets',
+        'Processed Foods',
+        'Healthy Fats',
+        'Meat',
+        'Beans & Legumes',
+        'Dairy',
+        'Fruits & Vegetables',
+        'Grains',
       ],
     },
 
@@ -89,15 +87,7 @@ const PyramidChart = ({ height = 350 }) => {
       left: 0,
     },
   };
-  return (
-    <Chart
-      options={options}
-      series={series}
-      type="bar"
-      height={height}
-      width={"100%"}
-    />
-  );
+  return <Chart options={options} series={series} type="bar" height={height} width={'100%'} />;
 };
 
 export default PyramidChart;

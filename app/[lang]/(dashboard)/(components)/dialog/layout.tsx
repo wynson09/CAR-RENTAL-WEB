@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Dialog",
+  title: 'Dialog',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -7,4 +7,3 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default Layout;
-

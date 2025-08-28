@@ -1,42 +1,38 @@
-"use client";
-import * as React from "react";
-import { Plus } from "lucide-react";
-import MailDisplay from "./mail-display";
-import { MailList } from "./mail-list";
-import { Nav } from "./nav";
-import { cn } from "@/lib/utils";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import MailHeader from "./mail-header";
-import { getMailAction } from "./_action";
-import MailSpam from "./mail-spam";
-import ComposeMail from "./compose-mail";
-import Labels from "./labels";
-import ContactList from "./contact-list";
-import { Icon } from "@iconify/react";
-import ChatBox from "./chat-box";
-import { useMediaQuery } from "@/hooks/use-media-query";
-import { type Mail } from "@/app/api/email/data";
+'use client';
+import * as React from 'react';
+import { Plus } from 'lucide-react';
+import MailDisplay from './mail-display';
+import { MailList } from './mail-list';
+import { Nav } from './nav';
+import { cn } from '@/lib/utils';
+import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import MailHeader from './mail-header';
+import { getMailAction } from './_action';
+import MailSpam from './mail-spam';
+import ComposeMail from './compose-mail';
+import Labels from './labels';
+import ContactList from './contact-list';
+import { Icon } from '@iconify/react';
+import ChatBox from './chat-box';
+import { useMediaQuery } from '@/hooks/use-media-query';
+import { type Mail } from '@/app/api/email/data';
 
 interface MailProps {
   accounts: {
-    label: string
-    email: string
-    icon: React.ReactNode
-  }[]
-  mails: Mail[]
-  defaultLayout: number[] | undefined
-  defaultCollapsed?: boolean
-  navCollapsedSize: number
-  contacts: any
+    label: string;
+    email: string;
+    icon: React.ReactNode;
+  }[];
+  mails: Mail[];
+  defaultLayout: number[] | undefined;
+  defaultCollapsed?: boolean;
+  navCollapsedSize: number;
+  contacts: any;
 }
 const Mail = ({
   accounts,
@@ -49,19 +45,13 @@ const Mail = ({
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
   const [isPending, startTransition] = React.useTransition();
 
-  const filteredPrimaryMails = mails.filter(
-    (mail) => mail.category === "primary"
-  );
-  const filteredSocialMails = mails.filter(
-    (mail) => mail.category === "social"
-  );
-  const filteredPromotionsMails = mails.filter(
-    (mail) => mail.category === "promotions"
-  );
+  const filteredPrimaryMails = mails.filter((mail) => mail.category === 'primary');
+  const filteredSocialMails = mails.filter((mail) => mail.category === 'social');
+  const filteredPromotionsMails = mails.filter((mail) => mail.category === 'promotions');
 
   // mail state
   const [selectedMail, setSelectedMail] = React.useState<Mail | null>(null);
-  const [searchMail, setSearchMail] = React.useState<string>("");
+  const [searchMail, setSearchMail] = React.useState<string>('');
   const [openSpam, setOpenSpam] = React.useState<boolean>(false);
   // state for compose mail
   const [openComposeMail, setOpenComposeMail] = React.useState<boolean>(false);
@@ -79,13 +69,11 @@ const Mail = ({
     });
   };
   const closeSelectedMail = () => setSelectedMail(null);
-  const isDesktop = useMediaQuery("(max-width: 1280px)");
+  const isDesktop = useMediaQuery('(max-width: 1280px)');
 
   return (
     <>
-      {openComposeMail && (
-        <ComposeMail onClose={() => setOpenComposeMail(false)} />
-      )}
+      {openComposeMail && <ComposeMail onClose={() => setOpenComposeMail(false)} />}
       {openChatBox && <ChatBox onClose={() => setOpenChatBox(false)} />}
       <div className="app-height overflow-hidden  relative z-10">
         {isDesktop && showSidebar && (
@@ -97,24 +85,16 @@ const Mail = ({
         )}
         {isDesktop && showSidebar && (
           <div
-            className={cn(
-              "absolute h-full top-0 md:w-[260px] w-[200px] z-[999]",
-              {
-                "left-0": isDesktop && showSidebar,
-                "-left-full": isDesktop && !showSidebar,
-              }
-            )}
+            className={cn('absolute h-full top-0 md:w-[260px] w-[200px] z-[999]', {
+              'left-0': isDesktop && showSidebar,
+              '-left-full': isDesktop && !showSidebar,
+            })}
           >
             <Card className="h-full pb-0 overflow-auto no-scrollbar">
               <CardHeader
-                className={cn(
-                  "border-none xl:mb-0 xl:pb-0 sticky z-50 bg-card top-0  px-6  "
-                )}
+                className={cn('border-none xl:mb-0 xl:pb-0 sticky z-50 bg-card top-0  px-6  ')}
               >
-                <Button
-                  onClick={() => setOpenComposeMail(true)}
-                  className="w-full"
-                >
+                <Button onClick={() => setOpenComposeMail(true)} className="w-full">
                   <Plus className="w-4 h-4 ltr:mr-1 rtl:ml-1.5" />
                   Compose
                 </Button>
@@ -125,55 +105,51 @@ const Mail = ({
                   handleSidebar={() => setShowSidebar(false)}
                   links={[
                     {
-                      title: "all mail",
-                      icon: "heroicons:envelope-open",
-                      label: "128",
+                      title: 'all mail',
+                      icon: 'heroicons:envelope-open',
+                      label: '128',
                     },
                     {
-                      title: "inbox",
-                      icon: "heroicons:envelope",
-                      label: "58",
-
+                      title: 'inbox',
+                      icon: 'heroicons:envelope',
+                      label: '58',
                     },
                     {
-                      title: "Starred",
-                      icon: "heroicons:star",
-                      label: "30",
+                      title: 'Starred',
+                      icon: 'heroicons:star',
+                      label: '30',
                     },
                     {
-                      title: "sent",
-                      icon: "heroicons:paper-airplane",
-                      label: "35",
+                      title: 'sent',
+                      icon: 'heroicons:paper-airplane',
+                      label: '35',
                     },
                     {
-                      title: "drafts",
-                      icon: "heroicons:pencil-square",
-                      label: "50",
+                      title: 'drafts',
+                      icon: 'heroicons:pencil-square',
+                      label: '50',
                     },
                     {
-                      title: "importants",
-                      icon: "heroicons:tag",
-                      label: "70",
+                      title: 'importants',
+                      icon: 'heroicons:tag',
+                      label: '70',
                     },
                     {
-                      title: "spam",
-                      icon: "heroicons:exclamation-circle",
-                      label: "20",
+                      title: 'spam',
+                      icon: 'heroicons:exclamation-circle',
+                      label: '20',
                     },
                     {
-                      title: "trash",
-                      icon: "heroicons:trash",
-                      label: "12",
+                      title: 'trash',
+                      icon: 'heroicons:trash',
+                      label: '12',
                     },
                   ]}
                 />
                 <div
-                  className={cn(
-                    "mt-4 mb-2 text-xs font-medium text-default-800 uppercase mx-4",
-                    {
-                      "mx-1 ": isCollapsed,
-                    }
-                  )}
+                  className={cn('mt-4 mb-2 text-xs font-medium text-default-800 uppercase mx-4', {
+                    'mx-1 ': isCollapsed,
+                  })}
                 >
                   Labels
                 </div>
@@ -181,24 +157,24 @@ const Mail = ({
                   isCollapsed={false}
                   items={[
                     {
-                      label: "work",
-                      total: "03",
-                      color: "primary",
+                      label: 'work',
+                      total: '03',
+                      color: 'primary',
                     },
                     {
-                      label: "company",
-                      total: "04",
-                      color: "warning",
+                      label: 'company',
+                      total: '04',
+                      color: 'warning',
                     },
                     {
-                      label: "private",
-                      total: "05",
-                      color: "success",
+                      label: 'private',
+                      total: '05',
+                      color: 'success',
                     },
                     {
-                      label: "group",
-                      total: "06",
-                      color: "destructive",
+                      label: 'group',
+                      total: '06',
+                      color: 'destructive',
                     },
                   ]}
                 />
@@ -210,9 +186,7 @@ const Mail = ({
           <ResizablePanelGroup
             direction="horizontal"
             onLayout={(sizes) => {
-              document.cookie = `react-resizable-panels:layout=${JSON.stringify(
-                sizes
-              )}`;
+              document.cookie = `react-resizable-panels:layout=${JSON.stringify(sizes)}`;
             }}
             className="relative "
           >
@@ -225,41 +199,35 @@ const Mail = ({
                 maxSize={20}
                 onCollapse={(collapsed) => {
                   setIsCollapsed(collapsed);
-                  document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
-                    true
-                  )}`;
+                  document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(true)}`;
                 }}
                 className={cn(
-                  "",
-                  isCollapsed &&
-                  "min-w-[50px] transition-all duration-300 ease-in-out "
+                  '',
+                  isCollapsed && 'min-w-[50px] transition-all duration-300 ease-in-out '
                 )}
               >
                 <Card className="h-full overflow-auto no-scrollbar">
                   <CardHeader
-                    className={cn(
-                      "border-none mb-0 pb-0 sticky bg-card top-0  px-6 z-[99]",
-                      {
-                        "px-2": isCollapsed,
-                      }
-                    )}
+                    className={cn('border-none mb-0 pb-0 sticky bg-card top-0  px-6 z-[99]', {
+                      'px-2': isCollapsed,
+                    })}
                   >
                     <Button
-                      size={isCollapsed ? "icon" : "default"}
+                      size={isCollapsed ? 'icon' : 'default'}
                       onClick={() => setOpenComposeMail(true)}
-                      className={isCollapsed ? "w-full" : ""}
+                      className={isCollapsed ? 'w-full' : ''}
                     >
                       <Plus
-                        className={cn("w-4 h-4 ltr:mr-1 rtl:ml-1", {
-                          "mr-0 w-5 h-5": isCollapsed,
+                        className={cn('w-4 h-4 ltr:mr-1 rtl:ml-1', {
+                          'mr-0 w-5 h-5': isCollapsed,
                         })}
                       />
-                      {!isCollapsed && "Compose"}
+                      {!isCollapsed && 'Compose'}
                     </Button>
                   </CardHeader>
                   <CardContent
-                    className={cn("", {
-                      "px-2": isCollapsed,
+                    className={cn('', {
+                      'px-2': isCollapsed,
                     })}
                   >
                     <Nav
@@ -267,44 +235,44 @@ const Mail = ({
                       handleSidebar={() => setShowSidebar(false)}
                       links={[
                         {
-                          title: "all mail",
-                          icon: "heroicons:envelope-open",
-                          label: "128",
+                          title: 'all mail',
+                          icon: 'heroicons:envelope-open',
+                          label: '128',
                         },
                         {
-                          title: "inbox",
-                          icon: "heroicons:envelope",
-                          label: "58",
+                          title: 'inbox',
+                          icon: 'heroicons:envelope',
+                          label: '58',
                         },
                         {
-                          title: "Starred",
-                          icon: "heroicons:star",
-                          label: "30",
+                          title: 'Starred',
+                          icon: 'heroicons:star',
+                          label: '30',
                         },
                         {
-                          title: "sent",
-                          icon: "heroicons:paper-airplane",
-                          label: "35",
+                          title: 'sent',
+                          icon: 'heroicons:paper-airplane',
+                          label: '35',
                         },
                         {
-                          title: "drafts",
-                          icon: "heroicons:pencil-square",
-                          label: "50",
+                          title: 'drafts',
+                          icon: 'heroicons:pencil-square',
+                          label: '50',
                         },
                         {
-                          title: "importants",
-                          icon: "heroicons:tag",
-                          label: "70",
+                          title: 'importants',
+                          icon: 'heroicons:tag',
+                          label: '70',
                         },
                         {
-                          title: "spam",
-                          icon: "heroicons:exclamation-circle",
-                          label: "20",
+                          title: 'spam',
+                          icon: 'heroicons:exclamation-circle',
+                          label: '20',
                         },
                         {
-                          title: "trash",
-                          icon: "heroicons:trash",
-                          label: "12",
+                          title: 'trash',
+                          icon: 'heroicons:trash',
+                          label: '12',
                         },
                       ]}
                     />
@@ -313,9 +281,9 @@ const Mail = ({
                     {!isCollapsed && (
                       <div
                         className={cn(
-                          "mt-4 mb-2 text-xs font-medium text-default-800 uppercase mx-4",
+                          'mt-4 mb-2 text-xs font-medium text-default-800 uppercase mx-4',
                           {
-                            "mx-1 ": isCollapsed,
+                            'mx-1 ': isCollapsed,
                           }
                         )}
                       >
@@ -326,24 +294,24 @@ const Mail = ({
                       isCollapsed={isCollapsed}
                       items={[
                         {
-                          label: "work",
-                          total: "03",
-                          color: "primary",
+                          label: 'work',
+                          total: '03',
+                          color: 'primary',
                         },
                         {
-                          label: "company",
-                          total: "04",
-                          color: "warning",
+                          label: 'company',
+                          total: '04',
+                          color: 'warning',
                         },
                         {
-                          label: "private",
-                          total: "05",
-                          color: "success",
+                          label: 'private',
+                          total: '05',
+                          color: 'success',
                         },
                         {
-                          label: "group",
-                          total: "06",
-                          color: "destructive",
+                          label: 'group',
+                          total: '06',
+                          color: 'destructive',
                         },
                       ]}
                     />
@@ -351,9 +319,9 @@ const Mail = ({
                     {!isCollapsed && (
                       <div
                         className={cn(
-                          "mt-4 mb-2 text-xs font-medium text-default-800 uppercase mx-4",
+                          'mt-4 mb-2 text-xs font-medium text-default-800 uppercase mx-4',
                           {
-                            "mx-1": isCollapsed,
+                            'mx-1': isCollapsed,
                           }
                         )}
                       >
@@ -433,10 +401,7 @@ const Mail = ({
                               </TabsTrigger>
                             </TabsList>
                           </div>
-                          <TabsContent
-                            value="private"
-                            className="m-0 overflow-hidden"
-                          >
+                          <TabsContent value="private" className="m-0 overflow-hidden">
                             {filteredPrimaryMails?.map((mail, index) => (
                               <MailList
                                 key={`mail-key1${index}`}
@@ -445,10 +410,7 @@ const Mail = ({
                               />
                             ))}
                           </TabsContent>
-                          <TabsContent
-                            value="social"
-                            className="m-0 overflow-hidden"
-                          >
+                          <TabsContent value="social" className="m-0 overflow-hidden">
                             {filteredSocialMails?.map((mail, index) => (
                               <MailList
                                 key={`mail-key2${index}`}
@@ -457,10 +419,7 @@ const Mail = ({
                               />
                             ))}
                           </TabsContent>
-                          <TabsContent
-                            value="promotions"
-                            className="m-0 overflow-hidden"
-                          >
+                          <TabsContent value="promotions" className="m-0 overflow-hidden">
                             {filteredPromotionsMails?.map((mail, index) => (
                               <MailList
                                 key={`mail-key3${index}`}

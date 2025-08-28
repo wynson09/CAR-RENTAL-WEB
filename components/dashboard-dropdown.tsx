@@ -1,13 +1,13 @@
-"use client";
-import { MoreHorizontal } from "lucide-react";
-import { Button } from "@/components/ui/button";
+'use client';
+import { MoreHorizontal } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 const DashboardDropdown = () => {
   return (
     <DropdownMenu>
@@ -19,16 +19,10 @@ const DashboardDropdown = () => {
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent
-        className="w-[196px]"
-        align="end"
-        side="bottom"
-        avoidCollisions
-      >
+      <DropdownMenuContent className="w-[196px]" align="end" side="bottom" avoidCollisions>
         <DropdownMenuLabel>View All</DropdownMenuLabel>
         <DropdownMenuItem>Download</DropdownMenuItem>
         <DropdownMenuItem>Refresh</DropdownMenuItem>
-
       </DropdownMenuContent>
     </DropdownMenu>
   );

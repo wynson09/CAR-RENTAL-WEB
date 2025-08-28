@@ -1,14 +1,14 @@
-"use client";
-import * as React from "react";
-import Card from "@/components/ui/card-snippet";
+'use client';
+import * as React from 'react';
+import Card from '@/components/ui/card-snippet';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
+} from '@/components/ui/carousel';
+import Autoplay from 'embla-carousel-autoplay';
 import {
   autoPlayCarousel,
   centerAlignmentCarousel,
@@ -17,11 +17,11 @@ import {
   oriantationCarousel,
   righttoleftCarousel,
   sizeCarousel,
-} from "./source-code";
+} from './source-code';
 
-import slider1 from "@/public/images/all-img/slider-1.png";
-import Image from "next/image";
-import { useThemeStore } from "@/store";
+import slider1 from '@/public/images/all-img/slider-1.png';
+import Image from 'next/image';
+import { useThemeStore } from '@/store';
 
 const CarouselPage = () => {
   const { isRtl } = useThemeStore();
@@ -35,7 +35,7 @@ const CarouselPage = () => {
           <Carousel
             className="w-full max-w-3xl	 mx-auto"
             opts={{
-              direction: isRtl ? "rtl" : "ltr",
+              direction: isRtl ? 'rtl' : 'ltr',
             }}
           >
             <CarouselContent>
@@ -60,14 +60,13 @@ const CarouselPage = () => {
       </Card>
       <Card title="Size" code={sizeCarousel}>
         <p className="text-sm text-default-400 dark:text-default-600  mb-4">
-          Size carousel is showing different size carousel in one slide at a
-          time.
+          Size carousel is showing different size carousel in one slide at a time.
         </p>
         <div className="px-10">
           <Carousel
             className="w-full max-w-3xl mx-auto"
             opts={{
-              direction: isRtl ? "rtl" : "ltr",
+              direction: isRtl ? 'rtl' : 'ltr',
             }}
           >
             <CarouselContent>
@@ -96,8 +95,8 @@ const CarouselPage = () => {
         </p>
         <Carousel
           opts={{
-            align: "start",
-            direction: isRtl ? "rtl" : "ltr",
+            align: 'start',
+            direction: isRtl ? 'rtl' : 'ltr',
           }}
           orientation="vertical"
           className="w-full max-w-3xl mx-auto my-14"
@@ -123,8 +122,7 @@ const CarouselPage = () => {
       </Card>
       <Card title="Plugins auto play" code={autoPlayCarousel}>
         <p className="text-sm text-default-400 dark:text-default-600  mb-4">
-          Orientation carousel is showing carousel in vertically slide with
-          autoplay.
+          Orientation carousel is showing carousel in vertically slide with autoplay.
         </p>
         <Carousel
           plugins={[
@@ -133,8 +131,8 @@ const CarouselPage = () => {
             }),
           ]}
           opts={{
-            align: "start",
-            direction: isRtl ? "rtl" : "ltr",
+            align: 'start',
+            direction: isRtl ? 'rtl' : 'ltr',
           }}
           orientation="vertical"
           className="w-full max-w-3xl mx-auto my-14"
@@ -166,9 +164,9 @@ const CarouselPage = () => {
         <div className="px-10">
           <Carousel
             opts={{
-              align: "start",
+              align: 'start',
               loop: true,
-              direction: isRtl ? "rtl" : "ltr",
+              direction: isRtl ? 'rtl' : 'ltr',
             }}
             className="w-full max-w-3xl mx-auto"
           >
@@ -199,8 +197,8 @@ const CarouselPage = () => {
         <div dir="rtl" className="px-10">
           <Carousel
             opts={{
-              align: "start",
-              direction: "rtl",
+              align: 'start',
+              direction: 'rtl',
             }}
             className="w-full max-w-3xl mx-auto"
           >
@@ -231,19 +229,16 @@ const CarouselPage = () => {
         <div className="px-10">
           <Carousel
             opts={{
-              align: "center",
+              align: 'center',
               loop: true,
-              containScroll: "trimSnaps",
-              direction: isRtl ? "rtl" : "ltr",
+              containScroll: 'trimSnaps',
+              direction: isRtl ? 'rtl' : 'ltr',
             }}
             className="w-full max-w-3xl mx-auto"
           >
             <CarouselContent>
               {Array.from({ length: 5 }).map((_, index) => (
-                <CarouselItem
-                  key={index}
-                  className="basis-full md:basis-1/2 lg:basis-2/4"
-                >
+                <CarouselItem key={index} className="basis-full md:basis-1/2 lg:basis-2/4">
                   <div className="p-1">
                     <div className="flex aspect-square items-center justify-center  max-h-[250px] relative">
                       <Image

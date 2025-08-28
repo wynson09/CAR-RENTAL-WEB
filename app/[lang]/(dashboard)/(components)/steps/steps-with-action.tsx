@@ -1,19 +1,14 @@
-"use client";
-import React from "react";
-import {
-  Stepper,
-  Step,
-  StepLabel,
-  StepDescription,
-} from "@/components/ui/steps";
-import { Button } from "@/components/ui/button";
-import { useMediaQuery } from "@/hooks/use-media-query";
+'use client';
+import React from 'react';
+import { Stepper, Step, StepLabel, StepDescription } from '@/components/ui/steps';
+import { Button } from '@/components/ui/button';
+import { useMediaQuery } from '@/hooks/use-media-query';
 
 const StepsWithAction = () => {
   const [activestep, setActiveStep] = React.useState<number>(0);
   const [skipped, setSkipped] = React.useState<Set<number>>(new Set());
-  const steps = ["Step 1", "Step 2", "Step 3"];
-  const isTablet = useMediaQuery("(max-width: 1024px)");
+  const steps = ['Step 1', 'Step 2', 'Step 3'];
+  const isTablet = useMediaQuery('(max-width: 1024px)');
   const isStepOptional = (step: number) => {
     return step === 1;
   };
@@ -47,25 +42,19 @@ const StepsWithAction = () => {
         className="my-4"
         current={activestep}
         content="right"
-        direction={isTablet ? "vertical" : "horizontal"}
+        direction={isTablet ? 'vertical' : 'horizontal'}
       >
         {steps?.map((label, i) => {
           const stepProps: { completed?: boolean } = {};
           const labelProps: { optional?: React.ReactNode } = {};
           if (isStepOptional(i)) {
-            labelProps.optional = (
-              <StepLabel>Optional</StepLabel>
-            );
+            labelProps.optional = <StepLabel>Optional</StepLabel>;
           }
 
           return (
             <Step key={label} {...stepProps}>
-              <StepLabel className="  mb-0.5 text-foreground">
-                {label}
-              </StepLabel>
-              <StepDescription className=" text-xs">
-                Paragraph Text
-              </StepDescription>
+              <StepLabel className="  mb-0.5 text-foreground">{label}</StepLabel>
+              <StepDescription className=" text-xs">Paragraph Text</StepDescription>
             </Step>
           );
         })}

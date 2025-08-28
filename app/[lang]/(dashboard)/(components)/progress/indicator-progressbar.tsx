@@ -1,7 +1,7 @@
-"use client";
-import React from "react";
-import { CircularProgress, Progress } from "@/components/ui/progress";
-import { Button } from "@/components/ui/button";
+'use client';
+import React from 'react';
+import { CircularProgress, Progress } from '@/components/ui/progress';
+import { Button } from '@/components/ui/button';
 
 const IndicatorProgressbar = () => {
   const [value, setValue] = React.useState<number>(0);
@@ -42,12 +42,7 @@ const IndicatorProgressbar = () => {
       <Progress value={50} color="primary" isStripe isAnimate />
       <CircularProgress value={value} color="warning" showValue />
       <div>custom content</div>
-      <CircularProgress
-        value={value}
-        color="success"
-        showValue
-        customContent="Done"
-      />
+      <CircularProgress value={value} color="success" showValue customContent="Done" />
       <div>event diye example</div>
       <CircularProgress value={value2} color="primary" showValue />
       <br />

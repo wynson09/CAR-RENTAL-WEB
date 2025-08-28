@@ -1,6 +1,6 @@
-"use client";
-import { render } from "@react-email/render";
-import Shoptemplate from "./shop-template";
+'use client';
+import { render } from '@react-email/render';
+import Shoptemplate from './shop-template';
 const ShopPage = () => {
   const shopTemplate = render(<Shoptemplate />);
   return (

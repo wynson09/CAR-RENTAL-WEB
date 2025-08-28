@@ -1,31 +1,19 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import {
-  ChevronDown,
-  ListFilter,
-  MailCheck,
-  MicOff,
-  Paperclip,
-  Menu,
-} from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { InputGroup, InputGroupText } from "@/components/ui/input-group";
-import { Icon } from "@iconify/react";
-import { Checkbox } from "@/components/ui/checkbox";
+'use client';
+import { Button } from '@/components/ui/button';
+import { ChevronDown, ListFilter, MailCheck, MicOff, Paperclip, Menu } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { InputGroup, InputGroupText } from '@/components/ui/input-group';
+import { Icon } from '@iconify/react';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useMediaQuery } from "@/hooks/use-media-query";
-import { Fragment } from "react";
+} from '@/components/ui/dropdown-menu';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useMediaQuery } from '@/hooks/use-media-query';
+import { Fragment } from 'react';
 
 interface MailHeaderProps {
   selectedMail: any | null;
@@ -34,7 +22,7 @@ interface MailHeaderProps {
   handleSidebar: () => void;
 }
 const MailHeader = ({ selectedMail, onClose, handleSpam, handleSidebar }: MailHeaderProps) => {
-  const isDesktop = useMediaQuery("(max-width: 1280px)");
+  const isDesktop = useMediaQuery('(max-width: 1280px)');
   return (
     <Fragment>
       <div className="flex-1 ">
@@ -50,10 +38,7 @@ const MailHeader = ({ selectedMail, onClose, handleSpam, handleSidebar }: MailHe
               <Checkbox className="border-default-200" />
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button
-                    size="icon"
-                    className="bg-transparent hover:bg-transparent px-0 w-fit"
-                  >
+                  <Button size="icon" className="bg-transparent hover:bg-transparent px-0 w-fit">
                     <ChevronDown className="w-4 h-4 text-default-500" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -74,10 +59,7 @@ const MailHeader = ({ selectedMail, onClose, handleSpam, handleSidebar }: MailHe
               className="h-9 w-9 rounded-full bg-default-100 hover:bg-default-200"
               onClick={onClose}
             >
-              <Icon
-                icon="heroicons:arrow-long-left"
-                className="w-5 h-5 text-default-900"
-              />
+              <Icon icon="heroicons:arrow-long-left" className="w-5 h-5 text-default-900" />
             </Button>
           )}
           <div>
@@ -129,10 +111,7 @@ const MailHeader = ({ selectedMail, onClose, handleSpam, handleSidebar }: MailHe
                     size="icon"
                     className="bg-transparent hover:bg-transparent  hover:bg-default-50 rounded-full"
                   >
-                    <Icon
-                      icon="heroicons:trash"
-                      className="w-5 h-5 text-default-600"
-                    />
+                    <Icon icon="heroicons:trash" className="w-5 h-5 text-default-600" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent side="bottom">
@@ -155,15 +134,12 @@ const MailHeader = ({ selectedMail, onClose, handleSpam, handleSidebar }: MailHe
                     {!selectedMail ? (
                       <MailCheck className="w-5 h-5 text-default-600" />
                     ) : (
-                      <Icon
-                        icon="heroicons:envelope-open"
-                        className="w-5 h-5 text-default-600"
-                      />
+                      <Icon icon="heroicons:envelope-open" className="w-5 h-5 text-default-600" />
                     )}
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent side="bottom">
-                  <p>{!selectedMail ? "Mark as Unread" : "Mark as Read"} </p>
+                  <p>{!selectedMail ? 'Mark as Unread' : 'Mark as Read'} </p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -175,10 +151,7 @@ const MailHeader = ({ selectedMail, onClose, handleSpam, handleSidebar }: MailHe
                   size="icon"
                   className="bg-transparent hover:bg-transparent hover:bg-default-50 rounded-full"
                 >
-                  <Icon
-                    icon="heroicons:tag"
-                    className="w-5 h-5 text-default-600"
-                  />
+                  <Icon icon="heroicons:tag" className="w-5 h-5 text-default-600" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-fit" align="start">
@@ -197,10 +170,7 @@ const MailHeader = ({ selectedMail, onClose, handleSpam, handleSidebar }: MailHe
                   size="icon"
                   className="bg-transparent hover:bg-transparent  hover:bg-default-50 rounded-full"
                 >
-                  <Icon
-                    icon="heroicons:ellipsis-vertical"
-                    className="w-5 h-5 text-default-600"
-                  />
+                  <Icon icon="heroicons:ellipsis-vertical" className="w-5 h-5 text-default-600" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-fit" align="end">
@@ -219,10 +189,7 @@ const MailHeader = ({ selectedMail, onClose, handleSpam, handleSidebar }: MailHe
                   Mark as not important
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Icon
-                    icon="heroicons:star"
-                    className="w-4 h-4 text-default-600 me-1.5"
-                  />
+                  <Icon icon="heroicons:star" className="w-4 h-4 text-default-600 me-1.5" />
                   Add Star
                 </DropdownMenuItem>
                 <DropdownMenuItem>

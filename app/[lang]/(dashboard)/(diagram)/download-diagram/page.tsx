@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import React, { useCallback } from 'react';
 import ReactFlow, {
   useNodesState,
@@ -33,10 +33,7 @@ const DownloadImageFlow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node[]>(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge[]>(initialEdges);
 
-  const onConnect:OnConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
-    []
-  );
+  const onConnect: OnConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
 
   return (
     <Card>
@@ -44,7 +41,7 @@ const DownloadImageFlow = () => {
         <CardTitle>Horizontal Flow</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className='w-full h-[calc(100vh-280px)]'>
+        <div className="w-full h-[calc(100vh-280px)]">
           <ReactFlow
             nodes={nodes}
             edges={edges}

@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Keyboard Button",
+  title: 'Keyboard Button',
 };
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;

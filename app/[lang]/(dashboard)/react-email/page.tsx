@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import AdvancedTemplate from "./advanced-template";
-import { render } from "@react-email/render";
+import AdvancedTemplate from './advanced-template';
+import { render } from '@react-email/render';
 const Advanced = () => {
   const advancedHtmlContent = render(<AdvancedTemplate />);
 

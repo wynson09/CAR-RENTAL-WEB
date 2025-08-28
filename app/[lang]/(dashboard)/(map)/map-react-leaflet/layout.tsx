@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "React Leaflet map",
+  title: 'React Leaflet map',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

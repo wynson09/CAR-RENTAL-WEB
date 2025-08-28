@@ -1,7 +1,7 @@
-"use client";
-import { Icon } from "@iconify/react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+'use client';
+import { Icon } from '@iconify/react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Sheet,
   SheetClose,
@@ -10,21 +10,20 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
-import { Label } from "@/components/ui/label";
+} from '@/components/ui/sheet';
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 
-
-import Link from "next/link";
-import { SiteLogo } from "@/components/svg";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import Link from 'next/link';
+import { SiteLogo } from '@/components/svg';
+import { ScrollArea } from '@/components/ui/scroll-area';
 export default function SubmitFormInDrawer() {
   return (
     <Sheet>
@@ -49,23 +48,16 @@ export default function SubmitFormInDrawer() {
                   <SiteLogo className="w-12 h-12 mb-2 text-primary" />
                 </Link>
               </div>
-              <h3 className="text-2xl font-bold text-default-700 ">
-                Create a new account
-              </h3>
+              <h3 className="text-2xl font-bold text-default-700 ">Create a new account</h3>
               <p className="text-default-600  mt-1">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis
-                quod delectus amet.
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis quod delectus amet.
               </p>
             </div>
             {/* form */}
             <div className="md:grid md:grid-cols-2 gap-6 mt-6 space-y-6 md:space-y-0">
               <div className="flex flex-col gap-2">
                 <Label htmlFor="username">Name</Label>
-                <Input
-                  type="text"
-                  placeholder="Please enter user name"
-                  id="username"
-                />
+                <Input type="text" placeholder="Please enter user name" id="username" />
               </div>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="url">URL</Label>
@@ -73,7 +65,7 @@ export default function SubmitFormInDrawer() {
               </div>
               <div className="flex flex-col gap-2 relative">
                 <Label htmlFor="owner">Owner</Label>
-                <Select >
+                <Select>
                   <SelectTrigger>
                     <SelectValue placeholder="Please select an owner" />
                   </SelectTrigger>
@@ -126,9 +118,12 @@ export default function SubmitFormInDrawer() {
         <SheetFooter className="gap-3 pt-4 block">
           <div className="flex items-center gap-2.5 justify-center">
             <SheetClose asChild>
-              <Button color="destructive" variant="outline" size="xs"> Cancel </Button>
+              <Button color="destructive" variant="outline" size="xs">
+                {' '}
+                Cancel{' '}
+              </Button>
             </SheetClose>
-            <Button size="xs" >Submit</Button>
+            <Button size="xs">Submit</Button>
           </div>
         </SheetFooter>
       </SheetContent>

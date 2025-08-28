@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import Card from "@/components/ui/card-snippet";
-import InputGroupSize from "./input-group-size";
-import MergedInputGroup from "./merged-input-group";
-import InputGroupsButton from "./input-groups-button";
-import BasicInputGroup from "./basic-input-group";
-import InputGroupRadius from "./input-group-radius";
-import CheckboxRadioGroup from "./checkbox-radio-group";
-import MultipleAddons from "./multiple-addons";
-import InputButtonWithDropdown from "./input-button-with-dropdown";
+import Card from '@/components/ui/card-snippet';
+import InputGroupSize from './input-group-size';
+import MergedInputGroup from './merged-input-group';
+import InputGroupsButton from './input-groups-button';
+import BasicInputGroup from './basic-input-group';
+import InputGroupRadius from './input-group-radius';
+import CheckboxRadioGroup from './checkbox-radio-group';
+import MultipleAddons from './multiple-addons';
+import InputButtonWithDropdown from './input-button-with-dropdown';
 
 const InputGrouPpage = () => {
   return (

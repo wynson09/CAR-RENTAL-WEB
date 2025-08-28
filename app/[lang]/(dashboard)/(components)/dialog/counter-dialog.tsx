@@ -1,6 +1,6 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/react";
+'use client';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@iconify/react';
 import {
   Dialog,
   DialogClose,
@@ -8,8 +8,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { useState } from "react";
+} from '@/components/ui/dialog';
+import { useState } from 'react';
 
 const CounterDialog = () => {
   const [count, setCount] = useState<number>(19);
@@ -28,18 +28,11 @@ const CounterDialog = () => {
         <DialogHeader>
           <div className="flex items-center gap-3 p-5">
             <div className="h-12 w-12 rounded-sm border border-border grid place-content-center">
-              <Icon
-                icon="heroicons:square-3-stack-3d"
-                className="w-5 h-5 text-default-500"
-              />
+              <Icon icon="heroicons:square-3-stack-3d" className="w-5 h-5 text-default-500" />
             </div>
             <div>
-              <div className="text-base font-semibold text-default-700  mb-1">
-                Booking Seat
-              </div>
-              <p className="text-xs text-default-500 ">
-                Select how many seat you need
-              </p>
+              <div className="text-base font-semibold text-default-700  mb-1">Booking Seat</div>
+              <p className="text-xs text-default-500 ">Select how many seat you need</p>
             </div>
           </div>
         </DialogHeader>
@@ -67,20 +60,12 @@ const CounterDialog = () => {
           <hr />
           <ul className="p-5 space-y-2">
             <li className="flex justify-between">
-              <span className="text-sm font-semibold text-default-700">
-                Price Per Seat
-              </span>{" "}
-              <span className="text-sm font-semibold text-default-700">
-                $100
-              </span>{" "}
+              <span className="text-sm font-semibold text-default-700">Price Per Seat</span>{' '}
+              <span className="text-sm font-semibold text-default-700">$100</span>{' '}
             </li>
             <li className="flex justify-between">
-              <span className="text-sm font-semibold text-default-700">
-                Total
-              </span>{" "}
-              <span className="text-sm font-semibold text-default-700">
-                $1900
-              </span>{" "}
+              <span className="text-sm font-semibold text-default-700">Total</span>{' '}
+              <span className="text-sm font-semibold text-default-700">$1900</span>{' '}
             </li>
           </ul>
         </div>

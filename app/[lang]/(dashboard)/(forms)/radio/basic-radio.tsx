@@ -1,5 +1,5 @@
-"use client";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+'use client';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 const BasicRadio = () => {
   return (
     <>

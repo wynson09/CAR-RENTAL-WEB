@@ -1,14 +1,10 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import {
-  getGridConfig,
-  getYAxisConfig,
-  getLabel,
-} from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getGridConfig, getYAxisConfig, getLabel } from '@/lib/appex-chart-options';
 
 const BasicColumn = ({ height = 300 }) => {
   const { theme: config, setTheme: setConfig, isRtl } = useThemeStore();
@@ -18,20 +14,20 @@ const BasicColumn = ({ height = 300 }) => {
 
   const series = [
     {
-      name: "Net Profit",
+      name: 'Net Profit',
       data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
     },
     {
-      name: "Revenue",
+      name: 'Revenue',
       data: [76, 85, 101, 98, 87, 105, 91, 114, 94],
     },
     {
-      name: "Free Cash Flow",
+      name: 'Free Cash Flow',
       data: [35, 41, 36, 26, 45, 48, 52, 53, 41],
     },
   ];
 
-  const options:any = {
+  const options: any = {
     chart: {
       toolbar: {
         show: false,
@@ -41,48 +37,31 @@ const BasicColumn = ({ height = 300 }) => {
       enabled: false,
     },
     stroke: {
-      curve: "smooth",
+      curve: 'smooth',
       width: 2,
     },
     colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`,
     ],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
 
-    yaxis: getYAxisConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`
-    ),
+    yaxis: getYAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: "45%",
-        endingShape: "rounded",
+        columnWidth: '45%',
+        endingShape: 'rounded',
       },
     },
     xaxis: {
-      categories: [
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-      ],
+      categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
       labels: getLabel(
-        `hsl(${theme?.cssVars[
-          mode === "dark" || mode === "system" ? "dark" : "light"
-        ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
       axisBorder: {
         show: false,
@@ -99,10 +78,9 @@ const BasicColumn = ({ height = 300 }) => {
     },
     legend: {
       labels: {
-        colors: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-          })`,
+        colors: `hsl(${
+          theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+        })`,
       },
       itemMargin: {
         horizontal: 5,
@@ -112,19 +90,11 @@ const BasicColumn = ({ height = 300 }) => {
         width: 10,
         height: 10,
         radius: 10,
-        offsetX: isRtl ? 5 : -5
-      }
+        offsetX: isRtl ? 5 : -5,
+      },
     },
   };
-  return (
-      <Chart
-        options={options}
-        series={series}
-        type="bar"
-        height={height}
-        width={"100%"}
-      />
-  );
+  return <Chart options={options} series={series} type="bar" height={height} width={'100%'} />;
 };
 
 export default BasicColumn;

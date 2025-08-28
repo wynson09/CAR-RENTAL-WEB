@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Sheet,
   SheetClose,
@@ -6,8 +6,8 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
-import AdvancedTimeline from "../timeline/advanced-timeline";
+} from '@/components/ui/sheet';
+import AdvancedTimeline from '../timeline/advanced-timeline';
 
 export default function LeftExtraActionSheet() {
   return (
@@ -20,7 +20,10 @@ export default function LeftExtraActionSheet() {
           <SheetTitle>Latest Actions</SheetTitle>
         </SheetHeader>
         <hr />
-        <div className="flex flex-col justify-between overflow-y-auto custom-scrollbar" style={{ height: "calc(100vh - 120px)" }}>
+        <div
+          className="flex flex-col justify-between overflow-y-auto custom-scrollbar"
+          style={{ height: 'calc(100vh - 120px)' }}
+        >
           <div className="p-5">
             <AdvancedTimeline />
           </div>
@@ -28,9 +31,13 @@ export default function LeftExtraActionSheet() {
 
         <div className="flex gap-3 pt-4 px-5 ">
           <SheetClose asChild>
-            <Button color="warning" variant="outline" size="xs" className="flex-1">Close</Button>
+            <Button color="warning" variant="outline" size="xs" className="flex-1">
+              Close
+            </Button>
           </SheetClose>
-          <Button size="xs" className="flex-1">Show More</Button>
+          <Button size="xs" className="flex-1">
+            Show More
+          </Button>
         </div>
       </SheetContent>
     </Sheet>

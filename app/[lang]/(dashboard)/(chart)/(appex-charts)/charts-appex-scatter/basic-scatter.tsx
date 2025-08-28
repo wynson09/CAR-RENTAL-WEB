@@ -1,19 +1,19 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { getGridConfig, getLabel } from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getGridConfig, getLabel } from '@/lib/appex-chart-options';
 
 const BasicScatter = ({ height = 300 }) => {
-  const { theme: config, setTheme: setConfig,isRtl } = useThemeStore();
+  const { theme: config, setTheme: setConfig, isRtl } = useThemeStore();
   const { theme: mode } = useTheme();
   const theme = themes.find((theme) => theme.name === config);
 
   const series = [
     {
-      name: "SAMPLE A",
+      name: 'SAMPLE A',
       data: [
         [16.4, 5.4],
         [21.7, 2],
@@ -49,7 +49,7 @@ const BasicScatter = ({ height = 300 }) => {
       ],
     },
     {
-      name: "SAMPLE B",
+      name: 'SAMPLE B',
       data: [
         [36.4, 13.4],
         [1.7, 11],
@@ -85,7 +85,7 @@ const BasicScatter = ({ height = 300 }) => {
       ],
     },
     {
-      name: "SAMPLE C",
+      name: 'SAMPLE C',
       data: [
         [21.7, 3],
         [23.6, 3.5],
@@ -121,36 +121,33 @@ const BasicScatter = ({ height = 300 }) => {
       ],
     },
   ];
-  const options:any = {
+  const options: any = {
     chart: {
       toolbar: {
         show: false,
       },
       zoom: {
         enabled: true,
-        type: "xy",
+        type: 'xy',
       },
     },
     dataLabels: {
       enabled: false,
     },
     stroke: {
-      curve: "smooth",
+      curve: 'smooth',
       width: 4,
     },
     colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`,
     ],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
 
- 
     fill: {
       opacity: 1,
     },
@@ -163,11 +160,7 @@ const BasicScatter = ({ height = 300 }) => {
         show: false,
       },
       labels: getLabel(
-        `hsl(${
-          theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
     },
 
@@ -179,19 +172,14 @@ const BasicScatter = ({ height = 300 }) => {
         show: false,
       },
       labels: getLabel(
-        `hsl(${
-          theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
     },
     legend: {
       labels: {
-        colors: `hsl(${theme?.cssVars[
-          mode === "dark" || mode === "system" ? "dark" : "light"
-        ].chartLabel
-          })`,
+        colors: `hsl(${
+          theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+        })`,
       },
       itemMargin: {
         horizontal: 5,
@@ -201,8 +189,8 @@ const BasicScatter = ({ height = 300 }) => {
         width: 10,
         height: 10,
         radius: 10,
-        offsetX: isRtl ? 5 : -5
-      }
+        offsetX: isRtl ? 5 : -5,
+      },
     },
     padding: {
       top: 0,
@@ -211,15 +199,7 @@ const BasicScatter = ({ height = 300 }) => {
       left: 0,
     },
   };
-  return (
-      <Chart
-        options={options}
-        series={series}
-        type="scatter"
-        height={height}
-        width={"100%"}
-      />
-  );
+  return <Chart options={options} series={series} type="scatter" height={height} width={'100%'} />;
 };
 
 export default BasicScatter;

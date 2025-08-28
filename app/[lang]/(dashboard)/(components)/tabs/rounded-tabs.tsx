@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Tabs,  TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const RoundedTabs = () => {
   return (
@@ -11,10 +11,7 @@ const RoundedTabs = () => {
             <TabsTrigger value="account" className=" px-2 text-xs rounded-full">
               Account
             </TabsTrigger>
-            <TabsTrigger
-              value="password"
-              className=" px-2 text-xs rounded-full"
-            >
+            <TabsTrigger value="password" className=" px-2 text-xs rounded-full">
               Password
             </TabsTrigger>
             <TabsTrigger value="profile" className=" px-2 text-xs rounded-full">
@@ -41,22 +38,13 @@ const RoundedTabs = () => {
       <div className=" overflow-x-auto">
         <Tabs defaultValue="account" className=" inline-block">
           <TabsList className=" rounded-full">
-            <TabsTrigger
-              value="account"
-              className=" text-base px-4 rounded-full"
-            >
+            <TabsTrigger value="account" className=" text-base px-4 rounded-full">
               Account
             </TabsTrigger>
-            <TabsTrigger
-              value="password"
-              className="  text-base px-4 rounded-full"
-            >
+            <TabsTrigger value="password" className="  text-base px-4 rounded-full">
               Password
             </TabsTrigger>
-            <TabsTrigger
-              value="profile"
-              className="  text-base px-4 rounded-full"
-            >
+            <TabsTrigger value="profile" className="  text-base px-4 rounded-full">
               Profile
             </TabsTrigger>
           </TabsList>

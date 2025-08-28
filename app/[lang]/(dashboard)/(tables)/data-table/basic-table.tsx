@@ -1,7 +1,7 @@
-"use client";
-import * as React from "react";
+'use client';
+import * as React from 'react';
 
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -13,10 +13,10 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table';
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -25,8 +25,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -34,22 +34,21 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { User, data } from "./data";
-import { Icon } from "@iconify/react";
-import { cn } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { User, data } from './data';
+import { Icon } from '@iconify/react';
+import { cn } from '@/lib/utils';
 
 const columns: ColumnDef<User>[] = [
   {
-    id: "select",
+    id: 'select',
     header: ({ table }) => (
       <Checkbox
         checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
+          table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
@@ -67,8 +66,8 @@ const columns: ColumnDef<User>[] = [
   },
 
   {
-    accessorKey: "user",
-    header: "User",
+    accessorKey: 'user',
+    header: 'User',
     cell: ({ row }) => {
       const user = row.original.user;
       return (
@@ -82,63 +81,64 @@ const columns: ColumnDef<User>[] = [
               )}
             </Avatar>
             <span className="text-sm text-card-foreground whitespace-nowrap">
-              {user?.name ?? "Unknown User"}
+              {user?.name ?? 'Unknown User'}
             </span>
           </div>
         </div>
-      )
-    }
+      );
+    },
   },
   {
-    accessorKey: "email",
+    accessorKey: 'email',
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           Email
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase whitespace-nowrap">{row.getValue("email")}</div>,
+    cell: ({ row }) => <div className="lowercase whitespace-nowrap">{row.getValue('email')}</div>,
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: 'status',
+    header: 'Status',
     cell: ({ row }) => (
       <Badge
         variant="soft"
         color={
-          (row.getValue("status") === "failed" && "destructive") ||
-          (row.getValue("status") === "success" && "success") ||
-          (row.getValue("status") === "processing" && "info") || "default"
+          (row.getValue('status') === 'failed' && 'destructive') ||
+          (row.getValue('status') === 'success' && 'success') ||
+          (row.getValue('status') === 'processing' && 'info') ||
+          'default'
         }
         className=" capitalize"
       >
-        {row.getValue("status")}
+        {row.getValue('status')}
       </Badge>
     ),
   },
 
   {
-    accessorKey: "amount",
+    accessorKey: 'amount',
     header: () => <div className="text-right">Amount</div>,
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
+      const amount = parseFloat(row.getValue('amount'));
 
       // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
+      const formatted = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
       }).format(amount);
 
       return <div className="text-right font-medium">{formatted}</div>;
     },
   },
   {
-    id: "actions",
+    id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
       const payment = row.original;
@@ -154,9 +154,7 @@ const columns: ColumnDef<User>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(payment.id)}
-              >
+              <DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id)}>
                 Copy payment ID
               </DropdownMenuItem>
               <DropdownMenuSeparator />
@@ -200,10 +198,8 @@ export function BasicDataTable() {
       <div className="flex items-center flex-wrap gap-2  px-4">
         <Input
           placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) || ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
+          value={(table.getColumn('email')?.getFilterValue() as string) || ''}
+          onChange={(event) => table.getColumn('email')?.setFilterValue(event.target.value)}
           className="max-w-sm min-w-[200px] h-10"
         />
         <DropdownMenu>
@@ -222,9 +218,7 @@ export function BasicDataTable() {
                     key={column.id}
                     className="capitalize"
                     checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
+                    onCheckedChange={(value) => column.toggleVisibility(!!value)}
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
@@ -234,7 +228,7 @@ export function BasicDataTable() {
         </DropdownMenu>
       </div>
       <div>
-        <Table >
+        <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -243,10 +237,7 @@ export function BasicDataTable() {
                     <TableHead key={header.id}>
                       {header.isPlaceholder
                         ? null
-                        : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   );
                 })}
@@ -256,26 +247,17 @@ export function BasicDataTable() {
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
+                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
+                <TableCell colSpan={columns.length} className="h-24 text-center">
                   No results.
                 </TableCell>
               </TableRow>
@@ -286,7 +268,7 @@ export function BasicDataTable() {
 
       <div className="flex items-center flex-wrap gap-4 px-4 py-4">
         <div className="flex-1 text-sm text-muted-foreground whitespace-nowrap">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
+          {table.getFilteredSelectedRowModel().rows.length} of{' '}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
 
@@ -305,12 +287,10 @@ export function BasicDataTable() {
             <Button
               key={`basic-data-table-${pageIdx}`}
               onClick={() => table.setPageIndex(pageIdx)}
-
-              className={cn("w-8 h-8")}
+              className={cn('w-8 h-8')}
             >
               {page + 1}
             </Button>
-
           ))}
           <Button
             onClick={() => table.nextPage()}

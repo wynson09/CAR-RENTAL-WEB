@@ -1,11 +1,11 @@
-"use client";
-import { Plus, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { statuses } from "../data/data";
-import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-import { Icon } from "@iconify/react";
-import { Table as ReactTable } from "@tanstack/react-table";
+'use client';
+import { Plus, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { statuses } from '../data/data';
+import { DataTableFacetedFilter } from './data-table-faceted-filter';
+import { Icon } from '@iconify/react';
+import { Table as ReactTable } from '@tanstack/react-table';
 
 import {
   Select,
@@ -13,17 +13,17 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import Link from "next/link";
-import { DataRow } from "../data";
+} from '@/components/ui/select';
+import Link from 'next/link';
+import { DataRow } from '../data';
 
 interface DataTableToolbarProps {
-  table: ReactTable<DataRow>
+  table: ReactTable<DataRow>;
 }
 
 export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const isFiltered = table.getState().columnFilters.length > 0;
-  const statusColumn = table.getColumn("status");
+  const statusColumn = table.getColumn('status');
   const getFilterValue = (columnId: string) => {
     const filterValue = table.getColumn(columnId)?.getFilterValue();
     return typeof filterValue === 'string' ? filterValue : '';
@@ -38,10 +38,14 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             <SelectTrigger className="w-20" size="md" radius="sm">
               <SelectValue placeholder="10" />
             </SelectTrigger>
-            <SelectContent className="w-20 min-w-[80px]" >
+            <SelectContent className="w-20 min-w-[80px]">
               {Array.from({ length: 9 }, (_, index) => {
                 const number = index + 10;
-                return <SelectItem key={number} value={`${number}`}>{number}</SelectItem>;
+                return (
+                  <SelectItem key={number} value={`${number}`}>
+                    {number}
+                  </SelectItem>
+                );
               })}
             </SelectContent>
           </Select>
@@ -49,23 +53,19 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
         <div className="relative">
           <Input
             placeholder="Search Invoice..."
-            value={getFilterValue("id")}
-            onChange={(event) =>
-              table.getColumn("id")?.setFilterValue(event.target.value)
-            }
+            value={getFilterValue('id')}
+            onChange={(event) => table.getColumn('id')?.setFilterValue(event.target.value)}
             className="min-w-[200px] sm:max-w-[248px] ltr:pl-7 rtl:pr-7 rounded"
           />
-          <Icon icon="heroicons:magnifying-glass" className="w-3.5 h-3.5 absolute top-1/2 -translate-y-1/2 ltr:left-3 rtl:right-3 text-default-500" />
+          <Icon
+            icon="heroicons:magnifying-glass"
+            className="w-3.5 h-3.5 absolute top-1/2 -translate-y-1/2 ltr:left-3 rtl:right-3 text-default-500"
+          />
         </div>
       </div>
       <div className="flex-none flex flex-col sm:flex-row sm:items-center  gap-4">
-
         {statusColumn && (
-          <DataTableFacetedFilter
-            column={statusColumn}
-            title="Select Status"
-            options={statuses}
-          />
+          <DataTableFacetedFilter column={statusColumn} title="Select Status" options={statuses} />
         )}
 
         {isFiltered && (
@@ -87,6 +87,5 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
         </Button>
       </div>
     </div>
-
   );
 }

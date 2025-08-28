@@ -1,15 +1,16 @@
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Icon } from "@iconify/react";
-import { LayoutGrid, Plus, Search } from "lucide-react";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Icon } from '@iconify/react';
+import { LayoutGrid, Plus, Search } from 'lucide-react';
 
 const TeamHeader = () => {
   return (
     <>
       <div className="flex-1">
-        <div className='text-lg font-medium text-default-900'>Team Members</div>
-        <div className='text-sm font-medium text-default-600'>Total 58 assigned members in this project</div>
+        <div className="text-lg font-medium text-default-900">Team Members</div>
+        <div className="text-sm font-medium text-default-600">
+          Total 58 assigned members in this project
+        </div>
       </div>
       <div className="flex-none flex flex-wrap items-center gap-3">
         <Button
@@ -31,10 +32,7 @@ const TeamHeader = () => {
           <Input type="search" className="ltr:pl-7 rtl:pr-7" />
         </div>
         <div>
-          <Button
-            type="button"
-            className="whitespace-nowrap"
-          >
+          <Button type="button" className="whitespace-nowrap">
             <Plus className="w-4 h-4 ltr:mr-1 rtl:ml-1" />
             Invite member
           </Button>

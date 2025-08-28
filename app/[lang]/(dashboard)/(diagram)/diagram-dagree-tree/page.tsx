@@ -1,6 +1,6 @@
-"use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import React, { useCallback } from "react";
+'use client';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import React, { useCallback } from 'react';
 import ReactFlow, {
   addEdge,
   ConnectionLineType,
@@ -10,13 +10,13 @@ import ReactFlow, {
   OnConnect,
   Node,
   Edge,
-} from "reactflow";
-import dagre from "dagre";
+} from 'reactflow';
+import dagre from 'dagre';
 
-import { initialNodes, initialEdges } from "./nodes-edge";
+import { initialNodes, initialEdges } from './nodes-edge';
 
-import "reactflow/dist/style.css";
-import { Button } from "@/components/ui/button";
+import 'reactflow/dist/style.css';
+import { Button } from '@/components/ui/button';
 
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
@@ -24,8 +24,8 @@ dagreGraph.setDefaultEdgeLabel(() => ({}));
 const nodeWidth = 172;
 const nodeHeight = 36;
 
-const getLayoutedElements = (nodes: Node[], edges: Edge[], direction = "TB") => {
-  const isHorizontal = direction === "LR";
+const getLayoutedElements = (nodes: Node[], edges: Edge[], direction = 'TB') => {
+  const isHorizontal = direction === 'LR';
   dagreGraph.setGraph({ rankdir: direction });
 
   nodes.forEach((node) => {
@@ -64,17 +64,17 @@ const DagreeTree = () => {
   const onConnect: OnConnect = useCallback(
     (params) =>
       setEdges((eds) =>
-        addEdge(
-          { ...params, type: ConnectionLineType.SmoothStep, animated: true },
-          eds
-        )
+        addEdge({ ...params, type: ConnectionLineType.SmoothStep, animated: true }, eds)
       ),
     []
   );
   const onLayout: (direction: string) => void = useCallback(
     (direction) => {
-      const { nodes: layoutedNodes, edges: layoutedEdges } =
-        getLayoutedElements(nodes, edges, direction);
+      const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
+        nodes,
+        edges,
+        direction
+      );
 
       setNodes([...layoutedNodes]);
       setEdges([...layoutedEdges]);
@@ -100,18 +100,10 @@ const DagreeTree = () => {
           >
             <Panel position="top-right">
               <div className="flex flex-wrap item-center gap-2">
-                <Button
-                  onClick={() => onLayout("TB")}
-                  variant="outline"
-                  className=" rounded"
-                >
+                <Button onClick={() => onLayout('TB')} variant="outline" className=" rounded">
                   Vertical Layout
                 </Button>
-                <Button
-                  onClick={() => onLayout("LR")}
-                  variant="outline"
-                  className="rounded"
-                >
+                <Button onClick={() => onLayout('LR')} variant="outline" className="rounded">
                   Horizontal Layout
                 </Button>
               </div>

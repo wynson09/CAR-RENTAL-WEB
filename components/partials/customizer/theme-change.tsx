@@ -1,16 +1,11 @@
-import { useThemeStore } from "@/store";
-import { cn } from "@/lib/utils";
-import React from "react";
-import { themes } from "@/config/thems";
-import { useTheme } from "next-themes";
-import { Check } from "lucide-react";
-import { useSelectedLayoutSegment } from "next/navigation";
-import {
-  TooltipProvider,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { useThemeStore } from '@/store';
+import { cn } from '@/lib/utils';
+import React from 'react';
+import { themes } from '@/config/thems';
+import { useTheme } from 'next-themes';
+import { Check } from 'lucide-react';
+import { useSelectedLayoutSegment } from 'next/navigation';
+import { TooltipProvider, Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 const ThemeChange = () => {
   const { theme, setTheme } = useThemeStore();
@@ -23,31 +18,31 @@ const ThemeChange = () => {
 
   return (
     <div
-      style={{
-        "--theme-primary": `hsl(${newTheme?.cssVars[mode === "dark" ? "dark" : "light"].primary
+      style={
+        {
+          '--theme-primary': `hsl(${
+            newTheme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary
           })`,
-      } as React.CSSProperties
+        } as React.CSSProperties
       }
     >
       <div className="mb-2 relative inline-block px-3 py-[3px] rounded-md before:bg-[--theme-primary] before:absolute before:top-0 before:left-0 before:w-full  before:h-full before:rounded before:opacity-10 before:z-[-1]  text-[--theme-primary]  text-xs font-medium">
         Theme
       </div>
-      <div className="text-muted-foreground font-normal text-xs mb-4">
-        Choose a Theme
-      </div>
+      <div className="text-muted-foreground font-normal text-xs mb-4">Choose a Theme</div>
       <div className=" flex flex-wrap ">
         {[
-          "zinc",
-          "slate",
-          "stone",
-          "gray",
-          "neutral",
-          "red",
-          "rose",
-          "orange",
-          "blue",
-          "yellow",
-          "violet",
+          'zinc',
+          'slate',
+          'stone',
+          'gray',
+          'neutral',
+          'red',
+          'rose',
+          'orange',
+          'blue',
+          'yellow',
+          'violet',
         ].map((value) => {
           const themeObj = themes.find((theme) => theme.name === value);
           const isActive = theme === value; // Compare theme.name with value
@@ -65,28 +60,23 @@ const ThemeChange = () => {
                     />
                     <div
                       className={cn(
-                        "flex h-9 w-9 items-center justify-center rounded-full border-2 text-xs",
-                        isActive
-                          ? "border-[--theme-primary]"
-                          : "border-transparent"
+                        'flex h-9 w-9 items-center justify-center rounded-full border-2 text-xs',
+                        isActive ? 'border-[--theme-primary]' : 'border-transparent'
                       )}
-                      style={{
-                        "--theme-primary": `hsl(${themeObj?.activeColor[
-                          mode === "dark" ? "dark" : "light"
-                          ]
+                      style={
+                        {
+                          '--theme-primary': `hsl(${
+                            themeObj?.activeColor[mode === 'dark' ? 'dark' : 'light']
                           })`,
-                      } as React.CSSProperties
-
+                        } as React.CSSProperties
                       }
                     >
                       <div
                         className={cn(
-                          "flex h-6 w-6 items-center justify-center rounded-full bg-[--theme-primary]"
+                          'flex h-6 w-6 items-center justify-center rounded-full bg-[--theme-primary]'
                         )}
                       >
-                        {isActive && (
-                          <Check className="h-4 w-4 text-primary-foreground" />
-                        )}
+                        {isActive && <Check className="h-4 w-4 text-primary-foreground" />}
                       </div>
                     </div>
                   </label>

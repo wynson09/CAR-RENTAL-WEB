@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 
 const SwitchLineStyle = () => {
   return (
@@ -17,7 +17,7 @@ const SwitchLineStyle = () => {
       </div>
       <div className="flex items-center gap-2">
         <Switch
-        disabled
+          disabled
           className="h-1 w-11 flex items-center"
           thumbClass="h-5 w-5 data-[state=checked]:ml-6 data-[state=unchecked]:ml-0"
           id="line_2"

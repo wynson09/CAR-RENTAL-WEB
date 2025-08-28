@@ -1,23 +1,26 @@
-"use client";
-import React, { useState } from "react";
+'use client';
+import React, { useState } from 'react';
 
-import { cn, isLocationMatch, getDynamicPath } from "@/lib/utils";
-import SidebarLogo from "../common/logo";
-import { menusConfig } from "@/config/menus";
-import MenuLabel from "../common/menu-label";
-import SingleMenuItem from "./single-menu-item";
-import SubMenuHandler from "./sub-menu-handler";
-import NestedSubMenu from "../common/nested-menus";
-import { useSidebar, useThemeStore } from "@/store";
-import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { usePathname } from "next/navigation";
-import AddBlock from "../common/add-block";
+import { cn, isLocationMatch, getDynamicPath } from '@/lib/utils';
+import SidebarLogo from '../common/logo';
+import MenuLabel from '../common/menu-label';
+import SingleMenuItem from './single-menu-item';
+import SubMenuHandler from './sub-menu-handler';
+import NestedSubMenu from '../common/nested-menus';
+import { useSidebar, useThemeStore, useUserStore } from '@/store';
+import { Separator } from '@/components/ui/separator';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { usePathname } from 'next/navigation';
+import AddBlock from '../common/add-block';
+import { userMenuConfig } from '@/config/menus';
 
 const PopoverSidebar = ({ trans }: { trans: string }) => {
   const { collapsed, sidebarBg } = useSidebar();
   const { layout, isRtl } = useThemeStore();
-  const menus = menusConfig?.sidebarNav?.classic || [];
+  const { user } = useUserStore();
+  // const userMenus = userMenuConfig?.sidebarNav?.classic || [];
+  // const adminMenus = adminMenuConfig?.sidebarNav?.classic|| [];
+  const menus = userMenuConfig?.sidebarNav?.classic || [];
   const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null);
   const [activeMultiMenu, setMultiMenu] = useState<number | null>(null);
 
@@ -68,14 +71,14 @@ const PopoverSidebar = ({ trans }: { trans: string }) => {
 
   return (
     <div
-      className={cn("fixed  top-0  border-r  ", {
-        "w-[248px]": !collapsed,
-        "w-[72px]": collapsed,
-        "m-6 bottom-0   bg-card rounded-md": layout === "semibox",
-        "h-full   bg-card ": layout !== "semibox",
+      className={cn('fixed  top-0  border-r  ', {
+        'w-[248px]': !collapsed,
+        'w-[72px]': collapsed,
+        'm-6 bottom-0   bg-card rounded-md': layout === 'semibox',
+        'h-full   bg-card ': layout !== 'semibox',
       })}
     >
-      {sidebarBg !== "none" && (
+      {sidebarBg !== 'none' && (
         <div
           className=" absolute left-0 top-0   z-[-1] w-full h-full bg-cover bg-center opacity-[0.07]"
           style={{ backgroundImage: `url(${sidebarBg})` }}
@@ -84,32 +87,26 @@ const PopoverSidebar = ({ trans }: { trans: string }) => {
       <SidebarLogo />
       <Separator />
       <ScrollArea
-        className={cn("sidebar-menu  h-[calc(100%-80px)] ", {
-          "px-4": !collapsed,
+        className={cn('sidebar-menu  h-[calc(100%-80px)] ', {
+          'px-4': !collapsed,
         })}
       >
         <ul
-          dir={isRtl ? "rtl" : "ltr"}
-          className={cn(" space-y-1", {
-            " space-y-2 text-center": collapsed,
+          dir={isRtl ? 'rtl' : 'ltr'}
+          className={cn(' space-y-1', {
+            ' space-y-2 text-center': collapsed,
           })}
         >
           {menus.map((item, i) => (
             <li key={`menu_key_${i}`}>
               {/* single menu  */}
 
-              {!item.child && !item.isHeader && (
-                <SingleMenuItem
-                  item={item}
-                  collapsed={collapsed}
-                  trans={trans}
-                />
-              )}
+              {!item.child && <SingleMenuItem item={item} collapsed={collapsed} trans={trans} />}
 
               {/* menu label */}
-              {item.isHeader && !item.child && !collapsed && (
+              {/* {item.isHeader && !item.child && !collapsed && (
                 <MenuLabel item={item} trans={trans} />
-              )}
+              )} */}
 
               {/* sub menu */}
               {item.child && (
@@ -130,7 +127,6 @@ const PopoverSidebar = ({ trans }: { trans: string }) => {
                       activeSubmenu={activeSubmenu}
                       item={item}
                       index={i}
-
                       trans={trans}
                     />
                   )}

@@ -1,15 +1,11 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import dayjs from "dayjs";
-import {
-  getGridConfig,
-  getYAxisConfig,
-  getLabel,
-} from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import dayjs from 'dayjs';
+import { getGridConfig, getYAxisConfig, getLabel } from '@/lib/appex-chart-options';
 
 const CategoryXAxis = ({ height = 300 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -18,7 +14,7 @@ const CategoryXAxis = ({ height = 300 }) => {
 
   const series = [
     {
-      name: "candle",
+      name: 'candle',
       data: [
         {
           x: new Date(1538778600000),
@@ -264,7 +260,7 @@ const CategoryXAxis = ({ height = 300 }) => {
     },
   ];
 
-  const options:any = {
+  const options: any = {
     chart: {
       toolbar: {
         show: false,
@@ -276,49 +272,39 @@ const CategoryXAxis = ({ height = 300 }) => {
     annotations: {
       xaxis: [
         {
-          x: "Oct 06 14:00",
-          borderColor: `hsl(${
-            theme?.cssVars[mode === "dark" ? "dark" : "light"].primary
-          })`,
+          x: 'Oct 06 14:00',
+          borderColor: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
           label: {
-            borderColor: `hsl(${
-              theme?.cssVars[mode === "dark" ? "dark" : "light"].primary
-            })`,
+            borderColor: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
             style: {
-              fontSize: "12px",
-              color: "#fff",
-              background: `hsl(${
-                theme?.cssVars[mode === "dark" ? "dark" : "light"].primary
-              })`,
+              fontSize: '12px',
+              color: '#fff',
+              background: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
             },
-            orientation: "horizontal",
+            orientation: 'horizontal',
             offsetY: 7,
-            text: "Annotation Test",
+            text: 'Annotation Test',
           },
         },
       ],
     },
     colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`,
     ],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
     xaxis: {
-      type: "category",
+      type: 'category',
       labels: {
         formatter: function (val: number) {
-          return dayjs(val).format("MMM DD HH:mm");
+          return dayjs(val).format('MMM DD HH:mm');
         },
         style: {
           colors: `hsl(${
-            theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
           })`,
         },
       },
@@ -329,9 +315,7 @@ const CategoryXAxis = ({ height = 300 }) => {
         show: false,
       },
     },
-    yaxis: getYAxisConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`
-    ),
+    yaxis: getYAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
     padding: {
       top: 0,
       right: 0,
@@ -340,13 +324,7 @@ const CategoryXAxis = ({ height = 300 }) => {
     },
   };
   return (
-      <Chart
-        options={options}
-        series={series}
-        type="candlestick"
-        height={height}
-        width={"100%"}
-      />
+    <Chart options={options} series={series} type="candlestick" height={height} width={'100%'} />
   );
 };
 

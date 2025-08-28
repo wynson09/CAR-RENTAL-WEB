@@ -21,27 +21,27 @@ flowchart TB
         B[User clicks Sign In]
         C[OAuth Sign In]
     end
-    
+
     subgraph "NextAuth.js"
         D[Authentication Flow]
         E{Provider Type?}
         F[Credentials]
         G[OAuth Provider]
     end
-    
+
     subgraph "Firebase"
         H[Firebase Auth]
         I[Firestore Sync]
         J[User Document]
     end
-    
+
     subgraph "State Management"
         K[useAuth Hook]
         L[Zustand Store]
         M[localStorage]
         N[Global State]
     end
-    
+
     A --> B
     B --> D
     C --> D
@@ -64,31 +64,35 @@ flowchart TB
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 - Firebase project
 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/yourusername/car-rental-web.git
    cd car-rental-web
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
+
    ```bash
    cp .env.example .env.local
    ```
-   
+
    Fill in your Firebase and OAuth credentials in `.env.local`
 
 4. **Run the development server**
+
    ```bash
    npm run dev
    ```
@@ -148,7 +152,7 @@ import { useUserStore } from '@/store';
 
 function MyComponent() {
   const { user, updateUser } = useUserStore();
-  
+
   return (
     <div>
       <p>Welcome, {user?.firstName}!</p>
@@ -164,7 +168,7 @@ function MyComponent() {
 Visit `/test-firebase` to test the complete authentication flow:
 
 - ✅ NextAuth session management
-- ✅ Firebase authentication  
+- ✅ Firebase authentication
 - ✅ Firestore data synchronization
 - ✅ Zustand state management
 - ✅ localStorage persistence

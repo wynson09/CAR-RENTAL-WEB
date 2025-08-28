@@ -1,27 +1,25 @@
-"use client";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { toast } from "sonner";
-import { Textarea } from "@/components/ui/textarea";
+'use client';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
+import { Textarea } from '@/components/ui/textarea';
 
 const schema = z.object({
   author: z
     .string()
-    .min(3, { message: "Author name must be at least 3 charecters." })
+    .min(3, { message: 'Author name must be at least 3 charecters.' })
     .max(8, { message: "The author's name must not exceed 8 characters." }),
   phone: z.string().refine((value) => value.length === 11, {
-    message: "Phone number must be exactly 11 characters long.",
+    message: 'Phone number must be exactly 11 characters long.',
   }),
-  city: z.string().min(3, { message: "Enter minimum 3 charecters" }),
-  web: z.string().url({ message: "Enter valid web address" }),
-  inputMessage: z
-    .string()
-    .max(30, { message: "Message should not be exceed 30 charecters." }),
+  city: z.string().min(3, { message: 'Enter minimum 3 charecters' }),
+  web: z.string().url({ message: 'Enter valid web address' }),
+  inputMessage: z.string().max(30, { message: 'Message should not be exceed 30 charecters.' }),
 });
 
 const MultipleTypes = () => {
@@ -42,24 +40,24 @@ const MultipleTypes = () => {
         <div className="flex flex-col gap-2">
           <Label
             htmlFor="author"
-            className={cn("", {
-              "text-destructive": errors.author,
+            className={cn('', {
+              'text-destructive': errors.author,
             })}
           >
             Author Name
           </Label>
           <Input
             type="text"
-            {...register("author")}
+            {...register('author')}
             placeholder="Author name 3 to 8 charecters"
-            className={cn("", {
-              "border-destructive focus:border-destructive": errors.author,
+            className={cn('', {
+              'border-destructive focus:border-destructive': errors.author,
             })}
           />
           {errors.author && (
             <p
-              className={cn("text-xs", {
-                "text-destructive": errors.author,
+              className={cn('text-xs', {
+                'text-destructive': errors.author,
               })}
             >
               {errors.author.message}
@@ -70,8 +68,8 @@ const MultipleTypes = () => {
         <div className="flex flex-col gap-2">
           <Label
             htmlFor="phone"
-            className={cn("", {
-              "text-destructive": errors.phone,
+            className={cn('', {
+              'text-destructive': errors.phone,
             })}
           >
             Phone Number
@@ -79,20 +77,18 @@ const MultipleTypes = () => {
           <Input
             type="number"
             placeholder="11 charecters phone number"
-            {...register("phone")}
-            className={cn("", {
-              "border-destructive focus:border-destructive": errors.phone,
+            {...register('phone')}
+            className={cn('', {
+              'border-destructive focus:border-destructive': errors.phone,
             })}
           />
-          {errors.phone && (
-            <p className="text-xs text-destructive">{errors.phone.message}</p>
-          )}
+          {errors.phone && <p className="text-xs text-destructive">{errors.phone.message}</p>}
         </div>
         <div className="flex flex-col gap-2">
           <Label
             htmlFor="city"
-            className={cn("", {
-              "text-destructive": errors.city,
+            className={cn('', {
+              'text-destructive': errors.city,
             })}
           >
             City
@@ -100,59 +96,52 @@ const MultipleTypes = () => {
           <Input
             type="text"
             placeholder="enter minimum 3 charecters"
-            {...register("city")}
-            className={cn("", {
-              "border-destructive": errors.city,
+            {...register('city')}
+            className={cn('', {
+              'border-destructive': errors.city,
             })}
           />
-          {errors.city && (
-            <p className="text-xs text-destructive">{errors.city.message}</p>
-          )}
+          {errors.city && <p className="text-xs text-destructive">{errors.city.message}</p>}
         </div>
 
         <div className="flex flex-col gap-2">
           <Label
             htmlFor="web"
-            className={cn("", {
-              "text-destructive": errors.web,
+            className={cn('', {
+              'text-destructive': errors.web,
             })}
           >
             Web Address
           </Label>
           <Input
             type="text"
-            {...register("web")}
+            {...register('web')}
             placeholder="enter valid web address"
-            className={cn("", {
-              "border-destructive focus:border-destructive": errors.web,
+            className={cn('', {
+              'border-destructive focus:border-destructive': errors.web,
             })}
           />
-          {errors.web && (
-            <p className="text-xs text-destructive">{errors.web.message}</p>
-          )}
+          {errors.web && <p className="text-xs text-destructive">{errors.web.message}</p>}
         </div>
         <div className="flex flex-col gap-2">
           <Label
             htmlFor="inputMessage"
-            className={cn("", {
-              "text-destructive": errors.inputMessage,
+            className={cn('', {
+              'text-destructive': errors.inputMessage,
             })}
           >
             Message
           </Label>
           <Textarea
-            {...register("inputMessage")}
+            {...register('inputMessage')}
             placeholder="type here... maximum 30 charecters"
             id="inputMessage"
-            className={cn("", {
-              "border-destructive focus:border-destructive":
-                errors.inputMessage,
+            className={cn('', {
+              'border-destructive focus:border-destructive': errors.inputMessage,
             })}
           />
           {errors.inputMessage && (
-            <p className="text-xs text-destructive">
-              {errors.inputMessage.message}
-            </p>
+            <p className="text-xs text-destructive">{errors.inputMessage.message}</p>
           )}
         </div>
       </div>

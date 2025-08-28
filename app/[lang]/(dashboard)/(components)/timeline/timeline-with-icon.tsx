@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import {
   Timeline,
   TimelineItem,
@@ -6,8 +6,8 @@ import {
   TimelineDot,
   TimelineConnector,
   TimelineSeparator,
-} from "@/components/ui/timeline";
-import { Icon } from "@iconify/react";
+} from '@/components/ui/timeline';
+import { Icon } from '@iconify/react';
 
 const TimelineWithIcon = () => {
   return (

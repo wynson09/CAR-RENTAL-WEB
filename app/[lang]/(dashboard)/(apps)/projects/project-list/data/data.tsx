@@ -1,61 +1,60 @@
-
 export const labels = [
   {
-    value: "bug",
-    label: "Bug",
+    value: 'bug',
+    label: 'Bug',
   },
   {
-    value: "feature",
-    label: "Feature",
+    value: 'feature',
+    label: 'Feature',
   },
   {
-    value: "documentation",
-    label: "Documentation",
+    value: 'documentation',
+    label: 'Documentation',
   },
-]
+];
 
 export const statuses = [
   {
-    value: "backlog",
-    label: "Backlog",
-    color: "destructive",
+    value: 'backlog',
+    label: 'Backlog',
+    color: 'destructive',
   },
   {
-    value: "todo",
-    label: "Todo",
-    color: "info",
+    value: 'todo',
+    label: 'Todo',
+    color: 'info',
   },
   {
-    value: "in progress",
-    label: "In Progress",
-    color: "default",
+    value: 'in progress',
+    label: 'In Progress',
+    color: 'default',
   },
   {
-    value: "completed",
-    label: "Completed",
-    color: "success",
+    value: 'completed',
+    label: 'Completed',
+    color: 'success',
   },
   {
-    value: "review",
-    label: "Review",
-    color: "warning",
+    value: 'review',
+    label: 'Review',
+    color: 'warning',
   },
 ];
 
 export const priorities = [
   {
-    label: "Low",
-    value: "low",
-    color: "info",
+    label: 'Low',
+    value: 'low',
+    color: 'info',
   },
   {
-    label: "Medium",
-    value: "medium",
-    color: "warning",
+    label: 'Medium',
+    value: 'medium',
+    color: 'warning',
   },
   {
-    label: "High",
-    value: "high",
-    color: "destructive"
+    label: 'High',
+    value: 'high',
+    color: 'destructive',
   },
-]
+];

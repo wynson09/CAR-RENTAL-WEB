@@ -1,9 +1,7 @@
-"use client"
-import { Slider } from "@/components/ui/slider";
+'use client';
+import { Slider } from '@/components/ui/slider';
 const DisabledSlider = () => {
-  return (
-    <Slider defaultValue={[70]} disabled />
-  );
+  return <Slider defaultValue={[70]} disabled />;
 };
 
 export default DisabledSlider;

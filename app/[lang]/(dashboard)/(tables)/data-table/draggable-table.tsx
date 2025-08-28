@@ -1,8 +1,20 @@
-"use client"
-import { Grip } from "lucide-react";
+'use client';
+import { Grip } from 'lucide-react';
 import React, { useState } from 'react';
-import { DndContext, useSensor, useSensors, PointerSensor, closestCenter, DragEndEvent } from '@dnd-kit/core';
-import { SortableContext, arrayMove, useSortable, verticalListSortingStrategy, } from '@dnd-kit/sortable';
+import {
+  DndContext,
+  useSensor,
+  useSensors,
+  PointerSensor,
+  closestCenter,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  arrayMove,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import {
   Table,
@@ -11,7 +23,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 
 interface DataItem {
@@ -22,25 +34,24 @@ interface DataItem {
   point: number;
 }
 
-const columns = ["Id", "Name", "Email", "Age", "Point"];
+const columns = ['Id', 'Name', 'Email', 'Age', 'Point'];
 const initialData: DataItem[] = [
-  { id: 1, name: "Mike", email: "mike1@example.com", age: 41, point: 81 },
-  { id: 2, name: "John", email: "john2@example.com", age: 24, point: 37 },
-  { id: 3, name: "Peter", email: "peter3@example.com", age: 42, point: 25 },
-  { id: 4, name: "Peter", email: "peter4@example.com", age: 42, point: 77 },
-  { id: 5, name: "Paul", email: "paul5@example.com", age: 30, point: 72 },
-  { id: 6, name: "Mark", email: "mark6@example.com", age: 19, point: 9 },
-  { id: 7, name: "Peter", email: "peter7@example.com", age: 56, point: 20 },
-  { id: 8, name: "Mike", email: "mike8@example.com", age: 57, point: 80 },
-  { id: 9, name: "Mary", email: "mary9@example.com", age: 41, point: 69 },
-  { id: 10, name: "Alice", email: "alice10@example.com", age: 42, point: 79 }
-]
+  { id: 1, name: 'Mike', email: 'mike1@example.com', age: 41, point: 81 },
+  { id: 2, name: 'John', email: 'john2@example.com', age: 24, point: 37 },
+  { id: 3, name: 'Peter', email: 'peter3@example.com', age: 42, point: 25 },
+  { id: 4, name: 'Peter', email: 'peter4@example.com', age: 42, point: 77 },
+  { id: 5, name: 'Paul', email: 'paul5@example.com', age: 30, point: 72 },
+  { id: 6, name: 'Mark', email: 'mark6@example.com', age: 19, point: 9 },
+  { id: 7, name: 'Peter', email: 'peter7@example.com', age: 56, point: 20 },
+  { id: 8, name: 'Mike', email: 'mike8@example.com', age: 57, point: 80 },
+  { id: 9, name: 'Mary', email: 'mary9@example.com', age: 41, point: 69 },
+  { id: 10, name: 'Alice', email: 'alice10@example.com', age: 42, point: 79 },
+];
 
 interface DraggableRowProps {
   id: number;
   data: DataItem;
 }
-
 
 function DraggableTable() {
   const [data, setData] = useState<DataItem[]>(initialData);
@@ -50,8 +61,8 @@ function DraggableTable() {
     const { active, over } = event;
     if (active.id !== over?.id) {
       setData((currentData) => {
-        const oldIndex = currentData.findIndex(item => item.id === active.id);
-        const newIndex = currentData.findIndex(item => item.id === over?.id);
+        const oldIndex = currentData.findIndex((item) => item.id === active.id);
+        const newIndex = currentData.findIndex((item) => item.id === over?.id);
         return arrayMove(currentData, oldIndex, newIndex);
       });
     }
@@ -60,15 +71,13 @@ function DraggableTable() {
   return (
     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext items={data} strategy={verticalListSortingStrategy}>
-        <div className='w-full h-full overflow-hidden'>
+        <div className="w-full h-full overflow-hidden">
           <Table className="overflow-hidden">
             <TableHeader className="bg-default-100">
               <TableRow>
-                {
-                  columns.map(column => (
-                    <TableHead key={column} >{column}</TableHead>
-                  ))
-                }
+                {columns.map((column) => (
+                  <TableHead key={column}>{column}</TableHead>
+                ))}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -91,13 +100,7 @@ function DraggableRow({ id, data }: DraggableRowProps) {
   };
 
   return (
-    <TableRow
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-      className="cursor-move"
-    >
+    <TableRow ref={setNodeRef} style={style} {...attributes} {...listeners} className="cursor-move">
       <TableCell>
         <Button
           type="button"
@@ -106,7 +109,8 @@ function DraggableRow({ id, data }: DraggableRowProps) {
         >
           <Grip className="w-3 h-3 text-default-400" />
         </Button>
-        {data.id}</TableCell>
+        {data.id}
+      </TableCell>
       <TableCell>{data.name}</TableCell>
       <TableCell>{data.email}</TableCell>
       <TableCell>{data.age}</TableCell>

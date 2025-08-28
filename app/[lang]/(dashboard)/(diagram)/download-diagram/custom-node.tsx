@@ -1,7 +1,6 @@
 import { memo } from 'react';
 import { Handle, Position } from 'reactflow';
 
-
 const CustomNode = memo(({ isConnectable }: { isConnectable: boolean }) => {
   return (
     <>

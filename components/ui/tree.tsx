@@ -1,6 +1,6 @@
-import React, { useState, useEffect, FunctionComponent } from "react";
-import { cn } from "@/lib/utils";
-import { ChevronRight, Check, Minus } from "lucide-react";
+import React, { useState, useEffect, FunctionComponent } from 'react';
+import { cn } from '@/lib/utils';
+import { ChevronRight, Check, Minus } from 'lucide-react';
 
 interface TreeNodeData {
   id: string;
@@ -70,8 +70,8 @@ const TreeNode: FunctionComponent<TreeNodeProps> = ({
 
   return (
     <div
-      className={cn("space-y-3 relative z-[1]", {
-        "before:absolute ltr:before:left-2 rtl:before:right-2 before:top-0 before:h-[calc(100%-23px)] before:w-[2px] before:bg-secondary before:rounded before:z-[-1]":
+      className={cn('space-y-3 relative z-[1]', {
+        'before:absolute ltr:before:left-2 rtl:before:right-2 before:top-0 before:h-[calc(100%-23px)] before:w-[2px] before:bg-secondary before:rounded before:z-[-1]':
           hasChildren && expandedKeys.includes(id) && showLine,
       })}
     >
@@ -91,9 +91,9 @@ const TreeNode: FunctionComponent<TreeNodeProps> = ({
               }}
             />
             <span
-              className={cn("h-4 w-4 border rounded inline-flex cursor-pointer", {
-                "border-primary bg-primary": isChecked || isIndeterminate,
-                "border-default-200 bg-background": !isChecked && !isIndeterminate,
+              className={cn('h-4 w-4 border rounded inline-flex cursor-pointer', {
+                'border-primary bg-primary': isChecked || isIndeterminate,
+                'border-default-200 bg-background': !isChecked && !isIndeterminate,
               })}
             >
               {isChecked && <Check className="h-3.5 w-3.5 stroke-primary-foreground" />}
@@ -102,9 +102,9 @@ const TreeNode: FunctionComponent<TreeNodeProps> = ({
           </label>
         )}
         <div
-          data-open={hasChildren && expandedKeys.includes(id) ? "true" : null}
+          data-open={hasChildren && expandedKeys.includes(id) ? 'true' : null}
           className={cn(
-            "inline-flex py-3 px-3 gap-3 transition-all duration-200 items-center [&_.menu-arrow>svg]:h-4 [&_.menu-arrow>svg]:w-4 cursor-pointer text-base text font-medium data-[open=true]:bg-default-200/80 rounded",
+            'inline-flex py-3 px-3 gap-3 transition-all duration-200 items-center [&_.menu-arrow>svg]:h-4 [&_.menu-arrow>svg]:w-4 cursor-pointer text-base text font-medium data-[open=true]:bg-default-200/80 rounded',
             className
           )}
           onClick={handleExpand}
@@ -115,9 +115,9 @@ const TreeNode: FunctionComponent<TreeNodeProps> = ({
             <button
               onClick={handleExpand}
               className={cn(
-                "transform transition-all duration-200 flex-none leading-none menu-arrow rtl:rotate-180",
+                'transform transition-all duration-200 flex-none leading-none menu-arrow rtl:rotate-180',
                 {
-                  "rotate-90 rtl:rotate-90": expandedKeys.includes(id),
+                  'rotate-90 rtl:rotate-90': expandedKeys.includes(id),
                 }
               )}
             >
@@ -134,7 +134,12 @@ const TreeNode: FunctionComponent<TreeNodeProps> = ({
               <React.Fragment key={child.id}>
                 {showLine && (
                   <span className="absolute ltr:-left-3 rtl:right-3 mt-1.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 14 14"
+                    >
                       <path
                         d="M1 1v4a8 8 0 0 0 8 8h4"
                         className="stroke-secondary stroke-2 stroke-linecap-round fill-none"
@@ -206,7 +211,10 @@ const Tree: FunctionComponent<TreeProps> = ({
       if (node.id === nodeId) {
         const updatedNode = { ...node, checked: !node.checked };
         if (updatedNode.children) {
-          updatedNode.children = toggleAllChildren(updatedNode.children, updatedNode.checked || false);
+          updatedNode.children = toggleAllChildren(
+            updatedNode.children,
+            updatedNode.checked || false
+          );
         }
         return updatedNode;
       } else if (node.children) {

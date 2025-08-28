@@ -1,5 +1,5 @@
-"use client";
-import { Progress } from "@/components/ui/progress";
+'use client';
+import { Progress } from '@/components/ui/progress';
 
 const AnimateStripedProgressbar = () => {
   return (

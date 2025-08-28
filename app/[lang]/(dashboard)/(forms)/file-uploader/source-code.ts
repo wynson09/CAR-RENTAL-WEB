@@ -1,4 +1,4 @@
-export const basicFileUpload =`import { Input } from "@/components/ui/input";
+export const basicFileUpload = `import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 const BasicFileUploader = () => {
   return (
@@ -9,8 +9,8 @@ const BasicFileUploader = () => {
   );
 };
 
-export default BasicFileUploader;`
-export const fileUploadWithButton =`"use client"
+export default BasicFileUploader;`;
+export const fileUploadWithButton = `"use client"
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -88,9 +88,9 @@ const FileUploadWithButton = () => {
     </div>
   );
 };
-export default FileUploadWithButton;`
+export default FileUploadWithButton;`;
 
-export const multipleFileUploader =`" use client";
+export const multipleFileUploader = `" use client";
 import { Fragment, useState } from "react";
 import { Icon } from "@iconify/react";
 import { useDropzone } from "react-dropzone";
@@ -189,8 +189,8 @@ const FileUploaderMultiple = () => {
   );
 };
 export default FileUploaderMultiple;
-`
-export const singleFileUploader =`" use client";
+`;
+export const singleFileUploader = `" use client";
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Upload } from "lucide-react";
@@ -253,8 +253,8 @@ const FileUploaderSingle = () => {
   );
 };
 export default FileUploaderSingle;
-`
-export const fileUploaderWithRestrictions =`" use client";
+`;
+export const fileUploaderWithRestrictions = `" use client";
 import { Fragment, useState } from "react";
 import { Icon } from "@iconify/react";
 import { useToast } from "@/components/ui/use-toast";
@@ -367,4 +367,4 @@ const FileUploaderRestrictions = () => {
   );
 };
 export default FileUploaderRestrictions;
-`
+`;

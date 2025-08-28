@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Chart as ChartJS,
@@ -9,22 +9,14 @@ import {
   Tooltip,
   Legend,
   ArcElement,
-} from "chart.js";
-import { hslToHex, hexToRGB } from "@/lib/utils";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { Doughnut } from "react-chartjs-2";
+} from 'chart.js';
+import { hslToHex, hexToRGB } from '@/lib/utils';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { Doughnut } from 'react-chartjs-2';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement
-);
+ChartJS.register(CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend, ArcElement);
 
 const LegendEvents = ({ height = 350 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -32,11 +24,11 @@ const LegendEvents = ({ height = 350 }) => {
 
   const theme = themes.find((theme) => theme.name === config);
 
-  const hslPrimary = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`;
-  const hslInfo = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`;
-  const hslWarning = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning})`;
-  const hslSuccess = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success})`;
-  const hslMuted = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].muted})`;
+  const hslPrimary = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`;
+  const hslInfo = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`;
+  const hslWarning = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`;
+  const hslSuccess = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`;
+  const hslMuted = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].muted})`;
 
   const rgbPrimay = hexToRGB(hslToHex(hslPrimary), 0.8);
   const rgbInfo = hexToRGB(hslToHex(hslInfo), 0.8);
@@ -45,10 +37,10 @@ const LegendEvents = ({ height = 350 }) => {
   const rgbMuted = hexToRGB(hslToHex(hslMuted), 0.8);
 
   const data: any = {
-    labels: ["Primary", "Info", "Warning", "Success", "Muted"],
+    labels: ['Primary', 'Info', 'Warning', 'Success', 'Muted'],
     datasets: [
       {
-        label: "Dataset 1",
+        label: 'Dataset 1',
         data: [20, 50, 60, 70, 20],
         backgroundColor: [rgbPrimay, rgbInfo, rgbWarning, rgbSuccess, rgbMuted],
       },
@@ -59,10 +51,9 @@ const LegendEvents = ({ height = 350 }) => {
     plugins: {
       legend: {
         labels: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
     },
@@ -71,11 +62,7 @@ const LegendEvents = ({ height = 350 }) => {
 
   return (
     <div>
-      <Doughnut
-        options={options}
-        data={data}
-        height={height}
-      />
+      <Doughnut options={options} data={data} height={height} />
     </div>
   );
 };

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Input } from "@/components/ui/input";
-import { InputGroup, InputGroupButton } from "@/components/ui/input-group";
+import { Input } from '@/components/ui/input';
+import { InputGroup, InputGroupButton } from '@/components/ui/input-group';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,9 +9,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/react";
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@iconify/react';
 
 const InputButtonWithDropdown = () => {
   return (
@@ -22,10 +22,7 @@ const InputButtonWithDropdown = () => {
             <DropdownMenuTrigger asChild>
               <Button color="secondary" size="sm">
                 Success
-                <Icon
-                  icon="heroicons:chevron-right"
-                  className=" h-5 w-5 ml-2"
-                />
+                <Icon icon="heroicons:chevron-right" className=" h-5 w-5 ml-2" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-[196px]" align="start">
@@ -47,10 +44,7 @@ const InputButtonWithDropdown = () => {
             <DropdownMenuTrigger asChild>
               <Button color="secondary" size="sm">
                 Success
-                <Icon
-                  icon="heroicons:chevron-right"
-                  className=" h-5 w-5 ml-2"
-                />
+                <Icon icon="heroicons:chevron-right" className=" h-5 w-5 ml-2" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-[196px]" align="start">
@@ -70,10 +64,7 @@ const InputButtonWithDropdown = () => {
             <DropdownMenuTrigger asChild>
               <Button color="secondary" size="sm">
                 Success
-                <Icon
-                  icon="heroicons:chevron-right"
-                  className=" h-5 w-5 ml-2"
-                />
+                <Icon icon="heroicons:chevron-right" className=" h-5 w-5 ml-2" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-[196px]" align="start">
@@ -92,10 +83,7 @@ const InputButtonWithDropdown = () => {
             <DropdownMenuTrigger asChild>
               <Button color="secondary" size="sm">
                 Success
-                <Icon
-                  icon="heroicons:chevron-right"
-                  className=" h-5 w-5 ml-2"
-                />
+                <Icon icon="heroicons:chevron-right" className=" h-5 w-5 ml-2" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-[196px]" align="start">

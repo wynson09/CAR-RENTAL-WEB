@@ -1,6 +1,6 @@
-"use client";
-import { Icon } from "@iconify/react";
-import { cn, translate } from "@/lib/utils";
+'use client';
+import { Icon } from '@iconify/react';
+import { cn, translate } from '@/lib/utils';
 
 const SubMenuHandler = ({
   item,
@@ -17,7 +17,7 @@ const SubMenuHandler = ({
   activeSubmenu: number | null;
   collapsed: boolean;
   hovered: boolean;
-  trans: any
+  trans: any;
 }) => {
   const { title } = item;
 
@@ -27,9 +27,9 @@ const SubMenuHandler = ({
         <div
           onClick={() => toggleSubmenu(index)}
           className={cn(
-            "flex  text-default-700 group font-medium text-sm capitalize px-[10px] py-3 rounded cursor-pointer transition-all duration-100 hover:bg-primary hover:text-primary-foreground group",
+            'flex  text-default-700 group font-medium text-sm capitalize px-[10px] py-3 rounded cursor-pointer transition-all duration-100 hover:bg-primary hover:text-primary-foreground group',
             {
-              "bg-primary  text-primary-foreground": activeSubmenu === index,
+              'bg-primary  text-primary-foreground': activeSubmenu === index,
             }
           )}
         >
@@ -42,17 +42,14 @@ const SubMenuHandler = ({
           <div className="flex-0">
             <div
               className={cn(
-                " text-base rounded-full flex justify-center items-center transition-all duration-300 group-hover:text-primary-foreground",
+                ' text-base rounded-full flex justify-center items-center transition-all duration-300 group-hover:text-primary-foreground',
                 {
-                  "rotate-90  ": activeSubmenu === index,
-                  " text-default-500  ": activeSubmenu !== index,
+                  'rotate-90  ': activeSubmenu === index,
+                  ' text-default-500  ': activeSubmenu !== index,
                 }
               )}
             >
-              <Icon
-                icon="heroicons:chevron-right-20-solid"
-                className="h-5 w-5"
-              />
+              <Icon icon="heroicons:chevron-right-20-solid" className="h-5 w-5" />
             </div>
           </div>
         </div>

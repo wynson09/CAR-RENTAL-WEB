@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import {
   Timeline,
   TimelineItem,
@@ -6,7 +6,7 @@ import {
   TimelineDot,
   TimelineConnector,
   TimelineSeparator,
-} from "@/components/ui/timeline";
+} from '@/components/ui/timeline';
 
 const AlternativeReverseTimeline = () => {
   return (

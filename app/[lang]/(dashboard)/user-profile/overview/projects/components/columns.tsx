@@ -1,30 +1,20 @@
-"use client";
+'use client';
 
-import Image, { StaticImageData } from "next/image";
-import { Badge } from "@/components/ui/badge";
-import { DataTableRowActions } from "./data-table-row-actions";
-import { Label } from "@/components/ui/label";
-import { Progress } from "@/components/ui/progress";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarGroup,
-  AvatarImage,
-} from "@/components/ui/avatar";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { ColumnDef } from "@tanstack/react-table";
+import Image, { StaticImageData } from 'next/image';
+import { Badge } from '@/components/ui/badge';
+import { DataTableRowActions } from './data-table-row-actions';
+import { Label } from '@/components/ui/label';
+import { Progress } from '@/components/ui/progress';
+import { Avatar, AvatarFallback, AvatarGroup, AvatarImage } from '@/components/ui/avatar';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { ColumnDef } from '@tanstack/react-table';
 
-const colors: Record<string, "success" | "warning" | "destructive" | "default"> = {
-  completed: "success",
-  review: "warning",
-  "in progress": "default",
-  cancelled: "destructive",
-}
+const colors: Record<string, 'success' | 'warning' | 'destructive' | 'default'> = {
+  completed: 'success',
+  review: 'warning',
+  'in progress': 'default',
+  cancelled: 'destructive',
+};
 interface ProjectData {
   title: string;
   status: string;
@@ -36,49 +26,55 @@ interface ProjectData {
 
 export const columns: ColumnDef<ProjectData>[] = [
   {
-    accessorKey: "title",
-    header: "Title",
+    accessorKey: 'title',
+    header: 'Title',
     cell: ({ row }) => {
       return (
         <div className="flex items-center gap-2 max-w-[240px] truncate  ">
-          <Image src={row.original.projectImage} alt={row.getValue("title")} height={32} width={32} className="rounded" priority={true} />
-          <span className="text-sm font-medium text-default-900 whitespace-nowrap"> {row.getValue("title")}</span>
+          <Image
+            src={row.original.projectImage}
+            alt={row.getValue('title')}
+            height={32}
+            width={32}
+            className="rounded"
+            priority={true}
+          />
+          <span className="text-sm font-medium text-default-900 whitespace-nowrap">
+            {' '}
+            {row.getValue('title')}
+          </span>
         </div>
-      )
-    }
+      );
+    },
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: 'status',
+    header: 'Status',
     cell: ({ row }) => {
       return (
         <div>
           <Badge
-            color={colors[row.getValue("status") as keyof typeof colors] || ""}
+            color={colors[row.getValue('status') as keyof typeof colors] || ''}
             variant="soft"
             className="capitalize whitespace-nowrap"
           >
-            {row.getValue("status")}
+            {row.getValue('status')}
           </Badge>
         </div>
-      )
-    }
+      );
+    },
   },
 
   {
-    accessorKey: "assign",
-    header: "Team",
+    accessorKey: 'assign',
+    header: 'Team',
     cell: ({ row }) => {
       return (
         <>
-          <AvatarGroup
-            max={3}
-            total={row?.original?.assign?.length}
-            countClass="w-7 h-7"
-          >
+          <AvatarGroup max={3} total={row?.original?.assign?.length} countClass="w-7 h-7">
             {row?.original?.assign?.map((item, i) => (
               <div key={`assined-team-member-${i}`}>
-                {typeof item === "object" ? (
+                {typeof item === 'object' ? (
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -103,23 +99,23 @@ export const columns: ColumnDef<ProjectData>[] = [
     },
   },
   {
-    accessorKey: "percentage",
-    header: "Progress",
+    accessorKey: 'percentage',
+    header: 'Progress',
     cell: ({ row }) => {
       return (
         <div className="min-w-[190px]">
           <div className="flex justify-end mb-2">
-            <Label className="text-end">{row.getValue("percentage")}%</Label>
+            <Label className="text-end">{row.getValue('percentage')}%</Label>
           </div>
-          <Progress value={row.getValue("percentage")} size="sm" />
+          <Progress value={row.getValue('percentage')} size="sm" />
         </div>
       );
     },
   },
 
   {
-    id: "actions",
-    header: "Actions",
+    id: 'actions',
+    header: 'Actions',
     cell: ({ row }) => <DataTableRowActions row={row} />,
   },
 ];

@@ -1,12 +1,12 @@
-import React from "react";
-import * as NavigationMenu from "@radix-ui/react-navigation-menu";
-import { menusConfig } from "@/config/menus";
-import { cn, translate } from "@/lib/utils";
-import { ChevronDown } from "lucide-react";
-import Link from "next/link";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import image from "@/public/images/all-img/man-with-laptop.png";
-import Image from "next/image";
+import React from 'react';
+import * as NavigationMenu from '@radix-ui/react-navigation-menu';
+import { menusConfig } from '@/config/menus';
+import { cn, translate } from '@/lib/utils';
+import { ChevronDown } from 'lucide-react';
+import Link from 'next/link';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import image from '@/public/images/all-img/man-with-laptop.png';
+import Image from 'next/image';
 export default function MainMenu({ trans }: { trans: any }) {
   const menus = menusConfig.mainNav || [];
 
@@ -19,7 +19,7 @@ export default function MainMenu({ trans }: { trans: any }) {
       const triggerOffsetLeft = trigger.offsetLeft + trigger.offsetWidth / 6;
 
       setOffset(Math.round(triggerOffsetLeft));
-    } else if (value === "") {
+    } else if (value === '') {
       setOffset(null);
     }
     return trigger;
@@ -31,10 +31,7 @@ export default function MainMenu({ trans }: { trans: any }) {
         onValueChange={setValue}
         className=" flex relative  justify-start group "
       >
-        <NavigationMenu.List
-          ref={setList}
-          className="group flex list-none gap-5"
-        >
+        <NavigationMenu.List ref={setList} className="group flex list-none gap-5">
           {menus?.map((item: any, index: number) => (
             <NavigationMenu.Item key={`item-${index}`} value={item}>
               <NavigationMenu.Trigger
@@ -55,7 +52,7 @@ export default function MainMenu({ trans }: { trans: any }) {
               </NavigationMenu.Trigger>
               <NavigationMenu.Content
                 className={cn(
-                  "w-full  rounded-md border bg-popover text-popover-foreground shadow-lg   "
+                  'w-full  rounded-md border bg-popover text-popover-foreground shadow-lg   '
                 )}
               >
                 {item.child && (
@@ -103,18 +100,14 @@ export default function MainMenu({ trans }: { trans: any }) {
                         <TabsContent
                           key={`tab2-${index}`}
                           value={tab.title}
-                          className={cn(" grid grid-cols-12 gap-4 px-6 py-2", {
-                            "gap-2": tab?.child?.length < 10,
+                          className={cn(' grid grid-cols-12 gap-4 px-6 py-2', {
+                            'gap-2': tab?.child?.length < 10,
                           })}
                         >
                           <div
-                            className={cn(
-                              "col-span-8  grid gap-3 grid-cols-3",
-                              {
-                                "col-span-5 grid-cols-1  ":
-                                  tab?.child?.length < 10,
-                              }
-                            )}
+                            className={cn('col-span-8  grid gap-3 grid-cols-3', {
+                              'col-span-5 grid-cols-1  ': tab?.child?.length < 10,
+                            })}
                           >
                             {tab?.child?.map((megaChild: any) => (
                               <ListItem
@@ -127,8 +120,8 @@ export default function MainMenu({ trans }: { trans: any }) {
                             ))}
                           </div>
                           <div
-                            className={cn("col-span-4 ", {
-                              "col-span-7 ": tab?.child?.length < 10,
+                            className={cn('col-span-4 ', {
+                              'col-span-7 ': tab?.child?.length < 10,
                             })}
                           >
                             <div className="h-full w-full  text-center">
@@ -154,10 +147,10 @@ export default function MainMenu({ trans }: { trans: any }) {
         <div className=" absolute  top-full ">
           <NavigationMenu.Viewport
             style={{
-              display: !offset ? "none" : undefined,
+              display: !offset ? 'none' : undefined,
               transform: `translateX(${offset}px)`,
-              top: "100%",
-              transition: "all 0.5s ease",
+              top: '100%',
+              transition: 'all 0.5s ease',
             }}
           />
         </div>
@@ -167,14 +160,11 @@ export default function MainMenu({ trans }: { trans: any }) {
 }
 
 const ListItem = React.forwardRef<HTMLAnchorElement, any>(
-  (
-    { className, children, title, childItem, trans, ...props },
-    forwardedRef
-  ) => (
+  ({ className, children, title, childItem, trans, ...props }, forwardedRef) => (
     <NavigationMenu.Link asChild>
       <Link
         className={cn(
-          " select-none   text-sm  text-default-700 rounded-md flex  items-center gap-2 mb-4 last:mb-0  leading-none no-underline outline-none transition-colors  hover:text-primary  focus:text-primary",
+          ' select-none   text-sm  text-default-700 rounded-md flex  items-center gap-2 mb-4 last:mb-0  leading-none no-underline outline-none transition-colors  hover:text-primary  focus:text-primary',
           className
         )}
         {...props}

@@ -1,8 +1,7 @@
-"use client";
-import Card from "@/components/ui/card-snippet";
-import ReactSelectOption from "./react-select-options";
-import BasicSelect from "./basic-select";
-
+'use client';
+import Card from '@/components/ui/card-snippet';
+import ReactSelectOption from './react-select-options';
+import BasicSelect from './basic-select';
 
 const ReactSelectPage = () => {
   return (

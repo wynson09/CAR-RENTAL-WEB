@@ -1,14 +1,9 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Popover,
-  PopoverArrow,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import avatar from "@/public/images/avatar/avatar-2.jpg";
-import Link from "next/link";
+'use client';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Popover, PopoverArrow, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import avatar from '@/public/images/avatar/avatar-2.jpg';
+import Link from 'next/link';
 const UserPopover = () => {
   return (
     <Popover>
@@ -24,13 +19,8 @@ const UserPopover = () => {
               <AvatarFallback>SN</AvatarFallback>
             </Avatar>
             <div>
-              <div className="text-sm font-medium text-default-900">
-                John Doe
-              </div>
-              <Link
-                href="/dashboard"
-                className="text-sm text-default-500  hover:text-primary"
-              >
+              <div className="text-sm font-medium text-default-900">John Doe</div>
+              <Link href="/dashboard" className="text-sm text-default-500  hover:text-primary">
                 @johndoe
               </Link>
             </div>
@@ -40,7 +30,7 @@ const UserPopover = () => {
           </Button>
         </div>
         <div className="mt-5 text-sm text-default-600 ">
-          Web designer and developer at{" "}
+          Web designer and developer at{' '}
           <Link href="#" className="underline text-primary">
             Example Company
           </Link>
@@ -48,13 +38,11 @@ const UserPopover = () => {
         </div>
         <div className="mt-4 text-sm text-default-600">
           <Link href="#" className="hover:underline">
-            {" "}
-            <span className="text-default-900 font-medium"> 1090</span>{" "}
-            Following
-          </Link>{" "}
+            {' '}
+            <span className="text-default-900 font-medium"> 1090</span> Following
+          </Link>{' '}
           <Link href="#" className="hover:underline">
-            <span className="text-default-900 font-medium">4,086</span>{" "}
-            Followers
+            <span className="text-default-900 font-medium">4,086</span> Followers
           </Link>
         </div>
       </PopoverContent>

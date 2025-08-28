@@ -1,50 +1,43 @@
-import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useForm, Controller } from "react-hook-form";
-import { cn, formatDate } from "@/lib/utils";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import React, { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useForm, Controller } from 'react-hook-form';
+import { cn, formatDate } from '@/lib/utils';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Calendar } from "@/components/ui/calendar";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Loader2, CalendarIcon } from "lucide-react";
-import {
-  AddEvent,
-  deleteEventAction,
-  updateEventAction,
-} from "@/action/calendar-action";
-import toast from "react-hot-toast";
-import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { CalendarCategory } from "@/lib/interface";
+} from '@/components/ui/select';
+import { Calendar } from '@/components/ui/calendar';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Loader2, CalendarIcon } from 'lucide-react';
+import { AddEvent, deleteEventAction, updateEventAction } from '@/action/calendar-action';
+import toast from 'react-hot-toast';
+import DeleteConfirmationDialog from '@/components/delete-confirmation-dialog';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { CalendarCategory } from '@/lib/interface';
 const schema = z.object({
-  title: z.string().min(3, { message: "Required" }),
+  title: z.string().min(3, { message: 'Required' }),
 });
 
-const EventSheet = ({ open, onClose, categories, event, selectedDate }: {
+const EventSheet = ({
+  open,
+  onClose,
+  categories,
+  event,
+  selectedDate,
+}: {
   open: boolean;
   onClose: () => void;
   categories: any;
   event: any;
-  selectedDate: any
+  selectedDate: any;
 }) => {
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
@@ -63,7 +56,7 @@ const EventSheet = ({ open, onClose, categories, event, selectedDate }: {
     handleSubmit,
   } = useForm({
     resolver: zodResolver(schema),
-    mode: "all",
+    mode: 'all',
   });
 
   const onSubmit = (data: any) => {
@@ -79,7 +72,7 @@ const EventSheet = ({ open, onClose, categories, event, selectedDate }: {
         };
 
         let response = await AddEvent(data);
-        if (response?.status === "success") {
+        if (response?.status === 'success') {
           toast.success(response?.message);
           reset();
           onClose();
@@ -90,7 +83,7 @@ const EventSheet = ({ open, onClose, categories, event, selectedDate }: {
       // if event is not null only update event
       if (event) {
         let response = await updateEventAction(event?.event?.id, data);
-        if (response?.status === "success") {
+        if (response?.status === 'success') {
           toast.success(response?.message);
           reset();
           onClose();
@@ -115,18 +108,18 @@ const EventSheet = ({ open, onClose, categories, event, selectedDate }: {
         setCalendarProps(categories[0].value);
       }
     }
-    setValue("title", event?.event?.title || "");
+    setValue('title', event?.event?.title || '');
   }, [event, selectedDate, open]);
 
   const onDeleteEventAction = async () => {
     try {
       if (!eventIdToDelete) {
-        toast.error("Event ID not found");
+        toast.error('Event ID not found');
         return;
       }
 
       const response = await deleteEventAction(eventIdToDelete);
-      if (response?.status === "success") {
+      if (response?.status === 'success') {
         toast.success(response?.message);
         reset();
         onClose();
@@ -136,7 +129,7 @@ const EventSheet = ({ open, onClose, categories, event, selectedDate }: {
         onClose();
       }
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error('Something went wrong');
     }
   };
 
@@ -155,14 +148,10 @@ const EventSheet = ({ open, onClose, categories, event, selectedDate }: {
         defaultToast={false}
       />
       <Sheet open={open}>
-        <SheetContent
-          onPointerDownOutside={onClose}
-          onClose={onClose}
-          className="px-0"
-        >
+        <SheetContent onPointerDownOutside={onClose} onClose={onClose} className="px-0">
           <SheetHeader className="px-6">
             <SheetTitle>
-              {event ? "Edit Event" : "Create Event"} {event?.title}
+              {event ? 'Edit Event' : 'Create Event'} {event?.title}
             </SheetTitle>
           </SheetHeader>
           <div className="mt-6 h-full">
@@ -176,7 +165,7 @@ const EventSheet = ({ open, onClose, categories, event, selectedDate }: {
                         id="title"
                         type="text"
                         placeholder="Enter Event Name"
-                        {...register("title")}
+                        {...register('title')}
                       />
                       {errors?.title?.message && (
                         <div className="text-destructive">
@@ -196,15 +185,11 @@ const EventSheet = ({ open, onClose, categories, event, selectedDate }: {
                           <Button
                             variant="outline"
                             className={cn(
-                              "w-full justify-between text-left font-normal border-default-200 text-default-600",
-                              !startDate && "text-muted-foreground"
+                              'w-full justify-between text-left font-normal border-default-200 text-default-600',
+                              !startDate && 'text-muted-foreground'
                             )}
                           >
-                            {startDate ? (
-                              formatDate(startDate)
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
+                            {startDate ? formatDate(startDate) : <span>Pick a date</span>}
                             <CalendarIcon className="h-4 w-4 " />
                           </Button>
                         </PopoverTrigger>
@@ -234,15 +219,11 @@ const EventSheet = ({ open, onClose, categories, event, selectedDate }: {
                           <Button
                             variant="outline"
                             className={cn(
-                              "w-full justify-between text-left font-normal border-default-200 text-default-600",
-                              !endDate && "text-muted-foreground"
+                              'w-full justify-between text-left font-normal border-default-200 text-default-600',
+                              !endDate && 'text-muted-foreground'
                             )}
                           >
-                            {endDate ? (
-                              formatDate(endDate)
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
+                            {endDate ? formatDate(endDate) : <span>Pick a date</span>}
                             <CalendarIcon className=" h-4 w-4" />
                           </Button>
                         </PopoverTrigger>
@@ -280,10 +261,7 @@ const EventSheet = ({ open, onClose, categories, event, selectedDate }: {
                             </SelectTrigger>
                             <SelectContent>
                               {categories.map((category: CalendarCategory) => (
-                                <SelectItem
-                                  value={category.value}
-                                  key={category.value}
-                                >
+                                <SelectItem value={category.value} key={category.value}>
                                   {category.label}
                                 </SelectItem>
                               ))}
@@ -300,12 +278,12 @@ const EventSheet = ({ open, onClose, categories, event, selectedDate }: {
                   {isPending ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      {event ? "Updating..." : "Adding..."}
+                      {event ? 'Updating...' : 'Adding...'}
                     </>
                   ) : event ? (
-                    "Update Event"
+                    'Update Event'
                   ) : (
-                    "Add Event"
+                    'Add Event'
                   )}
                 </Button>
                 {event && (

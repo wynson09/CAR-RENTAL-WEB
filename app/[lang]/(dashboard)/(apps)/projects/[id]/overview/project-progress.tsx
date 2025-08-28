@@ -1,23 +1,30 @@
-
-"use client"
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
+'use client';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
 import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 
 const data = [
-  { name: 'Completed', value: 400, color: "success" },
-  { name: 'Incomplete', value: 200, color: "info" },
-  { name: 'Overdue', value: 250, color: "destructive" },
-  { name: 'Remaning', value: 250, color: "warning" },
+  { name: 'Completed', value: 400, color: 'success' },
+  { name: 'Incomplete', value: 200, color: 'info' },
+  { name: 'Overdue', value: 250, color: 'destructive' },
+  { name: 'Remaning', value: 250, color: 'warning' },
 ];
 
 const RADIAN = Math.PI / 180;
 
 // customized label
 
-const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }: any) => {
+const renderCustomizedLabel = ({
+  cx,
+  cy,
+  midAngle,
+  innerRadius,
+  outerRadius,
+  percent,
+  index,
+}: any) => {
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
@@ -40,11 +47,11 @@ const ProjectProgress = ({ height = 230 }) => {
   const { theme: mode } = useTheme();
   const theme = themes.find((theme) => theme.name === config);
   const COLORS = [
-    `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success})`,
-    `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
-    `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].destructive})`,
-    `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning})`
-  ]
+    `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`,
+    `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`,
+    `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].destructive})`,
+    `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`,
+  ];
   return (
     <Card>
       <CardHeader className="border-none p-6 pt-7 mb-0">
@@ -60,7 +67,7 @@ const ProjectProgress = ({ height = 230 }) => {
               labelLine={false}
               label={renderCustomizedLabel}
               outerRadius={115}
-              fill={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`}
+              fill={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`}
               dataKey="value"
             >
               {data.map((entry, index) => (
@@ -71,24 +78,24 @@ const ProjectProgress = ({ height = 230 }) => {
         </ResponsiveContainer>
       </CardContent>
       <CardFooter className="flex-col">
-
         {/* total value */}
-        <div className="text-center text-base font-semibold text-default-900">Total Task: {totalTask}</div>
+        <div className="text-center text-base font-semibold text-default-900">
+          Total Task: {totalTask}
+        </div>
         {/* custom legend */}
         <div className="flex items-center justify-center mt-4 gap-6">
-          {
-            data.map(item => (
-              <div key={item.name}>
-                <div className="flex items-center gap-1">
-                  <span className={`h-2.5 w-2.5 rounded-full bg-${item.color}`}></span>
-                  <span className="text-xs font-medium text-default-500">{item.name}</span>
-                </div>
-                <div className="text-xs font-medium text-default-800 mt-1 ml-4">{item.value} Task</div>
+          {data.map((item) => (
+            <div key={item.name}>
+              <div className="flex items-center gap-1">
+                <span className={`h-2.5 w-2.5 rounded-full bg-${item.color}`}></span>
+                <span className="text-xs font-medium text-default-500">{item.name}</span>
               </div>
-            ))
-          }
+              <div className="text-xs font-medium text-default-800 mt-1 ml-4">
+                {item.value} Task
+              </div>
+            </div>
+          ))}
         </div>
-
       </CardFooter>
     </Card>
   );

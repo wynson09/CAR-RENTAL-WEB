@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Appex Boxplot Chart",
+  title: 'Appex Boxplot Chart',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

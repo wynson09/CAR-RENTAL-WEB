@@ -1,6 +1,6 @@
-"use client"
-import { Fragment, useState } from "react";
-import { cn } from "@/lib/utils";
+'use client';
+import { Fragment, useState } from 'react';
+import { cn } from '@/lib/utils';
 import {
   Table,
   TableBody,
@@ -8,14 +8,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 
-import { DataRows, users } from "./data";
-import { Icon } from "@iconify/react";
-import { Button } from "@/components/ui/button";
+import { DataRows, users } from './data';
+import { Icon } from '@iconify/react';
+import { Button } from '@/components/ui/button';
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 
 const CollapsibleTable = () => {
   const [collapsedRows, setCollapsedRows] = useState<number[]>([]);
@@ -28,36 +28,33 @@ const CollapsibleTable = () => {
   };
   const columns: { key: string; label: string }[] = [
     {
-      key: "user",
-      label: "user"
+      key: 'user',
+      label: 'user',
     },
     {
-      key: "title",
-      label: "title"
+      key: 'title',
+      label: 'title',
     },
     {
-      key: "role",
-      label: "role"
+      key: 'role',
+      label: 'role',
     },
     {
-      key: "action",
-      label: "action"
+      key: 'action',
+      label: 'action',
     },
-  ]
+  ];
   return (
-
     <Table>
       <TableHeader>
         <TableRow>
-          {
-            columns.map(column => (
-              <TableHead key={column.key}>{column.label}</TableHead>
-            ))
-          }
+          {columns.map((column) => (
+            <TableHead key={column.key}>{column.label}</TableHead>
+          ))}
         </TableRow>
       </TableHeader>
       <TableBody>
-        {users.map((item:DataRows) => (
+        {users.map((item: DataRows) => (
           <Fragment key={item.id}>
             <TableRow>
               <TableCell>
@@ -71,12 +68,9 @@ const CollapsibleTable = () => {
                   >
                     <Icon
                       icon="heroicons:chevron-down"
-                      className={cn(
-                        "h-5 w-5 transition-all duration-300 ",
-                        {
-                          "rotate-180": collapsedRows.includes(item.id),
-                        }
-                      )}
+                      className={cn('h-5 w-5 transition-all duration-300 ', {
+                        'rotate-180': collapsedRows.includes(item.id),
+                      })}
                     />
                   </Button>
                   <div className="flex gap-3 items-center">
@@ -85,12 +79,8 @@ const CollapsibleTable = () => {
                       <AvatarFallback>AB</AvatarFallback>
                     </Avatar>
                     <div>
-                      <span className=" text-sm  block  text-card-foreground">
-                        {item.name}
-                      </span>
-                      <span className=" text-xs mt-1  block   font-normal">
-                        {item.email}
-                      </span>
+                      <span className=" text-sm  block  text-card-foreground">{item.name}</span>
+                      <span className=" text-xs mt-1  block   font-normal">{item.email}</span>
                     </div>
                   </div>
                 </div>
@@ -98,11 +88,7 @@ const CollapsibleTable = () => {
 
               <TableCell>{item.title}</TableCell>
               <TableCell>
-                <Badge
-                  variant="soft"
-                  color="success"
-                  className="capitalize rounded-md"
-                >
+                <Badge variant="soft" color="success" className="capitalize rounded-md">
                   Active
                 </Badge>
               </TableCell>
@@ -131,10 +117,8 @@ const CollapsibleTable = () => {
             )}
           </Fragment>
         ))}
-
       </TableBody>
     </Table>
-
   );
 };
 

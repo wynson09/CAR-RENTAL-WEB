@@ -1,4 +1,4 @@
-import { UserData, KycRecord } from "@/store";
+import { UserData, KycRecord } from '@/store';
 
 // Create default KYC record
 export const createDefaultKycRecord = (): KycRecord => ({
@@ -14,7 +14,7 @@ export const createDefaultKycRecord = (): KycRecord => ({
   governmentIdType: '',
   governmentIdFrontImage: '',
   governmentIdBackImage: '',
-  status: 'pending',
+  status: 'pending', // pending, approved, rejected
   statusMessage: '',
   createdAt: new Date(),
   updatedAt: new Date(),
@@ -37,13 +37,13 @@ export const createUserData = (
   // Parse name if not provided separately
   let firstName = options.firstName || '';
   let lastName = options.lastName || '';
-  
+
   if (!firstName && !lastName && options.name) {
     const nameParts = options.name.split(' ');
     firstName = nameParts[0] || '';
     lastName = nameParts.slice(1).join(' ') || '';
   }
-  
+
   const fullName = options.name || `${firstName} ${lastName}`.trim() || email.split('@')[0];
 
   const userData: UserData = {
@@ -56,6 +56,8 @@ export const createUserData = (
     userViolation: [],
     isVerified: options.isVerified || false,
     kycRecord: createDefaultKycRecord(),
+    userStatus: 'Normal',
+    userStatusMessage: 'Account created successfully',
     provider,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -72,10 +74,15 @@ export const createUserData = (
 // Remove undefined values from object (Firestore doesn't allow undefined)
 export const removeUndefinedFields = (obj: any): any => {
   const cleaned: any = {};
-  
+
   for (const [key, value] of Object.entries(obj)) {
     if (value !== undefined) {
-      if (value !== null && typeof value === 'object' && !Array.isArray(value) && !(value instanceof Date)) {
+      if (
+        value !== null &&
+        typeof value === 'object' &&
+        !Array.isArray(value) &&
+        !(value instanceof Date)
+      ) {
         // Recursively clean nested objects
         cleaned[key] = removeUndefinedFields(value);
       } else {
@@ -83,7 +90,7 @@ export const removeUndefinedFields = (obj: any): any => {
       }
     }
   }
-  
+
   return cleaned;
 };
 
@@ -91,12 +98,22 @@ export const removeUndefinedFields = (obj: any): any => {
 export const convertFirestoreTimestamps = (userData: any): UserData => {
   return {
     ...userData,
-    createdAt: userData.createdAt?.toDate ? userData.createdAt.toDate() : new Date(userData.createdAt),
-    updatedAt: userData.updatedAt?.toDate ? userData.updatedAt.toDate() : new Date(userData.updatedAt),
+    userStatus: userData.userStatus || 'Normal',
+    userStatusMessage: userData.userStatusMessage || 'Account in good standing',
+    createdAt: userData.createdAt?.toDate
+      ? userData.createdAt.toDate()
+      : new Date(userData.createdAt),
+    updatedAt: userData.updatedAt?.toDate
+      ? userData.updatedAt.toDate()
+      : new Date(userData.updatedAt),
     kycRecord: {
       ...userData.kycRecord,
-      createdAt: userData.kycRecord?.createdAt?.toDate ? userData.kycRecord.createdAt.toDate() : new Date(userData.kycRecord?.createdAt || Date.now()),
-      updatedAt: userData.kycRecord?.updatedAt?.toDate ? userData.kycRecord.updatedAt.toDate() : new Date(userData.kycRecord?.updatedAt || Date.now()),
-    }
+      createdAt: userData.kycRecord?.createdAt?.toDate
+        ? userData.kycRecord.createdAt.toDate()
+        : new Date(userData.kycRecord?.createdAt || Date.now()),
+      updatedAt: userData.kycRecord?.updatedAt?.toDate
+        ? userData.kycRecord.updatedAt.toDate()
+        : new Date(userData.kycRecord?.updatedAt || Date.now()),
+    },
   };
 };

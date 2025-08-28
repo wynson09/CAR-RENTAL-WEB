@@ -1,8 +1,7 @@
-"use client";
-import { Checkbox } from "@/components/ui/checkbox";
+'use client';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const DisabledCheckbox = () => {
-
   return (
     <div className="flex gap-6 flex-wrap">
       <div className="flex items-center">

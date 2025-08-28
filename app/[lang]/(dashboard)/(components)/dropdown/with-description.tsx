@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/react";
+import { Button } from '@/components/ui/button';
+import { Icon } from '@iconify/react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +9,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 
 const WithDescription = () => {
   return (
@@ -22,9 +22,7 @@ const WithDescription = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[196px] " align="start">
-          <DropdownMenuLabel className="text-default-950">
-            Header Title
-          </DropdownMenuLabel>
+          <DropdownMenuLabel className="text-default-950">Header Title</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="flex items-start group focus:bg-default-200 focus:text-default-950 cursor-pointer">
             <Icon
@@ -35,9 +33,7 @@ const WithDescription = () => {
               <p className="text-sm leading-5 text-default-700 group-hover:text-default-950">
                 Text Item
               </p>
-              <p className="text-xs leading-[18px] text-default-500">
-                Create a text item
-              </p>
+              <p className="text-xs leading-[18px] text-default-500">Create a text item</p>
             </div>
           </DropdownMenuItem>
           <DropdownMenuItem className="flex items-start group focus:bg-default-200 focus:text-default-950 cursor-pointer">
@@ -49,9 +45,7 @@ const WithDescription = () => {
               <p className="text-sm leading-5 text-default-700 group-hover:text-default-950">
                 Number Item
               </p>
-              <p className="text-xs leading-[18px] text-default-500">
-                Create a number item
-              </p>
+              <p className="text-xs leading-[18px] text-default-500">Create a number item</p>
             </div>
           </DropdownMenuItem>
           <DropdownMenuItem className="flex items-start group focus:bg-default-200 focus:text-default-950 cursor-pointer">
@@ -63,9 +57,7 @@ const WithDescription = () => {
               <p className="text-sm leading-5 text-default-700 group-hover:text-default-950">
                 Date Item
               </p>
-              <p className="text-xs leading-[18px] text-default-500">
-                Create a date item
-              </p>
+              <p className="text-xs leading-[18px] text-default-500">Create a date item</p>
             </div>
           </DropdownMenuItem>
           <DropdownMenuItem className="flex items-start group focus:bg-default-200 focus:text-default-950 cursor-pointer">
@@ -77,9 +69,7 @@ const WithDescription = () => {
               <p className="text-sm leading-5 text-default-700 group-hover:text-default-950">
                 Single Form Item
               </p>
-              <p className="text-xs leading-[18px] text-default-500">
-                Create a single form item
-              </p>
+              <p className="text-xs leading-[18px] text-default-500">Create a single form item</p>
             </div>
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -92,9 +82,7 @@ const WithDescription = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[196px] " align="start">
-          <DropdownMenuLabel className="text-default-950">
-            Header Title
-          </DropdownMenuLabel>
+          <DropdownMenuLabel className="text-default-950">Header Title</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="flex items-start group focus:bg-default-200 focus:text-default-950 cursor-pointer">
             <Icon
@@ -105,9 +93,7 @@ const WithDescription = () => {
               <p className="text-sm leading-5 text-default-700 group-hover:text-default-950">
                 Text Item
               </p>
-              <p className="text-xs leading-[18px] text-default-500">
-                Create a text item
-              </p>
+              <p className="text-xs leading-[18px] text-default-500">Create a text item</p>
             </div>
           </DropdownMenuItem>
           <DropdownMenuItem className="flex items-start group focus:bg-default-200 focus:text-default-950 cursor-pointer">
@@ -119,9 +105,7 @@ const WithDescription = () => {
               <p className="text-sm leading-5 text-default-700 group-hover:text-default-950">
                 Number Item
               </p>
-              <p className="text-xs leading-[18px] text-default-500">
-                Create a number item
-              </p>
+              <p className="text-xs leading-[18px] text-default-500">Create a number item</p>
             </div>
           </DropdownMenuItem>
           <DropdownMenuItem className="flex items-start group focus:bg-default-200 focus:text-default-950 cursor-pointer">
@@ -133,9 +117,7 @@ const WithDescription = () => {
               <p className="text-sm leading-5 text-default-700 group-hover:text-default-950">
                 Date Item
               </p>
-              <p className="text-xs leading-[18px] text-default-500">
-                Create a date item
-              </p>
+              <p className="text-xs leading-[18px] text-default-500">Create a date item</p>
             </div>
           </DropdownMenuItem>
           <DropdownMenuItem className="flex items-start group focus:bg-default-200 focus:text-default-950 cursor-pointer">
@@ -147,9 +129,7 @@ const WithDescription = () => {
               <p className="text-sm leading-5 text-default-700 group-hover:text-default-950">
                 Single Form Item
               </p>
-              <p className="text-xs leading-[18px] text-default-500">
-                Create a single form item
-              </p>
+              <p className="text-xs leading-[18px] text-default-500">Create a single form item</p>
             </div>
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -162,9 +142,7 @@ const WithDescription = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[196px] " align="start">
-          <DropdownMenuLabel className="text-default-950">
-            Header Title
-          </DropdownMenuLabel>
+          <DropdownMenuLabel className="text-default-950">Header Title</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="flex items-start group focus:bg-default-200 focus:text-default-950 cursor-pointer">
             <Icon
@@ -175,9 +153,7 @@ const WithDescription = () => {
               <p className="text-sm leading-5 text-default-700 group-hover:text-default-950">
                 Text Item
               </p>
-              <p className="text-xs leading-[18px] text-default-500">
-                Create a text item
-              </p>
+              <p className="text-xs leading-[18px] text-default-500">Create a text item</p>
             </div>
           </DropdownMenuItem>
           <DropdownMenuItem className="flex items-start group focus:bg-default-200 focus:text-default-950 cursor-pointer">
@@ -189,9 +165,7 @@ const WithDescription = () => {
               <p className="text-sm leading-5 text-default-700 group-hover:text-default-950">
                 Number Item
               </p>
-              <p className="text-xs leading-[18px] text-default-500">
-                Create a number item
-              </p>
+              <p className="text-xs leading-[18px] text-default-500">Create a number item</p>
             </div>
           </DropdownMenuItem>
           <DropdownMenuItem className="flex items-start group focus:bg-default-200 focus:text-default-950 cursor-pointer">
@@ -203,9 +177,7 @@ const WithDescription = () => {
               <p className="text-sm leading-5 text-default-700 group-hover:text-default-950">
                 Date Item
               </p>
-              <p className="text-xs leading-[18px] text-default-500">
-                Create a date item
-              </p>
+              <p className="text-xs leading-[18px] text-default-500">Create a date item</p>
             </div>
           </DropdownMenuItem>
           <DropdownMenuItem className="flex items-start group focus:bg-default-200 focus:text-default-950 cursor-pointer">
@@ -217,9 +189,7 @@ const WithDescription = () => {
               <p className="text-sm leading-5 text-default-700 group-hover:text-default-950">
                 Single Form Item
               </p>
-              <p className="text-xs leading-[18px] text-default-500">
-                Create a single form item
-              </p>
+              <p className="text-xs leading-[18px] text-default-500">Create a single form item</p>
             </div>
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -232,9 +202,7 @@ const WithDescription = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[196px] " align="start">
-          <DropdownMenuLabel className="text-default-950">
-            Header Title
-          </DropdownMenuLabel>
+          <DropdownMenuLabel className="text-default-950">Header Title</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="flex items-start group focus:bg-default-200 focus:text-default-950 cursor-pointer">
             <Icon
@@ -245,9 +213,7 @@ const WithDescription = () => {
               <p className="text-sm leading-5 text-default-700 group-hover:text-default-950">
                 Text Item
               </p>
-              <p className="text-xs leading-[18px] text-default-500">
-                Create a text item
-              </p>
+              <p className="text-xs leading-[18px] text-default-500">Create a text item</p>
             </div>
           </DropdownMenuItem>
           <DropdownMenuItem className="flex items-start group focus:bg-default-200 focus:text-default-950 cursor-pointer">
@@ -259,9 +225,7 @@ const WithDescription = () => {
               <p className="text-sm leading-5 text-default-700 group-hover:text-default-950">
                 Number Item
               </p>
-              <p className="text-xs leading-[18px] text-default-500">
-                Create a number item
-              </p>
+              <p className="text-xs leading-[18px] text-default-500">Create a number item</p>
             </div>
           </DropdownMenuItem>
           <DropdownMenuItem className="flex items-start group focus:bg-default-200 focus:text-default-950 cursor-pointer">
@@ -273,9 +237,7 @@ const WithDescription = () => {
               <p className="text-sm leading-5 text-default-700 group-hover:text-default-950">
                 Date Item
               </p>
-              <p className="text-xs leading-[18px] text-default-500">
-                Create a date item
-              </p>
+              <p className="text-xs leading-[18px] text-default-500">Create a date item</p>
             </div>
           </DropdownMenuItem>
           <DropdownMenuItem className="flex items-start group focus:bg-default-200 focus:text-default-950 cursor-pointer">
@@ -287,9 +249,7 @@ const WithDescription = () => {
               <p className="text-sm leading-5 text-default-700 group-hover:text-default-950">
                 Single Form Item
               </p>
-              <p className="text-xs leading-[18px] text-default-500">
-                Create a single form item
-              </p>
+              <p className="text-xs leading-[18px] text-default-500">Create a single form item</p>
             </div>
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -302,9 +262,7 @@ const WithDescription = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[196px] " align="start">
-          <DropdownMenuLabel className="text-default-950">
-            Header Title
-          </DropdownMenuLabel>
+          <DropdownMenuLabel className="text-default-950">Header Title</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="flex items-start group focus:bg-default-200 focus:text-default-950 cursor-pointer">
             <Icon
@@ -315,9 +273,7 @@ const WithDescription = () => {
               <p className="text-sm leading-5 text-default-700 group-hover:text-default-950">
                 Text Item
               </p>
-              <p className="text-xs leading-[18px] text-default-500">
-                Create a text item
-              </p>
+              <p className="text-xs leading-[18px] text-default-500">Create a text item</p>
             </div>
           </DropdownMenuItem>
           <DropdownMenuItem className="flex items-start group focus:bg-default-200 focus:text-default-950 cursor-pointer">
@@ -329,9 +285,7 @@ const WithDescription = () => {
               <p className="text-sm leading-5 text-default-700 group-hover:text-default-950">
                 Number Item
               </p>
-              <p className="text-xs leading-[18px] text-default-500">
-                Create a number item
-              </p>
+              <p className="text-xs leading-[18px] text-default-500">Create a number item</p>
             </div>
           </DropdownMenuItem>
           <DropdownMenuItem className="flex items-start group focus:bg-default-200 focus:text-default-950 cursor-pointer">
@@ -343,9 +297,7 @@ const WithDescription = () => {
               <p className="text-sm leading-5 text-default-700 group-hover:text-default-950">
                 Date Item
               </p>
-              <p className="text-xs leading-[18px] text-default-500">
-                Create a date item
-              </p>
+              <p className="text-xs leading-[18px] text-default-500">Create a date item</p>
             </div>
           </DropdownMenuItem>
           <DropdownMenuItem className="flex items-start group focus:bg-default-200 focus:text-default-950 cursor-pointer">
@@ -357,9 +309,7 @@ const WithDescription = () => {
               <p className="text-sm leading-5 text-default-700 group-hover:text-default-950">
                 Single Form Item
               </p>
-              <p className="text-xs leading-[18px] text-default-500">
-                Create a single form item
-              </p>
+              <p className="text-xs leading-[18px] text-default-500">Create a single form item</p>
             </div>
           </DropdownMenuItem>
         </DropdownMenuContent>

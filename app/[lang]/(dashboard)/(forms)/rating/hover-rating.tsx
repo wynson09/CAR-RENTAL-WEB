@@ -1,21 +1,21 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import { Rating } from "@/components/ui/rating";
+import { Rating } from '@/components/ui/rating';
 const HoverRating = () => {
-  function getRating(rating:number) {
+  function getRating(rating: number) {
     switch (rating) {
       case 1:
-        return "Poor";
+        return 'Poor';
       case 2:
-        return "Nothing special";
+        return 'Nothing special';
       case 3:
-        return "Average";
+        return 'Average';
       case 4:
-        return "Very good";
+        return 'Very good';
       case 5:
-        return "Excellent";
+        return 'Excellent';
       default:
-        return "Average";
+        return 'Average';
     }
   }
   const [rating, setRating] = useState(3);

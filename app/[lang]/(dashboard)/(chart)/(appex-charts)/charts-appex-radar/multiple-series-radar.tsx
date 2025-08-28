@@ -1,13 +1,10 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import {
-  getLabel,
-  getYAxisConfig,
-} from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getLabel, getYAxisConfig } from '@/lib/appex-chart-options';
 
 const MultipleSeriesRadar = ({ height = 350 }) => {
   const { theme: config, setTheme: setConfig, isRtl } = useThemeStore();
@@ -16,15 +13,15 @@ const MultipleSeriesRadar = ({ height = 350 }) => {
 
   const series = [
     {
-      name: "Series 1",
+      name: 'Series 1',
       data: [80, 50, 30, 40, 100, 20],
     },
     {
-      name: "Series 2",
+      name: 'Series 2',
       data: [20, 30, 40, 80, 20, 80],
     },
     {
-      name: "Series 3",
+      name: 'Series 3',
       data: [44, 76, 78, 13, 43, 10],
     },
   ];
@@ -51,20 +48,18 @@ const MultipleSeriesRadar = ({ height = 350 }) => {
         offsetX: 0,
         offsetY: 0,
         polygons: {
-          strokeColors: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-            })`,
+          strokeColors: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`,
           strokeWidth: 0.5,
-          connectorColors: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-            })`,
+          connectorColors: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`,
         },
       },
     },
     fill: {
-      type: "gradient",
+      type: 'gradient',
       colors: [
-        `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-        `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
-        `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success})`,
+        `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
+        `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`,
+        `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`,
       ],
       gradient: {
         shadeIntensity: 1,
@@ -74,18 +69,13 @@ const MultipleSeriesRadar = ({ height = 350 }) => {
       },
     },
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    yaxis: getYAxisConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`
-    ),
+    yaxis: getYAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
     xaxis: {
-      categories: ["2011", "2012", "2013", "2014", "2015", "2016"],
+      categories: ['2011', '2012', '2013', '2014', '2015', '2016'],
       labels: getLabel(
-        `hsl(${theme?.cssVars[
-          mode === "dark" || mode === "system" ? "dark" : "light"
-        ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
       axisBorder: {
         show: false,
@@ -103,10 +93,9 @@ const MultipleSeriesRadar = ({ height = 350 }) => {
     legend: {
       show: true,
       labels: {
-        colors: `hsl(${theme?.cssVars[
-          mode === "dark" || mode === "system" ? "dark" : "light"
-        ].chartLabel
-          })`,
+        colors: `hsl(${
+          theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+        })`,
       },
       itemMargin: {
         horizontal: 5,
@@ -116,19 +105,11 @@ const MultipleSeriesRadar = ({ height = 350 }) => {
         width: 10,
         height: 10,
         radius: 10,
-        offsetX: isRtl ? 5 : -5
-      }
+        offsetX: isRtl ? 5 : -5,
+      },
     },
   };
-  return (
-    <Chart
-      options={options}
-      series={series}
-      type="radar"
-      height={height}
-      width={"100%"}
-    />
-  );
+  return <Chart options={options} series={series} type="radar" height={height} width={'100%'} />;
 };
 
 export default MultipleSeriesRadar;

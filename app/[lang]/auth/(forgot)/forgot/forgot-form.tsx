@@ -1,24 +1,24 @@
-"use client";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Loader2 } from "lucide-react";
-import toast from "react-hot-toast";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { SiteLogo } from "@/components/svg";
-import { useMediaQuery } from "@/hooks/use-media-query";
+'use client';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Loader2 } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { SiteLogo } from '@/components/svg';
+import { useMediaQuery } from '@/hooks/use-media-query';
 const schema = z.object({
-  email: z.string().email({ message: "Your email is invalid." }),
+  email: z.string().email({ message: 'Your email is invalid.' }),
 });
 const ForgotForm = () => {
   const [isPending, startTransition] = React.useTransition();
-  const isDesktop2xl = useMediaQuery("(max-width: 1530px)");
+  const isDesktop2xl = useMediaQuery('(max-width: 1530px)');
   const router = useRouter();
   const {
     register,
@@ -27,7 +27,7 @@ const ForgotForm = () => {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
-    mode: "all",
+    mode: 'all',
   });
   const [isVisible, setIsVisible] = React.useState(false);
 
@@ -35,9 +35,9 @@ const ForgotForm = () => {
 
   const onSubmit = (data: any) => {
     startTransition(async () => {
-      toast.success("Password Reset code has been sent to your email");
+      toast.success('Password Reset code has been sent to your email');
       reset();
-      router.push("/auth/create-password5");
+      router.push('/auth/create-password5');
     });
   };
   return (
@@ -55,30 +55,30 @@ const ForgotForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="mt-5 xl:mt-7">
         <div>
           <Label htmlFor="email" className="mb-2 font-medium text-default-600">
-            Email{" "}
+            Email{' '}
           </Label>
           <Input
             disabled={isPending}
-            {...register("email")}
+            {...register('email')}
             type="email"
             id="email"
-            className={cn("", {
-              "border-destructive": errors.email,
+            className={cn('', {
+              'border-destructive': errors.email,
             })}
-            size={!isDesktop2xl ? "xl" : "lg"}
+            size={!isDesktop2xl ? 'xl' : 'lg'}
           />
           {errors.email && (
             <div className=" text-destructive mt-2">{errors.email.message as string}</div>
           )}
         </div>
 
-        <Button className="w-full mt-6" size={!isDesktop2xl ? "lg" : "md"}>
+        <Button className="w-full mt-6" size={!isDesktop2xl ? 'lg' : 'md'}>
           {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {isPending ? "sending..." : "Send Recovery Email"}
+          {isPending ? 'sending...' : 'Send Recovery Email'}
         </Button>
       </form>
       <div className="mt-5 2xl:mt-8 text-center text-base text-default-600">
-        Forget it. Send me back to{" "}
+        Forget it. Send me back to{' '}
         <Link href="/auth/login5" className="text-primary">
           Sign In
         </Link>

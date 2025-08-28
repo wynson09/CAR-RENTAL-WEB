@@ -1,18 +1,13 @@
-"use client";
-import React, { Fragment, useCallback, useMemo } from "react";
-import { Scale } from "@unovis/ts";
-import {
-  VisXYContainer,
-  VisLine,
-  VisAxis,
-  VisBulletLegend,
-} from "@unovis/react";
-import { data } from "./data";
+'use client';
+import React, { Fragment, useCallback, useMemo } from 'react';
+import { Scale } from '@unovis/ts';
+import { VisXYContainer, VisLine, VisAxis, VisBulletLegend } from '@unovis/react';
+import { data } from './data';
 
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { CityTemps } from "./utils"
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { CityTemps } from './utils';
 const MultiLineChart = ({ height = 400 }) => {
   const xScale = useMemo(() => Scale.scaleTime(), []);
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -21,18 +16,16 @@ const MultiLineChart = ({ height = 400 }) => {
 
   const items = [
     {
-      name: "Austin",
-      color: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary
-        })`,
+      name: 'Austin',
+      color: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
     },
     {
-      name: "New York",
-      color: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
+      name: 'New York',
+      color: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`,
     },
     {
-      name: "San francisco",
-      color: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning
-        })`,
+      name: 'San francisco',
+      color: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`,
     },
   ];
   return (
@@ -53,26 +46,22 @@ const MultiLineChart = ({ height = 400 }) => {
           numTicks={6}
           gridLine={false}
           tickFormat={Intl.DateTimeFormat().format}
-          tickTextColor={`hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`}
-          labelColor={`hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`}
+          tickTextColor={`hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`}
+          labelColor={`hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`}
         />
         <VisAxis
           type="y"
           label="Temperature (celsius)"
-          tickTextColor={`hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`}
-          labelColor={`hsl(${theme?.cssVars[
-              mode === "dark" || mode === "system" ? "dark" : "light"
-            ].chartLabel
-            })`}
+          tickTextColor={`hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`}
+          labelColor={`hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`}
         />
       </VisXYContainer>
     </Fragment>

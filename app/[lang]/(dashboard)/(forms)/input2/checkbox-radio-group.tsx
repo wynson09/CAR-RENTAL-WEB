@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { Input } from "@/components/ui/input";
-import { InputGroup, InputGroupText } from "@/components/ui/input-group";
-import { Checkbox } from "@/components/ui/checkbox";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Input } from '@/components/ui/input';
+import { InputGroup, InputGroupText } from '@/components/ui/input-group';
+import { Checkbox } from '@/components/ui/checkbox';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 const CheckboxRadioGroup = () => {
   return (
@@ -13,12 +13,7 @@ const CheckboxRadioGroup = () => {
           <Checkbox color="secondary" />
         </InputGroupText>
 
-        <Input
-          type="text"
-          radius="sm"
-          placeholder="Small Radius"
-          className="h-8"
-        />
+        <Input type="text" radius="sm" placeholder="Small Radius" className="h-8" />
       </InputGroup>
       <InputGroup>
         <InputGroupText>
@@ -27,12 +22,7 @@ const CheckboxRadioGroup = () => {
           </RadioGroup>
         </InputGroupText>
 
-        <Input
-          type="text"
-          radius="sm"
-          placeholder="Small Radius"
-          className="h-8"
-        />
+        <Input type="text" radius="sm" placeholder="Small Radius" className="h-8" />
       </InputGroup>
     </>
   );

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Chart as ChartJS,
@@ -10,13 +10,13 @@ import {
   Legend,
   PointElement,
   LogarithmicScale,
-} from "chart.js";
-import { hslToHex, hexToRGB } from "@/lib/utils";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { Line } from "react-chartjs-2";
-import { faker } from "@faker-js/faker";
+} from 'chart.js';
+import { hslToHex, hexToRGB } from '@/lib/utils';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { Line } from 'react-chartjs-2';
+import { faker } from '@faker-js/faker';
 
 ChartJS.register(
   CategoryScale,
@@ -35,23 +35,14 @@ const LogScaleChart = ({ height = 350 }) => {
 
   const theme = themes.find((theme) => theme.name === config);
 
-  const hslDestructive = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].destructive
-    })`;
+  const hslDestructive = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].destructive})`;
   const hexDestructive = hslToHex(hslDestructive);
-  const labels = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-  ];
+  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
   const data: any = {
     labels: labels,
     datasets: [
       {
-        label: "Dataset 1",
+        label: 'Dataset 1',
         data: labels.map(() => faker.number.int({ min: 0, max: 100 })),
         borderColor: hexToRGB(hexDestructive, 0.5),
       },
@@ -62,13 +53,12 @@ const LogScaleChart = ({ height = 350 }) => {
     plugins: {
       legend: {
         labels: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
         display: true,
-        text: "Chart.js Line Chart - Logarithmic",
+        text: 'Chart.js Line Chart - Logarithmic',
       },
     },
 
@@ -76,33 +66,29 @@ const LogScaleChart = ({ height = 350 }) => {
       y: {
         grid: {
           drawTicks: false,
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartGird
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartGird
+          })`,
         },
         ticks: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
-        type: "logarithmic",
+        type: 'logarithmic',
       },
       x: {
         grid: {
           drawTicks: false,
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartGird
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartGird
+          })`,
         },
 
         ticks: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
     },

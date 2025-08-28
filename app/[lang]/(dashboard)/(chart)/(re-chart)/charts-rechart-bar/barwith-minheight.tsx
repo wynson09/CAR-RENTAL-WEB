@@ -1,7 +1,7 @@
-"use client";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
+'use client';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
 import {
   CartesianGrid,
   XAxis,
@@ -11,9 +11,9 @@ import {
   Bar,
   Tooltip,
   LabelList,
-} from "recharts";
-import { data } from "./data";
-import CustomTooltip from "./custom-tooltip";
+} from 'recharts';
+import { data } from './data';
+import CustomTooltip from './custom-tooltip';
 
 const renderCustomizedLabel = (props: any) => {
   const { x, y, width, height, value } = props;
@@ -29,7 +29,7 @@ const renderCustomizedLabel = (props: any) => {
         textAnchor="middle"
         dominantBaseline="middle"
       >
-        {value.split(" ")[1]}
+        {value.split(' ')[1]}
       </text>
     </g>
   );
@@ -44,9 +44,7 @@ const BarWithMinHeight = ({ height = 300 }) => {
     <ResponsiveContainer width="100%" height={height}>
       <BarChart height={height} data={data}>
         <CartesianGrid
-          stroke={`hsl(${
-            theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-          })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
           strokeDasharray="3 3"
           vertical={false}
         />
@@ -54,45 +52,33 @@ const BarWithMinHeight = ({ height = 300 }) => {
         <XAxis
           dataKey="name"
           tick={{
-            fill: `hsl(${
-              theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel
-            })`,
-            fontSize: "12px",
+            fill: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
+            fontSize: '12px',
           }}
           tickLine={false}
-          stroke={`hsl(${
-            theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-          })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
           axisLine={false}
         />
         <YAxis
           tick={{
-            fill: `hsl(${
-              theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel
-            })`,
-            fontSize: "12px",
+            fill: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
+            fontSize: '12px',
           }}
           tickLine={false}
-          stroke={`hsl(${
-            theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-          })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
         />
         <Tooltip content={<CustomTooltip />} />
 
         <Bar
           dataKey="pv"
-          fill={`hsl(${
-            theme?.cssVars[mode === "dark" ? "dark" : "light"].primary
-          })`}
+          fill={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`}
           minPointSize={5}
         >
           <LabelList dataKey="name" content={renderCustomizedLabel} />
         </Bar>
         <Bar
           dataKey="uv"
-          fill={`hsl(${
-            theme?.cssVars[mode === "dark" ? "dark" : "light"].info
-          })`}
+          fill={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`}
           minPointSize={10}
         />
       </BarChart>

@@ -1,6 +1,6 @@
-import { NextResponse, NextRequest } from "next/server";
-import { projects } from "./data";
-export const dynamic = "force-dynamic";
+import { NextResponse, NextRequest } from 'next/server';
+import { projects } from './data';
+export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest, response: NextResponse) {
   return NextResponse.json(projects, { status: 200 });
 }
@@ -13,7 +13,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
   // Add the new item to the array
   projects.push(newItem);
-  console.log(newItem, "ami new item");
+  console.log(newItem, 'ami new item');
 
   return NextResponse.json(newItem, { status: 201 });
 }

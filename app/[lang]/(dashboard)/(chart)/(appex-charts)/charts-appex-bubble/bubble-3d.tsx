@@ -1,14 +1,10 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import {
-  getGridConfig,
-  getLabel,
-  getYAxisConfig,
-} from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getGridConfig, getLabel, getYAxisConfig } from '@/lib/appex-chart-options';
 
 const Bubble3D = ({ height = 350 }) => {
   const { theme: config, setTheme: setConfig, isRtl } = useThemeStore();
@@ -24,8 +20,7 @@ const Bubble3D = ({ height = 350 }) => {
     var series: [number, number, number][] = [];
     while (i < count) {
       var x = Math.floor(Math.random() * (750 - 1 + 1)) + 1;
-      var y =
-        Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+      var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
       var z = Math.floor(Math.random() * (75 - 15 + 1)) + 15;
 
       series.push([x, y, z]);
@@ -36,36 +31,36 @@ const Bubble3D = ({ height = 350 }) => {
   }
   const series = [
     {
-      name: "Product1",
-      data: generateData(new Date("11 Feb 2017 GMT").getTime(), 20, {
+      name: 'Product1',
+      data: generateData(new Date('11 Feb 2017 GMT').getTime(), 20, {
         min: 10,
         max: 60,
       }),
     },
     {
-      name: "Product2",
-      data: generateData(new Date("11 Feb 2017 GMT").getTime(), 20, {
+      name: 'Product2',
+      data: generateData(new Date('11 Feb 2017 GMT').getTime(), 20, {
         min: 10,
         max: 60,
       }),
     },
     {
-      name: "Product3",
-      data: generateData(new Date("11 Feb 2017 GMT").getTime(), 20, {
+      name: 'Product3',
+      data: generateData(new Date('11 Feb 2017 GMT').getTime(), 20, {
         min: 10,
         max: 60,
       }),
     },
     {
-      name: "Product4",
-      data: generateData(new Date("11 Feb 2017 GMT").getTime(), 20, {
+      name: 'Product4',
+      data: generateData(new Date('11 Feb 2017 GMT').getTime(), 20, {
         min: 10,
         max: 60,
       }),
     },
   ];
 
-  const options:any = {
+  const options: any = {
     chart: {
       toolbar: {
         show: false,
@@ -75,24 +70,22 @@ const Bubble3D = ({ height = 350 }) => {
       enabled: false,
     },
     fill: {
-      type: "gradient",
+      type: 'gradient',
     },
     stroke: {
-      curve: "smooth",
+      curve: 'smooth',
       width: 4,
     },
     colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`,
     ],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
     plotOptions: {
       bar: {
         horizontal: true,
@@ -106,7 +99,7 @@ const Bubble3D = ({ height = 350 }) => {
       left: 0,
     },
     theme: {
-      palette: "palette2",
+      palette: 'palette2',
     },
     xaxis: {
       axisBorder: {
@@ -116,21 +109,15 @@ const Bubble3D = ({ height = 350 }) => {
         show: false,
       },
       labels: getLabel(
-        `hsl(${theme?.cssVars[
-          mode === "dark" || mode === "system" ? "dark" : "light"
-        ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
     },
-    yaxis: getYAxisConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`
-    ),
+    yaxis: getYAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
     legend: {
       labels: {
-        colors: `hsl(${theme?.cssVars[
-          mode === "dark" || mode === "system" ? "dark" : "light"
-        ].chartLabel
-          })`,
+        colors: `hsl(${
+          theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+        })`,
       },
       itemMargin: {
         horizontal: 5,
@@ -140,19 +127,11 @@ const Bubble3D = ({ height = 350 }) => {
         width: 10,
         height: 10,
         radius: 10,
-        offsetX: isRtl ? 5 : -5
-      }
+        offsetX: isRtl ? 5 : -5,
+      },
     },
   };
-  return (
-    <Chart
-      options={options}
-      series={series}
-      type="bubble"
-      height={height}
-      width={"100%"}
-    />
-  );
+  return <Chart options={options} series={series} type="bubble" height={height} width={'100%'} />;
 };
 
 export default Bubble3D;

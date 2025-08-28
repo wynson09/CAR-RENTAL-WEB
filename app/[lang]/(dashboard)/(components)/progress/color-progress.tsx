@@ -1,8 +1,7 @@
-"use client";
+'use client';
 
-import { Progress } from "@/components/ui/progress";
+import { Progress } from '@/components/ui/progress';
 const ColorProgress = () => {
-
   return (
     <div className="flex flex-wrap gap-2">
       <Progress value={30} color="primary" />

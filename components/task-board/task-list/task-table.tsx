@@ -1,16 +1,16 @@
-"use client";
-import * as React from "react";
-import { cn } from "@/lib/utils";
+'use client';
+import * as React from 'react';
+import { cn } from '@/lib/utils';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
+} from '@/components/ui/dropdown-menu';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 import {
   flexRender,
   getCoreRowModel,
@@ -21,9 +21,9 @@ import {
   ColumnDef,
   SortingState,
   ColumnFiltersState,
-  VisibilityState
-} from "@tanstack/react-table";
-import { Checkbox } from "@/components/ui/checkbox";
+  VisibilityState,
+} from '@tanstack/react-table';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Table,
   TableBody,
@@ -32,31 +32,21 @@ import {
   TableHeader,
   TableRow,
   TableFooter,
-} from "@/components/ui/table";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarGroup,
-  AvatarImage,
-} from "@/components/ui/avatar";
-import { ChevronDown, Plus, Trash2, X } from "lucide-react";
-import {
-  Popover,
-  PopoverClose,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+} from '@/components/ui/table';
+import { Avatar, AvatarFallback, AvatarGroup, AvatarImage } from '@/components/ui/avatar';
+import { ChevronDown, Plus, Trash2, X } from 'lucide-react';
+import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import {
   Tooltip,
   TooltipArrow,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/react";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/tooltip';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@iconify/react';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
 import {
   Dialog,
   DialogClose,
@@ -64,67 +54,63 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
+} from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/command";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar } from "@/components/ui/calendar";
-import { faker } from "@faker-js/faker";
-import {
-  deleteTaskAction,
-  updateTaskAction,
-  addTaskAction,
-} from "@/action/project-action";
-import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
-import { type Task as TaskType } from "@/app/api/tasks/data";
-import { type Board as BoardType } from "@/app/api/boards/data";
+} from '@/components/ui/command';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Calendar } from '@/components/ui/calendar';
+import { faker } from '@faker-js/faker';
+import { deleteTaskAction, updateTaskAction, addTaskAction } from '@/action/project-action';
+import DeleteConfirmationDialog from '@/components/delete-confirmation-dialog';
+import { type Task as TaskType } from '@/app/api/tasks/data';
+import { type Board as BoardType } from '@/app/api/boards/data';
 const members = [
   {
-    name: "Nick Jonas",
-    value: "userid1",
+    name: 'Nick Jonas',
+    value: 'userid1',
     image: faker.image.avatarLegacy(),
   },
   {
-    name: "Fahim",
-    value: "userid2",
+    name: 'Fahim',
+    value: 'userid2',
     image: faker.image.avatarLegacy(),
   },
   {
-    name: "Nayeem",
-    value: "userid3",
+    name: 'Nayeem',
+    value: 'userid3',
     image: faker.image.avatarLegacy(),
   },
   {
-    name: "Iftekhar",
-    value: "userid4",
+    name: 'Iftekhar',
+    value: 'userid4',
     image: faker.image.avatarLegacy(),
   },
 ];
 const tabs = [
   {
-    label: "Due Date",
-    value: "due-date",
+    label: 'Due Date',
+    value: 'due-date',
   },
   {
-    label: "Start Date",
-    value: "start-date",
+    label: 'Start Date',
+    value: 'start-date',
   },
 ];
 
 const priorityColors: { [key: string]: any } = {
-  high: "success",
-  medium: "warning",
-  low: "destructive",
+  high: 'success',
+  medium: 'warning',
+  low: 'destructive',
 };
 
 const schema = z.object({
-  title: z.string().min(2, { message: "Need Task Title" }),
+  title: z.string().min(2, { message: 'Need Task Title' }),
 });
 
 interface TaskTableProps {
@@ -132,7 +118,6 @@ interface TaskTableProps {
   boards: BoardType[];
   onUpdateTask: (task: TaskType) => void;
   boardID2: string;
-
 }
 const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -146,11 +131,11 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
 
   // create task
   const [isPending, startTransition] = React.useTransition();
-  const getBoardNameById = (boardId: BoardType["id"]) => {
+  const getBoardNameById = (boardId: BoardType['id']) => {
     const foundBoard = boards.find((board) => board.id === boardId);
-    return foundBoard ? foundBoard.name : "Unknown Board";
+    return foundBoard ? foundBoard.name : 'Unknown Board';
   };
-  const handleMoveTask = (task: TaskType, boardId: BoardType["id"]) => {
+  const handleMoveTask = (task: TaskType, boardId: BoardType['id']) => {
     const newData = {
       ...task,
       boardId: boardId,
@@ -179,7 +164,7 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
 
     startTransition(async () => {
       result = await addTaskAction(data);
-      toast.success("Successfully added");
+      toast.success('Successfully added');
     });
 
     reset();
@@ -187,12 +172,12 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
 
   const columns: ColumnDef<TaskType, any>[] = [
     {
-      id: "id",
+      id: 'id',
       header: ({ table }) => (
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
@@ -212,34 +197,31 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
     },
 
     {
-      accessorKey: "title",
-      header: "Task",
+      accessorKey: 'title',
+      header: 'Task',
       cell: ({ row }) => (
         <div
           className="flex items-center gap-2 max-w-[300px] text-ellipsis cursor-pointer"
           onClick={() => onUpdateTask(row?.original)}
         >
           <div className="flex-1 text-sm font-medium text-default-800 capitalize truncate">
-            {row.getValue("title")}
+            {row.getValue('title')}
           </div>
-
         </div>
       ),
     },
     {
-      accessorKey: "status",
-      header: "Status",
+      accessorKey: 'status',
+      header: 'Status',
       cell: ({ row }) => (
         <div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
-
                 variant="soft"
                 className="flex items-center gap-1 text-sm font-medium  h-6 whitespace-nowrap"
               >
-                {getBoardNameById(row?.original.boardId)}{" "}
-                <ChevronDown className="w-4 h-4" />
+                {getBoardNameById(row?.original.boardId)} <ChevronDown className="w-4 h-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-[50px]" align="start">
@@ -259,14 +241,13 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
     },
 
     {
-      accessorKey: "list",
-      header: "List",
+      accessorKey: 'list',
+      header: 'List',
       cell: ({ row }) => (
         <div>
           <Popover>
             <PopoverTrigger asChild>
               <Button
-
                 variant="soft"
                 className="flex items-center gap-1 text-sm font-medium  h-6 whitespace-nowrap"
               >
@@ -275,15 +256,9 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
             </PopoverTrigger>
             <PopoverContent className="p-0">
               <div className="flex justify-between items-center bg-default-50  border-b border-default-300 px-3 py-2 ">
-                <div className=" text-sm font-medium text-default-900 ">
-                  Task List{" "}
-                </div>
+                <div className=" text-sm font-medium text-default-900 ">Task List </div>
                 <PopoverClose>
-                  <Button
-
-                    size="icon"
-                    className="w-6 h-6 bg-default-400 rounded-full"
-                  >
+                  <Button size="icon" className="w-6 h-6 bg-default-400 rounded-full">
                     <X className="w-4 h-4" />
                   </Button>
                 </PopoverClose>
@@ -297,7 +272,6 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
                   ></CommandInput>
                 </div>
                 <CommandEmpty>No Item found</CommandEmpty>
-
               </Command>
               <Dialog>
                 <DialogTrigger asChild>
@@ -324,7 +298,7 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
                         Cancel
                       </Button>
                     </DialogClose>
-                    <Button >Create</Button>
+                    <Button>Create</Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
@@ -334,20 +308,18 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
       ),
     },
     {
-      accessorKey: "assign",
-      header: "Assigns",
+      accessorKey: 'assign',
+      header: 'Assigns',
       cell: ({ row }: any) => (
         <div>
-          {row.getValue("assign")?.length > 0 && (
+          {row.getValue('assign')?.length > 0 && (
             <div className="flex items-center gap-3">
               <AvatarGroup
-
                 max={2}
-
-                total={(row.getValue("assign") as any[]).length}
+                total={(row.getValue('assign') as any[]).length}
                 countClass="w-8 h-8"
               >
-                {row.getValue("assign").map((user: any) => (
+                {row.getValue('assign').map((user: any) => (
                   <TooltipProvider key={`marka-${faker.string.uuid()}`}>
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -367,27 +339,17 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
-
                     size="icon"
                     className="h-8 w-8 bg-default-100 rounded-full hover:bg-default-200"
                   >
-                    <Icon
-                      icon="heroicons:user-plus"
-                      className="w-5 h-5 text-primary"
-                    />
+                    <Icon icon="heroicons:user-plus" className="w-5 h-5 text-primary" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="p-0">
                   <div className="flex justify-between items-center bg-default-50  border-b border-default-300 px-3 py-2">
-                    <div className=" text-sm font-medium text-default-900 ">
-                      Assign Task To
-                    </div>
+                    <div className=" text-sm font-medium text-default-900 ">Assign Task To</div>
                     <PopoverClose>
-                      <Button
-
-                        size="icon"
-                        className="w-6 h-6 bg-default-400 rounded-full"
-                      >
+                      <Button size="icon" className="w-6 h-6 bg-default-400 rounded-full">
                         <X className="w-4 h-4" />
                       </Button>
                     </PopoverClose>
@@ -412,9 +374,7 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
                             <AvatarImage src={item.image} />
                             <AvatarFallback>SN</AvatarFallback>
                           </Avatar>
-                          <span className="font-base capitalize text-default-900">
-                            {item.name}
-                          </span>
+                          <span className="font-base capitalize text-default-900">{item.name}</span>
                         </CommandItem>
                       ))}
                     </CommandGroup>
@@ -427,27 +387,21 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
       ),
     },
     {
-      accessorKey: "date",
-      header: "Due Date",
+      accessorKey: 'date',
+      header: 'Due Date',
       cell: ({ row }) => (
         <div>
           <Popover>
             <PopoverTrigger asChild>
-              <Button
-
-                className="font-medium text-default-600 bg-transparent hover:bg-transparent whitespace-nowrap"
-              >
-                {row.getValue("date")} /{row?.original?.time}
+              <Button className="font-medium text-default-600 bg-transparent hover:bg-transparent whitespace-nowrap">
+                {row.getValue('date')} /{row?.original?.time}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="p-0" side="bottom">
               <Tabs defaultValue="due-date" className="block">
                 <TabsList className="grid w-full grid-cols-2 h-12 py-2">
                   {tabs.map((item) => (
-                    <TabsTrigger
-                      key={`date-item-${item.value}`}
-                      value={item.value}
-                    >
+                    <TabsTrigger key={`date-item-${item.value}`} value={item.value}>
                       {item.label}
                     </TabsTrigger>
                   ))}
@@ -456,7 +410,6 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
                   <Calendar
                     mode="single"
                     selected={dueDate}
-
                     onSelect={(date) => setDueDate(date as Date)}
                     className=" w-full"
                   />
@@ -466,7 +419,6 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
                     mode="single"
                     selected={startDate}
                     onSelect={(date) => setStartDate(date as Date)}
-
                     className=" w-full"
                   />
                 </TabsContent>
@@ -485,22 +437,21 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
       ),
     },
     {
-      accessorKey: "priority",
-      header: "Priority",
+      accessorKey: 'priority',
+      header: 'Priority',
       cell: ({ row }) => (
         <div>
-          {row.getValue("priority") as any ? (
+          {(row.getValue('priority') as any) ? (
             <Badge
-              color={priorityColors[row?.getValue("priority") as any] || ""}
+              color={priorityColors[row?.getValue('priority') as any] || ''}
               className="capitalize"
             >
-              {row.getValue("priority")}
+              {row.getValue('priority')}
             </Badge>
           ) : (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
-
                   variant="soft"
                   className="text-sm font-medium text-primary h-6 bg-transparent hover:bg-transparent hover:text-primary"
                 >
@@ -519,12 +470,12 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
       ),
     },
     {
-      accessorKey: "storyPoints",
-      header: "Story Point",
+      accessorKey: 'storyPoints',
+      header: 'Story Point',
       cell: ({ row }) => (
         <div>
-          {row.getValue("storyPoints") ? (
-            row.getValue("storyPoints")
+          {row.getValue('storyPoints') ? (
+            row.getValue('storyPoints')
           ) : (
             <input
               type="text"
@@ -536,8 +487,8 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
       ),
     },
     {
-      accessorKey: "id",
-      header: "Actions",
+      accessorKey: 'id',
+      header: 'Actions',
       cell: ({ row }) => {
         return (
           <>
@@ -593,7 +544,7 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
   return (
     <>
       <div className="border border-default-300 rounded-bl-xl overflow-x-auto">
-        <Table >
+        <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -605,10 +556,7 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
                     >
                       {header.isPlaceholder
                         ? null
-                        : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   );
                 })}
@@ -620,7 +568,7 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={`list-view-row-${faker.string.uuid()}`}
-                  data-state={row.getIsSelected() && "selected"}
+                  data-state={row.getIsSelected() && 'selected'}
                   className="border border-default-300 "
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -628,20 +576,14 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
                       key={`list-view-cell-${faker.string.uuid()}`}
                       className="border-r border-default-300 first:border-r-0 py-2.5"
                     >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
+                <TableCell colSpan={columns.length} className="h-24 text-center">
                   No results.
                 </TableCell>
               </TableRow>
@@ -656,18 +598,15 @@ const TaskTable = ({ data, boards, onUpdateTask, boardID2 }: TaskTableProps) => 
                     <Plus className="w-4 h-4 text-primary" />
                     <input
                       type="text"
-                      {...register("title")}
+                      {...register('title')}
                       placeholder="  Add a task"
-
                       className={cn(
-                        "text-sm font-medium text-default-900 focus:outline-none pl-2 placeholder:text-primary",
+                        'text-sm font-medium text-default-900 focus:outline-none pl-2 placeholder:text-primary',
                         {
-                          " placeholder:text-destructive  text-destructive ":
-                            errors.title,
+                          ' placeholder:text-destructive  text-destructive ': errors.title,
                         }
                       )}
                     />
-
                   </div>
                 </form>
               </TableCell>

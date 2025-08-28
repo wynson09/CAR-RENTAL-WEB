@@ -1,29 +1,22 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { CustomPopover } from "@/components/ui/popover";
+import { Button } from '@/components/ui/button';
+import { CustomPopover } from '@/components/ui/popover';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/select';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
 
-import { Icon } from "@iconify/react";
-import { X } from "lucide-react";
-import { useRef, useState } from "react";
+import { Icon } from '@iconify/react';
+import { X } from 'lucide-react';
+import { useRef, useState } from 'react';
 
-const TaskSheetHeader = ({ toggleCollapse }: {
-  toggleCollapse: () => void
-}) => {
+const TaskSheetHeader = ({ toggleCollapse }: { toggleCollapse: () => void }) => {
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [elapsedTime, setElapsedTime] = useState<number>(0);
   const intervalRef = useRef<NodeJS.Timer | null>(null);
@@ -49,9 +42,9 @@ const TaskSheetHeader = ({ toggleCollapse }: {
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
 
-    const formattedHours = String(hours).padStart(2, "0");
-    const formattedMinutes = String(minutes % 60).padStart(2, "0");
-    const formattedSeconds = String(seconds % 60).padStart(2, "0");
+    const formattedHours = String(hours).padStart(2, '0');
+    const formattedMinutes = String(minutes % 60).padStart(2, '0');
+    const formattedSeconds = String(seconds % 60).padStart(2, '0');
 
     return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
   };
@@ -79,9 +72,7 @@ const TaskSheetHeader = ({ toggleCollapse }: {
       <div className="flex items-center gap-2 pr-5">
         {/* timer */}
         <div className="flex items-center gap-2">
-          <p className="text-sm font-medium text-default-600">
-            {formatTime(elapsedTime)}
-          </p>
+          <p className="text-sm font-medium text-default-600">{formatTime(elapsedTime)}</p>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -89,12 +80,9 @@ const TaskSheetHeader = ({ toggleCollapse }: {
                   onClick={toggleTimer}
                   type="button"
                   size="icon"
-                  className={cn(
-                    "bg-transparent rounded-full hover:bg-default-200 h-8 w-8",
-                    {
-                      "bg-default-200": isRunning,
-                    }
-                  )}
+                  className={cn('bg-transparent rounded-full hover:bg-default-200 h-8 w-8', {
+                    'bg-default-200': isRunning,
+                  })}
                 >
                   {isRunning ? (
                     <Icon
@@ -102,10 +90,7 @@ const TaskSheetHeader = ({ toggleCollapse }: {
                       className="h-[14px] w-[14px] text-default-500"
                     />
                   ) : (
-                    <Icon
-                      icon="heroicons:play"
-                      className="h-[14px] w-[14px] text-default-500"
-                    />
+                    <Icon icon="heroicons:play" className="h-[14px] w-[14px] text-default-500" />
                   )}
                 </Button>
               </TooltipTrigger>
@@ -135,14 +120,8 @@ const TaskSheetHeader = ({ toggleCollapse }: {
             className="w-5 h-5 text-default-500"
           />
         </div>
-        <div
-          onClick={toggleCollapse}
-          className="cursor-pointer hidden xl:block"
-        >
-          <Icon
-            icon="heroicons:arrows-right-left-solid"
-            className="w-5 h-5 text-default-500"
-          />
+        <div onClick={toggleCollapse} className="cursor-pointer hidden xl:block">
+          <Icon icon="heroicons:arrows-right-left-solid" className="w-5 h-5 text-default-500" />
         </div>
       </div>
     </>

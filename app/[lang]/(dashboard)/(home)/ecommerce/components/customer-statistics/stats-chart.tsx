@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
 
 const StatsChart = ({ height = 305 }) => {
   const { theme: config, setTheme: setConfig, isRtl } = useThemeStore();
@@ -13,26 +13,26 @@ const StatsChart = ({ height = 305 }) => {
 
   const series = [900, 800, 400];
 
-  const options:any = {
+  const options: any = {
     chart: {
       toolbar: {
         show: false,
       },
     },
-    labels: ["Man", "Woman", "Others"],
+    labels: ['Man', 'Woman', 'Others'],
     dataLabels: {
       enabled: false,
       style: {
-        fontSize: "14px",
-        fontWeight: "500",
+        fontSize: '14px',
+        fontWeight: '500',
       },
     },
     stroke: {
       width: 0,
     },
-    colors: ["#826AF9", "#22C55E", "#FACC15"],
+    colors: ['#826AF9', '#22C55E', '#FACC15'],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
     plotOptions: {
       pie: {
@@ -40,19 +40,16 @@ const StatsChart = ({ height = 305 }) => {
           labels: {
             show: true,
             style: {
-              fontSize: "12px",
+              fontSize: '12px',
               fontWeight: 500,
-              color: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel
-                })`,
+              color: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
             },
             value: {
-              color: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel
-                })`,
+              color: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
             },
             total: {
               show: true,
-              color: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel
-                })`,
+              color: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
             },
           },
         },
@@ -65,15 +62,14 @@ const StatsChart = ({ height = 305 }) => {
       left: 0,
     },
     fill: {
-      type: "gradient",
+      type: 'gradient',
     },
     legend: {
-      position: "bottom",
+      position: 'bottom',
       labels: {
-        colors: `hsl(${theme?.cssVars[
-          mode === "dark" || mode === "system" ? "dark" : "light"
-        ].chartLabel
-          })`,
+        colors: `hsl(${
+          theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+        })`,
       },
       itemMargin: {
         horizontal: 10,
@@ -83,19 +79,11 @@ const StatsChart = ({ height = 305 }) => {
         width: 10,
         height: 10,
         radius: 10,
-        offsetX: isRtl ? 5 : -5
-      }
-    }
+        offsetX: isRtl ? 5 : -5,
+      },
+    },
   };
-  return (
-    <Chart
-      options={options}
-      series={series}
-      type="donut"
-      height={height}
-      width={"100%"}
-    />
-  );
+  return <Chart options={options} series={series} type="donut" height={height} width={'100%'} />;
 };
 
 export default StatsChart;

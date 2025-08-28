@@ -1,14 +1,19 @@
-"use client"
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { Button } from '@/components/ui/button'
+'use client';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 const VFormWithLabel = () => {
   return (
     <form>
       <div className="grid grid-cols-2 gap-4">
-
         <div className="col-span-2  flex flex-col gap-2">
           <Label htmlFor="fullName5">Full Name</Label>
           <Input type="text" placeholder="Your Name" id="fullName5" />
@@ -49,10 +54,7 @@ const VFormWithLabel = () => {
         <div className="col-span-2">
           <div className="flex items-center gap-1.5">
             <Checkbox id="term3" size="sm" color="default" />
-            <Label
-              htmlFor="term3"
-              className="text-base text-muted-foreground font-normal"
-            >
+            <Label htmlFor="term3" className="text-base text-muted-foreground font-normal">
               Agree to terms and conditions
             </Label>
           </div>

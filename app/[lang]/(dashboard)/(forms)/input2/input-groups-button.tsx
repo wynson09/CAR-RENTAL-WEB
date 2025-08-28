@@ -1,13 +1,9 @@
-"use client";
+'use client';
 
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@iconify/react";
-import {
-  InputGroup,
-  InputGroupButton,
-  InputGroupText,
-} from "@/components/ui/input-group";
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@iconify/react';
+import { InputGroup, InputGroupButton, InputGroupText } from '@/components/ui/input-group';
 
 const InputGroupsButton = () => {
   return (

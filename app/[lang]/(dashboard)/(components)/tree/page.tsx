@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import Card from "@/components/ui/card-snippet";
-import DefaultTree from "./default-tree";
-import HandleDataTree from "./handle-data-tree";
-import CheckboxTree from "./checkbox-tree";
-import OpenTree from "./open-tree";
-import { checkboxTree, defaultTree, handleDataTree, openTree } from "./source-code";
+import Card from '@/components/ui/card-snippet';
+import DefaultTree from './default-tree';
+import HandleDataTree from './handle-data-tree';
+import CheckboxTree from './checkbox-tree';
+import OpenTree from './open-tree';
+import { checkboxTree, defaultTree, handleDataTree, openTree } from './source-code';
 
 const TreeViewPage = () => {
   return (

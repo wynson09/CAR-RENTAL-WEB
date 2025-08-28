@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Input } from "@/components/ui/input";
-import { InputGroup, InputGroupText } from "@/components/ui/input-group";
-import { Icon } from "@iconify/react";
+import { Input } from '@/components/ui/input';
+import { InputGroup, InputGroupText } from '@/components/ui/input-group';
+import { Icon } from '@iconify/react';
 
 const InputGroupUnmerged = () => {
   return (

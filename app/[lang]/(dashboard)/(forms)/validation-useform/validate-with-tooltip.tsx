@@ -1,20 +1,16 @@
-"use client";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { toast } from "sonner";
+'use client';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
 
 const schema = z.object({
-  username: z
-    .string()
-    .min(5, { message: "Username must be at least 5 characters." }),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters." }),
+  username: z.string().min(5, { message: 'Username must be at least 5 characters.' }),
+  password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
 });
 
 const ValidateWithTooltip = () => {
@@ -34,18 +30,18 @@ const ValidateWithTooltip = () => {
       <div className="flex flex-col gap-2">
         <Label
           htmlFor="username"
-          className={cn("", {
-            "text-destructive": errors.username,
+          className={cn('', {
+            'text-destructive': errors.username,
           })}
         >
           Username
         </Label>
         <Input
           type="text"
-          {...register("username")}
+          {...register('username')}
           placeholder="Enter Username"
-          className={cn("", {
-            "border-destructive focus:border-destructive": errors.username,
+          className={cn('', {
+            'border-destructive focus:border-destructive': errors.username,
           })}
         />
         {errors.username && (
@@ -59,8 +55,8 @@ const ValidateWithTooltip = () => {
       <div className="flex flex-col gap-2">
         <Label
           htmlFor="password"
-          className={cn("", {
-            "text-destructive": errors.password,
+          className={cn('', {
+            'text-destructive': errors.password,
           })}
         >
           Password
@@ -68,9 +64,9 @@ const ValidateWithTooltip = () => {
         <Input
           type="password"
           placeholder="Enter password"
-          {...register("password")}
-          className={cn("", {
-            "border-destructive focus:border-destructive": errors.password,
+          {...register('password')}
+          className={cn('', {
+            'border-destructive focus:border-destructive': errors.password,
           })}
         />
 

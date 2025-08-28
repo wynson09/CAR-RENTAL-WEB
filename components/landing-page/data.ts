@@ -35,203 +35,203 @@ import {
   Heroicon,
   LucideIcon,
   CustomIcon,
-} from "@/components/svg";
-import analyticsPage from "@/public/images/landing-page/analytics.jpg";
-import ecommercePage from "@/public/images/landing-page/ecommerce.jpg";
-import projectPage from "@/public/images/landing-page/project-dashboard.jpg";
-import appChat from "@/public/images/landing-page/app-chat.jpg";
-import appEmail from "@/public/images/landing-page/app-email.jpg";
-import appKanban from "@/public/images/landing-page/app-kanban.jpg";
-import appTask from "@/public/images/landing-page/app-task.jpg";
-import appCalender from "@/public/images/landing-page/app-calender.jpg";
-import appProject from "@/public/images/landing-page/app-project.jpg";
-import comAccordion from "@/public/images/landing-page/accordion.jpg";
-import comAlert from "@/public/images/landing-page/alert.jpg";
-import comAvatar from "@/public/images/landing-page/avatar.jpg";
-import comButton from "@/public/images/landing-page/Component - Button.jpg";
-import comKBD from "@/public/images/landing-page/Component - KBD.jpg";
-import comADUIaffix from "@/public/images/landing-page/Component - Advanced UI - Affix.jpg";
-import comADUIsteps from "@/public/images/landing-page/Component - Advanced UI - Steps.jpg";
-import comADUItimeline from "@/public/images/landing-page/Component - Advanced UI - Timeline.jpg";
-import comADUItour from "@/public/images/landing-page/Component - Advanced UI - Tour.jpg";
-import comADUItree from "@/public/images/landing-page/Component - Advanced UI - Tree.jpg";
-import formElementInputgroup from "@/public/images/landing-page/Form Elements - Input Group.jpg";
-import formElementInput from "@/public/images/landing-page/Form Elements - Input.jpg";
-import formElementRadio from "@/public/images/landing-page/Form Elements - Radio.jpg";
-import formElementselect from "@/public/images/landing-page/Form Elements - Select.jpg";
-import formElementswitch from "@/public/images/landing-page/Form Elements - Switch.jpg";
-import pageCommingSoon from "@/public/images/landing-page/comming-soon.jpg";
-import pageError403 from "@/public/images/landing-page/Pages - Error 403.jpg";
-import pageInvoice from "@/public/images/landing-page/Pages - Invoice.jpg";
-import pageSignIn1 from "@/public/images/landing-page/Pages - Sign In 1.jpg";
-import pageSignUp2 from "@/public/images/landing-page/Pages - Sign Up 2.jpg";
-import tableData from "@/public/images/landing-page/Table - Data Table.jpg";
-import tableSimple from "@/public/images/landing-page/Table - Simple Table.jpg";
-import tableTailwind from "@/public/images/landing-page/Table - Tailwind Table.jpg";
-import iconsIconify from "@/public/images/landing-page/Icons - Iconify.jpg";
-import iconsLucid from "@/public/images/landing-page/Icons - Lucid Icon.jpg";
-import iconsCustom from "@/public/images/landing-page/Icons - Custom Icon.jpg";
-import mapGoogle from "@/public/images/landing-page/Map -  Google Map.jpg";
-import mapReactLeaflet from "@/public/images/landing-page/Map - React Leaflet.jpg";
-import mapUnovisLeaflet from "@/public/images/landing-page/Map - Unovis Leaflet Maps.jpg";
-import mapvector from "@/public/images/landing-page/Map - Vector Map.jpg";
-import diagramOrgaTree from "@/public/images/landing-page/Diagram - Organaization Tree.jpg";
-import diagramOverview from "@/public/images/landing-page/Diagram - Overview.jpg";
-import chartUnovis from "@/public/images/landing-page/chart-unovis.jpg";
-import chartApex from "@/public/images/landing-page/Charts - Apex Chart - Area.jpg";
-import chartOthers from "@/public/images/landing-page/Charts - Charts JS - Others.jpg";
-import chartRe from "@/public/images/landing-page/Charts - Re Charts - Bar.jpg";
-import dashboardBlur from "@/public/images/landing-page/dashboard-blur.jpg";
+} from '@/components/svg';
+import analyticsPage from '@/public/images/landing-page/analytics.jpg';
+import ecommercePage from '@/public/images/landing-page/ecommerce.jpg';
+import projectPage from '@/public/images/landing-page/project-dashboard.jpg';
+import appChat from '@/public/images/landing-page/app-chat.jpg';
+import appEmail from '@/public/images/landing-page/app-email.jpg';
+import appKanban from '@/public/images/landing-page/app-kanban.jpg';
+import appTask from '@/public/images/landing-page/app-task.jpg';
+import appCalender from '@/public/images/landing-page/app-calender.jpg';
+import appProject from '@/public/images/landing-page/app-project.jpg';
+import comAccordion from '@/public/images/landing-page/accordion.jpg';
+import comAlert from '@/public/images/landing-page/alert.jpg';
+import comAvatar from '@/public/images/landing-page/avatar.jpg';
+import comButton from '@/public/images/landing-page/Component - Button.jpg';
+import comKBD from '@/public/images/landing-page/Component - KBD.jpg';
+import comADUIaffix from '@/public/images/landing-page/Component - Advanced UI - Affix.jpg';
+import comADUIsteps from '@/public/images/landing-page/Component - Advanced UI - Steps.jpg';
+import comADUItimeline from '@/public/images/landing-page/Component - Advanced UI - Timeline.jpg';
+import comADUItour from '@/public/images/landing-page/Component - Advanced UI - Tour.jpg';
+import comADUItree from '@/public/images/landing-page/Component - Advanced UI - Tree.jpg';
+import formElementInputgroup from '@/public/images/landing-page/Form Elements - Input Group.jpg';
+import formElementInput from '@/public/images/landing-page/Form Elements - Input.jpg';
+import formElementRadio from '@/public/images/landing-page/Form Elements - Radio.jpg';
+import formElementselect from '@/public/images/landing-page/Form Elements - Select.jpg';
+import formElementswitch from '@/public/images/landing-page/Form Elements - Switch.jpg';
+import pageCommingSoon from '@/public/images/landing-page/comming-soon.jpg';
+import pageError403 from '@/public/images/landing-page/Pages - Error 403.jpg';
+import pageInvoice from '@/public/images/landing-page/Pages - Invoice.jpg';
+import pageSignIn1 from '@/public/images/landing-page/Pages - Sign In 1.jpg';
+import pageSignUp2 from '@/public/images/landing-page/Pages - Sign Up 2.jpg';
+import tableData from '@/public/images/landing-page/Table - Data Table.jpg';
+import tableSimple from '@/public/images/landing-page/Table - Simple Table.jpg';
+import tableTailwind from '@/public/images/landing-page/Table - Tailwind Table.jpg';
+import iconsIconify from '@/public/images/landing-page/Icons - Iconify.jpg';
+import iconsLucid from '@/public/images/landing-page/Icons - Lucid Icon.jpg';
+import iconsCustom from '@/public/images/landing-page/Icons - Custom Icon.jpg';
+import mapGoogle from '@/public/images/landing-page/Map -  Google Map.jpg';
+import mapReactLeaflet from '@/public/images/landing-page/Map - React Leaflet.jpg';
+import mapUnovisLeaflet from '@/public/images/landing-page/Map - Unovis Leaflet Maps.jpg';
+import mapvector from '@/public/images/landing-page/Map - Vector Map.jpg';
+import diagramOrgaTree from '@/public/images/landing-page/Diagram - Organaization Tree.jpg';
+import diagramOverview from '@/public/images/landing-page/Diagram - Overview.jpg';
+import chartUnovis from '@/public/images/landing-page/chart-unovis.jpg';
+import chartApex from '@/public/images/landing-page/Charts - Apex Chart - Area.jpg';
+import chartOthers from '@/public/images/landing-page/Charts - Charts JS - Others.jpg';
+import chartRe from '@/public/images/landing-page/Charts - Re Charts - Bar.jpg';
+import dashboardBlur from '@/public/images/landing-page/dashboard-blur.jpg';
 
 export const demoMenus = [
   {
-    title: "Dashboard",
+    title: 'Dashboard',
     icon: DashBoard,
     child: [
       {
-        title: "Analytics",
-        href: "/dashboard",
+        title: 'Analytics',
+        href: '/dashboard',
         icon: Graph,
         image: analyticsPage,
       },
       {
-        title: "Ecommerce",
-        href: "/ecommerce",
+        title: 'Ecommerce',
+        href: '/ecommerce',
         icon: Cart,
         image: ecommercePage,
       },
       {
-        title: "Project ",
-        href: "/project",
+        title: 'Project ',
+        href: '/project',
         icon: ClipBoard,
         image: projectPage,
       },
     ],
   },
   {
-    title: "Application",
+    title: 'Application',
     icon: Application,
     child: [
       {
-        title: "chat",
+        title: 'chat',
         icon: Messages,
-        href: "/chat",
+        href: '/chat',
         image: appChat,
       },
       {
-        title: "email",
+        title: 'email',
         icon: Envelope,
-        href: "/email",
+        href: '/email',
         image: appEmail,
       },
       {
-        title: "kanban",
+        title: 'kanban',
         icon: Monitor,
-        href: "/kanban",
+        href: '/kanban',
         image: appKanban,
       },
       {
-        title: "task",
+        title: 'task',
         icon: ListFill,
-        href: "/task",
+        href: '/task',
         image: appTask,
       },
       {
-        title: "calendar",
+        title: 'calendar',
         icon: Calendar,
-        href: "/calendar",
+        href: '/calendar',
         image: appCalender,
       },
       {
-        title: "project",
+        title: 'project',
         icon: ClipBoard,
-        href: "/projects",
+        href: '/projects',
         image: appProject,
       },
     ],
   },
   {
-    title: "Components",
+    title: 'Components',
     icon: Components,
     child: [
       {
-        title: "Base Ui",
+        title: 'Base Ui',
         icon: Flag,
         nested: [
           {
-            title: "accordion",
-            icon: "heroicons:information-circle",
-            href: "/accordion",
+            title: 'accordion',
+            icon: 'heroicons:information-circle',
+            href: '/accordion',
             image: comAccordion,
           },
           {
-            title: "alert",
-            icon: "heroicons:information-circle",
-            href: "/alert",
+            title: 'alert',
+            icon: 'heroicons:information-circle',
+            href: '/alert',
             image: comAlert,
           },
           {
-            title: "avatar",
-            icon: "heroicons:information-circle",
-            href: "/avatar",
+            title: 'avatar',
+            icon: 'heroicons:information-circle',
+            href: '/avatar',
             image: comAvatar,
           },
           {
-            title: "Button",
-            icon: "heroicons:cube",
-            href: "/button",
+            title: 'Button',
+            icon: 'heroicons:cube',
+            href: '/button',
             image: comButton,
           },
           {
-            title: "kbd",
-            icon: "heroicons:information-circle",
-            href: "/kbd",
+            title: 'kbd',
+            icon: 'heroicons:information-circle',
+            href: '/kbd',
             image: comKBD,
           },
           {
             showAll: true,
-            href: "/",
+            href: '/',
             image: dashboardBlur,
           },
         ],
       },
       {
-        title: "Advanced Ui",
+        title: 'Advanced Ui',
         icon: Book,
         nested: [
           {
-            title: "affix",
-            icon: "heroicons:cube",
-            href: "/affix",
+            title: 'affix',
+            icon: 'heroicons:cube',
+            href: '/affix',
             image: comADUIaffix,
           },
           {
-            title: "steps",
-            icon: "heroicons:information-circle",
-            href: "/steps",
+            title: 'steps',
+            icon: 'heroicons:information-circle',
+            href: '/steps',
             image: comADUIsteps,
           },
           {
-            title: "timeline",
-            icon: "heroicons:cube",
-            href: "/timeline",
+            title: 'timeline',
+            icon: 'heroicons:cube',
+            href: '/timeline',
             image: comADUItimeline,
           },
           {
-            title: "tour",
-            icon: "heroicons:cube",
-            href: "/tour",
+            title: 'tour',
+            icon: 'heroicons:cube',
+            href: '/tour',
             image: comADUItour,
           },
           {
-            title: "tree",
-            icon: "heroicons:information-circle",
-            href: "/tree",
+            title: 'tree',
+            icon: 'heroicons:information-circle',
+            href: '/tree',
             image: comADUItree,
           },
           {
             showAll: true,
-            href: "/",
+            href: '/',
             image: dashboardBlur,
           },
         ],
@@ -239,204 +239,202 @@ export const demoMenus = [
     ],
   },
   {
-    title: "Forms",
+    title: 'Forms',
     icon: Stacks2,
     child: [
       {
-        title: "input",
-        href: "/input",
+        title: 'input',
+        href: '/input',
         image: formElementInput,
       },
       {
-        title: "input-group",
-        href: "/input2",
+        title: 'input-group',
+        href: '/input2',
         image: formElementInputgroup,
       },
       {
-        title: "radio",
-        href: "/radio",
+        title: 'radio',
+        href: '/radio',
         image: formElementRadio,
       },
       {
-        title: "Select",
-        href: "/form-select",
+        title: 'Select',
+        href: '/form-select',
         image: formElementselect,
       },
       {
-        title: "switch",
-        href: "/switch",
+        title: 'switch',
+        href: '/switch',
         image: formElementswitch,
       },
       {
         showAll: true,
-        href: "/",
-        image: dashboardBlur
-      }
+        href: '/',
+        image: dashboardBlur,
+      },
     ],
   },
 
   {
-    title: "Pages",
+    title: 'Pages',
     icon: Files,
     child: [
-
       {
-        title: "Sign In 01",
-        href: "/auth/login",
+        title: 'Sign In 01',
+        href: '/auth/login',
         image: pageSignIn1,
       },
       {
-        title: "Sign Up 02",
-        href: "/auth/register2",
+        title: 'Sign Up 02',
+        href: '/auth/register2',
         image: pageSignUp2,
       },
       {
-        title: "Error 403",
-        href: "/error-page/403",
+        title: 'Error 403',
+        href: '/error-page/403',
         image: pageError403,
       },
       {
-        title: "Comming Soon",
-        href: "/utility/comming-soon",
+        title: 'Comming Soon',
+        href: '/utility/comming-soon',
         image: pageCommingSoon,
       },
       {
-        title: "Invoice Details",
-        href: "/invoice-details",
+        title: 'Invoice Details',
+        href: '/invoice-details',
         image: pageInvoice,
       },
       {
         showAll: true,
-        href: "/",
-        image: dashboardBlur
-      }
+        href: '/',
+        image: dashboardBlur,
+      },
     ],
   },
   {
-    title: "Tables",
+    title: 'Tables',
     icon: Grid,
     child: [
       {
-        title: "Simple Table",
-        href: "/simple-table",
+        title: 'Simple Table',
+        href: '/simple-table',
         icon: BarLeft,
         image: tableSimple,
       },
       {
-        title: "tailwindui table",
-        href: "/tailwindui-table",
+        title: 'tailwindui table',
+        href: '/tailwindui-table',
         icon: BarLeft,
         image: tableTailwind,
       },
       {
-        title: "Data Table",
-        href: "/data-table",
+        title: 'Data Table',
+        href: '/data-table',
         icon: BarTop,
         image: tableData,
       },
       {
         showAll: true,
-        href: "/",
-        image: dashboardBlur
-      }
+        href: '/',
+        image: dashboardBlur,
+      },
     ],
   },
   {
-    title: "Diagram",
+    title: 'Diagram',
     icon: Chart,
     child: [
       {
-        title: "Overview",
-        href: "/diagram/reactflow/overview",
+        title: 'Overview',
+        href: '/diagram/reactflow/overview',
         image: diagramOverview,
       },
       {
-        title: "Organization Tree",
-        href: "/diagram/reactflow/organization-tree",
+        title: 'Organization Tree',
+        href: '/diagram/reactflow/organization-tree',
         image: diagramOrgaTree,
       },
     ],
   },
   {
-    title: "Chart",
+    title: 'Chart',
     icon: ChartArea,
     child: [
       {
-        title: "Area",
-        href: "/charts-appex-area",
-        icon: "heroicons:information-circle",
+        title: 'Area',
+        href: '/charts-appex-area',
+        icon: 'heroicons:information-circle',
         image: chartApex,
       },
       {
-        title: "Bar",
-        href: "/charts-rechart-bar",
-        icon: "heroicons:information-circle",
+        title: 'Bar',
+        href: '/charts-rechart-bar',
+        icon: 'heroicons:information-circle',
         image: chartRe,
       },
       {
-        title: "Other",
-        href: "/charts-chartjs-other",
-        icon: "heroicons:information-circle",
+        title: 'Other',
+        href: '/charts-chartjs-other',
+        icon: 'heroicons:information-circle',
         image: chartOthers,
       },
       {
-        title: "Area",
-        href: "/charts-unovis-area",
-        icon: "heroicons:information-circle",
+        title: 'Area',
+        href: '/charts-unovis-area',
+        icon: 'heroicons:information-circle',
         image: chartUnovis,
-      }
-
+      },
     ],
   },
   {
-    title: "Maps",
+    title: 'Maps',
     icon: Map,
     child: [
       {
-        title: "Google",
+        title: 'Google',
         icon: Google,
-        href: "/maps-google",
+        href: '/maps-google',
         image: mapGoogle,
       },
       {
-        title: "Vector",
+        title: 'Vector',
         icon: Pointer,
-        href: "/maps-vector",
+        href: '/maps-vector',
         image: mapvector,
       },
       {
-        title: "React Leaflet",
+        title: 'React Leaflet',
         icon: Map2,
-        href: "/map-react-leaflet",
+        href: '/map-react-leaflet',
         image: mapReactLeaflet,
       },
       {
-        title: "Leaflet Map",
-        href: "/map-unovis-leaflet",
+        title: 'Leaflet Map',
+        href: '/map-unovis-leaflet',
         image: mapUnovisLeaflet,
       },
     ],
   },
   {
-    title: "Icons",
+    title: 'Icons',
     icon: Icons,
     child: [
       {
-        title: "Hero Icons",
+        title: 'Hero Icons',
         icon: Heroicon,
-        href: "/icons-iconify",
+        href: '/icons-iconify',
         image: iconsIconify,
       },
       {
-        title: "Lucide Icons",
+        title: 'Lucide Icons',
         icon: LucideIcon,
-        href: "/icons-lucide",
+        href: '/icons-lucide',
         image: iconsLucid,
       },
       {
-        title: "Custom Icons",
+        title: 'Custom Icons',
         icon: CustomIcon,
-        href: "/icons-custom",
+        href: '/icons-custom',
         image: iconsCustom,
       },
     ],
@@ -445,85 +443,94 @@ export const demoMenus = [
 
 export const menus = [
   {
-    title: "Services",
-    href: "#services",
+    title: 'Services',
+    href: '#services',
   },
   {
-    title: "Why NCR",
-    href: "#whyNacsCarRental",
+    title: 'Why Nacs Car Rental',
+    href: '#whyNacsCarRental',
   },
   {
-    title: "Pricing",
-    href: "#pricing",
+    title: 'Pricing',
+    href: '#pricing',
   },
   {
-    title: "More",
+    title: 'More',
     child: [
       {
-        title: "Documentation",
-        href: "/docs/introduction",
+        title: 'Documentation',
+        href: '/docs/introduction',
       },
       {
-        title: "Changelog",
-        href: "/docs/update-log",
+        title: 'Changelog',
+        href: '/docs/update-log',
       },
       {
-        title: "Github Access",
-        href: "https://codeshaperbd.freshdesk.com/support/login",
+        title: 'Github Access',
+        href: 'https://codeshaperbd.freshdesk.com/support/login',
       },
       {
-        title: "Report a bug",
-        href: "https://codeshaperbd.freshdesk.com/support/login",
+        title: 'Report a bug',
+        href: 'https://codeshaperbd.freshdesk.com/support/login',
       },
       {
-        title: "Support",
-        href: "https://codeshaperbd.freshdesk.com/support/login",
+        title: 'Support',
+        href: 'https://codeshaperbd.freshdesk.com/support/login',
       },
       {
-        title: "Hire Us",
-        href: "https://codeshaper.net/",
+        title: 'Hire Us',
+        href: 'https://codeshaper.net/',
       },
     ],
   },
 ];
-export type Menu = typeof menus[number];
+export type Menu = (typeof menus)[number];
 
 // Car Rental Services Data
 export const carRentalServices = [
   {
-    id: "self-drive",
-    title: "Self Drive",
-    description: "Explore at your own pace with our premium fleet of well-maintained vehicles. Perfect for adventurous travelers who prefer the freedom of driving themselves.",
-    features: ["GPS Navigation", "24/7 Support", "Insurance Included", "Flexible Booking"],
-    icon: "heroicons:truck",
-    image: "/images/services/self-drive.webp", // You'll need to add these images
-    buttonColor: "primary"
+    id: 'self-drive',
+    title: 'Self Drive',
+    description:
+      'Explore at your own pace with our premium fleet of well-maintained vehicles. Perfect for adventurous travelers who prefer the freedom of driving themselves.',
+    features: ['GPS Navigation', '24/7 Support', 'Insurance Included', 'Flexible Booking'],
+    icon: 'heroicons:truck',
+    image: '/images/services/self-drive.webp', // You'll need to add these images
+    buttonColor: 'primary',
   },
   {
-    id: "with-driver",
-    title: "With Driver",
-    description: "Relax and enjoy the journey with our professional, experienced drivers who know the local routes and attractions.",
-    features: ["Professional Drivers", "Local Knowledge", "Comfortable Vehicles", "Tour Guide Service"],
-    icon: "heroicons:user-circle",
-    image: "/images/services/with-driver.webp",
-    buttonColor: "primary"
+    id: 'with-driver',
+    title: 'With Driver',
+    description:
+      'Relax and enjoy the journey with our professional, experienced drivers who know the local routes and attractions.',
+    features: [
+      'Professional Drivers',
+      'Local Knowledge',
+      'Comfortable Vehicles',
+      'Tour Guide Service',
+    ],
+    icon: 'heroicons:user-circle',
+    image: '/images/services/with-driver.webp',
+    buttonColor: 'primary',
   },
   {
-    id: "leasing",
-    title: "Leasing",
-    description: "Long-term vehicle solutions for businesses and individuals with flexible lease terms and maintenance packages.",
-    features: ["Long-term Options", "Maintenance Included", "Fleet Management", "Corporate Rates"],
-    icon: "heroicons:document-text",
-    image: "/images/services/leasing.webp",
-    buttonColor: "primary"
+    id: 'leasing',
+    title: 'Leasing',
+    description:
+      'Long-term vehicle solutions for businesses and individuals with flexible lease terms and maintenance packages.',
+    features: ['Long-term Options', 'Maintenance Included', 'Fleet Management', 'Corporate Rates'],
+    icon: 'heroicons:document-text',
+    image: '/images/services/leasing.webp',
+    buttonColor: 'primary',
   },
   {
-    id: "tours",
-    title: "Tours",
-    description: "Discover the beauty of the Philippines with our guided tours and customized travel packages.",
-    features: ["Guided Tours", "Custom Packages", "Multiple Destinations", "All-Inclusive Options"],
-    icon: "heroicons:map-pin",
-    image: "/images/services/tours.webp",
-    buttonColor: "primary"
-  }
+    id: 'tours',
+    title: 'Tours',
+    description:
+      'Discover the beauty of the Philippines with our guided tours and customized travel packages.',
+    features: ['Guided Tours', 'Custom Packages', 'Multiple Destinations', 'All-Inclusive Options'],
+    icon: 'heroicons:map-pin',
+    image: '/images/services/tours.webp',
+    buttonColor: 'primary',
+  },
 ];

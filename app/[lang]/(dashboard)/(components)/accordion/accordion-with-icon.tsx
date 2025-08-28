@@ -3,8 +3,8 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Icon } from "@iconify/react";
+} from '@/components/ui/accordion';
+import { Icon } from '@iconify/react';
 
 const AccordionWithIcon = () => {
   return (
@@ -19,10 +19,9 @@ const AccordionWithIcon = () => {
           </div>
         </AccordionTrigger>
         <AccordionContent>
-          Lemon drops chocolate cake gummies carrot cake chupa chups muffin
-          topping. Sesame snaps icing marzipan gummi bears macaroon dragée
-          danish caramels powder. Bear claw dragée pastry topping soufflé. Wafer
-          gummi bears marshmallow pastry pie.
+          Lemon drops chocolate cake gummies carrot cake chupa chups muffin topping. Sesame snaps
+          icing marzipan gummi bears macaroon dragée danish caramels powder. Bear claw dragée pastry
+          topping soufflé. Wafer gummi bears marshmallow pastry pie.
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-2">
@@ -35,10 +34,9 @@ const AccordionWithIcon = () => {
           </div>
         </AccordionTrigger>
         <AccordionContent>
-          Lemon drops chocolate cake gummies carrot cake chupa chups muffin
-          topping. Sesame snaps icing marzipan gummi bears macaroon dragée
-          danish caramels powder. Bear claw dragée pastry topping soufflé. Wafer
-          gummi bears marshmallow pastry pie.
+          Lemon drops chocolate cake gummies carrot cake chupa chups muffin topping. Sesame snaps
+          icing marzipan gummi bears macaroon dragée danish caramels powder. Bear claw dragée pastry
+          topping soufflé. Wafer gummi bears marshmallow pastry pie.
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-3">
@@ -51,10 +49,9 @@ const AccordionWithIcon = () => {
           </div>
         </AccordionTrigger>
         <AccordionContent>
-          Lemon drops chocolate cake gummies carrot cake chupa chups muffin
-          topping. Sesame snaps icing marzipan gummi bears macaroon dragée
-          danish caramels powder. Bear claw dragée pastry topping soufflé. Wafer
-          gummi bears marshmallow pastry pie.
+          Lemon drops chocolate cake gummies carrot cake chupa chups muffin topping. Sesame snaps
+          icing marzipan gummi bears macaroon dragée danish caramels powder. Bear claw dragée pastry
+          topping soufflé. Wafer gummi bears marshmallow pastry pie.
         </AccordionContent>
       </AccordionItem>
     </Accordion>

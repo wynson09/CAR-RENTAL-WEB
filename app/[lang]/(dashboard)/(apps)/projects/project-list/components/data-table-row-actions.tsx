@@ -1,33 +1,28 @@
-"use client";
+'use client';
 
-import { MoreHorizontal } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { MoreHorizontal } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 
-import { Icon } from "@iconify/react";
-import Link from "next/link";
-import { type Project } from "@/app/api/projects/data";
-import { Row } from "@tanstack/react-table";
+import { Icon } from '@iconify/react';
+import Link from 'next/link';
+import { type Project } from '@/app/api/projects/data';
+import { Row } from '@tanstack/react-table';
 
 interface DataTableRowActionsProps<TData> {
   row: Row<Project>;
 }
 export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TData>) {
-
   return (
     <div className="flex justify-end gap-3 items-center">
       <div>
-
         {row?.original?.isFavorite ? (
-          <Icon
-            icon="heroicons:star-16-solid"
-            className="w-5 h-5 text-warning"
-          />
+          <Icon icon="heroicons:star-16-solid" className="w-5 h-5 text-warning" />
         ) : (
           <Icon icon="heroicons:star" className="w-5 h-5 text-default-500" />
         )}

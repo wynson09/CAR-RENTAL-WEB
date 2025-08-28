@@ -1,10 +1,10 @@
-"use client"
+'use client';
 import ReactFlow, { Background, Node, Panel } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import './style.css';
 
-const nodes:Node[] = [
+const nodes: Node[] = [
   {
     id: '1',
     data: { label: 'this is an example flow for the <Panel /> component' },
@@ -19,7 +19,7 @@ function Flow() {
         <CardTitle>Panel Position</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className='w-full h-[calc(100vh-280px)]'>
+        <div className="w-full h-[calc(100vh-280px)]">
           <ReactFlow nodes={nodes} fitView>
             <Panel position="top-left">top-left</Panel>
             <Panel position="top-center">top-center</Panel>
@@ -27,7 +27,7 @@ function Flow() {
             <Panel position="bottom-left">bottom-left</Panel>
             <Panel position="bottom-center">bottom-center</Panel>
             <Panel position="bottom-right">bottom-right</Panel>
-            <Background/>
+            <Background />
           </ReactFlow>
         </div>
       </CardContent>

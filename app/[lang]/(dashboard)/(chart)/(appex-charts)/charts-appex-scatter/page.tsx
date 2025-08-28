@@ -1,7 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import BasicScatter from "./basic-scatter";
-import DateTime from "./date-time";
-import ScatterImage from "./scatter-image";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import BasicScatter from './basic-scatter';
+import DateTime from './date-time';
+import ScatterImage from './scatter-image';
 
 const AreaChartPage = () => {
   return (

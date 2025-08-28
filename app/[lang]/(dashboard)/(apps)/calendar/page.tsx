@@ -1,7 +1,5 @@
-import { getCategories, getEvents } from "@/config/calendar.config";
-import CalendarView from "./calender-view";
-
-
+import { getCategories, getEvents } from '@/config/calendar.config';
+import CalendarView from './calender-view';
 
 const CalenderPage = async () => {
   const events = await getEvents();

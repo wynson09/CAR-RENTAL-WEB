@@ -1,10 +1,10 @@
-"use client";
-import { Fragment, useState } from "react";
-import { Icon } from "@iconify/react";
-import { useDropzone } from "react-dropzone";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import { Link, Upload } from "lucide-react";
+'use client';
+import { Fragment, useState } from 'react';
+import { Icon } from '@iconify/react';
+import { useDropzone } from 'react-dropzone';
+import { Button } from '@/components/ui/button';
+import Image from 'next/image';
+import { Link, Upload } from 'lucide-react';
 const Attachments = () => {
   const [files, setFiles] = useState<File[]>([]);
 
@@ -14,7 +14,7 @@ const Attachments = () => {
     },
   });
   const renderFilePreview = (file: File) => {
-    if (file.type.startsWith("image")) {
+    if (file.type.startsWith('image')) {
       return (
         <Image
           width={48}
@@ -34,10 +34,7 @@ const Attachments = () => {
     setFiles([...filtered]);
   };
   const fileList = files.map((file) => (
-    <div
-      key={file.name}
-      className=" flex justify-between border px-3.5 py-3 my-6 rounded-md"
-    >
+    <div key={file.name} className=" flex justify-between border px-3.5 py-3 my-6 rounded-md">
       <div className="flex space-x-3 items-center">
         <div className="file-preview">{renderFilePreview(file)}</div>
         <div>
@@ -48,7 +45,7 @@ const Attachments = () => {
             ) : (
               <>{(Math.round(file.size / 100) / 10).toFixed(1)}</>
             )}
-            {" kb"}
+            {' kb'}
           </div>
         </div>
       </div>
@@ -72,7 +69,7 @@ const Attachments = () => {
         <Icon icon="heroicons:link-20-solid" className="w-4 h-4 text-default-500" />
         <div className="text-sm font-medium text-default-500">Attachments</div>
       </div>
-      <div {...getRootProps({ className: "dropzone" })}>
+      <div {...getRootProps({ className: 'dropzone' })}>
         <input {...getInputProps()} />
         <div className="py-9 text-center border border-dashed border-default-300 rounded-sm bg-default-50">
           <div className="text-sm font-medium text-default-900 flex items-center justify-center gap-1">

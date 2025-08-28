@@ -1,45 +1,45 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import logo from "@/public/images/logo/logo-2.png";
-import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import LightImage from "@/public/images/utility/comming-soon-light.png";
-import DarkImage from "@/public/images/utility/comming-soon-dark.png";
-import { useTheme } from "next-themes";
+'use client';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import logo from '@/public/images/logo/logo-2.png';
+import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import LightImage from '@/public/images/utility/comming-soon-light.png';
+import DarkImage from '@/public/images/utility/comming-soon-dark.png';
+import { useTheme } from 'next-themes';
 const CommingSoonPage = () => {
   const { theme } = useTheme();
   const socials = [
     {
-      link: "/",
+      link: '/',
       icon: <Twitter />,
     },
     {
-      link: "/",
+      link: '/',
       icon: <Facebook />,
     },
     {
-      link: "/",
+      link: '/',
       icon: <Linkedin />,
     },
     {
-      link: "/",
+      link: '/',
       icon: <Instagram />,
     },
   ];
   const menu = [
     {
-      label: "Privacy Policy",
-      link: "/",
+      label: 'Privacy Policy',
+      link: '/',
     },
     {
-      label: "FAQ",
-      link: "/",
+      label: 'FAQ',
+      link: '/',
     },
     {
-      label: "Email Us",
-      link: "/",
+      label: 'Email Us',
+      link: '/',
     },
   ];
   return (
@@ -58,15 +58,13 @@ const CommingSoonPage = () => {
         <div className="container ">
           <div className="flex flex-col lg:flex-row  justify-between items-center gap-5 ">
             <div className="lg:max-w-[570px]">
-              <div className="text-2xl font-medium text-default-900">
-                Coming soon
-              </div>
+              <div className="text-2xl font-medium text-default-900">Coming soon</div>
               <div className="mt-4 text-5xl 2xl:text-7xl font-semibold text-default-900">
                 Get notified when we launch
               </div>
               <div className="mt-6 text-sm xl:text-base text-default-600">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                incididunt.
               </div>
               <div className="relative mt-5 lg:mt-12">
                 <Input
@@ -85,7 +83,7 @@ const CommingSoonPage = () => {
 
             <div className="mt-10 lg:mt-0 xl:pl-32">
               <Image
-                src={theme === "dark" ? DarkImage : LightImage}
+                src={theme === 'dark' ? DarkImage : LightImage}
                 alt="comming soon"
                 className="w-full h-full object-cover"
                 priority={true}

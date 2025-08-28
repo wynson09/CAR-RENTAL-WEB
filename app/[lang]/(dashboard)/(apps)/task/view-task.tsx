@@ -1,22 +1,19 @@
-"use client";
-import React from "react";
-import TaskBreadCrumbs from "./components/bread-crumbs";
-import TaskSidebar from "./components/task-sidebar";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import TaskTable from "./components/task-table";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import CreateTask from "./components/create-task";
-import EditTask from "./components/edit-task";
-import { useMediaQuery } from "@/hooks/use-media-query";
-import { cn } from "@/lib/utils";
-import { type Contact as ContactType } from "@/app/api/chat/data";
-import { type Task as TaskType } from "@/app/api/tasks/data";
+'use client';
+import React from 'react';
+import TaskBreadCrumbs from './components/bread-crumbs';
+import TaskSidebar from './components/task-sidebar';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import TaskTable from './components/task-table';
+import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+import CreateTask from './components/create-task';
+import EditTask from './components/edit-task';
+import { useMediaQuery } from '@/hooks/use-media-query';
+import { cn } from '@/lib/utils';
+import { type Contact as ContactType } from '@/app/api/chat/data';
+import { type Task as TaskType } from '@/app/api/tasks/data';
 
-const ViewTask = ({ contacts, tasks }: {
-  contacts: ContactType[],
-  tasks: TaskType[],
-}) => {
+const ViewTask = ({ contacts, tasks }: { contacts: ContactType[]; tasks: TaskType[] }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [openEdit, setOpenEdit] = useState<boolean>(false);
   const handleSheetOpen = () => {
@@ -26,7 +23,7 @@ const ViewTask = ({ contacts, tasks }: {
     setOpenEdit(!openEdit);
   };
   const [showSidebar, setShowSidebar] = React.useState<boolean>(false);
-  const isDesktop = useMediaQuery("(max-width: 1280px)");
+  const isDesktop = useMediaQuery('(max-width: 1280px)');
   return (
     <>
       <div className="flex flex-wrap mb-7">
@@ -45,11 +42,11 @@ const ViewTask = ({ contacts, tasks }: {
           ></div>
         )}
         <div
-          className={cn("transition-all duration-150  flex-none  ", {
-            "absolute h-full top-0 md:w-[260px] w-[200px] z-[999]": isDesktop,
-            "flex-none min-w-[260px]": !isDesktop,
-            "left-0": isDesktop && showSidebar,
-            "-left-full": isDesktop && !showSidebar,
+          className={cn('transition-all duration-150  flex-none  ', {
+            'absolute h-full top-0 md:w-[260px] w-[200px] z-[999]': isDesktop,
+            'flex-none min-w-[260px]': !isDesktop,
+            'left-0': isDesktop && showSidebar,
+            '-left-full': isDesktop && !showSidebar,
           })}
         >
           <Card className=" h-full overflow-y-auto no-scrollbar">

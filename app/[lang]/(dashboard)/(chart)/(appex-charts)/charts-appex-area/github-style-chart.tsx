@@ -1,10 +1,10 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { getLabel, getGridConfig } from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getLabel, getGridConfig } from '@/lib/appex-chart-options';
 
 const GithubStyleChart = () => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
@@ -13,7 +13,7 @@ const GithubStyleChart = () => {
 
   const series = [
     {
-      name: "commits",
+      name: 'commits',
       data: [
         {
           x: 1352592000000,
@@ -1755,60 +1755,50 @@ const GithubStyleChart = () => {
 
   var options: any = {
     chart: {
-      id: "chartyear",
-      type: "area",
+      id: 'chartyear',
+      type: 'area',
       height: 120,
       toolbar: {
         show: false,
-        autoSelected: "pan",
+        autoSelected: 'pan',
       },
       events: {
         mounted: function (chart: any) {
-          var commitsEl = document.querySelector(".cmeta span.commits");
-          var commits = chart.getSeriesTotalXRange(
-            chart.w.globals.minX,
-            chart.w.globals.maxX
-          );
+          var commitsEl = document.querySelector('.cmeta span.commits');
+          var commits = chart.getSeriesTotalXRange(chart.w.globals.minX, chart.w.globals.maxX);
           if (commitsEl) {
             commitsEl.innerHTML = commits;
           }
         },
         updated: function (chart: any) {
-          var commitsEl = document.querySelector(".cmeta span.commits");
-          var commits = chart.getSeriesTotalXRange(
-            chart.w.globals.minX,
-            chart.w.globals.maxX
-          );
+          var commitsEl = document.querySelector('.cmeta span.commits');
+          var commits = chart.getSeriesTotalXRange(chart.w.globals.minX, chart.w.globals.maxX);
           if (commitsEl) {
             commitsEl.innerHTML = commits;
           }
         },
       },
     },
-    colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning})`,
-    ],
+    colors: [`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`],
     stroke: {
       width: 0,
-      curve: "smooth",
+      curve: 'smooth',
     },
     dataLabels: {
       enabled: false,
     },
     fill: {
       opacity: 1,
-      type: "solid",
+      type: 'solid',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
 
     yaxis: {
       show: false,
       tickAmount: 3,
     },
     xaxis: {
-      type: "datetime",
+      type: 'datetime',
       axisBorder: {
         show: false,
       },
@@ -1816,22 +1806,11 @@ const GithubStyleChart = () => {
         show: false,
       },
       labels: getLabel(
-        `hsl(${theme?.cssVars[
-          mode === "dark" || mode === "system" ? "dark" : "light"
-        ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
     },
   };
-  return (
-    <Chart
-      options={options}
-      series={series}
-      type="area"
-      height={120}
-      width={"100%"}
-    />
-  );
+  return <Chart options={options} series={series} type="area" height={120} width={'100%'} />;
 };
 
 export default GithubStyleChart;

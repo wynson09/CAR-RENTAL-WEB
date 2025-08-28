@@ -1,19 +1,19 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { CustomPopover } from "@/components/ui/popover";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { X } from "lucide-react";
-import { useState } from "react";
+'use client';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { CustomPopover } from '@/components/ui/popover';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { X } from 'lucide-react';
+import { useState } from 'react';
 
 const tabs = [
   {
-    label: "Due Date",
-    value: "due-date",
+    label: 'Due Date',
+    value: 'due-date',
   },
   {
-    label: "Start Date",
-    value: "start-date",
+    label: 'Start Date',
+    value: 'start-date',
   },
 ];
 const TaskDate = () => {

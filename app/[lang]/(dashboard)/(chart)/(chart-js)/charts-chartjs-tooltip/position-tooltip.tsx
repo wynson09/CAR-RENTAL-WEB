@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Chart as ChartJS,
@@ -11,12 +11,12 @@ import {
   ArcElement,
   PointElement,
   TooltipItem,
-} from "chart.js";
+} from 'chart.js';
 
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { Line } from "react-chartjs-2";
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { Line } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
@@ -35,7 +35,7 @@ const customTooltip = (tooltipItems: TooltipItem<'line'>[]) => {
   tooltipItems.forEach(function (tooltipItem) {
     sum += tooltipItem.parsed.y;
   });
-  return "Sum: " + sum;
+  return 'Sum: ' + sum;
 };
 
 const PositionTooltip = ({ height = 350 }) => {
@@ -43,20 +43,20 @@ const PositionTooltip = ({ height = 350 }) => {
   const { theme: mode } = useTheme();
   const theme = themes.find((theme) => theme.name === config);
 
-  const hslWarning = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning})`;
-  const hslInfo = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`;
-  
+  const hslWarning = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`;
+  const hslInfo = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`;
+
   const data: any = {
-    labels: ["January", "February", "March", "April", "May", "Jun", "July"],
+    labels: ['January', 'February', 'March', 'April', 'May', 'Jun', 'July'],
     datasets: [
       {
-        label: "Dataset 1",
+        label: 'Dataset 1',
         data: [20, 50, 60, 70, 20, 30, 20],
         borderColor: hslWarning,
         fill: false,
       },
       {
-        label: "Dataset 2",
+        label: 'Dataset 2',
         data: [40, 70, 80, 90, 40, 50, 40],
         borderColor: hslInfo,
         fill: false,
@@ -67,16 +67,15 @@ const PositionTooltip = ({ height = 350 }) => {
     responsive: true,
     interaction: {
       intersect: false,
-      mode: "index",
+      mode: 'index',
     },
     plugins: {
       legend: {
-        position: "top",
+        position: 'top',
         labels: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
       tooltip: {
@@ -89,32 +88,28 @@ const PositionTooltip = ({ height = 350 }) => {
       y: {
         grid: {
           drawTicks: false,
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartGird
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartGird
+          })`,
         },
         ticks: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
       x: {
         grid: {
           drawTicks: false,
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartGird
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartGird
+          })`,
         },
 
         ticks: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
     },

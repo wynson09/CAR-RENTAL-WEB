@@ -1,16 +1,11 @@
-import { useThemeStore } from "@/store";
-import { cn } from "@/lib/utils";
-import React from "react";
-import { themes } from "@/config/thems";
-import { useTheme } from "next-themes";
-import { Check } from "lucide-react";
+import { useThemeStore } from '@/store';
+import { cn } from '@/lib/utils';
+import React from 'react';
+import { themes } from '@/config/thems';
+import { useTheme } from 'next-themes';
+import { Check } from 'lucide-react';
 
-import {
-  TooltipProvider,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { TooltipProvider, Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 const ThemeChange = () => {
   const { theme, setTheme } = useThemeStore();
@@ -23,26 +18,27 @@ const ThemeChange = () => {
 
   return (
     <div
-      style={{
-        "--theme-primary": `hsl(${newTheme?.cssVars[mode === "dark" ? "dark" : "light"].primary
+      style={
+        {
+          '--theme-primary': `hsl(${
+            newTheme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary
           })`,
-      } as React.CSSProperties}
-
+        } as React.CSSProperties
+      }
     >
-
       <div className=" flex flex-wrap gap-7 2xl:gap-9 mt-6 justify-center">
         {[
-          "zinc",
-          "slate",
-          "stone",
-          "gray",
-          "neutral",
-          "red",
-          "rose",
-          "orange",
-          "blue",
-          "yellow",
-          "violet",
+          'zinc',
+          'slate',
+          'stone',
+          'gray',
+          'neutral',
+          'red',
+          'rose',
+          'orange',
+          'blue',
+          'yellow',
+          'violet',
         ].map((value) => {
           const themeObj = themes.find((theme) => theme.name === value);
           const isActive = theme === value; // Compare theme.name with value
@@ -60,27 +56,24 @@ const ThemeChange = () => {
                     />
                     <div
                       className="flex h-10 w-10 2xl:h-14 2xl:w-14 items-center justify-center  text-xs"
-                      style={{
-                        "--theme-primary": `hsl(${themeObj?.activeColor[
-                          mode === "dark" ? "dark" : "light"
-                        ]
+                      style={
+                        {
+                          '--theme-primary': `hsl(${
+                            themeObj?.activeColor[mode === 'dark' ? 'dark' : 'light']
                           })`,
-                      } as React.CSSProperties}
+                        } as React.CSSProperties
+                      }
                     >
-
                       <div
                         className={cn(
-                          "flex h-full w-full items-center justify-center  border-2 border-transparent rounded bg-[--theme-primary]",
+                          'flex h-full w-full items-center justify-center  border-2 border-transparent rounded bg-[--theme-primary]',
                           {
-                            "border-[--theme-primary]": isActive
+                            'border-[--theme-primary]': isActive,
                           }
                         )}
                       >
-                        {isActive && (
-                          <Check className="h-8 w-8 text-primary-foreground" />
-                        )}
+                        {isActive && <Check className="h-8 w-8 text-primary-foreground" />}
                       </div>
-
                     </div>
                   </label>
                 </TooltipTrigger>

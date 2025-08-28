@@ -13,21 +13,21 @@ flowchart TB
         D[User fills registration form<br/>First Name, Last Name, Email, Password]
         E[User clicks Register]
     end
-    
+
     subgraph "NextAuth.js Flow"
         F[NextAuth signIn function]
         G{Credentials or OAuth?}
         H[Credentials Provider]
         I[OAuth Provider<br/>Google/Facebook/GitHub]
     end
-    
+
     subgraph "Firebase Authentication"
         J[signInWithEmailAndPassword]
         K[OAuth Authentication via Provider]
         L[createUserWithEmailAndPassword]
         M{Authentication Successful?}
     end
-    
+
     subgraph "Data Synchronization"
         N[syncUserToFirestore function]
         O{User exists in Firestore?}
@@ -35,7 +35,7 @@ flowchart TB
         Q[Update existing user document]
         R[Clean undefined fields]
     end
-    
+
     subgraph "State Management (Zustand)"
         S[useAuth hook detects session]
         T[fetchUserData from Firestore]
@@ -43,39 +43,39 @@ flowchart TB
         V[Persist to localStorage]
         W[User data available globally]
     end
-    
+
     subgraph "Session Management"
         X[Create JWT token]
         Y[Set session cookie]
         Z[Redirect to dashboard]
     end
-    
+
     subgraph "Error Handling"
         AA[Display error message]
         BB[setLoading false]
         CC[Clear user state]
     end
-    
+
     %% User Registration Flow
     D --> E
     E --> L
     L --> M
-    
+
     %% User Login Flow
     A --> B
     B --> F
     C --> F
-    
+
     F --> G
     G -->|Credentials| H
     G -->|OAuth| I
-    
+
     H --> J
     I --> K
-    
+
     J --> M
     K --> M
-    
+
     %% Success Flow
     M -->|Yes| N
     N --> O
@@ -91,13 +91,13 @@ flowchart TB
     W --> X
     X --> Y
     Y --> Z
-    
+
     %% Error Flow
     M -->|No| AA
     AA --> BB
     BB --> CC
     CC --> A
-    
+
     %% Styling
     classDef userAction fill:#e1f5fe
     classDef nextauth fill:#f3e5f5
@@ -106,7 +106,7 @@ flowchart TB
     classDef stateManagement fill:#fce4ec
     classDef session fill:#f1f8e9
     classDef error fill:#ffebee
-    
+
     class A,B,C,D,E userAction
     class F,G,H,I nextauth
     class J,K,L,M firebase
@@ -134,7 +134,7 @@ erDiagram
         Date createdAt
         Date updatedAt
     }
-    
+
     KYC_RECORD {
         string birthDate
         string gender
@@ -153,7 +153,7 @@ erDiagram
         Date createdAt
         Date updatedAt
     }
-    
+
     USER ||--|| KYC_RECORD : contains
 ```
 
@@ -169,7 +169,7 @@ sequenceDiagram
     participant UH as useAuth Hook
     participant ZS as Zustand Store
     participant LS as localStorage
-    
+
     U->>UI: Enter credentials
     UI->>NA: signIn()
     NA->>FB: Authenticate user
@@ -177,31 +177,34 @@ sequenceDiagram
     NA->>FS: Sync user data
     FS-->>NA: User document saved
     NA-->>UI: Authentication success
-    
+
     Note over UH: Detects session change
     UH->>FS: fetchUserData()
     FS-->>UH: Complete user data
     UH->>ZS: setUser()
     ZS->>LS: Persist user data
     ZS-->>UH: User state updated
-    
+
     Note over U: User data available globally
 ```
 
 ## Key Components
 
 ### 🔐 Authentication Providers
+
 - **Email/Password**: Firebase Auth with custom credentials
 - **Google OAuth**: NextAuth.js Google provider
 - **Facebook OAuth**: NextAuth.js Facebook provider
 - **GitHub OAuth**: NextAuth.js GitHub provider
 
 ### 📊 State Management
+
 - **Zustand Store**: Global user state with persistence
 - **useAuth Hook**: Automatic session detection and data loading
 - **localStorage**: Persistent user data across sessions
 
 ### 🔄 Data Flow
+
 1. User authenticates through any provider
 2. NextAuth.js handles authentication flow
 3. Firebase stores user credentials
@@ -211,6 +214,7 @@ sequenceDiagram
 7. User data available throughout the application
 
 ### 🛡️ Security Features
+
 - JWT-based sessions
 - Firebase Authentication security
 - Firestore security rules
@@ -220,6 +224,7 @@ sequenceDiagram
 ## Testing
 
 Visit `/test-firebase` to test the complete authentication flow and verify:
+
 - ✅ NextAuth session management
 - ✅ Firebase authentication
 - ✅ Firestore data synchronization

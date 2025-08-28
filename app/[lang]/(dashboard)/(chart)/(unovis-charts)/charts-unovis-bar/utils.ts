@@ -1,4 +1,4 @@
-import { colors } from '@unovis/ts'
+import { colors } from '@unovis/ts';
 
 export type EducationDatum = {
   country: string;
@@ -14,7 +14,7 @@ export type ElectionDatum = {
   republican: number;
   other: number;
   libertarian: number;
-}
+};
 
 export enum Format {
   Vinyl = 'vinyl',
@@ -31,8 +31,7 @@ export type FormatConfig = {
   color: string;
   icon: string;
   label: string;
-}
-
+};
 
 export const labels: FormatConfig[] = [
   {
@@ -40,30 +39,32 @@ export const labels: FormatConfig[] = [
     color: 'var(--vis-color0)',
     icon: 'vinyl-fill',
     label: 'Vinyl',
-  }, {
+  },
+  {
     format: Format.Cassette,
     color: 'var(--vis-color1)',
     icon: 'cassette-fill',
     label: 'Cassette',
-  }, {
+  },
+  {
     format: Format.Cd,
     color: 'var(--vis-color2)',
     icon: 'disc-fill',
     label: 'CD',
-  }, {
+  },
+  {
     format: Format.Download,
     color: 'var(--vis-color3)',
     icon: 'music-player-fill',
     label: 'Download',
-  }, {
+  },
+  {
     format: Format.Streaming,
     color: 'var(--vis-color4)',
     icon: 'soundwave',
     label: 'Streaming',
   },
-]
-
-
+];
 
 export type DataRecord2 = {
   name: string;
@@ -71,11 +72,15 @@ export type DataRecord2 = {
   endDate: number;
   type: ProductType | `${ProductType}`;
   description?: string;
+};
+export enum ProductType {
+  App = 'app',
+  Hardware = 'hardware',
+  Service = 'service',
 }
-export enum ProductType { App = 'app', Hardware = 'hardware', Service = 'service' }
 
 export const colorMap: Record<ProductType, string> = {
   [ProductType.App]: colors[0],
   [ProductType.Hardware]: colors[1],
   [ProductType.Service]: colors[2],
-}
+};

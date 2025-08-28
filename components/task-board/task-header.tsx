@@ -1,22 +1,25 @@
-"use client";
+'use client';
 
-import { Input } from "@/components/ui/input";
-import { Plus, Search, Settings } from "lucide-react";
+import { Input } from '@/components/ui/input';
+import { Plus, Search, Settings } from 'lucide-react';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Icon } from "@iconify/react";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/select';
+import { Icon } from '@iconify/react';
+import { Button } from '@/components/ui/button';
 
-const TaskHeader = ({ taskViewHandler, openCreateBoard, taskView }: {
-  taskViewHandler: (value: "kanban" | "list") => void,
-  openCreateBoard: () => void,
-  taskView: string
-
+const TaskHeader = ({
+  taskViewHandler,
+  openCreateBoard,
+  taskView,
+}: {
+  taskViewHandler: (value: 'kanban' | 'list') => void;
+  openCreateBoard: () => void;
+  taskView: string;
 }) => {
   return (
     <div className="flex items-center flex-wrap gap-4">
@@ -26,12 +29,7 @@ const TaskHeader = ({ taskViewHandler, openCreateBoard, taskView }: {
           <span className="absolute top-1/2 -translate-y-1/2 ltr:left-2 rtl:right-2">
             <Search className="w-4 h-4 text-default-500" />
           </span>
-          <Input
-            type="text"
-            placeholder="search files"
-            className="ltr:pl-7 rtl:pr-7"
-            size="lg"
-          />
+          <Input type="text" placeholder="search files" className="ltr:pl-7 rtl:pr-7" size="lg" />
         </div>
         {/* filter task */}
         <div className="relative">

@@ -1,9 +1,8 @@
-"use client";
-import { VisLeafletMap } from "@unovis/react";
-import { MAP_KEY } from "../constant";
+'use client';
+import { VisLeafletMap } from '@unovis/react';
+import { MAP_KEY } from '../constant';
 
 const BasicMap = () => {
-
   const style = `https://api.maptiler.com/maps/positron/style.json?key=${MAP_KEY}`;
   return (
     <div className=" w-full h-[350px] overflow-hidden relative">

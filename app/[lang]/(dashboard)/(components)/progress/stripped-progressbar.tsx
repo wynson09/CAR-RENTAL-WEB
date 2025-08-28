@@ -1,9 +1,8 @@
-"use client";
-import React from "react";
-import { Progress } from "@/components/ui/progress";
+'use client';
+import React from 'react';
+import { Progress } from '@/components/ui/progress';
 
 const StrippedProgressbar = () => {
-
   return (
     <>
       <Progress value={50} color="primary" isStripe />

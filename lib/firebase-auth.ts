@@ -1,5 +1,5 @@
-import { 
-  createUserWithEmailAndPassword, 
+import {
+  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
   sendPasswordResetEmail,
@@ -8,24 +8,24 @@ import {
   GithubAuthProvider,
   signInWithPopup,
   UserCredential,
-  User
+  User,
 } from 'firebase/auth';
 import { auth } from './firebase';
 
 // Email/Password Authentication
 export const signUpWithEmailAndPassword = async (
-  email: string, 
+  email: string,
   password: string,
   displayName?: string
 ): Promise<UserCredential> => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    
+
     // Update profile if displayName is provided
     if (displayName && userCredential.user) {
       await updateProfile(userCredential.user, { displayName });
     }
-    
+
     return userCredential;
   } catch (error) {
     console.error('Error signing up with email and password:', error);
@@ -34,7 +34,7 @@ export const signUpWithEmailAndPassword = async (
 };
 
 export const loginWithEmailAndPassword = async (
-  email: string, 
+  email: string,
   password: string
 ): Promise<UserCredential> => {
   try {

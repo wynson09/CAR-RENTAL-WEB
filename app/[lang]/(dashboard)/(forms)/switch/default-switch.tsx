@@ -1,12 +1,9 @@
-"use client";
+'use client';
 
-import { Switch } from "@/components/ui/switch";
+import { Switch } from '@/components/ui/switch';
 
 const DefaultSwitch = () => {
-
-  return (
-    <Switch defaultChecked />
-  );
+  return <Switch defaultChecked />;
 };
 
 export default DefaultSwitch;

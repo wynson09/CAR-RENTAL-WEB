@@ -4,12 +4,10 @@
 
     &.fc-prev-button {
       @apply text-default-600;
-
     }
 
     &.fc-next-button {
       @apply text-default-600;
-
     }
   }
 
@@ -21,9 +19,9 @@
     @apply bg-transparent hover:bg-primary border border-default-200 text-default-700 capitalize;
   }
 
-    .fc .fc-button-primary.fc-button-active {
-      @apply border-none;
-    }
+  .fc .fc-button-primary.fc-button-active {
+    @apply border-none;
+  }
 
   .fc .fc-button-primary:not(:disabled):active,
   .fc .fc-button-primary:not(:disabled).fc-button-active,
@@ -35,8 +33,8 @@
     @apply bg-transparent border border-default-200 cursor-not-allowed hover:text-default-800;
   }
 
-    .fc-today-button {
-      @apply hover:text-primary-foreground;
+  .fc-today-button {
+    @apply hover:text-primary-foreground;
   }
 
   .fc .fc-button-primary:focus {
@@ -62,53 +60,52 @@
 
   .fc-h-event .fc-event-main-frame {
     @apply flex justify-center items-center text-center w-max mx-auto;
-    }
+  }
 
-    .fc-event-time {
+  .fc-event-time {
     @apply text-sm font-normal flex-none text-primary-foreground;
   }
 
-                 .fc-timegrid-event .fc-event-main {
-      @apply p-0 flex justify-center items-center gap-1;
+  .fc-timegrid-event .fc-event-main {
+    @apply p-0 flex justify-center items-center gap-1;
   }
 
   .fc-event-title {
     @apply text-sm font-light;
   }
 
-    .fc-timegrid-col-events .fc-event-title {
-      @apply pt-4;
-    }
+  .fc-timegrid-col-events .fc-event-title {
+    @apply pt-4;
+  }
 
   .fc .fc-toolbar-title {
     @apply text-lg font-normal text-default-600;
   }
 
-    .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
-      @apply p-1;
-    }
+  .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
+    @apply p-1;
+  }
 
-    .fc-theme-standard .fc-list {
-      @apply border border-default-200;
-    }
+  .fc-theme-standard .fc-list {
+    @apply border border-default-200;
+  }
 
   // event css
   .fc-daygrid-event-dot {
     @apply hidden;
   }
 
-    .fc .fc-list-sticky .fc-list-day>* {
-      @apply bg-default-50;
-    }
-                                 .fc-timegrid-col-events .fc-event-title {
-                                   @apply pt-0;
-                                 }
-                
-                                 .fc-timegrid-event-harness>.fc-timegrid-event {
-                                   @apply static;
-                                 }
-  @media (max-width: 981px) {
+  .fc .fc-list-sticky .fc-list-day > * {
+    @apply bg-default-50;
+  }
+  .fc-timegrid-col-events .fc-event-title {
+    @apply pt-0;
+  }
 
+  .fc-timegrid-event-harness > .fc-timegrid-event {
+    @apply static;
+  }
+  @media (max-width: 981px) {
     .fc-button-group,
     .fc .fc-toolbar {
       display: block !important;
@@ -180,7 +177,6 @@
   .dark {
     @apply bg-card-foreground border-none text-primary-foreground text-center px-2 font-medium text-sm;
   }
-
 }
 
 // datae picker

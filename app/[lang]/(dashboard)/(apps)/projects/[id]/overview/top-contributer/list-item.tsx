@@ -1,8 +1,8 @@
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Progress } from "@/components/ui/progress";
-import { type Data } from "./data"
-const ListItem = ({ item, index }: { item: Data, index: number }) => {
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Progress } from '@/components/ui/progress';
+import { type Data } from './data';
+const ListItem = ({ item, index }: { item: Data; index: number }) => {
   const { name, email, score, image, count } = item;
   return (
     <div className="col-span-3 mb-4 sm:mb-0">
@@ -13,8 +13,7 @@ const ListItem = ({ item, index }: { item: Data, index: number }) => {
               <AvatarImage src={image.src} />
               <AvatarFallback>{name}</AvatarFallback>
             </Avatar>
-            <Badge
-              className="w-[18px] h-[18px] bg-yellow-400 text-[10px] font-semibold p-0  items-center justify-center   absolute left-[calc(100%-14px)] top-[calc(100%-16px)]">
+            <Badge className="w-[18px] h-[18px] bg-yellow-400 text-[10px] font-semibold p-0  items-center justify-center   absolute left-[calc(100%-14px)] top-[calc(100%-16px)]">
               {index + 1}
             </Badge>
           </div>
@@ -23,10 +22,7 @@ const ListItem = ({ item, index }: { item: Data, index: number }) => {
             <div className="text-xs text-default-600">{email}</div>
           </div>
           <div className="flex-1 flex justify-center">
-            <Badge
-              variant="soft"
-              className="rounded-full h-8  "
-            >
+            <Badge variant="soft" className="rounded-full h-8  ">
               {count} <span className="ml-1 text-xs font-medium">Contributed</span>
             </Badge>
           </div>

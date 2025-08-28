@@ -1,5 +1,5 @@
-"use client";
-import { Slider } from "@/components/ui/slider";
+'use client';
+import { Slider } from '@/components/ui/slider';
 const SizesSlider = () => {
   return (
     <div className="flex flex-col gap-7">

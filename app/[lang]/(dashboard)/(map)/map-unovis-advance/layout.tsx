@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Unovis Advance map",
+  title: 'Unovis Advance map',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

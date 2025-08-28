@@ -6,8 +6,13 @@ enum Format {
   Streaming = 'streaming',
 }
 
-export const formats: Format[] = [Format.Vinyl,
-     Format.Cassette, Format.Cd, Format.Download, Format.Streaming]
+export const formats: Format[] = [
+  Format.Vinyl,
+  Format.Cassette,
+  Format.Cd,
+  Format.Download,
+  Format.Streaming,
+];
 
 export type DataRecord = Record<Format, number> & { year: number };
 
@@ -15,40 +20,46 @@ export type Label = {
   label: string;
   value: number;
   color: string;
-}
+};
 
-export function getMaxItems<T extends Record<string, number>> (
+export function getMaxItems<T extends Record<string, number>>(
   array: T[],
   keys: (keyof T)[]
 ): { [key in keyof T]?: T } {
-  const maxIndex = (k: keyof T): number => array.reduce((max, curr, i) => curr[k] > array[max][k] ? i : max, 0)
-  const entries = keys.map(key => [
-    key,
-    array[maxIndex(key)],
-  ])
+  const maxIndex = (k: keyof T): number =>
+    array.reduce((max, curr, i) => (curr[k] > array[max][k] ? i : max), 0);
+  const entries = keys.map((key) => [key, array[maxIndex(key)]]);
 
-  return Object.fromEntries(entries)
+  return Object.fromEntries(entries);
 }
 
-export function getLabels (data: DataRecord[]): Record<number, Label> {
+export function getLabels(data: DataRecord[]): Record<number, Label> {
   // map formats to their maximum data records
   const peakItems = getMaxItems(data.slice(0, data.length - 3), formats);
 
   // place labels at [x,y] where x = peak year and y = area midpoint
-  return formats.reduce((obj, format, i) => {
-    const peakItem = peakItems[format];
-    if (peakItem) {
-      const offset = Array(i).fill(0).reduce((sum, _, j) => sum + (peakItems[formats[j]]?.[formats[j]] || 0), 0);
-      const [x, y] = [peakItem.year, offset + peakItem[format] / 2];
+  return formats.reduce(
+    (obj, format, i) => {
+      const peakItem = peakItems[format];
+      if (peakItem) {
+        const offset = Array(i)
+          .fill(0)
+          .reduce((sum, _, j) => sum + (peakItems[formats[j]]?.[formats[j]] || 0), 0);
+        const [x, y] = [peakItem.year, offset + peakItem[format] / 2];
 
-      obj[x] = {
-        label: format === 'cd' ? format.toUpperCase() : format.charAt(0).toUpperCase() + format.slice(1),
-        value: y,
-        color: 'none',
-      };
-    }
-    return obj;
-  }, {} as Record<number, Label>);
+        obj[x] = {
+          label:
+            format === 'cd'
+              ? format.toUpperCase()
+              : format.charAt(0).toUpperCase() + format.slice(1),
+          value: y,
+          color: 'none',
+        };
+      }
+      return obj;
+    },
+    {} as Record<number, Label>
+  );
 }
 
 export const data: DataRecord[] = [
@@ -428,21 +439,19 @@ export const data: DataRecord[] = [
     cassette: 0,
     download: 0.8326,
   },
-]
+];
 
-// for step area 
+// for step area
 type Mention = {
   neutral: number;
   negative: number;
   positive: number;
-
-}
+};
 export type DataRecordStep = Record<string, Mention> & {
   year: number;
-  
-}
+};
 
-export const candidates = ['Hillary Clinton', 'Donald Trump'].map(c => ({
+export const candidates = ['Hillary Clinton', 'Donald Trump'].map((c) => ({
   name: c,
   color: 'var(--vis-color-grey)',
-}))
+}));

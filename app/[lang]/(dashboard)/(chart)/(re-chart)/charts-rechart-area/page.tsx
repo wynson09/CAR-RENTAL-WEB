@@ -1,13 +1,12 @@
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import BasicAreaChart from "./basic-area-chart";
-import StackedRechartArea from "./stacked-rechart-area";
-import TinyRechartArea from "./tiny-rechart-area";
-import PercentReAreaChart from "./percent-area";
-import CardinalAreaChart from "./cardinal-area";
-import AreaChartConnectNulls from "./area-connect-nulls";
-import ReSynchronizedAreaChart from "./synchronized-area";
-import AreaChartFillByValue from "./areachart-fillby-value";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import BasicAreaChart from './basic-area-chart';
+import StackedRechartArea from './stacked-rechart-area';
+import TinyRechartArea from './tiny-rechart-area';
+import PercentReAreaChart from './percent-area';
+import CardinalAreaChart from './cardinal-area';
+import AreaChartConnectNulls from './area-connect-nulls';
+import ReSynchronizedAreaChart from './synchronized-area';
+import AreaChartFillByValue from './areachart-fillby-value';
 
 const RechartAreaPage = () => {
   return (
@@ -76,7 +75,6 @@ const RechartAreaPage = () => {
           <ReSynchronizedAreaChart />
         </CardContent>
       </Card>
-
     </div>
   );
 };

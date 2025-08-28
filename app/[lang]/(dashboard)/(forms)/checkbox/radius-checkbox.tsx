@@ -1,6 +1,6 @@
-"use client";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
+'use client';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 
 const RadiusCheckbox = () => {
   return (
@@ -27,10 +27,7 @@ const RadiusCheckbox = () => {
       </div>
       <div className="flex items-center gap-2.5">
         <Checkbox radius="xl" id="circle_48" />
-        <Label
-          htmlFor="circle_48"
-          className="text-sm text-muted-foreground font-normal"
-        >
+        <Label htmlFor="circle_48" className="text-sm text-muted-foreground font-normal">
           Full
         </Label>
       </div>

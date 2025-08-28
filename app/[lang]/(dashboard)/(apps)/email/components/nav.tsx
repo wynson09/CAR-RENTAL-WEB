@@ -1,13 +1,9 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { Icon } from "@iconify/react";
-import { cn } from "@/lib/utils";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import Link from 'next/link';
+import { Icon } from '@iconify/react';
+import { cn } from '@/lib/utils';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface NavProps {
   isCollapsed: boolean;
@@ -28,19 +24,13 @@ export function Nav({ links, isCollapsed, handleSidebar }: NavProps) {
                 <Link href="#" className={cn()}>
                   <Icon
                     icon={link.icon}
-                    className={cn(
-                      "w-[18px] h-[18px] mb-2 flex-none text-default-600",
-                      {
-                        "text-primary": false,
-                      }
-                    )}
+                    className={cn('w-[18px] h-[18px] mb-2 flex-none text-default-600', {
+                      'text-primary': false,
+                    })}
                   />
                 </Link>
               </TooltipTrigger>
-              <TooltipContent
-                side="right"
-                className="flex items-center gap-4 capitalize"
-              >
+              <TooltipContent side="right" className="flex items-center gap-4 capitalize">
                 {link.title}
                 {link.label && <span>{link.label}</span>}
               </TooltipContent>
@@ -50,9 +40,9 @@ export function Nav({ links, isCollapsed, handleSidebar }: NavProps) {
               onClick={handleSidebar}
               key={`link-${index}`}
               className={cn(
-                "flex items-center gap-1.5 py-2.5 px-3 cursor-pointer group/item capitalize hover:bg-primary/10 rounded ease-in-out duration-200",
+                'flex items-center gap-1.5 py-2.5 px-3 cursor-pointer group/item capitalize hover:bg-primary/10 rounded ease-in-out duration-200',
                 {
-                  "bg-primary/10": false,
+                  'bg-primary/10': false,
                 }
               )}
             >
@@ -60,17 +50,17 @@ export function Nav({ links, isCollapsed, handleSidebar }: NavProps) {
                 <Icon
                   icon={link.icon}
                   className={cn(
-                    "w-4 h-4 flex-none group-hover/item:text-primary-600 text-default-600 ease-in-out duration-150",
+                    'w-4 h-4 flex-none group-hover/item:text-primary-600 text-default-600 ease-in-out duration-150',
                     {
-                      "text-primary": false,
+                      'text-primary': false,
                     }
                   )}
                 />
                 <span
                   className={cn(
-                    "flex-1 capitalize text-sm font-medium group-hover/item:text-primary-600 text-default-600 ease-in-out duration-150",
+                    'flex-1 capitalize text-sm font-medium group-hover/item:text-primary-600 text-default-600 ease-in-out duration-150',
                     {
-                      "text-primary": false,
+                      'text-primary': false,
                     }
                   )}
                 >
@@ -80,9 +70,9 @@ export function Nav({ links, isCollapsed, handleSidebar }: NavProps) {
               {link.label && (
                 <span
                   className={cn(
-                    "flex-1 text-end text-sm font-medium group-hover/item:text-primary-600 text-default-600 ease-in-out duration-150",
+                    'flex-1 text-end text-sm font-medium group-hover/item:text-primary-600 text-default-600 ease-in-out duration-150',
                     {
-                      "text-primary": false,
+                      'text-primary': false,
                     }
                   )}
                 >

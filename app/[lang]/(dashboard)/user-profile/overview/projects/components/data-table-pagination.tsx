@@ -1,15 +1,15 @@
-"use client"
+'use client';
 
-import { Icon } from "@iconify/react";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { Table } from "@tanstack/react-table";
+import { Icon } from '@iconify/react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { Table } from '@tanstack/react-table';
 
 export function DataTablePagination<TData>({ table }: { table: Table<TData> }) {
   return (
     <div className="flex items-center flex-wrap gap-2 justify-between  py-5 px-6">
       <div className="flex-1 text-sm text-default-600  whitespace-nowrap">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
+        {table.getFilteredSelectedRowModel().rows.length} of{' '}
         {table.getFilteredRowModel().rows.length} row(s) selected.
       </div>
 
@@ -28,13 +28,16 @@ export function DataTablePagination<TData>({ table }: { table: Table<TData> }) {
             key={`project-data-table-${pageIdx}`}
             onClick={() => table.setPageIndex(pageIdx)}
             size="icon"
-            className={cn("h-7 w-7 p-0 font-medium bg-default-100 dark:bg-default-50 dark:hover:bg-default-200 text-default-600 rounded-md hover:bg-default-200", {
-              "bg-primary text-primary-foreground": table.getState().pagination.pageIndex === pageIdx,
-            })}
+            className={cn(
+              'h-7 w-7 p-0 font-medium bg-default-100 dark:bg-default-50 dark:hover:bg-default-200 text-default-600 rounded-md hover:bg-default-200',
+              {
+                'bg-primary text-primary-foreground':
+                  table.getState().pagination.pageIndex === pageIdx,
+              }
+            )}
           >
             {page + 1}
           </Button>
-
         ))}
 
         <Button

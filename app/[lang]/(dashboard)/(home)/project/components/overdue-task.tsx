@@ -1,6 +1,6 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+'use client';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -8,34 +8,34 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+} from '@/components/ui/table';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 
 // avatar
 
-import avatar1 from "@/public/images/avatar/avatar-7.jpg";
-import avatar2 from "@/public/images/avatar/avatar-2.jpg";
-import avatar3 from "@/public/images/avatar/avatar-3.jpg";
-import avatar4 from "@/public/images/avatar/avatar-4.jpg";
-import Link from "next/link";
+import avatar1 from '@/public/images/avatar/avatar-7.jpg';
+import avatar2 from '@/public/images/avatar/avatar-2.jpg';
+import avatar3 from '@/public/images/avatar/avatar-3.jpg';
+import avatar4 from '@/public/images/avatar/avatar-4.jpg';
+import Link from 'next/link';
 
 const columns = [
   {
-    key: "employee",
-    label: "employee",
+    key: 'employee',
+    label: 'employee',
   },
   {
-    key: "task name",
-    label: "task name",
+    key: 'task name',
+    label: 'task name',
   },
   {
-    key: "deadline",
-    label: "deadline",
+    key: 'deadline',
+    label: 'deadline',
   },
   {
-    key: "overdue",
-    label: "overdue",
+    key: 'overdue',
+    label: 'overdue',
   },
 ];
 
@@ -51,42 +51,42 @@ interface User {
 const users: User[] = [
   {
     id: 1,
-    name: "Mark Dsuza",
-    task: "Admin dashboard template",
-    deadline: "21 Jan 2024",
-    overdue: "01",
+    name: 'Mark Dsuza',
+    task: 'Admin dashboard template',
+    deadline: '21 Jan 2024',
+    overdue: '01',
     avatar: avatar1,
   },
   {
     id: 2,
-    name: "Mark Dsuza",
-    task: "Admin dashboard template",
-    deadline: "21 Jan 2024",
-    overdue: "01",
+    name: 'Mark Dsuza',
+    task: 'Admin dashboard template',
+    deadline: '21 Jan 2024',
+    overdue: '01',
     avatar: avatar1,
   },
   {
     id: 3,
-    name: "Mark Dsuza",
-    task: "Admin dashboard template",
-    deadline: "21 Jan 2024",
-    overdue: "01",
+    name: 'Mark Dsuza',
+    task: 'Admin dashboard template',
+    deadline: '21 Jan 2024',
+    overdue: '01',
     avatar: avatar2,
   },
   {
     id: 4,
-    name: "Mark Dsuza",
-    task: "Admin dashboard template",
-    deadline: "21 Jan 2024",
-    overdue: "01",
+    name: 'Mark Dsuza',
+    task: 'Admin dashboard template',
+    deadline: '21 Jan 2024',
+    overdue: '01',
     avatar: avatar3,
   },
   {
     id: 5,
-    name: "Mark Dsuza",
-    task: "Admin dashboard template",
-    deadline: "21 Jan 2024",
-    overdue: "01",
+    name: 'Mark Dsuza',
+    task: 'Admin dashboard template',
+    deadline: '21 Jan 2024',
+    overdue: '01',
     avatar: avatar4,
   },
 ];
@@ -96,11 +96,7 @@ const OverdueTask = () => {
     <Card>
       <CardHeader className="flex-row justify-between items-center mb-0">
         <CardTitle>Overdue Task</CardTitle>
-        <Button
-          type="button"
-          color="secondary"
-          asChild
-        >
+        <Button type="button" color="secondary" asChild>
           <Link href="#"> View all</Link>
         </Button>
       </CardHeader>

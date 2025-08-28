@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import {
   Table,
   TableBody,
@@ -6,10 +6,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 
-import { users, columns, ColumnProps, UserProps } from "./data";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { users, columns, ColumnProps, UserProps } from './data';
+import { ScrollArea } from '@/components/ui/scroll-area';
 const HeightTable = () => {
   return (
     <div className="h-[250px]">
@@ -17,13 +17,14 @@ const HeightTable = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              {
-                columns.map((column: ColumnProps) => (
-                  <TableHead key={column.key} className="last:text-right rtl:text-left rtl:last:text-right">
-                    {column.label}
-                  </TableHead>
-                ))
-              }
+              {columns.map((column: ColumnProps) => (
+                <TableHead
+                  key={column.key}
+                  className="last:text-right rtl:text-left rtl:last:text-right"
+                >
+                  {column.label}
+                </TableHead>
+              ))}
             </TableRow>
           </TableHeader>
           <TableBody>

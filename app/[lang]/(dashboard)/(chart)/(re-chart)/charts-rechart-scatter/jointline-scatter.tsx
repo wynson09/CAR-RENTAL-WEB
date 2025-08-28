@@ -1,7 +1,7 @@
-"use client";
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
+'use client';
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
 import {
   CartesianGrid,
   XAxis,
@@ -11,9 +11,9 @@ import {
   ScatterChart,
   Scatter,
   ZAxis,
-} from "recharts";
+} from 'recharts';
 
-import CustomTooltip from "./custom-tooltip";
+import CustomTooltip from './custom-tooltip';
 interface DataPoint {
   x: number;
   y: number;
@@ -42,8 +42,7 @@ const JointLineScatter = ({ height = 400 }) => {
     <ResponsiveContainer width="100%" height={height}>
       <ScatterChart height={height}>
         <CartesianGrid
-          stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-            })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
           strokeDasharray="3 3"
           vertical={false}
         />
@@ -53,13 +52,11 @@ const JointLineScatter = ({ height = 400 }) => {
           name="stature"
           unit="cm"
           tick={{
-            fill: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel
-              })`,
-            fontSize: "12px",
+            fill: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
+            fontSize: '12px',
           }}
           tickLine={false}
-          stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-            })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
           axisLine={false}
         />
         <YAxis
@@ -68,13 +65,11 @@ const JointLineScatter = ({ height = 400 }) => {
           name="weight"
           unit="kg"
           tick={{
-            fill: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel
-              })`,
-            fontSize: "12px",
+            fill: `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`,
+            fontSize: '12px',
           }}
           tickLine={false}
-          stroke={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird
-            })`}
+          stroke={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`}
         />
         <ZAxis type="number" range={[100]} />
         <Tooltip content={<CustomTooltip />} />
@@ -84,15 +79,14 @@ const JointLineScatter = ({ height = 400 }) => {
           data={data01}
           line
           shape="cross"
-          fill={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info
-            })`}
+          fill={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`}
         />
         <Scatter
           name="B school"
           data={data02}
           line
           shape="diamond"
-          fill={`hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success})`}
+          fill={`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`}
         />
       </ScatterChart>
     </ResponsiveContainer>

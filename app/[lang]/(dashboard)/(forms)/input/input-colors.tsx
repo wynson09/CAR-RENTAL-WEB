@@ -1,11 +1,11 @@
-"use client";
-import { Input } from "@/components/ui/input";
+'use client';
+import { Input } from '@/components/ui/input';
 
 const InputColors = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-4">
       <div className="space-y-4">
-        <Input type="text" placeholder="Default"  />
+        <Input type="text" placeholder="Default" />
         <Input type="text" placeholder="Primary" color="primary" />
         <Input type="text" placeholder="Info" color="info" />
         <Input type="text" placeholder="Warning" color="warning" />

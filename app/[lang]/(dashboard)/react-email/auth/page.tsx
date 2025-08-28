@@ -1,6 +1,6 @@
-"use client";
-import { render } from "@react-email/render";
-import ResetPassword from "./reset-password";
+'use client';
+import { render } from '@react-email/render';
+import ResetPassword from './reset-password';
 
 const ReviewEmailTemplate = () => {
   const resetPassword = render(<ResetPassword />);

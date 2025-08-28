@@ -1,8 +1,8 @@
-"use client";
-import React, { useState } from "react";
-import { Switch } from "@/components/ui/switch";
-import { Bell, Sun, Moon, Heart } from "lucide-react";
-import { cn } from "@/lib/utils";
+'use client';
+import React, { useState } from 'react';
+import { Switch } from '@/components/ui/switch';
+import { Bell, Sun, Moon, Heart } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const SwitchWithIcon = () => {
   const [selected, setSelected] = useState<boolean>(false);
@@ -25,9 +25,9 @@ const SwitchWithIcon = () => {
       <Switch
         size="lg"
         color="dark"
-        thumbClass={cn("h-6 w-6  data-[state=unchecked]:ml-0 ", {
-          "bg-foreground text-background": selected,
-          "bg-default": !selected,
+        thumbClass={cn('h-6 w-6  data-[state=unchecked]:ml-0 ', {
+          'bg-foreground text-background': selected,
+          'bg-default': !selected,
         })}
         onCheckedChange={() => setSelected(!selected)}
         thumbIcon={

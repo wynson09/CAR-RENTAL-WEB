@@ -1,5 +1,5 @@
-"use client"
-import { Slider } from "@/components/ui/slider";
+'use client';
+import { Slider } from '@/components/ui/slider';
 const ColorsSlider = () => {
   return (
     <div className="flex flex-col gap-7">
@@ -10,7 +10,6 @@ const ColorsSlider = () => {
       <Slider defaultValue={[50]} color="destructive" />
       <Slider defaultValue={[50]} color="dark" />
     </div>
-
   );
 };
 

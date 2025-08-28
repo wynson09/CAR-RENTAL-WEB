@@ -1,16 +1,10 @@
-"use client";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import BasicDataTable from "./basic-table";
-import AdvancedTable from "./advanced";
+'use client';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import BasicDataTable from './basic-table';
+import AdvancedTable from './advanced';
 import DraggableTable from './draggable-table';
 
 const DataTablePage = () => {
-
   return (
     <div className="space-y-5">
       <Card>
@@ -26,7 +20,7 @@ const DataTablePage = () => {
         <CardHeader>
           <CardTitle>Advanced Table</CardTitle>
         </CardHeader>
-        <CardContent >
+        <CardContent>
           <AdvancedTable />
         </CardContent>
       </Card>
@@ -34,11 +28,10 @@ const DataTablePage = () => {
         <CardHeader>
           <CardTitle>Draggable Table</CardTitle>
         </CardHeader>
-        <CardContent >
+        <CardContent>
           <DraggableTable />
         </CardContent>
       </Card>
-
     </div>
   );
 };

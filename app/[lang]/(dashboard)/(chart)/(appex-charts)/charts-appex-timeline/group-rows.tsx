@@ -1,146 +1,139 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import {
-  getGridConfig,
-  getLabel,
-  getYAxisConfig,
-} from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getGridConfig, getLabel, getYAxisConfig } from '@/lib/appex-chart-options';
 
 const GroupRows = ({ height = 400 }) => {
-  const { theme: config, setTheme: setConfig,isRtl } = useThemeStore();
+  const { theme: config, setTheme: setConfig, isRtl } = useThemeStore();
   const { theme: mode } = useTheme();
 
   const theme = themes.find((theme) => theme.name === config);
   const series = [
     {
-      name: "George Washington",
+      name: 'George Washington',
       data: [
         {
-          x: "President",
+          x: 'President',
           y: [new Date(1789, 3, 30).getTime(), new Date(1797, 2, 4).getTime()],
         },
       ],
     },
     {
-      name: "John Adams",
+      name: 'John Adams',
       data: [
         {
-          x: "President",
+          x: 'President',
           y: [new Date(1797, 2, 4).getTime(), new Date(1801, 2, 4).getTime()],
         },
         {
-          x: "Vice President",
+          x: 'Vice President',
           y: [new Date(1789, 3, 21).getTime(), new Date(1797, 2, 4).getTime()],
         },
       ],
     },
     {
-      name: "Thomas Jefferson",
+      name: 'Thomas Jefferson',
       data: [
         {
-          x: "President",
+          x: 'President',
           y: [new Date(1801, 2, 4).getTime(), new Date(1809, 2, 4).getTime()],
         },
         {
-          x: "Vice President",
+          x: 'Vice President',
           y: [new Date(1797, 2, 4).getTime(), new Date(1801, 2, 4).getTime()],
         },
         {
-          x: "Secretary of State",
-          y: [
-            new Date(1790, 2, 22).getTime(),
-            new Date(1793, 11, 31).getTime(),
-          ],
+          x: 'Secretary of State',
+          y: [new Date(1790, 2, 22).getTime(), new Date(1793, 11, 31).getTime()],
         },
       ],
     },
     {
-      name: "Aaron Burr",
+      name: 'Aaron Burr',
       data: [
         {
-          x: "Vice President",
+          x: 'Vice President',
           y: [new Date(1801, 2, 4).getTime(), new Date(1805, 2, 4).getTime()],
         },
       ],
     },
     {
-      name: "George Clinton",
+      name: 'George Clinton',
       data: [
         {
-          x: "Vice President",
+          x: 'Vice President',
           y: [new Date(1805, 2, 4).getTime(), new Date(1812, 3, 20).getTime()],
         },
       ],
     },
     {
-      name: "John Jay",
+      name: 'John Jay',
       data: [
         {
-          x: "Secretary of State",
+          x: 'Secretary of State',
           y: [new Date(1789, 8, 25).getTime(), new Date(1790, 2, 22).getTime()],
         },
       ],
     },
     {
-      name: "Edmund Randolph",
+      name: 'Edmund Randolph',
       data: [
         {
-          x: "Secretary of State",
+          x: 'Secretary of State',
           y: [new Date(1794, 0, 2).getTime(), new Date(1795, 7, 20).getTime()],
         },
       ],
     },
     {
-      name: "Timothy Pickering",
+      name: 'Timothy Pickering',
       data: [
         {
-          x: "Secretary of State",
+          x: 'Secretary of State',
           y: [new Date(1795, 7, 20).getTime(), new Date(1800, 4, 12).getTime()],
         },
       ],
     },
     {
-      name: "Charles Lee",
+      name: 'Charles Lee',
       data: [
         {
-          x: "Secretary of State",
+          x: 'Secretary of State',
           y: [new Date(1800, 4, 13).getTime(), new Date(1800, 5, 5).getTime()],
         },
       ],
     },
     {
-      name: "John Marshall",
+      name: 'John Marshall',
       data: [
         {
-          x: "Secretary of State",
+          x: 'Secretary of State',
           y: [new Date(1800, 5, 13).getTime(), new Date(1801, 2, 4).getTime()],
         },
       ],
     },
     {
-      name: "Levi Lincoln",
+      name: 'Levi Lincoln',
       data: [
         {
-          x: "Secretary of State",
+          x: 'Secretary of State',
           y: [new Date(1801, 2, 5).getTime(), new Date(1801, 4, 1).getTime()],
         },
       ],
     },
     {
-      name: "James Madison",
+      name: 'James Madison',
       data: [
         {
-          x: "Secretary of State",
+          x: 'Secretary of State',
           y: [new Date(1801, 4, 2).getTime(), new Date(1809, 2, 3).getTime()],
         },
       ],
     },
   ];
-  const options:any = {
+  const options: any = {
     chart: {
       toolbar: {
         show: false,
@@ -149,7 +142,7 @@ const GroupRows = ({ height = 400 }) => {
     plotOptions: {
       bar: {
         horizontal: true,
-        barHeight: "50%",
+        barHeight: '50%',
         rangeBarGroupRows: true,
       },
     },
@@ -157,29 +150,23 @@ const GroupRows = ({ height = 400 }) => {
       enabled: false,
     },
     fill: {
-      type: "solid",
+      type: 'solid',
     },
     colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`,
     ],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
 
     xaxis: {
-      type: "datetime",
+      type: 'datetime',
       labels: getLabel(
-        `hsl(${
-          theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
       axisBorder: {
         show: false,
@@ -188,17 +175,13 @@ const GroupRows = ({ height = 400 }) => {
         show: false,
       },
     },
-    yaxis: getYAxisConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`
-    ),
+    yaxis: getYAxisConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartLabel})`),
     legend: {
-      position: "right",
-      horizontalAlign: "right",
+      position: 'right',
+      horizontalAlign: 'right',
       labels: {
         colors: `hsl(${
-          theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
+          theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
         })`,
       },
       itemMargin: {
@@ -209,8 +192,8 @@ const GroupRows = ({ height = 400 }) => {
         width: 10,
         height: 10,
         radius: 10,
-        offsetX: isRtl ? 5 : -5
-      }
+        offsetX: isRtl ? 5 : -5,
+      },
     },
     padding: {
       top: 0,
@@ -219,15 +202,7 @@ const GroupRows = ({ height = 400 }) => {
       left: 0,
     },
   };
-  return (
-      <Chart
-        options={options}
-        series={series}
-        type="rangeBar"
-        height={height}
-        width={"100%"}
-      />
-  );
+  return <Chart options={options} series={series} type="rangeBar" height={height} width={'100%'} />;
 };
 
 export default GroupRows;

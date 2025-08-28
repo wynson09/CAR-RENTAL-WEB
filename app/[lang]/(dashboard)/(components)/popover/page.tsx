@@ -1,8 +1,8 @@
-import Card from "@/components/ui/card-snippet";
-import BasicPopover from "./basic-popover";
-import PopoverPosition from "./popover-position";
-import UserPopover from "./user-popover";
-import ProgressPopover from "./progress-popover";
+import Card from '@/components/ui/card-snippet';
+import BasicPopover from './basic-popover';
+import PopoverPosition from './popover-position';
+import UserPopover from './user-popover';
+import ProgressPopover from './progress-popover';
 
 const PopoverPage = () => {
   return (
@@ -14,7 +14,7 @@ const PopoverPage = () => {
         <PopoverPosition />
       </Card>
       <Card title="User Profile">
-          <UserPopover />
+        <UserPopover />
       </Card>
       <Card title="Progress Popover">
         <ProgressPopover />

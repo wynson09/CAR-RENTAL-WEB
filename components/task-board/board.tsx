@@ -1,6 +1,6 @@
-"use client";
-import React, { useState, useTransition } from "react";
-import { toast } from "react-hot-toast";
+'use client';
+import React, { useState, useTransition } from 'react';
+import { toast } from 'react-hot-toast';
 
 import {
   DropdownMenu,
@@ -8,28 +8,23 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { MoreHorizontal, Plus, Trash2, UserPlus, Loader2 } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { Icon } from "@iconify/react";
+} from '@/components/ui/dropdown-menu';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { MoreHorizontal, Plus, Trash2, UserPlus, Loader2 } from 'lucide-react';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { Icon } from '@iconify/react';
 
-import { deleteBoardAction } from "@/action/project-action";
-import DeleteConfirmationDialog from "@/components/delete-confirmation-dialog";
+import { deleteBoardAction } from '@/action/project-action';
+import DeleteConfirmationDialog from '@/components/delete-confirmation-dialog';
 
 // dnd
-import { SortableContext, useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import Task from "./task";
-import { type Board as BoardType } from "@/app/api/boards/data";
-import { type Task as TaskType } from "@/app/api/tasks/data";
+import { SortableContext, useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import Task from './task';
+import { type Board as BoardType } from '@/app/api/boards/data';
+import { type Task as TaskType } from '@/app/api/tasks/data';
 interface TaskBoardProps {
   board: BoardType;
   children?: React.ReactNode;
@@ -59,17 +54,10 @@ const taskBoard = ({
   }
   const { name, status, id } = board;
 
-  const {
-    setNodeRef,
-    attributes,
-    listeners,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({
+  const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
     id: id,
     data: {
-      type: "Column",
+      type: 'Column',
       board,
     },
     disabled: isTaskOpen,
@@ -91,12 +79,12 @@ const taskBoard = ({
         style={style}
         {...attributes}
         className={cn(
-          "max-w-[277px] border-t-4 rounded-md  flex-none w-full  shadow-lg bg-default-100 dark:bg-default-50 ",
+          'max-w-[277px] border-t-4 rounded-md  flex-none w-full  shadow-lg bg-default-100 dark:bg-default-50 ',
           {
-            "border-primary": status === "primary",
-            "border-warning": status === "warning",
-            "border-success": status === "success",
-            "opacity-50": isDragging,
+            'border-primary': status === 'primary',
+            'border-warning': status === 'warning',
+            'border-success': status === 'success',
+            'opacity-50': isDragging,
           }
         )}
       >
@@ -113,9 +101,7 @@ const taskBoard = ({
               <UserPlus className="w-3 h-3" />
             </Button>
           </div>
-          <div className="text-sm font-semibold text-default-800 capitalize">
-            {name}
-          </div>
+          <div className="text-sm font-semibold text-default-800 capitalize">{name}</div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -156,9 +142,7 @@ const taskBoard = ({
               onClick={taskHandler}
             >
               <Plus className="w-5 h-5 text-primary" />
-              <span className="text-xs font-semibold text-primary">
-                Add Task
-              </span>
+              <span className="text-xs font-semibold text-primary">Add Task</span>
             </Button>
           )}
         </CardFooter>

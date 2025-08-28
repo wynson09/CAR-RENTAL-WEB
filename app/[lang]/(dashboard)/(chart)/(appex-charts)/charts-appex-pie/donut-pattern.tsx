@@ -1,9 +1,9 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
 
 const DonutPattern = ({ height = 350 }) => {
   const { theme: config, setTheme: setConfig, isRtl } = useThemeStore();
@@ -20,7 +20,7 @@ const DonutPattern = ({ height = 350 }) => {
       },
       dropShadow: {
         enabled: true,
-        color: "#111",
+        color: '#111',
         top: -1,
         left: 3,
         blur: 3,
@@ -30,7 +30,7 @@ const DonutPattern = ({ height = 350 }) => {
     stroke: {
       width: 0,
     },
-    labels: ["Comedy", "Action", "SciFi", "Drama", "Horror"],
+    labels: ['Comedy', 'Action', 'SciFi', 'Drama', 'Horror'],
     dataLabels: {
       dropShadow: {
         blur: 3,
@@ -38,57 +38,50 @@ const DonutPattern = ({ height = 350 }) => {
       },
     },
     fill: {
-      type: "pattern",
+      type: 'pattern',
       opacity: 1,
       pattern: {
         enabled: true,
-        style: [
-          "verticalLines",
-          "squares",
-          "horizontalLines",
-          "circles",
-          "slantedLines",
-        ],
+        style: ['verticalLines', 'squares', 'horizontalLines', 'circles', 'slantedLines'],
       },
       colors: [
-        `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-        `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
-        `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning})`,
-        `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success})`,
-        `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].muted})`,
-        `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].secondary})`,
+        `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
+        `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`,
+        `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`,
+        `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`,
+        `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].muted})`,
+        `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].secondary})`,
       ],
     },
     states: {
       hover: {
-        filter: "none",
+        filter: 'none',
       },
     },
     plotOptions: {
       pie: {
         donut: {
           labels: {
-            show: false
-          }
-        }
+            show: false,
+          },
+        },
       },
     },
     theme: {
-      palette: "palette2",
+      palette: 'palette2',
     },
 
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
 
     legend: {
       show: true,
-      position: "bottom",
+      position: 'bottom',
       labels: {
-        colors: `hsl(${theme?.cssVars[
-          mode === "dark" || mode === "system" ? "dark" : "light"
-        ].chartLabel
-          })`,
+        colors: `hsl(${
+          theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+        })`,
       },
       itemMargin: {
         horizontal: 5,
@@ -98,8 +91,8 @@ const DonutPattern = ({ height = 350 }) => {
         width: 10,
         height: 10,
         radius: 10,
-        offsetX: isRtl ? 5 : -5
-      }
+        offsetX: isRtl ? 5 : -5,
+      },
     },
     padding: {
       top: 0,
@@ -108,15 +101,7 @@ const DonutPattern = ({ height = 350 }) => {
       left: 0,
     },
   };
-  return (
-    <Chart
-      options={options}
-      series={series}
-      type="donut"
-      height={height}
-      width={"100%"}
-    />
-  );
+  return <Chart options={options} series={series} type="donut" height={height} width={'100%'} />;
 };
 
 export default DonutPattern;

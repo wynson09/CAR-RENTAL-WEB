@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -13,18 +13,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/components/ui/use-toast";
+} from '@/components/ui/form';
+import { Textarea } from '@/components/ui/textarea';
+import { toast } from '@/components/ui/use-toast';
 
 const FormSchema = z.object({
   bio: z
     .string()
     .min(10, {
-      message: "Bio must be at least 10 characters.",
+      message: 'Bio must be at least 10 characters.',
     })
     .max(160, {
-      message: "Bio must not be longer than 30 characters.",
+      message: 'Bio must not be longer than 30 characters.',
     }),
 });
 
@@ -35,7 +35,7 @@ const TextareaForm = () => {
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast({
-      title: "You submitted the following values:",
+      title: 'You submitted the following values:',
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-default-950 p-4">
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>

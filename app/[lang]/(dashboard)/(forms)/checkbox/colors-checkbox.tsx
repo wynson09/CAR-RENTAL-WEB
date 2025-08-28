@@ -1,6 +1,6 @@
-"use client";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
+'use client';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 
 const ColorsCheckbox = () => {
   return (
@@ -32,10 +32,7 @@ const ColorsCheckbox = () => {
       </div>
       <div className="flex items-center gap-2.5 ">
         <Checkbox defaultChecked color="dark" id="color_9" />
-        <Label
-          htmlFor="color_9"
-          className="text-sm text-muted-foreground font-normal"
-        >
+        <Label htmlFor="color_9" className="text-sm text-muted-foreground font-normal">
           Black
         </Label>
       </div>

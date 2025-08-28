@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Popover",
+  title: 'Popover',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

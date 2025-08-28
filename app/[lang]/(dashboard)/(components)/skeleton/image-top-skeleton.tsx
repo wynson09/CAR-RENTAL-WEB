@@ -1,7 +1,7 @@
-"use client";
-import { Skeleton } from "@/components/ui/skeleton";
+'use client';
+import { Skeleton } from '@/components/ui/skeleton';
 
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from '@/components/ui/card';
 const ImageTopSkeleton = () => {
   return (
     <Card className="w-1/3 dark:border dark:border-default-200">

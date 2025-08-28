@@ -1,5 +1,5 @@
-"use client";
-import React from "react";
+'use client';
+import React from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,12 +11,12 @@ import {
   ArcElement,
   PointElement,
   TooltipItem,
-} from "chart.js";
+} from 'chart.js';
 
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { Line } from "react-chartjs-2";
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { Line } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
@@ -35,41 +35,41 @@ const customTooltip = (tooltipItems: TooltipItem<'line'>[]) => {
   tooltipItems.forEach(function (tooltipItem) {
     sum += tooltipItem.parsed.y;
   });
-  return "Sum: " + sum;
+  return 'Sum: ' + sum;
 };
 
 const TooltipPointStyle = ({ height = 350 }) => {
   const { theme: config, setTheme: setConfig } = useThemeStore();
   const { theme: mode } = useTheme();
   const theme = themes.find((theme) => theme.name === config);
-  const hslPrimary = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`;
-  const hslWarning = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].warning})`;
-  const hslInfo = `hsla(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`;
+  const hslPrimary = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`;
+  const hslWarning = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].warning})`;
+  const hslInfo = `hsla(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`;
   const data: any = {
-    labels: ["January", "February", "March", "April", "May", "Jun", "July"],
+    labels: ['January', 'February', 'March', 'April', 'May', 'Jun', 'July'],
     datasets: [
       {
-        label: "Traingle",
+        label: 'Traingle',
         data: [20, 50, 60, 70, 20, 30, 20],
         borderColor: hslWarning,
         fill: false,
-        pointStyle: "triangle",
+        pointStyle: 'triangle',
         pointRadius: 6,
       },
       {
-        label: "Circle",
+        label: 'Circle',
         data: [40, 70, 80, 90, 40, 50, 40],
         borderColor: hslInfo,
         fill: false,
-        pointStyle: "circle",
+        pointStyle: 'circle',
         pointRadius: 6,
       },
       {
-        label: "Star",
+        label: 'Star',
         data: [30, 60, 70, 80, 30, 40, 30],
         borderColor: hslPrimary,
         fill: false,
-        pointStyle: "star",
+        pointStyle: 'star',
         pointRadius: 6,
       },
     ],
@@ -78,16 +78,15 @@ const TooltipPointStyle = ({ height = 350 }) => {
     responsive: true,
     interaction: {
       intersect: false,
-      mode: "index",
+      mode: 'index',
     },
     plugins: {
       legend: {
-        position: "top",
+        position: 'top',
         labels: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
       tooltip: {
@@ -101,32 +100,28 @@ const TooltipPointStyle = ({ height = 350 }) => {
       y: {
         grid: {
           drawTicks: false,
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartGird
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartGird
+          })`,
         },
         ticks: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
       x: {
         grid: {
           drawTicks: false,
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartGird
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartGird
+          })`,
         },
 
         ticks: {
-          color: `hsl(${theme?.cssVars[
-            mode === "dark" || mode === "system" ? "dark" : "light"
-          ].chartLabel
-            })`,
+          color: `hsl(${
+            theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+          })`,
         },
       },
     },

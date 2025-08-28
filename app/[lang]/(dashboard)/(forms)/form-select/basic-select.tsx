@@ -1,11 +1,11 @@
-"use client"
+'use client';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 const BasicSelect = () => {
   return (
     <Select>

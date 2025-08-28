@@ -1,18 +1,18 @@
-"use client";
-import Card from "@/components/ui/card-snippet";
-import InputFormValidation from "./input-validation";
-import CheckboxReactHookFormMultiple from "./checkbox-validation";
-import DatePickerForm from "./date-picker";
-import RadioGroupForm from "./radio-group";
-import SelectForm from "./select-form";
-import SwitchForm from "./switch-form";
-import TextareaForm from "./textarea-form";
-import ComboboxForm from "./combobox-form";
-import InputFormBordered from "./input-form-bordered";
-import ValidateInputWithIcon from "./validateinput-with-icon";
-import InvalidButton from "./invalid-button";
-import ValidateTextareaTooltip from "./validate-textarea-tooltip";
-import ValidatingMultipleRules from "./validating-multiple-rules";
+'use client';
+import Card from '@/components/ui/card-snippet';
+import InputFormValidation from './input-validation';
+import CheckboxReactHookFormMultiple from './checkbox-validation';
+import DatePickerForm from './date-picker';
+import RadioGroupForm from './radio-group';
+import SelectForm from './select-form';
+import SwitchForm from './switch-form';
+import TextareaForm from './textarea-form';
+import ComboboxForm from './combobox-form';
+import InputFormBordered from './input-form-bordered';
+import ValidateInputWithIcon from './validateinput-with-icon';
+import InvalidButton from './invalid-button';
+import ValidateTextareaTooltip from './validate-textarea-tooltip';
+import ValidatingMultipleRules from './validating-multiple-rules';
 
 const InputPage = () => {
   return (

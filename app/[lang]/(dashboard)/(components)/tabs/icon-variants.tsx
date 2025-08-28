@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Icon } from "@iconify/react";
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Icon } from '@iconify/react';
 
 const IconVariants = () => {
   return (

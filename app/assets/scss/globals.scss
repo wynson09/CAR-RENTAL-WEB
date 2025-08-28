@@ -155,11 +155,10 @@
     z-index: -10;
     --tw-backdrop-blur: blur(12px);
     backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness)
-      var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale)
-      var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert)
-      var(--tw-backdrop-opacity) var(--tw-backdrop-saturate)
+      var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate)
+      var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate)
       var(--tw-backdrop-sepia);
-    --tw-content: "";
+    --tw-content: '';
     content: var(--tw-content);
     background: linear-gradient(
       180deg,
@@ -181,11 +180,11 @@
   overflow: hidden;
 }
 
-.CollapsibleContent[data-state="open"] {
+.CollapsibleContent[data-state='open'] {
   animation: slideDown 300ms ease-out;
 }
 
-.CollapsibleContent[data-state="closed"] {
+.CollapsibleContent[data-state='closed'] {
   animation: slideUp 300ms ease-out;
 }
 
@@ -209,7 +208,7 @@
   padding-right: 0px !important;
 }
 
-[dir="rtl"] {
+[dir='rtl'] {
 }
 
 .ck {
@@ -317,7 +316,7 @@
   background-color: transparent;
 }
 
-@import "partials/calendar.scss";
-@import "partials/react-slect";
-@import "partials/map";
-@import "partials/shepherd";
+@import 'partials/calendar.scss';
+@import 'partials/react-slect';
+@import 'partials/map';
+@import 'partials/shepherd';

@@ -1,5 +1,5 @@
-"use client";
-import {  signOut } from "next-auth/react";
+'use client';
+import { signOut } from 'next-auth/react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,16 +13,16 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import avatar1 from "@/public/images/avatar/avatar-1.jpg";
-import avatar2 from "@/public/images/avatar/avatar-2.jpg";
-import avatar3 from "@/public/images/avatar/avatar-3.jpg";
-import avatar4 from "@/public/images/avatar/avatar-4.jpg";
-import avatar5 from "@/public/images/avatar/avatar-5.jpg";
-import { ChevronDown } from "lucide-react";
-import { Icon } from "@iconify/react";
-import Link from "next/link";
+} from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import avatar1 from '@/public/images/avatar/avatar-1.jpg';
+import avatar2 from '@/public/images/avatar/avatar-2.jpg';
+import avatar3 from '@/public/images/avatar/avatar-3.jpg';
+import avatar4 from '@/public/images/avatar/avatar-4.jpg';
+import avatar5 from '@/public/images/avatar/avatar-5.jpg';
+import { ChevronDown } from 'lucide-react';
+import { Icon } from '@iconify/react';
+import Link from 'next/link';
 const CustomDropdown = () => {
   return (
     <div className="flex flex-wrap gap-4">
@@ -101,10 +101,7 @@ const CustomDropdown = () => {
             GitHub
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Icon
-              icon="streamline:customer-support-1"
-              className="w-3 h-3 ltr:mr-2 rtl:ml-2 "
-            />
+            <Icon icon="streamline:customer-support-1" className="w-3 h-3 ltr:mr-2 rtl:ml-2 " />
             Support
           </DropdownMenuItem>
           <DropdownMenuItem disabled>
@@ -135,13 +132,8 @@ const CustomDropdown = () => {
               <AvatarFallback>MA</AvatarFallback>
             </Avatar>
             <div>
-              <div className="text-sm font-medium text-default-800 capitalize ">
-                Mcc Callem
-              </div>
-              <Link
-                href="/dashboard"
-                className="text-xs text-default-600 hover:text-primary"
-              >
+              <div className="text-sm font-medium text-default-800 capitalize ">Mcc Callem</div>
+              <Link href="/dashboard" className="text-xs text-default-600 hover:text-primary">
                 @uxuidesigner
               </Link>
             </div>
@@ -149,31 +141,27 @@ const CustomDropdown = () => {
           <DropdownMenuGroup>
             {[
               {
-                name: "profile",
-                icon: "heroicons:user",
-                shortcut: "⇧⌘P",
+                name: 'profile',
+                icon: 'heroicons:user',
+                shortcut: '⇧⌘P',
               },
               {
-                name: "Billing",
-                icon: "heroicons:megaphone",
-                shortcut: "⌘B",
+                name: 'Billing',
+                icon: 'heroicons:megaphone',
+                shortcut: '⌘B',
               },
               {
-                name: "Settings",
-                icon: "heroicons:paper-airplane",
-                shortcut: "⌘S",
+                name: 'Settings',
+                icon: 'heroicons:paper-airplane',
+                shortcut: '⌘S',
               },
               {
-                name: "Keyboard shortcuts",
-                icon: "heroicons:language",
-                shortcut: "⌘K",
+                name: 'Keyboard shortcuts',
+                icon: 'heroicons:language',
+                shortcut: '⌘K',
               },
             ].map((item, index) => (
-              <Link
-                href="/dashboard"
-                key={`info-menu-${index}`}
-                className="cursor-pointer"
-              >
+              <Link href="/dashboard" key={`info-menu-${index}`} className="cursor-pointer">
                 <DropdownMenuItem className="flex items-center gap-2 text-sm font-medium text-default-600 capitalize px-3 py-1.5 dark:hover:bg-background cursor-pointer">
                   <Icon icon={item.icon} className="w-4 h-4 " />
                   {item.name}
@@ -199,20 +187,16 @@ const CustomDropdown = () => {
                 <DropdownMenuSubContent>
                   {[
                     {
-                      name: "email",
+                      name: 'email',
                     },
                     {
-                      name: "message",
+                      name: 'message',
                     },
                     {
-                      name: "facebook",
+                      name: 'facebook',
                     },
                   ].map((item, index) => (
-                    <Link
-                      href="/dashboard"
-                      key={`message-sub-${index}`}
-                      className="cursor-pointer"
-                    >
+                    <Link href="/dashboard" key={`message-sub-${index}`} className="cursor-pointer">
                       <DropdownMenuItem className="text-sm font-medium text-default-600 capitalize px-3 py-1.5 dark:hover:bg-background cursor-pointer">
                         {item.name}
                       </DropdownMenuItem>
@@ -237,13 +221,13 @@ const CustomDropdown = () => {
                 <DropdownMenuSubContent>
                   {[
                     {
-                      name: "portal",
+                      name: 'portal',
                     },
                     {
-                      name: "slack",
+                      name: 'slack',
                     },
                     {
-                      name: "whatsapp",
+                      name: 'whatsapp',
                     },
                   ].map((item, index) => (
                     <Link href="/dashboard" key={`message-sub-${index}`}>
@@ -284,13 +268,8 @@ const CustomDropdown = () => {
               <AvatarFallback>MA</AvatarFallback>
             </Avatar>
             <div>
-              <div className="text-sm font-medium text-default-800 capitalize ">
-                Jenifar Josef
-              </div>
-              <Link
-                href="/dashboard"
-                className="text-xs text-default-600 hover:text-primary"
-              >
+              <div className="text-sm font-medium text-default-800 capitalize ">Jenifar Josef</div>
+              <Link href="/dashboard" className="text-xs text-default-600 hover:text-primary">
                 @uxuidesigner
               </Link>
             </div>
@@ -298,27 +277,23 @@ const CustomDropdown = () => {
           <DropdownMenuGroup>
             {[
               {
-                name: "profile",
-                icon: "heroicons:user",
+                name: 'profile',
+                icon: 'heroicons:user',
               },
               {
-                name: "Billing",
-                icon: "heroicons:megaphone",
+                name: 'Billing',
+                icon: 'heroicons:megaphone',
               },
               {
-                name: "Settings",
-                icon: "heroicons:paper-airplane",
+                name: 'Settings',
+                icon: 'heroicons:paper-airplane',
               },
               {
-                name: "Keyboard shortcuts",
-                icon: "heroicons:language",
+                name: 'Keyboard shortcuts',
+                icon: 'heroicons:language',
               },
             ].map((item, index) => (
-              <Link
-                href="/dashboard"
-                key={`info-menu-${index}`}
-                className="cursor-pointer"
-              >
+              <Link href="/dashboard" key={`info-menu-${index}`} className="cursor-pointer">
                 <DropdownMenuItem className="flex items-center gap-2 text-sm font-medium text-default-600 capitalize px-3 py-1.5 dark:hover:bg-background cursor-pointer">
                   <Icon icon={item.icon} className="w-4 h-4 " />
                   {item.name}
@@ -343,20 +318,16 @@ const CustomDropdown = () => {
                 <DropdownMenuSubContent>
                   {[
                     {
-                      name: "email",
+                      name: 'email',
                     },
                     {
-                      name: "message",
+                      name: 'message',
                     },
                     {
-                      name: "facebook",
+                      name: 'facebook',
                     },
                   ].map((item, index) => (
-                    <Link
-                      href="/dashboard"
-                      key={`message-sub-${index}`}
-                      className="cursor-pointer"
-                    >
+                    <Link href="/dashboard" key={`message-sub-${index}`} className="cursor-pointer">
                       <DropdownMenuItem className="text-sm font-medium text-default-600 capitalize px-3 py-1.5 dark:hover:bg-background cursor-pointer">
                         {item.name}
                       </DropdownMenuItem>
@@ -381,13 +352,13 @@ const CustomDropdown = () => {
                 <DropdownMenuSubContent>
                   {[
                     {
-                      name: "portal",
+                      name: 'portal',
                     },
                     {
-                      name: "slack",
+                      name: 'slack',
                     },
                     {
-                      name: "whatsapp",
+                      name: 'whatsapp',
                     },
                   ].map((item, index) => (
                     <Link href="/dashboard" key={`message-sub-${index}`}>
@@ -419,9 +390,7 @@ const CustomDropdown = () => {
             </Avatar>
             <div className="flex-none text-zinc-600 dark:text-primary-foreground text-sm font-normal items-center lg:flex hidden overflow-hidden text-ellipsis whitespace-nowrap">
               <span className="overflow-hidden text-ellipsis whitespace-nowrap w-[85px] block">
-                <span className="block overflow-hidden text-ellipsis">
-                  Mottasin Leemon
-                </span>
+                <span className="block overflow-hidden text-ellipsis">Mottasin Leemon</span>
                 <span className="block text-xs overflow-hidden text-ellipsis text-zinc-300">
                   leemon@mottasin
                 </span>

@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { SessionProvider } from "next-auth/react";
-import { createContext, useContext, useEffect, useState } from "react";
-import { auth } from "@/lib/firebase";
-import { onAuthStateChanged, User } from "firebase/auth";
-import UserProvider from "./user-provider";
+import { SessionProvider } from 'next-auth/react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { auth } from '@/lib/firebase';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import UserProvider from './user-provider';
 
 // Create a Firebase Auth context
 export const FirebaseAuthContext = createContext<{

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { Input } from "@/components/ui/input";
-import { InputGroup, InputGroupText } from "@/components/ui/input-group";
+import { Input } from '@/components/ui/input';
+import { InputGroup, InputGroupText } from '@/components/ui/input-group';
 
-import { Icon } from "@iconify/react";
+import { Icon } from '@iconify/react';
 
 const InputGroupRadius = () => {
   return (
@@ -12,12 +12,7 @@ const InputGroupRadius = () => {
         <InputGroupText className="h-8">
           <Icon icon="heroicons:magnifying-glass" />
         </InputGroupText>
-        <Input
-          type="text"
-          radius="sm"
-          placeholder="Small Radius"
-          className="h-8"
-        />
+        <Input type="text" radius="sm" placeholder="Small Radius" className="h-8" />
       </InputGroup>
 
       <InputGroup>
@@ -30,12 +25,7 @@ const InputGroupRadius = () => {
         <InputGroupText>
           <Icon icon="heroicons:magnifying-glass" />
         </InputGroupText>
-        <Input
-          type="text"
-          radius="xl"
-          placeholder="Large Radius"
-          className="h-14"
-        />
+        <Input type="text" radius="xl" placeholder="Large Radius" className="h-14" />
       </InputGroup>
     </>
   );

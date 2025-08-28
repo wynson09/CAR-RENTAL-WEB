@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Chart-js Scale Option Chart ",
+  title: 'Chart-js Scale Option Chart ',
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

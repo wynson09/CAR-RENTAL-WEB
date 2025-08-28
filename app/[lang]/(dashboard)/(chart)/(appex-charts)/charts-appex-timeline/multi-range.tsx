@@ -1,10 +1,10 @@
-"use client";
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-import { useThemeStore } from "@/store";
-import { useTheme } from "next-themes";
-import { themes } from "@/config/thems";
-import { getGridConfig, getLabel } from "@/lib/appex-chart-options";
+'use client';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import { useThemeStore } from '@/store';
+import { useTheme } from 'next-themes';
+import { themes } from '@/config/thems';
+import { getGridConfig, getLabel } from '@/lib/appex-chart-options';
 
 const MultiRange = ({ height = 300 }) => {
   const { theme: config, setTheme: setConfig, isRtl } = useThemeStore();
@@ -14,127 +14,85 @@ const MultiRange = ({ height = 300 }) => {
 
   const series = [
     {
-      name: "Bob",
+      name: 'Bob',
       data: [
         {
-          x: "Design",
-          y: [
-            new Date("2019-03-05").getTime(),
-            new Date("2019-03-08").getTime(),
-          ],
+          x: 'Design',
+          y: [new Date('2019-03-05').getTime(), new Date('2019-03-08').getTime()],
         },
         {
-          x: "Code",
-          y: [
-            new Date("2019-03-02").getTime(),
-            new Date("2019-03-05").getTime(),
-          ],
+          x: 'Code',
+          y: [new Date('2019-03-02').getTime(), new Date('2019-03-05').getTime()],
         },
         {
-          x: "Code",
-          y: [
-            new Date("2019-03-05").getTime(),
-            new Date("2019-03-07").getTime(),
-          ],
+          x: 'Code',
+          y: [new Date('2019-03-05').getTime(), new Date('2019-03-07').getTime()],
         },
         {
-          x: "Test",
-          y: [
-            new Date("2019-03-03").getTime(),
-            new Date("2019-03-09").getTime(),
-          ],
+          x: 'Test',
+          y: [new Date('2019-03-03').getTime(), new Date('2019-03-09').getTime()],
         },
         {
-          x: "Test",
-          y: [
-            new Date("2019-03-08").getTime(),
-            new Date("2019-03-11").getTime(),
-          ],
+          x: 'Test',
+          y: [new Date('2019-03-08').getTime(), new Date('2019-03-11').getTime()],
         },
         {
-          x: "Validation",
-          y: [
-            new Date("2019-03-11").getTime(),
-            new Date("2019-03-16").getTime(),
-          ],
+          x: 'Validation',
+          y: [new Date('2019-03-11').getTime(), new Date('2019-03-16').getTime()],
         },
         {
-          x: "Design",
-          y: [
-            new Date("2019-03-01").getTime(),
-            new Date("2019-03-03").getTime(),
-          ],
+          x: 'Design',
+          y: [new Date('2019-03-01').getTime(), new Date('2019-03-03').getTime()],
         },
       ],
     },
     {
-      name: "Joe",
+      name: 'Joe',
       data: [
         {
-          x: "Design",
-          y: [
-            new Date("2019-03-02").getTime(),
-            new Date("2019-03-05").getTime(),
-          ],
+          x: 'Design',
+          y: [new Date('2019-03-02').getTime(), new Date('2019-03-05').getTime()],
         },
         {
-          x: "Test",
-          y: [
-            new Date("2019-03-06").getTime(),
-            new Date("2019-03-16").getTime(),
-          ],
+          x: 'Test',
+          y: [new Date('2019-03-06').getTime(), new Date('2019-03-16').getTime()],
           goals: [
             {
-              name: "Break",
-              value: new Date("2019-03-10").getTime(),
-              strokeColor: "#CD2F2A",
+              name: 'Break',
+              value: new Date('2019-03-10').getTime(),
+              strokeColor: '#CD2F2A',
             },
           ],
         },
         {
-          x: "Code",
-          y: [
-            new Date("2019-03-03").getTime(),
-            new Date("2019-03-07").getTime(),
-          ],
+          x: 'Code',
+          y: [new Date('2019-03-03').getTime(), new Date('2019-03-07').getTime()],
         },
         {
-          x: "Deployment",
-          y: [
-            new Date("2019-03-20").getTime(),
-            new Date("2019-03-22").getTime(),
-          ],
+          x: 'Deployment',
+          y: [new Date('2019-03-20').getTime(), new Date('2019-03-22').getTime()],
         },
         {
-          x: "Design",
-          y: [
-            new Date("2019-03-10").getTime(),
-            new Date("2019-03-16").getTime(),
-          ],
+          x: 'Design',
+          y: [new Date('2019-03-10').getTime(), new Date('2019-03-16').getTime()],
         },
       ],
     },
     {
-      name: "Dan",
+      name: 'Dan',
       data: [
         {
-          x: "Code",
-          y: [
-            new Date("2019-03-10").getTime(),
-            new Date("2019-03-17").getTime(),
-          ],
+          x: 'Code',
+          y: [new Date('2019-03-10').getTime(), new Date('2019-03-17').getTime()],
         },
         {
-          x: "Validation",
-          y: [
-            new Date("2019-03-05").getTime(),
-            new Date("2019-03-09").getTime(),
-          ],
+          x: 'Validation',
+          y: [new Date('2019-03-05').getTime(), new Date('2019-03-09').getTime()],
           goals: [
             {
-              name: "Break",
-              value: new Date("2019-03-07").getTime(),
-              strokeColor: "#CD2F2A",
+              name: 'Break',
+              value: new Date('2019-03-07').getTime(),
+              strokeColor: '#CD2F2A',
             },
           ],
         },
@@ -151,35 +109,27 @@ const MultiRange = ({ height = 300 }) => {
     plotOptions: {
       bar: {
         horizontal: true,
-        barHeight: "80%",
+        barHeight: '80%',
       },
     },
     colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].success})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].primary})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].info})`,
+      `hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].success})`,
     ],
     tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
+      theme: mode === 'dark' ? 'dark' : 'light',
     },
-    grid: getGridConfig(
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartGird})`
-    ),
+    grid: getGridConfig(`hsl(${theme?.cssVars[mode === 'dark' ? 'dark' : 'light'].chartGird})`),
     yaxis: {
       labels: getLabel(
-        `hsl(${theme?.cssVars[
-          mode === "dark" || mode === "system" ? "dark" : "light"
-        ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
     },
     xaxis: {
-      type: "datetime",
+      type: 'datetime',
       labels: getLabel(
-        `hsl(${theme?.cssVars[
-          mode === "dark" || mode === "system" ? "dark" : "light"
-        ].chartLabel
-        })`
+        `hsl(${theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel})`
       ),
       axisBorder: {
         show: false,
@@ -189,13 +139,12 @@ const MultiRange = ({ height = 300 }) => {
       },
     },
     legend: {
-      position: "top",
-      horizontalAlign: "left",
+      position: 'top',
+      horizontalAlign: 'left',
       labels: {
-        colors: `hsl(${theme?.cssVars[
-          mode === "dark" || mode === "system" ? "dark" : "light"
-        ].chartLabel
-          })`,
+        colors: `hsl(${
+          theme?.cssVars[mode === 'dark' || mode === 'system' ? 'dark' : 'light'].chartLabel
+        })`,
       },
       itemMargin: {
         horizontal: 5,
@@ -205,8 +154,8 @@ const MultiRange = ({ height = 300 }) => {
         width: 10,
         height: 10,
         radius: 10,
-        offsetX: isRtl ? 5 : -5
-      }
+        offsetX: isRtl ? 5 : -5,
+      },
     },
     padding: {
       top: 0,
@@ -215,15 +164,7 @@ const MultiRange = ({ height = 300 }) => {
       left: 0,
     },
   };
-  return (
-    <Chart
-      options={options}
-      series={series}
-      type="rangeBar"
-      height={height}
-      width={"100%"}
-    />
-  );
+  return <Chart options={options} series={series} type="rangeBar" height={height} width={'100%'} />;
 };
 
 export default MultiRange;

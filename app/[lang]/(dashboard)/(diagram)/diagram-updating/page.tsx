@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import React, { useEffect, useState } from 'react';
 import ReactFlow, { useNodesState, useEdgesState, Node, Edge } from 'reactflow';
 import 'reactflow/dist/style.css';
@@ -93,7 +93,7 @@ const UpdateNode = () => {
         <CardTitle>Update Data</CardTitle>
       </CardHeader>
       <CardContent className="overflow-auto">
-        <div className='w-full h-[calc(100vh-280px)]'>
+        <div className="w-full h-[calc(100vh-280px)]">
           <ReactFlow
             nodes={nodes}
             edges={edges}
@@ -106,15 +106,29 @@ const UpdateNode = () => {
           >
             <div className="static lg:absolute top-2.5 right-2.5 lg:w-[300px] space-y-3">
               <div>
-                <Label htmlFor="updateNode" className="mb-2">Update Name</Label>
-                <Input value={nodeName} className="rounded-md" onChange={(evt) => setNodeName(evt.target.value)} />
+                <Label htmlFor="updateNode" className="mb-2">
+                  Update Name
+                </Label>
+                <Input
+                  value={nodeName}
+                  className="rounded-md"
+                  onChange={(evt) => setNodeName(evt.target.value)}
+                />
               </div>
               <div>
-                <Label className="updatenode__bglabel" htmlFor="NodeBackground">Background</Label>
-                <Input value={nodeBg} id="NodeBackground" onChange={(evt) => setNodeBg(evt.target.value)} />
+                <Label className="updatenode__bglabel" htmlFor="NodeBackground">
+                  Background
+                </Label>
+                <Input
+                  value={nodeBg}
+                  id="NodeBackground"
+                  onChange={(evt) => setNodeBg(evt.target.value)}
+                />
               </div>
               <div className="flex items-center gap-1.5">
-                <Label htmlFor="hiddenNode" className="cursor-pointer">Hidden Node</Label>
+                <Label htmlFor="hiddenNode" className="cursor-pointer">
+                  Hidden Node
+                </Label>
                 <input
                   type="checkbox"
                   checked={nodeHidden}
@@ -123,7 +137,6 @@ const UpdateNode = () => {
                   onChange={(evt) => setNodeHidden(evt.target.checked)}
                 />
               </div>
-
             </div>
           </ReactFlow>
         </div>
