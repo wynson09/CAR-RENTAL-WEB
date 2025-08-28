@@ -16,7 +16,7 @@ import { Session } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import { Account, Profile, User } from 'next-auth';
 
-// Extend the Session type to include user ID
+// Extend the Session type to include user ID and role
 declare module 'next-auth' {
   interface Session {
     user: {
@@ -24,6 +24,7 @@ declare module 'next-auth' {
       name?: string | null;
       email?: string | null;
       image?: string | null;
+      role?: 'user' | 'admin' | 'moderator';
     };
   }
 }
@@ -40,13 +41,20 @@ const syncUserToFirestore = async (user: any) => {
       const firstName = nameParts[0] || '';
       const lastName = nameParts.slice(1).join(' ') || '';
 
+      // Determine role based on email - admin accounts
+      const isAdmin =
+        user.email === 'admin@nacscarrental.com' ||
+        user.email?.includes('admin@') ||
+        user.email?.includes('@admin.');
+
       // Create consistent user data structure
       const userData = createUserData(user.id, user.email, user.provider, {
         firstName,
         lastName,
         name: user.name,
         image: user.image,
-        isVerified: false,
+        role: isAdmin ? 'admin' : 'user',
+        isVerified: isAdmin ? true : false, // Auto-verify admin accounts
       });
 
       // Clean and save user data (remove undefined fields)
@@ -160,6 +168,22 @@ export const authOptions = {
       // Send properties to the client
       if (token && session.user) {
         session.user.id = token.sub;
+
+        // Enrich session with Firestore user data for better UX
+        try {
+          const userDocRef = doc(db, 'users', token.sub!);
+          const userDocSnap = await getDoc(userDocRef);
+
+          if (userDocSnap.exists()) {
+            const userData = userDocSnap.data();
+            // Add additional user data to session
+            session.user.role = userData.role;
+            session.user.image = userData.image || session.user.image;
+            session.user.name = userData.name || session.user.name;
+          }
+        } catch (error) {
+          console.error('Error enriching session with Firestore data:', error);
+        }
       }
       return session;
     },

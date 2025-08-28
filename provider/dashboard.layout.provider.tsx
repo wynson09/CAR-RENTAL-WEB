@@ -14,6 +14,7 @@ import HeaderSearch from '@/components/header-search';
 import { useMounted } from '@/hooks/use-mounted';
 import LayoutLoader from '@/components/layout-loader';
 import { UserInitializer } from '@/components/auth/user-initializer';
+import AuthDebug from '@/components/debug/auth-debug';
 const DashBoardLayoutProvider = ({
   children,
   trans,
@@ -58,6 +59,7 @@ const DashBoardLayoutProvider = ({
         </div>
         <Footer handleOpenSearch={() => setOpen(true)} />
         <ThemeCustomize />
+        <AuthDebug />
       </UserInitializer>
     );
   }
@@ -81,6 +83,7 @@ const DashBoardLayoutProvider = ({
         </div>
         <Footer handleOpenSearch={() => setOpen(true)} />
         <ThemeCustomize />
+        <AuthDebug />
       </UserInitializer>
     );
   }
@@ -111,6 +114,7 @@ const DashBoardLayoutProvider = ({
         </div>
         <Footer handleOpenSearch={() => setOpen(true)} />
         <ThemeCustomize />
+        <AuthDebug />
       </UserInitializer>
     );
   }
@@ -139,6 +143,7 @@ const DashBoardLayoutProvider = ({
       </div>
       <Footer handleOpenSearch={() => setOpen(true)} />
       {isMobile && <ThemeCustomize />}
+      <AuthDebug />
     </UserInitializer>
   );
 };

@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/hooks/use-auth';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 /**
  * Component to initialize user data loading from Firestore into Zustand store
@@ -9,18 +9,33 @@ import { useEffect } from 'react';
  */
 export const UserInitializer = ({ children }: { children: React.ReactNode }) => {
   const { user, isLoading, session, status } = useAuth();
+  const lastLoggedState = useRef<string>('');
 
-  // Debug logging to help troubleshoot authentication issues
+  // Reduced debug logging - only log when auth state actually changes
   useEffect(() => {
-    console.log('UserInitializer Debug:', {
-      sessionStatus: status,
-      sessionUser: session?.user,
-      firestoreUser: user,
-      isLoading,
-      sessionId: session?.user?.id,
-      sessionEmail: session?.user?.email,
-    });
-  }, [status, session, user, isLoading]);
+    const currentState = `${status}-${session?.user?.id}-${user?.uid}-${isLoading}`;
+
+    // Only log when the meaningful state changes
+    if (currentState !== lastLoggedState.current) {
+      lastLoggedState.current = currentState;
+
+      // Only log important state changes
+      if (status === 'authenticated' && user) {
+        console.log('👤 User authenticated and data loaded:', {
+          email: user.email,
+          role: user.role,
+          uid: user.uid,
+        });
+      } else if (status === 'authenticated' && !user && !isLoading) {
+        console.warn('⚠️ User authenticated but no Firestore data:', {
+          sessionId: session?.user?.id,
+          sessionEmail: session?.user?.email,
+        });
+      } else if (status === 'unauthenticated') {
+        console.log('🚪 User unauthenticated');
+      }
+    }
+  }, [status, session?.user?.id, user?.uid, user?.email, user?.role, isLoading]);
 
   return <>{children}</>;
 };

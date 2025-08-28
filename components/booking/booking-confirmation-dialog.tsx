@@ -100,7 +100,7 @@ export const BookingConfirmationDialog = ({
       console.log('Preparing booking data...');
 
       // Prepare booking data for Firebase (avoiding undefined values)
-      const totalAmount = pricingDetails.totalAmount || 0;
+      const totalAmount = pricingDetails.finalTotal || 0;
 
       const baseBookingData = {
         renterId: user.uid,
@@ -118,8 +118,18 @@ export const BookingConfirmationDialog = ({
           basePrice: parseInt(car.price.replace(/[^0-9]/g, '')) || 0,
           pricePerDay: parseInt(car.price.replace(/[^0-9]/g, '')) || 0,
           totalDuration: pricingDetails.totalDays,
-          extraCharges: pricingDetails.extraCharges || [],
-          discounts: pricingDetails.discounts || [],
+          extraCharges: (pricingDetails.extraCharges || []).map((charge) => ({
+            label: charge.label,
+            type: charge.type,
+            amount: charge.totalAmount,
+          })),
+          discounts: (pricingDetails.discounts || []).map((discount) => ({
+            label: discount.label,
+            type: discount.type,
+            percent: discount.percent,
+            amount: discount.totalAmount,
+            applied: discount.applied,
+          })),
           totalAmount: totalAmount,
         },
         payment: {

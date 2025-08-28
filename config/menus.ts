@@ -78,46 +78,30 @@ export const userMenuConfig = {
       ],
     },
     {
-      title: 'Fleet',
+      title: 'Bookings',
       icon: Cart,
       child: [
         {
-          title: 'Book Vehicle',
-          icon: Calendar,
-          href: '/fleet',
-        },
-        {
-          title: 'Browse Cars',
-          icon: Cart,
-          href: '/cars',
-        },
-        {
-          title: 'Special Offers',
-          icon: Cart,
-          href: '/special-offers',
-        },
-      ],
-    },
-    {
-      title: 'Bookings',
-      icon: ClipBoard,
-      child: [
-        {
-          title: 'Current Rentals',
+          title: 'Start a Booking',
           icon: ClipBoard,
-          href: '/current-rentals',
+          href: '/start-a-booking',
         },
         {
-          title: 'Past Rentals',
+          title: 'Active Rentals',
           icon: ClipBoard,
-          href: '/past-rentals',
+          href: '/active-rentals',
+        },
+        {
+          title: 'Previous Rentals',
+          icon: ClipBoard,
+          href: '/previous-rentals',
         },
       ],
     },
     {
       title: 'Chat',
       icon: Messages,
-      href: '/chat',
+      href: '/support-chat',
     },
   ],
   sidebarNav: {
@@ -144,11 +128,6 @@ export const userMenuConfig = {
         ],
       },
       {
-        title: 'Fleet',
-        icon: Cart,
-        href: '/fleet',
-      },
-      {
         title: 'Bookings',
         icon: Cart,
         child: [
@@ -172,7 +151,7 @@ export const userMenuConfig = {
       {
         title: 'Chat',
         icon: Messages,
-        href: '/chat',
+        href: '/support-chat',
       },
     ],
   },
