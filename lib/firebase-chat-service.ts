@@ -19,6 +19,10 @@ import {
   or,
   setDoc,
   runTransaction,
+  startAfter,
+  QueryDocumentSnapshot,
+  DocumentData,
+  limitToLast,
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
@@ -51,17 +55,40 @@ export interface Conversation {
     userRole: 'user' | 'admin' | 'moderator';
     userAvatar?: string;
   }[];
-  lastMessage: string;
+  lastMessage: string | { content: string; senderId: string; timestamp: Timestamp }; // Support legacy format
   lastMessageTimestamp: Timestamp;
   unreadCount: {
     [userId: string]: number;
   };
+  consecutiveUserMessages: number; // Track consecutive messages from user
   isActive: boolean;
   createdAt: Timestamp;
   updatedAt: Timestamp;
 }
 
+export interface PaginatedMessages {
+  messages: ChatMessage[];
+  lastDoc: QueryDocumentSnapshot<DocumentData> | null;
+  hasMore: boolean;
+}
+
+export interface SpamPreventionState {
+  consecutiveMessages: number;
+  isBlocked: boolean;
+  lastMessageSenderId: string;
+}
+
 export class FirebaseChatService {
+  // Utility function to safely extract last message text
+  static getLastMessageText(conversation: Conversation): string {
+    const lastMessage = conversation.lastMessage;
+    if (typeof lastMessage === 'string') {
+      return lastMessage;
+    } else if (typeof lastMessage === 'object' && lastMessage && 'content' in lastMessage) {
+      return lastMessage.content || '';
+    }
+    return '';
+  }
   // Get or create conversation between user and admin
   static async getOrCreateUserAdminConversation(
     userId: string,
@@ -72,7 +99,7 @@ export class FirebaseChatService {
       // Use predictable ID to check if conversation already exists
       const predictableId = `user_${userId}_admin`;
       const conversationRef = doc(db, CONVERSATIONS_COLLECTION, predictableId);
-      
+
       // Use a transaction to prevent race conditions
       return await runTransaction(db, async (transaction) => {
         const conversationSnap = await transaction.get(conversationRef);
@@ -92,39 +119,41 @@ export class FirebaseChatService {
         );
         const existingMessages = await getDocs(messagesQuery);
 
-        // Create new conversation with admin
-        const conversationData: Omit<Conversation, 'id'> = {
-          participants: [
-            {
-              userId: userId,
-              userName: userName,
-              userRole: 'user',
-              userAvatar: userAvatar || '',
-            },
-            {
-              userId: 'admin',
-              userName: 'Admin Support',
-              userRole: 'admin',
-              userAvatar: '',
-            },
-          ],
-          lastMessage:
-            'Welcome to NACS Car Rental! We are here to assist you with any questions or concerns you may have. How can we help you today?',
-          lastMessageTimestamp: serverTimestamp() as Timestamp,
-          unreadCount: {
-            [userId]: 1, // User has 1 unread welcome message
-            admin: 0,
-          },
-          isActive: true,
-          createdAt: serverTimestamp() as Timestamp,
-          updatedAt: serverTimestamp() as Timestamp,
-        };
-
-        // Create conversation within transaction
-        transaction.set(conversationRef, conversationData);
-
-        // Create welcome message only if no messages exist
+        // Only create conversation and welcome message if no messages exist
         if (existingMessages.empty) {
+          // Create new conversation with admin
+          const conversationData: Omit<Conversation, 'id'> = {
+            participants: [
+              {
+                userId: userId,
+                userName: userName,
+                userRole: 'user',
+                userAvatar: userAvatar || '',
+              },
+              {
+                userId: 'admin',
+                userName: 'Admin Support',
+                userRole: 'admin',
+                userAvatar: '',
+              },
+            ],
+            lastMessage:
+              'Welcome to NACS Car Rental! We are here to assist you with any questions or concerns you may have. How can we help you today?',
+            lastMessageTimestamp: serverTimestamp() as Timestamp,
+            unreadCount: {
+              [userId]: 1, // User has 1 unread welcome message
+              admin: 0,
+            },
+            consecutiveUserMessages: 0, // Initialize spam prevention counter
+            isActive: true,
+            createdAt: serverTimestamp() as Timestamp,
+            updatedAt: serverTimestamp() as Timestamp,
+          };
+
+          // Create conversation within transaction
+          transaction.set(conversationRef, conversationData);
+
+          // Create welcome message
           const welcomeMessageRef = doc(collection(db, MESSAGES_COLLECTION));
           const welcomeMessage: Omit<ChatMessage, 'id'> = {
             conversationId: predictableId,
@@ -141,9 +170,39 @@ export class FirebaseChatService {
           };
 
           transaction.set(welcomeMessageRef, welcomeMessage);
-          console.log('Creating welcome message for conversation:', predictableId);
+          console.log('Creating new conversation and welcome message for:', predictableId);
         } else {
-          console.log('Welcome message already exists for conversation:', predictableId);
+          console.log('Conversation already exists with messages for:', predictableId);
+
+          // Just update the conversation if it doesn't exist but messages do
+          const conversationData: Omit<Conversation, 'id'> = {
+            participants: [
+              {
+                userId: userId,
+                userName: userName,
+                userRole: 'user',
+                userAvatar: userAvatar || '',
+              },
+              {
+                userId: 'admin',
+                userName: 'Admin Support',
+                userRole: 'admin',
+                userAvatar: '',
+              },
+            ],
+            lastMessage: 'Chat conversation',
+            lastMessageTimestamp: serverTimestamp() as Timestamp,
+            unreadCount: {
+              [userId]: 0,
+              admin: 0,
+            },
+            consecutiveUserMessages: 0,
+            isActive: true,
+            createdAt: serverTimestamp() as Timestamp,
+            updatedAt: serverTimestamp() as Timestamp,
+          };
+
+          transaction.set(conversationRef, conversationData);
         }
 
         return predictableId;
@@ -154,7 +213,7 @@ export class FirebaseChatService {
     }
   }
 
-  // Send message
+  // Send message with spam prevention
   static async sendMessage(
     conversationId: string,
     senderId: string,
@@ -166,6 +225,16 @@ export class FirebaseChatService {
     replyTo?: string
   ): Promise<string> {
     try {
+      // Check spam prevention for user messages
+      if (senderRole === 'user') {
+        const spamState = await this.checkSpamPrevention(conversationId, senderId);
+        if (spamState.isBlocked) {
+          throw new Error(
+            'Spam prevention: Please wait for an admin response before sending more messages.'
+          );
+        }
+      }
+
       const messageData: any = {
         conversationId,
         senderId,
@@ -186,8 +255,8 @@ export class FirebaseChatService {
 
       const docRef = await addDoc(collection(db, MESSAGES_COLLECTION), messageData);
 
-      // Update conversation last message
-      await this.updateConversationLastMessage(conversationId, senderId, content);
+      // Update conversation last message and spam prevention counter
+      await this.updateConversationLastMessage(conversationId, senderId, content, senderRole);
 
       return docRef.id;
     } catch (error) {
@@ -196,24 +265,203 @@ export class FirebaseChatService {
     }
   }
 
-  // Update conversation last message
+  // Update conversation last message and spam prevention
   private static async updateConversationLastMessage(
     conversationId: string,
     senderId: string,
-    content: string
+    content: string,
+    senderRole: 'user' | 'admin' | 'moderator'
   ): Promise<void> {
     try {
       const conversationRef = doc(db, CONVERSATIONS_COLLECTION, conversationId);
-      await updateDoc(conversationRef, {
-        lastMessage: {
-          content,
-          senderId,
-          timestamp: serverTimestamp(),
-        },
+      const conversationSnap = await getDoc(conversationRef);
+
+      if (!conversationSnap.exists()) return;
+
+      const conversationData = conversationSnap.data() as Conversation;
+      let updateData: any = {
+        lastMessage: content,
+        lastMessageTimestamp: serverTimestamp(),
         updatedAt: serverTimestamp(),
-      });
+      };
+
+      // Update spam prevention counter
+      if (senderRole === 'user') {
+        // Increment consecutive user messages
+        updateData.consecutiveUserMessages = (conversationData.consecutiveUserMessages || 0) + 1;
+      } else if (senderRole === 'admin' || senderRole === 'moderator') {
+        // Reset consecutive user messages when admin responds
+        updateData.consecutiveUserMessages = 0;
+      }
+
+      await updateDoc(conversationRef, updateData);
     } catch (error) {
       console.error('Error updating conversation:', error);
+    }
+  }
+
+  // Check spam prevention status
+  static async checkSpamPrevention(
+    conversationId: string,
+    userId: string
+  ): Promise<SpamPreventionState> {
+    try {
+      const conversationRef = doc(db, CONVERSATIONS_COLLECTION, conversationId);
+      const conversationSnap = await getDoc(conversationRef);
+
+      if (!conversationSnap.exists()) {
+        return { consecutiveMessages: 0, isBlocked: false, lastMessageSenderId: '' };
+      }
+
+      const conversationData = conversationSnap.data() as Conversation;
+      const consecutiveMessages = conversationData.consecutiveUserMessages || 0;
+      const isBlocked = consecutiveMessages >= 7;
+
+      return {
+        consecutiveMessages,
+        isBlocked,
+        lastMessageSenderId: userId,
+      };
+    } catch (error) {
+      console.error('Error checking spam prevention:', error);
+      return { consecutiveMessages: 0, isBlocked: false, lastMessageSenderId: '' };
+    }
+  }
+
+  // Get initial paginated messages (latest 30)
+  static async getInitialMessages(conversationId: string): Promise<PaginatedMessages> {
+    try {
+      const q = query(
+        collection(db, MESSAGES_COLLECTION),
+        where('conversationId', '==', conversationId),
+        orderBy('timestamp', 'desc'),
+        limit(30)
+      );
+
+      const snapshot = await getDocs(q);
+      const messages = snapshot.docs.map(
+        (doc) =>
+          ({
+            id: doc.id,
+            ...doc.data(),
+          } as ChatMessage)
+      );
+
+      // Reverse to show chronological order
+      messages.reverse();
+
+      return {
+        messages,
+        lastDoc: snapshot.docs.length > 0 ? snapshot.docs[snapshot.docs.length - 1] : null,
+        hasMore: snapshot.docs.length === 30,
+      };
+    } catch (error) {
+      console.error('Error getting initial messages:', error);
+      throw error;
+    }
+  }
+
+  // Get older messages for infinite scroll
+  static async getOlderMessages(
+    conversationId: string,
+    lastDoc: QueryDocumentSnapshot<DocumentData>
+  ): Promise<PaginatedMessages> {
+    try {
+      const q = query(
+        collection(db, MESSAGES_COLLECTION),
+        where('conversationId', '==', conversationId),
+        orderBy('timestamp', 'desc'),
+        startAfter(lastDoc),
+        limit(30)
+      );
+
+      const snapshot = await getDocs(q);
+      const messages = snapshot.docs.map(
+        (doc) =>
+          ({
+            id: doc.id,
+            ...doc.data(),
+          } as ChatMessage)
+      );
+
+      // Reverse to show chronological order
+      messages.reverse();
+
+      return {
+        messages,
+        lastDoc: snapshot.docs.length > 0 ? snapshot.docs[snapshot.docs.length - 1] : null,
+        hasMore: snapshot.docs.length === 30,
+      };
+    } catch (error) {
+      console.error('Error getting older messages:', error);
+      throw error;
+    }
+  }
+
+  // Listen to new messages only (for real-time updates)
+  static listenToNewMessages(
+    conversationId: string,
+    lastTimestamp: Timestamp | null,
+    callback: (messages: ChatMessage[]) => void,
+    errorCallback: (error: any) => void
+  ): () => void {
+    try {
+      let q;
+
+      if (lastTimestamp) {
+        q = query(
+          collection(db, MESSAGES_COLLECTION),
+          where('conversationId', '==', conversationId),
+          where('timestamp', '>', lastTimestamp),
+          orderBy('timestamp', 'asc')
+        );
+      } else {
+        // If no lastTimestamp, listen to very recent messages only
+        q = query(
+          collection(db, MESSAGES_COLLECTION),
+          where('conversationId', '==', conversationId),
+          orderBy('timestamp', 'desc'),
+          limit(1)
+        );
+      }
+
+      const unsubscribe = onSnapshot(
+        q,
+        (snapshot) => {
+          const messages = snapshot.docs.map(
+            (doc) =>
+              ({
+                id: doc.id,
+                ...doc.data(),
+              } as ChatMessage)
+          );
+
+          if (!lastTimestamp) {
+            // First time, sort desc and take only latest
+            messages.sort((a, b) => {
+              const timeA = a.timestamp?.toDate?.()?.getTime() || 0;
+              const timeB = b.timestamp?.toDate?.()?.getTime() || 0;
+              return timeB - timeA;
+            });
+          } else {
+            // Sort chronologically for new messages
+            messages.sort((a, b) => {
+              const timeA = a.timestamp?.toDate?.()?.getTime() || 0;
+              const timeB = b.timestamp?.toDate?.()?.getTime() || 0;
+              return timeA - timeB;
+            });
+          }
+
+          callback(messages);
+        },
+        errorCallback
+      );
+
+      return unsubscribe;
+    } catch (error) {
+      console.error('Error setting up new messages listener:', error);
+      errorCallback(error);
+      return () => {};
     }
   }
 
