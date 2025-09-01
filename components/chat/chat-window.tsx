@@ -31,6 +31,9 @@ interface ChatWindowProps {
   className?: string;
   title?: string;
   isAdminView?: boolean;
+  hideHeader?: boolean;
+  targetUserAvatar?: string;
+  targetUserName?: string;
 }
 
 export const ChatWindow = ({
@@ -42,6 +45,9 @@ export const ChatWindow = ({
   className,
   title = 'Chat',
   isAdminView = false,
+  hideHeader = false,
+  targetUserAvatar,
+  targetUserName,
 }: ChatWindowProps) => {
   // Core state
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -244,6 +250,9 @@ export const ChatWindow = ({
         setMessages(initialMessages.messages);
         setPaginationData(initialMessages);
 
+        // Don't auto-mark messages as read on load
+        // Messages will be marked as read when user actively engages (scrolls, sends message)
+
         // Scroll to bottom on initial load
         setTimeout(() => {
           messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
@@ -257,21 +266,18 @@ export const ChatWindow = ({
           (newMessages) => {
             if (newMessages.length > 0) {
               setMessages((prevMessages) => {
-                // Remove any optimistic messages that have been confirmed
+                // Separate optimistic and real messages
                 const optimisticMessages = prevMessages.filter((msg) => msg.id.startsWith('temp_'));
                 const realMessages = prevMessages.filter((msg) => !msg.id.startsWith('temp_'));
 
-                // Find confirmed optimistic messages
+                // Find confirmed optimistic messages to remove
                 const confirmedOptimisticIds: string[] = [];
                 optimisticMessages.forEach((optimisticMsg) => {
                   const hasServerVersion = newMessages.find(
                     (serverMsg) =>
-                      serverMsg.content === optimisticMsg.content &&
+                      serverMsg.content.trim() === optimisticMsg.content.trim() &&
                       serverMsg.senderId === optimisticMsg.senderId &&
-                      Math.abs(
-                        (serverMsg.timestamp?.toDate?.()?.getTime() || 0) -
-                          (optimisticMsg.timestamp?.toDate?.()?.getTime() || 0)
-                      ) < 5000 // Within 5 seconds
+                      serverMsg.senderRole === optimisticMsg.senderRole
                   );
 
                   if (hasServerVersion) {
@@ -279,21 +285,38 @@ export const ChatWindow = ({
                   }
                 });
 
-                // Remove confirmed optimistic messages and add new real messages
+                // Remove confirmed optimistic messages
                 const filteredOptimistic = optimisticMessages.filter(
                   (msg) => !confirmedOptimisticIds.includes(msg.id)
                 );
 
-                const allMessages = [...realMessages, ...newMessages, ...filteredOptimistic];
+                // Filter out duplicate real messages (prevent duplicates from multiple listener calls)
+                const existingRealMessageIds = new Set(realMessages.map((msg) => msg.id));
+                const uniqueNewMessages = newMessages.filter(
+                  (msg) => !existingRealMessageIds.has(msg.id)
+                );
+
+                // Combine all messages
+                const allMessages = [...realMessages, ...uniqueNewMessages, ...filteredOptimistic];
+
+                // Final deduplication by ID (safety check)
+                const seenIds = new Set();
+                const finalMessages = allMessages.filter((msg) => {
+                  if (seenIds.has(msg.id)) {
+                    return false;
+                  }
+                  seenIds.add(msg.id);
+                  return true;
+                });
 
                 // Sort by timestamp
-                allMessages.sort((a, b) => {
+                finalMessages.sort((a, b) => {
                   const timeA = a.timestamp?.toDate?.()?.getTime() || 0;
                   const timeB = b.timestamp?.toDate?.()?.getTime() || 0;
                   return timeA - timeB;
                 });
 
-                return allMessages;
+                return finalMessages;
               });
 
               // Update latest timestamp for future listeners
@@ -301,8 +324,8 @@ export const ChatWindow = ({
               setLastMessageTimestamp(latestNewMessage.timestamp);
             }
 
-            // Mark messages as read
-            FirebaseChatService.markMessagesAsRead(conversationId, currentUserId);
+            // Don't auto-mark messages as read anymore
+            // Messages will be marked as read when user actively engages
           },
           (error) => {
             console.error('New messages listener error:', error);
@@ -361,6 +384,13 @@ export const ChatWindow = ({
     [currentUserId]
   );
 
+  // Mark messages as read when actively engaging (works for both users and admins)
+  const markAsRead = useCallback(async () => {
+    if (chatId) {
+      await FirebaseChatService.markMessagesAsRead(chatId, currentUserId);
+    }
+  }, [chatId, currentUserId]);
+
   // Auto-scroll when new messages arrive (only if user is at bottom)
   useEffect(() => {
     if (hasScrolledToBottom && messages.length > 0) {
@@ -370,11 +400,13 @@ export const ChatWindow = ({
         setTimeout(() => {
           if (hasScrolledToBottom) {
             messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+            // Mark messages as read when user is viewing at bottom
+            markAsRead();
           }
         }, 100);
       }
     }
-  }, [messages, hasScrolledToBottom]);
+  }, [messages, hasScrolledToBottom, markAsRead]);
 
   // Send message with optimistic update
   const handleSendMessage = async () => {
@@ -386,13 +418,16 @@ export const ChatWindow = ({
       return;
     }
 
+    // Mark messages as read when user sends a message
+    await markAsRead();
+
     const messageText = newMessage.trim();
     setNewMessage(''); // Clear input immediately
     setIsSending(true);
 
-    // Create optimistic message
+    // Create optimistic message with unique ID
     const optimisticMessage: ChatMessage = {
-      id: `temp_${Date.now()}_${Math.random()}`, // Temporary ID
+      id: `temp_${currentUserId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`, // More unique temporary ID
       conversationId: chatId,
       senderId: currentUserId,
       senderName: currentUserName,
@@ -464,7 +499,7 @@ export const ChatWindow = ({
     return (
       <Card
         className={cn(
-          'h-[calc(90vh-120px)] flex items-center justify-center border border-gray-200 bg-white rounded-xl shadow-lg',
+          'h-[calc(70vh)] flex items-center justify-center border border-gray-200 bg-white rounded-xl shadow-lg',
           className
         )}
       >
@@ -479,50 +514,64 @@ export const ChatWindow = ({
   return (
     <Card
       className={cn(
-        'h-[calc(90vh-120px)] flex flex-col border border-gray-200 bg-white rounded-xl shadow-lg',
+        'h-[calc(70vh)] flex flex-col border border-gray-200 bg-white rounded-xl shadow-lg',
         className
       )}
     >
       {/* Header with gradient background */}
-      <CardHeader className="pb-4 border-b bg-gradient-to-r from-blue-500 to-purple-600 rounded-t-xl">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Avatar className="h-10 w-10">
-              <AvatarFallback className="bg-white/20 text-white font-semibold text-sm">
-                {isAdminView ? 'U' : 'AS'}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-              <CardTitle className="text-lg font-semibold text-white">{title}</CardTitle>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                <span className="text-sm text-white/90">
-                  {isAdminView ? 'User Support' : 'Online'}
-                </span>
+      {!hideHeader && (
+        <CardHeader className="pb-4 border-b bg-gradient-to-r from-blue-500 to-purple-600 rounded-t-xl">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Avatar className="h-10 w-10 ring-2 ring-white/30">
+                {isAdminView ? (
+                  // For admin view, show the target user's avatar
+                  <>
+                    <AvatarImage src={targetUserAvatar} alt={targetUserName || 'User'} />
+                    <AvatarFallback className="bg-white/20 text-white font-semibold text-sm">
+                      {targetUserName
+                        ?.split(' ')
+                        .map((n) => n[0])
+                        .join('') || 'U'}
+                    </AvatarFallback>
+                  </>
+                ) : (
+                  // For user view, show support team avatar
+                  <AvatarFallback className="bg-white/20 text-white font-semibold text-sm">
+                    ST
+                  </AvatarFallback>
+                )}
+              </Avatar>
+              <div className="flex-1">
+                <CardTitle className="text-lg font-semibold text-white">{title}</CardTitle>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                  <span className="text-sm text-white/90">Active now</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Spam prevention status in header */}
-          {currentUserRole === 'user' && spamState.consecutiveMessages >= 5 && (
-            <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2">
-              {spamState.isBlocked ? (
-                <>
-                  <div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></div>
-                  <span className="text-xs text-white font-medium">Awaiting admin response</span>
-                </>
-              ) : (
-                <>
-                  <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
-                  <span className="text-xs text-white font-medium">
-                    {7 - spamState.consecutiveMessages} messages left
-                  </span>
-                </>
-              )}
-            </div>
-          )}
-        </div>
-      </CardHeader>
+            {/* Spam prevention status in header */}
+            {currentUserRole === 'user' && spamState.consecutiveMessages >= 5 && (
+              <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2">
+                {spamState.isBlocked ? (
+                  <>
+                    <div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></div>
+                    <span className="text-xs text-white font-medium">Awaiting admin response</span>
+                  </>
+                ) : (
+                  <>
+                    <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                    <span className="text-xs text-white font-medium">
+                      {7 - spamState.consecutiveMessages} messages left
+                    </span>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        </CardHeader>
+      )}
 
       {/* Messages */}
       <CardContent className="flex-1 p-0 overflow-hidden">
@@ -645,12 +694,15 @@ export const ChatWindow = ({
                               {!isOwn && (
                                 <div className="flex items-center gap-2 mb-1">
                                   <span className="font-medium text-xs text-gray-600">
-                                    {message.senderName}
+                                    {message.senderRole === 'admin' ||
+                                    message.senderRole === 'moderator'
+                                      ? 'Support Team'
+                                      : message.senderName}
                                   </span>
                                   {(message.senderRole === 'admin' ||
                                     message.senderRole === 'moderator') && (
                                     <Badge className="text-xs h-4 px-1 bg-green-500 text-white border-0">
-                                      {message.senderRole === 'admin' ? 'Admin' : 'Mod'}
+                                      Support
                                     </Badge>
                                   )}
                                 </div>

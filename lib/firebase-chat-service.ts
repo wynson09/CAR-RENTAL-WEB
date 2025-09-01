@@ -100,16 +100,15 @@ export class FirebaseChatService {
       const predictableId = `user_${userId}_admin`;
       const conversationRef = doc(db, CONVERSATIONS_COLLECTION, predictableId);
 
+      // For multi-admin support, we'll use shared 'admin' key for unread counts
+
       // Use a transaction to prevent race conditions
       return await runTransaction(db, async (transaction) => {
         const conversationSnap = await transaction.get(conversationRef);
 
         if (conversationSnap.exists()) {
-          console.log('Found existing conversation for user:', userId);
           return predictableId;
         }
-
-        console.log('Creating new conversation for user:', userId);
 
         // Check if messages already exist for this conversation ID
         const messagesQuery = query(
@@ -131,8 +130,8 @@ export class FirebaseChatService {
                 userAvatar: userAvatar || '',
               },
               {
-                userId: 'admin',
-                userName: 'Admin Support',
+                userId: 'admin', // Shared admin ID for all admins
+                userName: 'Support Team',
                 userRole: 'admin',
                 userAvatar: '',
               },
@@ -142,7 +141,7 @@ export class FirebaseChatService {
             lastMessageTimestamp: serverTimestamp() as Timestamp,
             unreadCount: {
               [userId]: 1, // User has 1 unread welcome message
-              admin: 0,
+              admin: 0, // Shared count for all admins
             },
             consecutiveUserMessages: 0, // Initialize spam prevention counter
             isActive: true,
@@ -157,8 +156,8 @@ export class FirebaseChatService {
           const welcomeMessageRef = doc(collection(db, MESSAGES_COLLECTION));
           const welcomeMessage: Omit<ChatMessage, 'id'> = {
             conversationId: predictableId,
-            senderId: 'admin',
-            senderName: 'Admin Support',
+            senderId: 'admin', // Shared admin ID
+            senderName: 'Support Team',
             senderRole: 'admin',
             senderAvatar: '',
             content:
@@ -293,6 +292,17 @@ export class FirebaseChatService {
         // Reset consecutive user messages when admin responds
         updateData.consecutiveUserMessages = 0;
       }
+
+      // Increment unread count for all OTHER participants (not the sender)
+      const currentUnreadCount = conversationData.unreadCount || {};
+
+      conversationData.participants.forEach((participant) => {
+        if (participant.userId !== senderId) {
+          const currentCount = currentUnreadCount[participant.userId] || 0;
+          const newCount = currentCount + 1;
+          updateData[`unreadCount.${participant.userId}`] = newCount;
+        }
+      });
 
       await updateDoc(conversationRef, updateData);
     } catch (error) {
@@ -631,9 +641,31 @@ export class FirebaseChatService {
 
       const querySnapshot = await getDocs(q);
 
+      // Update individual messages to mark as read
       const updatePromises = querySnapshot.docs.map((doc) => updateDoc(doc.ref, { isRead: true }));
-
       await Promise.all(updatePromises);
+
+      // ALWAYS reset unread count for this user in the conversation
+      const conversationRef = doc(db, CONVERSATIONS_COLLECTION, conversationId);
+
+      // Get user role to determine which key to reset
+      const userDoc = await getDoc(doc(db, 'users', userId));
+      const userData = userDoc.exists() ? userDoc.data() : null;
+      const userRole = userData?.role || 'user';
+
+      const updateData: any = {
+        updatedAt: serverTimestamp(),
+      };
+
+      if (userRole === 'admin' || userRole === 'moderator') {
+        // For admin/moderator: reset shared 'admin' key (all admins share one count)
+        updateData['unreadCount.admin'] = 0;
+      } else {
+        // For regular users: reset their specific user ID key
+        updateData[`unreadCount.${userId}`] = 0;
+      }
+
+      await updateDoc(conversationRef, updateData);
     } catch (error) {
       console.error('Error marking messages as read:', error);
     }

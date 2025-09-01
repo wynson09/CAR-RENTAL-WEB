@@ -39,7 +39,7 @@ const ProfileInfo = () => {
           </Avatar>
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 p-0" align="end">
+      <DropdownMenuContent className="w-64 p-0" align="end">
         <DropdownMenuLabel className="flex gap-2 items-center mb-1 p-3">
           <Avatar className="w-9 h-9">
             <AvatarImage src={userImage || ''} alt={userName} />
@@ -47,16 +47,11 @@ const ProfileInfo = () => {
               {userName.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          <div>
-            <div className="text-sm font-medium text-default-800 capitalize ">{userName}</div>
-            <div className="text-xs text-default-600">
-              {user?.role && (
-                <span className="capitalize bg-primary/10 text-primary px-2 py-1 rounded-full mr-2">
-                  {user.role}
-                </span>
-              )}
-              {userEmail}
+          <div className="flex-1 min-w-0">
+            <div className="text-sm font-medium text-default-800 capitalize truncate max-w-[180px]">
+              {userName}
             </div>
+            <div className="text-xs text-default-600 truncate max-w-[180px]">{userEmail}</div>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuGroup>
