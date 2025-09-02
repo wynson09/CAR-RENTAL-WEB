@@ -255,7 +255,13 @@ export class FirebaseChatService {
       const docRef = await addDoc(collection(db, MESSAGES_COLLECTION), messageData);
 
       // Update conversation last message and spam prevention counter
-      await this.updateConversationLastMessage(conversationId, senderId, content, senderRole);
+      await this.updateConversationLastMessage(
+        conversationId,
+        senderId,
+        content,
+        senderRole,
+        messageType
+      );
 
       return docRef.id;
     } catch (error) {
@@ -269,7 +275,8 @@ export class FirebaseChatService {
     conversationId: string,
     senderId: string,
     content: string,
-    senderRole: 'user' | 'admin' | 'moderator'
+    senderRole: 'user' | 'admin' | 'moderator',
+    messageType: 'text' | 'image' | 'file' = 'text'
   ): Promise<void> {
     try {
       const conversationRef = doc(db, CONVERSATIONS_COLLECTION, conversationId);
@@ -278,8 +285,17 @@ export class FirebaseChatService {
       if (!conversationSnap.exists()) return;
 
       const conversationData = conversationSnap.data() as Conversation;
+
+      // Format last message based on type
+      let lastMessageDisplay = content;
+      if (messageType === 'image') {
+        lastMessageDisplay = '📷 Image';
+      } else if (messageType === 'file') {
+        lastMessageDisplay = '📎 File';
+      }
+
       let updateData: any = {
-        lastMessage: content,
+        lastMessage: lastMessageDisplay,
         lastMessageTimestamp: serverTimestamp(),
         updatedAt: serverTimestamp(),
       };

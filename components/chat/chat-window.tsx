@@ -2,14 +2,27 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Send, MessageSquare, AlertCircle, ChevronUp, Loader2, AlertTriangle } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+  Send,
+  MessageSquare,
+  AlertCircle,
+  ChevronUp,
+  Loader2,
+  AlertTriangle,
+  Image as ImageIcon,
+  Annoyed,
+} from 'lucide-react';
+import { ImageUpload } from '@/components/ui/image-upload';
+import data from '@emoji-mart/data';
+import Picker from '@emoji-mart/react';
 import {
   FirebaseChatService,
   ChatMessage,
@@ -21,6 +34,7 @@ import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { Timestamp } from 'firebase/firestore';
+import avatar from '@/public/images/car-rental/avatar/support-team-avatar.png';
 
 interface ChatWindowProps {
   chatId: string;
@@ -408,6 +422,72 @@ export const ChatWindow = ({
     }
   }, [messages, hasScrolledToBottom, markAsRead]);
 
+  // Handle emoji selection (for @emoji-mart)
+  const handleEmojiSelect = (emoji: any) => {
+    setNewMessage((prev) => prev + emoji.native);
+  };
+
+  // Handle image upload
+  const handleImageUpload = async (imageUrl: string, fileName: string) => {
+    if (isSending) return;
+
+    // Check spam prevention for users
+    if (currentUserRole === 'user' && spamState.isBlocked) {
+      toast.error('Please wait for an admin response before sending more messages.');
+      return;
+    }
+
+    // Mark messages as read when user sends a message
+    await markAsRead();
+
+    setIsSending(true);
+
+    // Create optimistic message with unique ID
+    const optimisticMessage: ChatMessage = {
+      id: `temp_${currentUserId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      conversationId: chatId,
+      senderId: currentUserId,
+      senderName: currentUserName,
+      senderRole: currentUserRole,
+      senderAvatar: currentUserAvatar || '',
+      content: imageUrl,
+      messageType: 'image',
+      timestamp: { toDate: () => new Date() } as any,
+      isRead: false,
+      isEdited: false,
+    };
+
+    // Add message optimistically to UI
+    setMessages((prev) => [...prev, optimisticMessage]);
+
+    // Scroll to bottom immediately and smoothly
+    requestAnimationFrame(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    try {
+      await FirebaseChatService.sendMessage(
+        chatId,
+        currentUserId,
+        currentUserName,
+        currentUserRole,
+        imageUrl,
+        'image',
+        currentUserAvatar
+      );
+
+      toast.success('Image sent successfully');
+    } catch (error) {
+      console.error('Error sending image:', error);
+      toast.error('Failed to send image');
+
+      // Remove optimistic message on error
+      setMessages((prev) => prev.filter((msg) => msg.id !== optimisticMessage.id));
+    } finally {
+      setIsSending(false);
+    }
+  };
+
   // Send message with optimistic update
   const handleSendMessage = async () => {
     if (!newMessage.trim() || isSending) return;
@@ -491,7 +571,7 @@ export const ChatWindow = ({
   const formatMessageTime = (timestamp: any) => {
     if (!timestamp) return '';
     const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-    return format(date, 'HH:mm');
+    return format(date, 'hh:mm a'); // hh = 12-hour format, a = AM/PM
   };
 
   // Loading state
@@ -512,12 +592,7 @@ export const ChatWindow = ({
   }
 
   return (
-    <Card
-      className={cn(
-        'h-[calc(70vh)] flex flex-col border border-gray-200 bg-white rounded-xl shadow-lg',
-        className
-      )}
-    >
+    <Card className={cn('h-[calc(70vh)] flex flex-col rounded-xl shadow-lg', className)}>
       {/* Header with gradient background */}
       {!hideHeader && (
         <CardHeader className="pb-4 border-b bg-gradient-to-r from-blue-500 to-purple-600 rounded-t-xl">
@@ -537,9 +612,10 @@ export const ChatWindow = ({
                   </>
                 ) : (
                   // For user view, show support team avatar
-                  <AvatarFallback className="bg-white/20 text-white font-semibold text-sm">
-                    ST
-                  </AvatarFallback>
+                  <>
+                    <AvatarImage src={avatar.src} alt="Support Team" />
+                    <AvatarFallback className="bg-white/20 text-white font-semibold text-sm"></AvatarFallback>
+                  </>
                 )}
               </Avatar>
               <div className="flex-1">
@@ -636,13 +712,18 @@ export const ChatWindow = ({
                   <div className="space-y-4">
                     {messages.map((message, index) => {
                       const isOwn = message.senderId === currentUserId;
+                      // Determine if we should show a timestamp for this message
+                      // We show timestamps:
+                      // 1. For the first message in the conversation
+                      // 2. When there's a gap of more than 5 minutes between messages
+                      // This creates cleaner chat with timestamps only when time context is needed
                       const showTime =
                         index === 0 ||
                         (messages[index - 1] &&
                           Math.abs(
                             message.timestamp?.toDate?.()?.getTime() -
                               messages[index - 1].timestamp?.toDate?.()?.getTime()
-                          ) > 300000); // 5 minutes
+                          ) > 300000); // 5 minutes (300,000 ms)
 
                       const isNewlyLoaded = newlyLoadedMessageIds.has(message.id);
 
@@ -657,7 +738,7 @@ export const ChatWindow = ({
                         >
                           {showTime && (
                             <div className="text-center my-3">
-                              <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                              <span className="text-xs text-gray-500 px-2 py-1 rounded">
                                 {formatMessageTime(message.timestamp)}
                               </span>
                             </div>
@@ -683,31 +764,24 @@ export const ChatWindow = ({
 
                             <div
                               className={cn(
-                                'rounded-lg px-3 py-2 text-sm break-words max-w-full',
-                                isOwn
-                                  ? 'bg-blue-500 text-white rounded-br-md'
-                                  : 'bg-gray-100 text-gray-900 rounded-bl-md',
+                                'rounded-2xl px-3 py-2 text-sm break-words max-w-full',
+                                isOwn ? 'bg-primary/70 text-primary-foreground' : 'bg-default-200',
                                 // Add subtle opacity for optimistic messages
                                 message.id.startsWith('temp_') && 'opacity-70'
                               )}
                             >
-                              {!isOwn && (
-                                <div className="flex items-center gap-2 mb-1">
-                                  <span className="font-medium text-xs text-gray-600">
-                                    {message.senderRole === 'admin' ||
-                                    message.senderRole === 'moderator'
-                                      ? 'Support Team'
-                                      : message.senderName}
-                                  </span>
-                                  {(message.senderRole === 'admin' ||
-                                    message.senderRole === 'moderator') && (
-                                    <Badge className="text-xs h-4 px-1 bg-green-500 text-white border-0">
-                                      Support
-                                    </Badge>
-                                  )}
+                              {message.messageType === 'image' ? (
+                                <div className="max-w-xs sm:max-w-sm">
+                                  <img
+                                    src={message.content}
+                                    alt="Shared image"
+                                    className="rounded-lg shadow-sm cursor-pointer hover:shadow-md transition-shadow w-full h-auto"
+                                    onClick={() => window.open(message.content, '_blank')}
+                                  />
                                 </div>
+                              ) : (
+                                <p className="whitespace-pre-wrap break-words">{message.content}</p>
                               )}
-                              <p className="whitespace-pre-wrap break-words">{message.content}</p>
                               {message.isEdited && (
                                 <span
                                   className={cn(
@@ -732,39 +806,90 @@ export const ChatWindow = ({
         )}
       </CardContent>
 
-      {/* Input */}
-      <div className="p-4 border-t bg-white rounded-b-xl">
-        <div className="flex gap-2">
-          <Input
-            placeholder={
-              spamState.isBlocked ? 'Waiting for admin response...' : 'Type your message...'
-            }
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
-            disabled={isSending || (currentUserRole === 'user' && spamState.isBlocked)}
-            className="flex-1 rounded-lg"
-          />
-          <Button
-            onClick={handleSendMessage}
-            disabled={
-              !newMessage.trim() || isSending || (currentUserRole === 'user' && spamState.isBlocked)
-            }
-            size="sm"
-            className="px-3 rounded-lg"
-          >
-            {isSending ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Send className="h-4 w-4" />
-            )}
-          </Button>
-        </div>
+      {/* Input - Using Template's Professional Design */}
+      <CardFooter className="flex-none flex-col px-0 py-4 border-t border-border">
+        <div
+          className="w-full flex items-end gap-1 lg:gap-4 lg:px-4 relative px-2"
+          style={{ boxSizing: 'border-box' }}
+        >
+          <div className="flex-none flex gap-1 absolute md:static top-0 left-1.5 z-10">
+            <div className="hidden lg:block">
+              <ImageUpload
+                onImageUpload={handleImageUpload}
+                currentUserId={currentUserId}
+                disabled={isSending || (currentUserRole === 'user' && spamState.isBlocked)}
+                className="h-10 w-10 rounded-full hover:bg-default-50 flex justify-center items-center"
+              />
+            </div>
+          </div>
+          <div className="flex-1">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSendMessage();
+              }}
+            >
+              <div className="flex gap-1 relative">
+                <textarea
+                  value={newMessage}
+                  onChange={(e) => {
+                    setNewMessage(e.target.value);
+                    e.target.style.height = 'auto';
+                    e.target.style.height = `${e.target.scrollHeight - 15}px`;
+                  }}
+                  placeholder={
+                    spamState.isBlocked ? 'Waiting for admin response...' : 'Type your message...'
+                  }
+                  className="bg-background border border-default-200 outline-none focus:border-primary rounded-xl break-words pl-8 md:pl-3 px-3 flex-1 h-10 pt-2 p-1 pr-8 no-scrollbar"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSendMessage();
+                    }
+                  }}
+                  style={{
+                    minHeight: '40px',
+                    maxHeight: '120px',
+                    overflowY: 'auto',
+                    resize: 'none',
+                  }}
+                  disabled={isSending || (currentUserRole === 'user' && spamState.isBlocked)}
+                />
 
-        <p className="text-xs text-muted-foreground mt-2">
-          Press Enter to send • Our support team typically responds within a few minutes
-        </p>
-      </div>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <span className="absolute ltr:right-12 rtl:left-12 bottom-1.5 h-7 w-7 rounded-full cursor-pointer">
+                      <Annoyed className="w-6 h-6 text-primary" />
+                    </span>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    side="top"
+                    className="w-fit p-0 shadow-none border-none bottom-0 rtl:left-5 ltr:-left-[110px]"
+                  >
+                    <Picker data={data} onEmojiSelect={handleEmojiSelect} theme="auto" />
+                  </PopoverContent>
+                </Popover>
+
+                <Button
+                  type="submit"
+                  className="rounded-full bg-default-200 hover:bg-default-300 h-[42px] w-[42px] p-0 self-end"
+                  disabled={
+                    !newMessage.trim() ||
+                    isSending ||
+                    (currentUserRole === 'user' && spamState.isBlocked)
+                  }
+                >
+                  {isSending ? (
+                    <Loader2 className="w-4 h-4 animate-spin text-primary" />
+                  ) : (
+                    <Send className="w-5 h-8 text-primary rtl:rotate-180" />
+                  )}
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </CardFooter>
     </Card>
   );
 };

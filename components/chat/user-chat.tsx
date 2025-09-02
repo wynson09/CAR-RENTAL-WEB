@@ -25,9 +25,7 @@ export const UserChat = ({ className }: UserChatProps) => {
   }
 
   return (
-    <Card
-      className={cn('h-[calc(90vh-120px)] border border-gray-200 rounded-xl shadow-lg', className)}
-    >
+    <Card className={cn('h-[calc(90vh-120px)] border rounded-xl shadow-lg', className)}>
       <ChatWindow
         chatId={`user_${user.uid}_admin`}
         currentUserId={user.uid}

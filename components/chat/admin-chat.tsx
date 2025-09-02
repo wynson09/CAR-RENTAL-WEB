@@ -116,7 +116,7 @@ export const AdminChat = ({ className }: AdminChatProps) => {
         <>
           {/* Mobile Conversation List */}
           {!selectedConversation && (
-            <Card className="w-full border border-gray-200 rounded-xl shadow-lg">
+            <Card className="w-full border rounded-xl shadow-lg">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2">
                   <Users className="h-5 w-5" />
@@ -262,7 +262,7 @@ export const AdminChat = ({ className }: AdminChatProps) => {
       ) : (
         <>
           {/* Desktop: Show both conversation list and chat with proper spacing */}
-          <Card className="w-1/3 border border-gray-200 rounded-xl shadow-lg">
+          <Card className="w-1/3 border rounded-xl shadow-lg">
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2">
                 <Users className="h-5 w-5" />
@@ -344,7 +344,7 @@ export const AdminChat = ({ className }: AdminChatProps) => {
           </Card>
 
           {/* Desktop Chat Area */}
-          <Card className="flex-1 border border-gray-200 rounded-xl shadow-lg">
+          <Card className="flex-1 border rounded-xl shadow-lg">
             {selectedConversation && user ? (
               (() => {
                 const selectedConv = getSelectedConversationData();
