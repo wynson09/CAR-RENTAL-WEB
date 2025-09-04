@@ -56,11 +56,13 @@ const MessageFooter = ({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleSendMessage(message);
-    setReply(false);
-    setMessage('');
+    if (!message.trim()) return;
 
-    console.log(replay, message, 'ami k');
+    const messageToSend = message.trim();
+    setMessage(''); // Clear input immediately for instant feedback
+    setReply(false);
+
+    handleSendMessage(messageToSend);
   };
   return (
     <>

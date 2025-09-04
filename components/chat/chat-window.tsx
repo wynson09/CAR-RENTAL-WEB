@@ -19,6 +19,10 @@ import {
   AlertTriangle,
   Image as ImageIcon,
   Annoyed,
+  Check,
+  CheckCheck,
+  Clock,
+  AlertOctagon,
 } from 'lucide-react';
 import { ImageUpload } from '@/components/ui/image-upload';
 import data from '@emoji-mart/data';
@@ -70,6 +74,9 @@ export const ChatWindow = ({
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Message states for better UX
+  const [failedMessages, setFailedMessages] = useState<Set<string>>(new Set());
 
   // Pagination state
   const [paginationData, setPaginationData] = useState<PaginatedMessages | null>(null);
@@ -437,11 +444,6 @@ export const ChatWindow = ({
       return;
     }
 
-    // Mark messages as read when user sends a message
-    await markAsRead();
-
-    setIsSending(true);
-
     // Create optimistic message with unique ID
     const optimisticMessage: ChatMessage = {
       id: `temp_${currentUserId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -457,7 +459,7 @@ export const ChatWindow = ({
       isEdited: false,
     };
 
-    // Add message optimistically to UI
+    // Add message optimistically to UI IMMEDIATELY
     setMessages((prev) => [...prev, optimisticMessage]);
 
     // Scroll to bottom immediately and smoothly
@@ -465,6 +467,10 @@ export const ChatWindow = ({
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     });
 
+    // Mark messages as read asynchronously (don't block UI)
+    markAsRead().catch(console.error);
+
+    // Send to server in background
     try {
       await FirebaseChatService.sendMessage(
         chatId,
@@ -479,12 +485,11 @@ export const ChatWindow = ({
       toast.success('Image sent successfully');
     } catch (error) {
       console.error('Error sending image:', error);
-      toast.error('Failed to send image');
 
-      // Remove optimistic message on error
-      setMessages((prev) => prev.filter((msg) => msg.id !== optimisticMessage.id));
-    } finally {
-      setIsSending(false);
+      // Mark message as failed instead of removing it
+      setFailedMessages((prev) => new Set([...prev, optimisticMessage.id]));
+
+      toast.error('Failed to send image. Tap message to retry.');
     }
   };
 
@@ -498,16 +503,12 @@ export const ChatWindow = ({
       return;
     }
 
-    // Mark messages as read when user sends a message
-    await markAsRead();
-
     const messageText = newMessage.trim();
-    setNewMessage(''); // Clear input immediately
-    setIsSending(true);
+    setNewMessage(''); // Clear input immediately for instant feedback
 
     // Create optimistic message with unique ID
     const optimisticMessage: ChatMessage = {
-      id: `temp_${currentUserId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`, // More unique temporary ID
+      id: `temp_${currentUserId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       conversationId: chatId,
       senderId: currentUserId,
       senderName: currentUserName,
@@ -515,12 +516,12 @@ export const ChatWindow = ({
       senderAvatar: currentUserAvatar || '',
       content: messageText,
       messageType: 'text',
-      timestamp: { toDate: () => new Date() } as any, // Temporary timestamp
+      timestamp: { toDate: () => new Date() } as any,
       isRead: false,
       isEdited: false,
     };
 
-    // Add message optimistically to UI
+    // Add message optimistically to UI IMMEDIATELY
     setMessages((prev) => [...prev, optimisticMessage]);
 
     // Scroll to bottom immediately and smoothly
@@ -528,6 +529,10 @@ export const ChatWindow = ({
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     });
 
+    // Mark messages as read asynchronously (don't block UI)
+    markAsRead().catch(console.error);
+
+    // Send to server in background
     try {
       await FirebaseChatService.sendMessage(
         chatId,
@@ -543,25 +548,50 @@ export const ChatWindow = ({
     } catch (error: any) {
       console.error('Error sending message:', error);
 
-      // Remove optimistic message on error
-      setMessages((prev) => prev.filter((msg) => msg.id !== optimisticMessage.id));
-
-      // Restore message to input
-      setNewMessage(messageText);
+      // Mark message as failed instead of removing it
+      setFailedMessages((prev) => new Set([...prev, optimisticMessage.id]));
 
       if (error.message?.includes('Spam prevention')) {
         toast.error('Please wait for an admin response before sending more messages.');
       } else {
-        toast.error('Failed to send message');
+        toast.error('Failed to send message. Tap message to retry.');
       }
-    } finally {
-      setIsSending(false);
+    }
+  };
+
+  // Retry failed message
+  const retryMessage = async (failedMessage: ChatMessage) => {
+    if (isSending) return;
+
+    // Remove from failed messages set
+    setFailedMessages((prev) => {
+      const newSet = new Set(prev);
+      newSet.delete(failedMessage.id);
+      return newSet;
+    });
+
+    try {
+      await FirebaseChatService.sendMessage(
+        chatId,
+        currentUserId,
+        currentUserName,
+        currentUserRole,
+        failedMessage.content,
+        failedMessage.messageType,
+        currentUserAvatar
+      );
+
+      toast.success('Message sent successfully');
+    } catch (error: any) {
+      console.error('Error retrying message:', error);
+      setFailedMessages((prev) => new Set([...prev, failedMessage.id]));
+      toast.error('Failed to send message again');
     }
   };
 
   // Handle key press
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey && !isSending) {
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
@@ -764,11 +794,23 @@ export const ChatWindow = ({
 
                             <div
                               className={cn(
-                                'rounded-2xl px-3 py-2 text-sm break-words max-w-full',
+                                'rounded-2xl px-3 py-2 text-sm break-words max-w-full relative group',
                                 isOwn ? 'bg-primary/70 text-primary-foreground' : 'bg-default-200',
                                 // Add subtle opacity for optimistic messages
-                                message.id.startsWith('temp_') && 'opacity-70'
+                                message.id.startsWith('temp_') &&
+                                  !failedMessages.has(message.id) &&
+                                  'opacity-70',
+                                // Highlight failed messages
+                                failedMessages.has(message.id) &&
+                                  'bg-destructive/20 border border-destructive/30 cursor-pointer',
+                                failedMessages.has(message.id) &&
+                                  'hover:bg-destructive/30 transition-colors'
                               )}
+                              onClick={
+                                failedMessages.has(message.id)
+                                  ? () => retryMessage(message)
+                                  : undefined
+                              }
                             >
                               {message.messageType === 'image' ? (
                                 <div className="max-w-xs sm:max-w-sm">
@@ -776,17 +818,52 @@ export const ChatWindow = ({
                                     src={message.content}
                                     alt="Shared image"
                                     className="rounded-lg shadow-sm cursor-pointer hover:shadow-md transition-shadow w-full h-auto"
-                                    onClick={() => window.open(message.content, '_blank')}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      window.open(message.content, '_blank');
+                                    }}
                                   />
                                 </div>
                               ) : (
                                 <p className="whitespace-pre-wrap break-words">{message.content}</p>
                               )}
-                              {message.isEdited && (
+
+                              {/* Message status indicators */}
+                              {isOwn && (
+                                <div className="flex items-center gap-1 mt-1">
+                                  {message.isEdited && (
+                                    <span
+                                      className={cn(
+                                        'text-xs italic opacity-70',
+                                        isOwn ? 'text-primary-foreground/70' : 'text-default-500'
+                                      )}
+                                    >
+                                      Edited
+                                    </span>
+                                  )}
+
+                                  <div className="ml-auto flex items-center">
+                                    {failedMessages.has(message.id) ? (
+                                      <div className="flex items-center gap-1 text-destructive">
+                                        <AlertOctagon className="h-3 w-3" />
+                                        <span className="text-xs">Tap to retry</span>
+                                      </div>
+                                    ) : message.id.startsWith('temp_') ? (
+                                      <Clock className="h-3 w-3 opacity-60" />
+                                    ) : (
+                                      <div className="flex items-center gap-0.5">
+                                        <CheckCheck className="h-3 w-3 opacity-60" />
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              )}
+
+                              {!isOwn && message.isEdited && (
                                 <span
                                   className={cn(
                                     'text-xs italic opacity-70 block mt-1',
-                                    isOwn ? 'text-blue-100' : 'text-gray-500'
+                                    'text-default-500'
                                   )}
                                 >
                                   Edited
@@ -817,7 +894,7 @@ export const ChatWindow = ({
               <ImageUpload
                 onImageUpload={handleImageUpload}
                 currentUserId={currentUserId}
-                disabled={isSending || (currentUserRole === 'user' && spamState.isBlocked)}
+                disabled={currentUserRole === 'user' && spamState.isBlocked}
                 className="h-10 w-10 rounded-full hover:bg-default-50 flex justify-center items-center"
               />
             </div>
@@ -853,7 +930,7 @@ export const ChatWindow = ({
                     overflowY: 'auto',
                     resize: 'none',
                   }}
-                  disabled={isSending || (currentUserRole === 'user' && spamState.isBlocked)}
+                  disabled={currentUserRole === 'user' && spamState.isBlocked}
                 />
 
                 <Popover>
@@ -874,16 +951,10 @@ export const ChatWindow = ({
                   type="submit"
                   className="rounded-full bg-default-200 hover:bg-default-300 h-[42px] w-[42px] p-0 self-end"
                   disabled={
-                    !newMessage.trim() ||
-                    isSending ||
-                    (currentUserRole === 'user' && spamState.isBlocked)
+                    !newMessage.trim() || (currentUserRole === 'user' && spamState.isBlocked)
                   }
                 >
-                  {isSending ? (
-                    <Loader2 className="w-4 h-4 animate-spin text-primary" />
-                  ) : (
-                    <Send className="w-5 h-8 text-primary rtl:rotate-180" />
-                  )}
+                  <Send className="w-5 h-8 text-primary rtl:rotate-180" />
                 </Button>
               </div>
             </form>
