@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import Card from '@/components/ui/card-snippet';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -20,6 +20,7 @@ import { CalendarIcon, Clock } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { CarGrid, Car } from '@/components/fleet';
 import { CarFirebaseService } from '@/lib/firebase-car-service';
+import { Timestamp } from 'firebase/firestore';
 import { CarListing } from '@/data/car-listings-data';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
@@ -31,9 +32,8 @@ import {
 import { useUserStore } from '@/store';
 import { createDetailedPricing } from '@/lib/pricing-utils';
 
-// Cache for car data to avoid unnecessary fetches
-const carsCache = new Map<string, { data: Car[]; timestamp: number }>();
-const CARS_CACHE_DURATION = 10 * 60 * 1000; // 10 minutes cache
+// Session cache key
+const CARS_SESSION_CACHE_KEY = 'booking:cars';
 
 // Convert CarListing data to Car data format for fleet display
 const convertCarListingToCar = (carListing: CarListing): Car => {
@@ -52,12 +52,64 @@ const convertCarListingToCar = (carListing: CarListing): Car => {
     image: imageUrl,
     price: carListing.price,
     isPromo: carListing.isPromo,
+    // Ensure priority is present and numeric for sorting
+    ...({
+      priorityLevel:
+        typeof (carListing as any).priorityLevel === 'number'
+          ? (carListing as any).priorityLevel
+          : parseInt(String((carListing as any).priorityLevel), 10) || 0,
+    } as any),
     category: carListing.category,
     passengers: carListing.passengers,
     bags: carListing.bags,
     transmission: carListing.transmission,
     features: features,
+    // Keep a stable reference to the Firestore document id for merging updates
+    // (not part of the Car type, used internally only)
+    ...({ docId: carListing.id, updatedDate: carListing.updatedDate } as any),
   };
+};
+
+// Ensure a list has unique cars by stable key
+const uniqueByDocId = (items: Car[]): Car[] => {
+  const seen = new Set<string>();
+  const out: Car[] = [];
+  items.forEach((c: any) => {
+    const key = String(c.docId ?? c.id ?? c.name);
+    if (!seen.has(key)) {
+      seen.add(key);
+      out.push(c);
+    }
+  });
+  return out;
+};
+
+// Normalize a name by stripping promo emoji/whitespace and lowercasing
+const normalizeName = (name: string) => name.replace(/🔥/g, '').trim().toLowerCase();
+
+// Keep only one car per vehicle name; prefer promo, else latest updated
+const uniqueByVehicleName = (items: Car[]): Car[] => {
+  const map = new Map<string, any>();
+  items.forEach((c: any) => {
+    const key = normalizeName(c.name || '');
+    const existing = map.get(key);
+    if (!existing) {
+      map.set(key, c);
+      return;
+    }
+    const existingIsPromo = !!existing.isPromo;
+    const currentIsPromo = !!c.isPromo;
+    if (currentIsPromo && !existingIsPromo) {
+      map.set(key, c);
+      return;
+    }
+    const existingUpdated = existing.updatedDate?.getTime?.() || 0;
+    const currentUpdated = c.updatedDate?.getTime?.() || 0;
+    if (currentUpdated > existingUpdated) {
+      map.set(key, c);
+    }
+  });
+  return Array.from(map.values());
 };
 
 const BookingPage = () => {
@@ -87,35 +139,106 @@ const BookingPage = () => {
   // User store for verification status
   const { user } = useUserStore();
 
-  // Fetch cars from Firebase on component mount
+  // Helpers for session cache
+  const readCache = useCallback((): { cars: Car[]; lastUpdatedMs: number } | null => {
+    try {
+      const raw = sessionStorage.getItem(CARS_SESSION_CACHE_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  }, []);
+
+  const writeCache = useCallback((carsToStore: Car[]) => {
+    try {
+      const latest = carsToStore
+        .map((c: any) => c.updatedDate?.getTime?.() || 0)
+        .reduce((a, b) => Math.max(a, b), 0);
+      sessionStorage.setItem(
+        CARS_SESSION_CACHE_KEY,
+        JSON.stringify({ cars: carsToStore, lastUpdatedMs: latest })
+      );
+    } catch {}
+  }, []);
+
+  const cacheKey = useMemo(() => 'all_cars', []);
+
+  // Fetch cars; use cache first and attach realtime listener for updates
   useEffect(() => {
-    const fetchCars = async () => {
+    let unsubscribe: (() => void) | undefined;
+
+    const init = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        // Check cache first
-        const cacheKey = 'all_cars';
-        const cached = carsCache.get(cacheKey);
-        const now = Date.now();
-
-        if (cached && now - cached.timestamp < CARS_CACHE_DURATION) {
-          setCars(cached.data);
+        const cached = readCache();
+        if (cached && cached.cars.length > 0) {
+          const normalized = uniqueByVehicleName(uniqueByDocId(cached.cars));
+          normalized.sort((a: any, b: any) => (b.priorityLevel || 0) - (a.priorityLevel || 0));
+          setCars(normalized);
           setLoading(false);
+
+          const lastTs = cached.lastUpdatedMs ? Timestamp.fromMillis(cached.lastUpdatedMs) : null;
+          unsubscribe = CarFirebaseService.listenToCarsSince(
+            lastTs,
+            (changedCars) => {
+              if (!changedCars || changedCars.length === 0) return;
+              setCars((prev) => {
+                const map = new Map<string, any>();
+                prev.forEach((c: any) => map.set(String(c.docId ?? c.id), c));
+                changedCars.forEach((listing) => {
+                  const converted = convertCarListingToCar(listing as any);
+                  map.set(String((listing as any).id), converted);
+                });
+                const merged = uniqueByVehicleName(
+                  uniqueByDocId(Array.from(map.values()) as Car[])
+                );
+                // Sort strictly by priorityLevel (desc)
+                merged.sort((a: any, b: any) => (b.priorityLevel || 0) - (a.priorityLevel || 0));
+                writeCache(merged);
+                return merged;
+              });
+            },
+            (error) => {
+              console.error('Cars listener error:', error);
+            }
+          );
           return;
         }
 
+        // No cache → fetch once and then attach listener
         const carListings = await CarFirebaseService.getAllCars();
-        const convertedCars = carListings.map(convertCarListingToCar);
-
-        // Cache the results
-        carsCache.set(cacheKey, {
-          data: convertedCars,
-          timestamp: now,
-        });
-
+        const convertedCars = uniqueByVehicleName(
+          uniqueByDocId(carListings.map(convertCarListingToCar))
+        );
         setCars(convertedCars);
+        writeCache(convertedCars);
         toast.success(`Loaded ${convertedCars.length} vehicles`);
+
+        const lastTs = carListings[0]?.updatedDate ? (carListings[0].updatedDate as any) : null;
+        unsubscribe = CarFirebaseService.listenToCarsSince(
+          lastTs,
+          (changedCars) => {
+            if (!changedCars || changedCars.length === 0) return;
+            setCars((prev) => {
+              const map = new Map<string, any>();
+              prev.forEach((c: any) => map.set(String(c.docId ?? c.id), c));
+              changedCars.forEach((listing) => {
+                const converted = convertCarListingToCar(listing as any);
+                map.set(String((listing as any).id), converted);
+              });
+              const merged = uniqueByVehicleName(uniqueByDocId(Array.from(map.values()) as Car[]));
+              merged.sort((a: any, b: any) => (b.priorityLevel || 0) - (a.priorityLevel || 0));
+              writeCache(merged);
+              return merged;
+            });
+          },
+          (error) => {
+            console.error('Cars listener error:', error);
+          }
+        );
       } catch (err) {
         setError('Failed to load vehicles. Please try again.');
         toast.error('Failed to load vehicles');
@@ -125,8 +248,9 @@ const BookingPage = () => {
       }
     };
 
-    fetchCars();
-  }, []);
+    init();
+    return () => unsubscribe?.();
+  }, [cacheKey, readCache, writeCache]);
 
   const addressOptions = [
     { value: 'nacs-garage', label: 'Self Pick Up @ NACS Car Rental Garage' },
@@ -282,20 +406,21 @@ const BookingPage = () => {
       setLoading(true);
       setError(null);
 
-      // Clear cache and fetch fresh data
-      const cacheKey = 'all_cars';
-      carsCache.delete(cacheKey);
-
+      // Force-refresh: fetch fresh data and update session cache
       const carListings = await CarFirebaseService.getAllCars();
-      const convertedCars = carListings.map(convertCarListingToCar);
-
-      // Update cache with fresh data
-      carsCache.set(cacheKey, {
-        data: convertedCars,
-        timestamp: Date.now(),
-      });
-
+      const convertedCars = uniqueByVehicleName(
+        uniqueByDocId(carListings.map(convertCarListingToCar))
+      );
       setCars(convertedCars);
+      sessionStorage.setItem(
+        CARS_SESSION_CACHE_KEY,
+        JSON.stringify({
+          cars: convertedCars,
+          lastUpdatedMs: convertedCars
+            .map((c: any) => c.updatedDate?.getTime?.() || 0)
+            .reduce((a: number, b: number) => Math.max(a, b), 0),
+        })
+      );
       toast.success(`Refreshed! Loaded ${convertedCars.length} vehicles`);
     } catch (err) {
       setError('Failed to refresh vehicles. Please try again.');
