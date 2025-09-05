@@ -16,7 +16,7 @@ export function NCRLogo({
   if (type === 'webp') {
     return (
       <Image
-        src="/images/logo/nacs-logo.svg"
+        src="/images/car-rental/logo/nacs-car-rental-logo.webp"
         alt="Nacs Car Rental Logo"
         width={width}
         height={height}
@@ -28,7 +28,7 @@ export function NCRLogo({
 
   return (
     <Image
-      src="/images/logo/nacs-logo.svg"
+      src="/images/car-rental/logo/nacs-car-rental-logo.png"
       alt="Nacs Car Rental Logo"
       width={width}
       height={height}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -93,6 +93,65 @@ export const ChatWindow = ({
 
   // Real-time listener state
   const [lastMessageTimestamp, setLastMessageTimestamp] = useState<Timestamp | null>(null);
+
+  // --- Lightweight session cache: only for this session, prevents refetches on navigation ---
+  type CachedThread = { messages: ChatMessage[]; lastMs: number };
+
+  const cacheKey = useMemo(() => {
+    // Distinguish admin vs user threads and user identity
+    return `support-chat:${chatId}:${currentUserRole}:${currentUserId}`;
+  }, [chatId, currentUserRole, currentUserId]);
+
+  const readCache = useCallback((): CachedThread | null => {
+    try {
+      const raw = sessionStorage.getItem('chat:cache');
+      if (!raw) return null;
+      const all: Record<string, CachedThread> = JSON.parse(raw);
+      const entry = all?.[cacheKey];
+      if (!entry || !Array.isArray(entry.messages)) return null;
+      return entry;
+    } catch {
+      return null;
+    }
+  }, [cacheKey]);
+
+  const writeCache = useCallback(
+    (messagesToStore: ChatMessage[]) => {
+      try {
+        const last = messagesToStore[messagesToStore.length - 1];
+        const lastMs = last?.timestamp?.toDate?.()?.getTime?.() ?? 0;
+        const raw = sessionStorage.getItem('chat:cache');
+        const all: Record<string, CachedThread> = raw ? JSON.parse(raw) : {};
+        all[cacheKey] = { messages: messagesToStore, lastMs };
+        sessionStorage.setItem('chat:cache', JSON.stringify(all));
+      } catch {
+        // ignore cache write failures
+      }
+    },
+    [cacheKey]
+  );
+
+  // Normalize various timestamp shapes into Firestore Timestamp for queries
+  const toFirestoreTimestamp = useCallback((ts: any): Timestamp | null => {
+    try {
+      if (!ts) return null;
+      if (typeof ts.toDate === 'function' && typeof ts.seconds === 'number') {
+        return ts as Timestamp;
+      }
+      if (typeof ts.seconds === 'number') {
+        return new Timestamp(ts.seconds, ts.nanoseconds || 0);
+      }
+      if (ts instanceof Date) {
+        return Timestamp.fromDate(ts);
+      }
+      if (typeof ts === 'number') {
+        return Timestamp.fromMillis(ts);
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  }, []);
 
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -266,24 +325,123 @@ export const ChatWindow = ({
           );
         }
 
+        // Try cache first to avoid an initial fetch when returning to the page
+        const cached = readCache();
+        if (cached && cached.messages.length > 0) {
+          setMessages(cached.messages);
+          setPaginationData(null);
+
+          // Scroll to bottom on load from cache
+          setTimeout(() => {
+            messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
+          }, 100);
+
+          // Listen only for messages newer than the cached last timestamp
+          const lastTs = toFirestoreTimestamp(
+            cached.messages[cached.messages.length - 1]?.timestamp || null
+          );
+          unsubscribeMessages = FirebaseChatService.listenToNewMessages(
+            conversationId,
+            lastTs,
+            (newMessages) => {
+              if (newMessages.length === 0) return;
+              setMessages((prevMessages) => {
+                // Separate optimistic and real messages
+                const optimisticMessages = prevMessages.filter((msg) => msg.id.startsWith('temp_'));
+                const realMessages = prevMessages.filter((msg) => !msg.id.startsWith('temp_'));
+
+                // Remove confirmed optimistic messages
+                const confirmedOptimisticIds: string[] = [];
+                optimisticMessages.forEach((optimisticMsg) => {
+                  const hasServerVersion = newMessages.find(
+                    (serverMsg) =>
+                      serverMsg.content.trim() === optimisticMsg.content.trim() &&
+                      serverMsg.senderId === optimisticMsg.senderId &&
+                      serverMsg.senderRole === optimisticMsg.senderRole
+                  );
+                  if (hasServerVersion) confirmedOptimisticIds.push(optimisticMsg.id);
+                });
+
+                const filteredOptimistic = optimisticMessages.filter(
+                  (msg) => !confirmedOptimisticIds.includes(msg.id)
+                );
+
+                const existingRealMessageIds = new Set(realMessages.map((msg) => msg.id));
+                const uniqueNewMessages = newMessages.filter(
+                  (msg) => !existingRealMessageIds.has(msg.id)
+                );
+
+                const merged = [...realMessages, ...uniqueNewMessages, ...filteredOptimistic];
+
+                // Final dedupe and sort
+                const seenIds = new Set();
+                const finalMessages = merged.filter((msg) => {
+                  if (seenIds.has(msg.id)) return false;
+                  seenIds.add(msg.id);
+                  return true;
+                });
+
+                finalMessages.sort((a, b) => {
+                  const timeA = a.timestamp?.toDate?.()?.getTime() || 0;
+                  const timeB = b.timestamp?.toDate?.()?.getTime() || 0;
+                  return timeA - timeB;
+                });
+
+                // Persist to cache
+                writeCache(finalMessages);
+
+                return finalMessages;
+              });
+
+              const latestNewMessage = newMessages[newMessages.length - 1];
+              setLastMessageTimestamp(latestNewMessage.timestamp);
+            },
+            (error) => {
+              console.error('New messages listener error:', error);
+              setError('Unable to load messages. Please refresh.');
+            }
+          );
+
+          // Keep conversation listener for spam-prevention (user role)
+          if (currentUserRole === 'user') {
+            unsubscribeConversation = FirebaseChatService.listenToUserConversation(
+              currentUserId,
+              (conv) => {
+                setConversation(conv);
+                if (conv) updateSpamState(conv);
+              },
+              (error) => {
+                console.error('Conversation listener error:', error);
+              }
+            );
+          }
+
+          setIsLoading(false);
+          return; // Skip initial fetch
+        }
+
         // Load initial messages with pagination
         const initialMessages = await FirebaseChatService.getInitialMessages(conversationId);
         setMessages(initialMessages.messages);
         setPaginationData(initialMessages);
+        // Persist to cache on fresh load
+        writeCache(initialMessages.messages);
 
         // Don't auto-mark messages as read on load
         // Messages will be marked as read when user actively engages (scrolls, sends message)
 
         // Scroll to bottom on initial load
         setTimeout(() => {
-          messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
+          try {
+            messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
+          } catch {}
         }, 100);
 
         // Set up real-time listener for NEW messages only (preserves pagination)
         const latestMessage = initialMessages.messages[initialMessages.messages.length - 1];
         unsubscribeMessages = FirebaseChatService.listenToNewMessages(
           conversationId,
-          latestMessage?.timestamp || null,
+          toFirestoreTimestamp(latestMessage?.timestamp || null),
           (newMessages) => {
             if (newMessages.length > 0) {
               setMessages((prevMessages) => {
@@ -337,6 +495,8 @@ export const ChatWindow = ({
                   return timeA - timeB;
                 });
 
+                // Persist to cache on updates
+                writeCache(finalMessages);
                 return finalMessages;
               });
 
@@ -390,7 +550,15 @@ export const ChatWindow = ({
       unsubscribeMessages?.();
       unsubscribeConversation?.();
     };
-  }, [chatId, currentUserId, currentUserName, currentUserRole, currentUserAvatar]);
+  }, [
+    chatId,
+    currentUserId,
+    currentUserName,
+    currentUserRole,
+    currentUserAvatar,
+    readCache,
+    writeCache,
+  ]);
 
   // Update spam prevention state
   const updateSpamState = useCallback(
@@ -597,11 +765,53 @@ export const ChatWindow = ({
     }
   };
 
-  // Format message time
+  // Format message time (robust against cached timestamp objects)
   const formatMessageTime = (timestamp: any) => {
     if (!timestamp) return '';
-    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-    return format(date, 'hh:mm a'); // hh = 12-hour format, a = AM/PM
+
+    try {
+      let date: Date;
+
+      // Firestore Timestamp instance
+      if (timestamp && typeof timestamp.toDate === 'function') {
+        try {
+          date = timestamp.toDate();
+        } catch {
+          // Fallback if toDate throws (rare)
+          if (typeof timestamp.seconds === 'number') {
+            const ms =
+              timestamp.seconds * 1000 + Math.floor((timestamp.nanoseconds || 0) / 1_000_000);
+            date = new Date(ms);
+          } else {
+            return '';
+          }
+        }
+      }
+      // Cached plain object with seconds/nanoseconds
+      else if (
+        timestamp &&
+        typeof timestamp === 'object' &&
+        typeof timestamp.seconds === 'number'
+      ) {
+        const ms = timestamp.seconds * 1000 + Math.floor((timestamp.nanoseconds || 0) / 1_000_000);
+        date = new Date(ms);
+      }
+      // Already a Date
+      else if (timestamp instanceof Date) {
+        date = timestamp;
+      }
+      // Number or ISO string
+      else if (typeof timestamp === 'number' || typeof timestamp === 'string') {
+        date = new Date(timestamp);
+      } else {
+        return '';
+      }
+
+      if (isNaN(date.getTime())) return '';
+      return format(date, 'hh:mm a');
+    } catch {
+      return '';
+    }
   };
 
   // Loading state
@@ -643,7 +853,7 @@ export const ChatWindow = ({
                 ) : (
                   // For user view, show support team avatar
                   <>
-                    <AvatarImage src={avatar.src} alt="Support Team" />
+                    <AvatarImage src={avatar.src} alt="Support Team" className="bg-white" />
                     <AvatarFallback className="bg-white/20 text-white font-semibold text-sm"></AvatarFallback>
                   </>
                 )}
@@ -818,6 +1028,14 @@ export const ChatWindow = ({
                                     src={message.content}
                                     alt="Shared image"
                                     className="rounded-lg shadow-sm cursor-pointer hover:shadow-md transition-shadow w-full h-auto"
+                                    onLoad={() => {
+                                      // When image finishes loading, keep view at the very bottom
+                                      requestAnimationFrame(() => {
+                                        messagesEndRef.current?.scrollIntoView({
+                                          behavior: 'auto',
+                                        });
+                                      });
+                                    }}
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       window.open(message.content, '_blank');
