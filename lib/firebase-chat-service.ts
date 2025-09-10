@@ -70,6 +70,8 @@ export interface PaginatedMessages {
   messages: ChatMessage[];
   lastDoc: QueryDocumentSnapshot<DocumentData> | null;
   hasMore: boolean;
+  // Oldest message timestamp in this page (for timestamp-based cursors)
+  cursorTimestamp: Timestamp | null;
 }
 
 export interface SpamPreventionState {
@@ -396,6 +398,10 @@ export class FirebaseChatService {
         messages,
         lastDoc: snapshot.docs.length > 0 ? snapshot.docs[snapshot.docs.length - 1] : null,
         hasMore,
+        cursorTimestamp:
+          snapshot.docs.length > 0
+            ? (snapshot.docs[snapshot.docs.length - 1].data() as any)?.timestamp || null
+            : null,
       };
     } catch (error) {
       console.error('Error getting initial messages:', error);
@@ -406,14 +412,28 @@ export class FirebaseChatService {
   // Get older messages for infinite scroll
   static async getOlderMessages(
     conversationId: string,
-    lastDoc: QueryDocumentSnapshot<DocumentData>
+    cursor: QueryDocumentSnapshot<DocumentData> | Timestamp | number | Date
   ): Promise<PaginatedMessages> {
     try {
+      // Determine the correct startAfter argument. When we do not have the
+      // previous page's DocumentSnapshot (e.g., when loading from cache), we
+      // fall back to using the oldest message Timestamp as the cursor.
+      const startAfterArg: any =
+        cursor && typeof (cursor as any).id === 'string' && (cursor as any).ref
+          ? cursor
+          : cursor instanceof Timestamp
+          ? cursor
+          : typeof cursor === 'number'
+          ? Timestamp.fromMillis(cursor)
+          : cursor instanceof Date
+          ? Timestamp.fromDate(cursor)
+          : cursor;
+
       const q = query(
         collection(db, MESSAGES_COLLECTION),
         where('conversationId', '==', conversationId),
         orderBy('timestamp', 'desc'),
-        startAfter(lastDoc),
+        startAfter(startAfterArg),
         limit(30)
       );
 
@@ -449,6 +469,10 @@ export class FirebaseChatService {
         messages,
         lastDoc: snapshot.docs.length > 0 ? snapshot.docs[snapshot.docs.length - 1] : null,
         hasMore,
+        cursorTimestamp:
+          snapshot.docs.length > 0
+            ? (snapshot.docs[snapshot.docs.length - 1].data() as any)?.timestamp || null
+            : null,
       };
     } catch (error) {
       console.error('Error getting older messages:', error);

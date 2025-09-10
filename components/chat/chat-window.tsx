@@ -204,7 +204,12 @@ export const ChatWindow = ({
 
   // Load older messages with smooth scroll position maintenance
   const loadOlderMessages = useCallback(async () => {
-    if (!paginationData?.lastDoc || isLoadingOlder || hasReachedFirstMessage()) return;
+    if (
+      (!paginationData?.lastDoc && !paginationData?.cursorTimestamp) ||
+      isLoadingOlder ||
+      hasReachedFirstMessage()
+    )
+      return;
 
     setIsLoadingOlder(true);
 
@@ -231,7 +236,7 @@ export const ChatWindow = ({
     try {
       const olderMessages = await FirebaseChatService.getOlderMessages(
         chatId,
-        paginationData.lastDoc
+        paginationData.lastDoc || paginationData.cursorTimestamp!
       );
 
       // Track newly loaded message IDs for animation
@@ -244,6 +249,7 @@ export const ChatWindow = ({
         messages: [...olderMessages.messages, ...(prev?.messages || [])],
         lastDoc: olderMessages.lastDoc,
         hasMore: olderMessages.hasMore,
+        cursorTimestamp: olderMessages.cursorTimestamp,
       }));
 
       // Clear animation tracking after animation completes
@@ -289,14 +295,14 @@ export const ChatWindow = ({
     } finally {
       setIsLoadingOlder(false);
     }
-  }, [chatId, paginationData?.lastDoc, hasReachedFirstMessage]);
+  }, [chatId, paginationData?.lastDoc, paginationData?.cursorTimestamp, hasReachedFirstMessage]);
 
   // Handle loading older messages when triggered by scroll
   useEffect(() => {
-    if (isLoadingOlder && paginationData?.lastDoc) {
+    if (isLoadingOlder && (paginationData?.lastDoc || paginationData?.cursorTimestamp)) {
       loadOlderMessages();
     }
-  }, [isLoadingOlder, loadOlderMessages, paginationData?.lastDoc]);
+  }, [isLoadingOlder, loadOlderMessages, paginationData?.lastDoc, paginationData?.cursorTimestamp]);
 
   // Auto-disable pagination when first message is loaded
   useEffect(() => {
@@ -329,7 +335,16 @@ export const ChatWindow = ({
         const cached = readCache();
         if (cached && cached.messages.length > 0) {
           setMessages(cached.messages);
-          setPaginationData(null);
+          // Initialize pagination using the oldest cached message timestamp so
+          // that scroll-up can fetch older messages even when loaded from cache
+          const oldest = cached.messages[0]?.timestamp;
+          const oldestTs = toFirestoreTimestamp(oldest || null);
+          setPaginationData({
+            messages: cached.messages,
+            lastDoc: null,
+            hasMore: true,
+            cursorTimestamp: oldestTs,
+          } as any);
 
           // Scroll to bottom on load from cache
           setTimeout(() => {
