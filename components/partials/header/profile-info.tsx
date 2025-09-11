@@ -62,14 +62,19 @@ const ProfileInfo = () => {
               href: '/user-profile',
             },
             {
+              name: 'My account',
+              icon: 'heroicons:cog-6-tooth',
+              href: '/my-account',
+            },
+            {
               name: 'Billing',
               icon: 'heroicons:megaphone',
-              href: '/dashboard',
+              href: '/billing/payment-methods',
             },
             {
               name: 'Settings',
               icon: 'heroicons:paper-airplane',
-              href: '/dashboard',
+              href: '/user-profile/settings',
             },
             {
               name: 'Keyboard shortcuts',

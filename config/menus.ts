@@ -41,6 +41,7 @@ import {
   LucideIcon,
   CustomIcon,
   Mail,
+  User,
 } from '@/components/svg';
 
 export interface MenuItemProps {
@@ -103,6 +104,11 @@ export const userMenuConfig = {
       icon: Messages,
       href: '/support-chat',
     },
+    {
+      title: 'My Account',
+      icon: Graph,
+      href: '/my-account',
+    },
   ],
   sidebarNav: {
     classic: [
@@ -152,6 +158,11 @@ export const userMenuConfig = {
         title: 'Chat',
         icon: Messages,
         href: '/support-chat',
+      },
+      {
+        title: 'My Account',
+        icon: Graph,
+        href: '/my-account',
       },
     ],
   },
