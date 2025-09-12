@@ -1,7 +1,17 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  swcMinify: false,
+  optimizeFonts: false,
+  experimental: {
+    optimizePackageImports: ['lucide-react'],
+  },
   webpack(config) {
+    config.optimization = {
+      ...config.optimization,
+      usedExports: false,
+      sideEffects: false,
+    };
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.('.svg'));
 
