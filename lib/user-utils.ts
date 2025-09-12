@@ -14,7 +14,9 @@ export const createDefaultKycRecord = (): KycRecord => ({
   governmentIdType: '',
   governmentIdFrontImage: '',
   governmentIdBackImage: '',
-  status: 'pending', // pending, approved, rejected
+  proofOfBillingImage: '',
+  selfieWithIdImage: '',
+  status: 'not_submitted', // pending, approved, rejected
   statusMessage: '',
   createdAt: new Date(),
   updatedAt: new Date(),

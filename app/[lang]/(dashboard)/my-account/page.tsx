@@ -64,6 +64,7 @@ export default function MyAccountPage() {
   const userEmail = user?.email || '';
   const userImage = user?.image || '';
   const isVerified = user?.isVerified === true; // strict match to Firestore boolean
+  const kycStatus = user?.kycRecord?.status || 'not_submitted';
 
   // Compute profile completion heuristically
   const profileCompletion = useMemo(() => {
@@ -123,7 +124,7 @@ export default function MyAccountPage() {
                   {userName}
                 </h2>
                 {isVerified ? (
-                  <Badge variant="default" className="bg-emerald-500 text-white gap-1">
+                  <Badge className="bg-emerald-500 text-white gap-1">
                     <CheckCircle2 className="w-4 h-4" /> Verified
                   </Badge>
                 ) : (
@@ -134,10 +135,17 @@ export default function MyAccountPage() {
               </div>
               <p className="text-sm text-muted-foreground truncate">{userEmail}</p>
             </div>
-            {!isVerified && (
-              <Link href="/user-profile/settings">
+            {!isVerified && kycStatus === 'not_submitted' && (
+              <Link href="/user-profile/verify">
                 <Button size="sm" className="whitespace-nowrap">
                   Verify now
+                </Button>
+              </Link>
+            )}
+            {!isVerified && kycStatus === 'rejected' && (
+              <Link href="/user-profile/verify">
+                <Button size="sm" variant="outline" className="whitespace-nowrap">
+                  Resubmit
                 </Button>
               </Link>
             )}
@@ -167,6 +175,26 @@ export default function MyAccountPage() {
                 <AlertDescription>
                   You get a <span className="font-semibold">5% discount</span> on every rental and
                   faster booking approval.
+                </AlertDescription>
+              </div>
+            </Alert>
+          ) : kycStatus === 'pending' ? (
+            <Alert color="info" variant="outline" className="items-start">
+              <div className="grow">
+                <AlertTitle className="mb-1">Verification under review</AlertTitle>
+                <AlertDescription>
+                  Your verification application is being reviewed. We'll notify you once it's
+                  approved.
+                </AlertDescription>
+              </div>
+            </Alert>
+          ) : kycStatus === 'rejected' ? (
+            <Alert color="destructive" variant="outline" className="items-start">
+              <div className="grow">
+                <AlertTitle className="mb-1">Verification rejected</AlertTitle>
+                <AlertDescription>
+                  Your verification was rejected. Please submit a new application with correct
+                  documents.
                 </AlertDescription>
               </div>
             </Alert>

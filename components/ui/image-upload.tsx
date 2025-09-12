@@ -14,6 +14,7 @@ interface ImageUploadProps {
   disabled?: boolean;
   maxSizeInMB?: number;
   allowedTypes?: string[];
+  storagePath?: string; // Custom storage path (defaults to chat-images)
 }
 
 export const ImageUpload = ({
@@ -23,6 +24,7 @@ export const ImageUpload = ({
   disabled = false,
   maxSizeInMB = 5,
   allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+  storagePath = 'chat-images',
 }: ImageUploadProps) => {
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -32,7 +34,7 @@ export const ImageUpload = ({
     const timestamp = Date.now();
     const randomId = Math.random().toString(36).substr(2, 9);
     const fileExtension = file.name.split('.').pop() || 'jpg';
-    return `chat-images/${userId}/${timestamp}_${randomId}.${fileExtension}`;
+    return `${storagePath}/${userId}/${timestamp}_${randomId}.${fileExtension}`;
   };
 
   // Validate file
