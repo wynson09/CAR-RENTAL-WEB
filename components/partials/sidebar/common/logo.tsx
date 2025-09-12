@@ -9,9 +9,10 @@ const SidebarLogo = ({ hovered }: { hovered?: boolean }) => {
     <div className="px-4 py-3">
       <div className=" flex items-center">
         <div className="flex flex-1 items-center gap-x-3  ">
-          <SiteLogo className="text-primary h-8 w-8" />
-          {(!collapsed || hovered) && (
-            <div className="flex-1  text-xl text-primary  font-semibold">Nacs Car Rental</div>
+          {!collapsed || hovered ? (
+            <NCRLogo className="h-10 w-auto" width={120} height={32} />
+          ) : (
+            <SiteLogo className="text-primary h-8 w-8" />
           )}
         </div>
         {sidebarType === 'classic' && (!collapsed || hovered) && (
