@@ -220,13 +220,15 @@ export const AddCarDialog = ({ isOpen, onOpenChange, onAddCar, isLoading }: AddC
               maxItems={15}
             />
 
-            <ImageUpload
-              label="Car Image"
-              value={newCar.image}
-              onChange={(url) => setNewCar({ ...newCar, image: url })}
-              folder="car-images"
-              required
-            />
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Car Image</label>
+              <ImageUpload
+                onImageUpload={(url) => setNewCar({ ...newCar, image: url })}
+                currentUserId="car-admin"
+                storagePath="car-images"
+                className="w-full"
+              />
+            </div>
           </div>
 
           {/* Actions */}

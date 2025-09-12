@@ -112,7 +112,6 @@ export default function VerifyKycPage() {
       toast({
         title: 'Validation Error',
         description: 'Please fill in all required fields in Step 1',
-        variant: 'destructive',
       });
       return false;
     }
@@ -131,7 +130,6 @@ export default function VerifyKycPage() {
       toast({
         title: 'Validation Error',
         description: 'Please complete all required fields in Step 2',
-        variant: 'destructive',
       });
       return false;
     }
@@ -164,7 +162,6 @@ export default function VerifyKycPage() {
       toast({
         title: 'Authentication Error',
         description: 'You must be signed in to submit verification.',
-        variant: 'destructive',
       });
       return;
     }
@@ -282,7 +279,6 @@ export default function VerifyKycPage() {
       toast({
         title: 'Submission Error',
         description: 'Failed to submit verification. Please try again.',
-        variant: 'destructive',
       });
     }
   };
@@ -339,7 +335,6 @@ export default function VerifyKycPage() {
           toast({
             title: 'File too large',
             description: 'Please select an image under 5MB',
-            variant: 'destructive',
           });
           return;
         }
@@ -349,7 +344,6 @@ export default function VerifyKycPage() {
           toast({
             title: 'Invalid file type',
             description: 'Please select an image file',
-            variant: 'destructive',
           });
           return;
         }
