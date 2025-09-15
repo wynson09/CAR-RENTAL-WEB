@@ -327,44 +327,6 @@ export default function MyAccountPage() {
         </CardContent>
       </Card>
 
-      {/* Security & Settings */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Security & settings</CardTitle>
-          <CardDescription>Keep your account safe</CardDescription>
-        </CardHeader>
-        <CardContent className="grid sm:grid-cols-2 gap-3">
-          <Section
-            title="Change password"
-            href="/user-profile/settings"
-            icon={<Key className="w-5 h-5" />}
-          >
-            Update your password securely
-          </Section>
-          <Section
-            title="Two-Factor Auth"
-            href="/user-profile/settings"
-            icon={<Smartphone className="w-5 h-5" />}
-          >
-            Add extra protection to your account
-          </Section>
-          <Section
-            title="Login activity"
-            href="/user-profile/activity"
-            icon={<Lock className="w-5 h-5" />}
-          >
-            Last login and active devices
-          </Section>
-          <Section
-            title="Delete account"
-            href="/user-profile/settings"
-            icon={<Trash className="w-5 h-5" />}
-          >
-            Permanently remove your data
-          </Section>
-        </CardContent>
-      </Card>
-
       {/* Support / Help */}
       <Card>
         <CardHeader>

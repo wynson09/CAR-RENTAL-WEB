@@ -5,18 +5,11 @@ import { useSession } from 'next-auth/react';
 import { useUserStore } from '@/store';
 import { CheckCircle2, AlertCircle, XCircle, Clock } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
-import {
-  ProfileSidebar,
-  ProfileInformation,
-  PasswordManagement,
-  KYCApplicationViewer,
-  ImageViewer,
-} from '@/components/user-profile';
+import { ProfileSidebar, ProfileInformation, PasswordManagement } from '@/components/user-profile';
 
 const UserProfile = () => {
   const { data: session } = useSession();
   const { user } = useUserStore();
-  const [viewingImage, setViewingImage] = useState<string | null>(null);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   // Determine auth provider
@@ -88,15 +81,6 @@ const UserProfile = () => {
 
   const verificationStatus = getVerificationStatus();
 
-  // Create component instances with proper props
-  const KYCViewer = () => (
-    <KYCApplicationViewer
-      user={user!}
-      verificationStatus={verificationStatus}
-      onViewImage={setViewingImage}
-    />
-  );
-
   if (!user) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -109,7 +93,7 @@ const UserProfile = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="h-full">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-foreground">My Profile</h1>
@@ -124,7 +108,6 @@ const UserProfile = () => {
           authProvider={authProvider}
           isUploadingImage={isUploadingImage}
           onImageUpload={handleImageUpload}
-          KYCApplicationViewer={KYCViewer}
         />
 
         {/* Main Content Area */}
@@ -136,9 +119,6 @@ const UserProfile = () => {
           <PasswordManagement authProvider={authProvider} />
         </div>
       </div>
-
-      {/* Image Viewer */}
-      <ImageViewer viewingImage={viewingImage} onClose={() => setViewingImage(null)} />
     </div>
   );
 };

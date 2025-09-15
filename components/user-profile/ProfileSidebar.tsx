@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Camera, FileText, RotateCcw } from 'lucide-react';
 import Link from 'next/link';
 import { UserData } from '@/store';
+import KYCApplicationViewer from './KYCApplicationViewer';
 
 interface ProfileSidebarProps {
   user: UserData;
@@ -20,7 +21,6 @@ interface ProfileSidebarProps {
   authProvider: string;
   isUploadingImage: boolean;
   onImageUpload: (file: File) => void;
-  KYCApplicationViewer: React.ComponentType;
 }
 
 const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
@@ -29,7 +29,6 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
   authProvider,
   isUploadingImage,
   onImageUpload,
-  KYCApplicationViewer,
 }) => {
   const StatusIcon = verificationStatus.icon;
 
@@ -133,7 +132,7 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
             <CardTitle className="text-lg">Account Verification</CardTitle>
           </CardHeader>
           <CardContent>
-            <KYCApplicationViewer />
+            <KYCApplicationViewer user={user} verificationStatus={verificationStatus} />
             {user.kycRecord.status === 'rejected' && (
               <Link href="/user-profile/verify" className="block mt-3">
                 <Button variant="outline" className="w-full">

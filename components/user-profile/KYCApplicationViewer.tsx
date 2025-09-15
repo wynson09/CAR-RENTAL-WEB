@@ -13,7 +13,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { FileText, RotateCcw, Eye } from 'lucide-react';
+import {
+  FileText,
+  RotateCcw,
+  CheckCircle,
+  XCircle,
+  User,
+  CreditCard,
+  MapPin,
+  Phone,
+  Mail,
+  Calendar,
+  Globe,
+  Users,
+} from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { UserData } from '@/store';
@@ -26,41 +39,58 @@ interface KYCApplicationViewerProps {
     color: string;
     icon: React.ComponentType<any>;
   };
-  onViewImage: (src: string) => void;
 }
 
 const KYCApplicationViewer: React.FC<KYCApplicationViewerProps> = ({
   user,
   verificationStatus,
-  onViewImage,
 }) => {
   const kyc = user?.kycRecord;
   if (!kyc || kyc.status === 'not_submitted') return null;
 
   const StatusIcon = verificationStatus.icon;
 
-  const ImagePreview = ({ src, alt, label }: { src?: string; alt: string; label: string }) => {
-    if (!src) return null;
+  const DocumentDisplay = ({
+    src,
+    label,
+    icon: Icon,
+  }: {
+    src?: string;
+    label: string;
+    icon: React.ComponentType<any>;
+  }) => {
+    if (!src) {
+      return (
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 mb-2">
+            <Icon className="w-4 h-4 text-gray-600" />
+            <span className="text-sm font-medium text-gray-700">{label}</span>
+          </div>
+          <div className="flex items-center justify-center h-32 bg-gray-100 rounded-lg border-2 border-dashed border-gray-300">
+            <div className="text-center">
+              <XCircle className="w-8 h-8 text-red-500 mx-auto mb-2" />
+              <span className="text-sm text-red-500 font-medium">Not Submitted</span>
+            </div>
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div className="space-y-2">
-        <Label className="text-sm font-medium">{label}</Label>
-        <div className="relative w-full h-48 bg-gray-50 rounded-lg overflow-hidden border">
-          <Image
-            src={src}
-            alt={alt}
-            fill
-            className="object-contain"
-            onClick={() => onViewImage(src)}
-          />
-          <Button
-            size="lg"
-            variant="outline"
-            className="absolute top-2 right-2 h-8 w-8 p-0 rounded-full bg-gray-100/90 hover:bg-gray-200/90 border-white shadow-md backdrop-blur-sm"
-            onClick={() => onViewImage(src)}
-          >
-            <Eye className="w-4 h-4 text-gray-700" />
-          </Button>
+        <div className="flex items-center gap-2 mb-2">
+          <Icon className="w-4 h-4 text-gray-600" />
+          <span className="text-sm font-medium text-gray-700">{label}</span>
+        </div>
+        <div className="relative w-full h-32 bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
+          <Image src={src} alt={label} fill className="object-cover" />
+          {/* Status indicator overlay */}
+          <div className="absolute top-2 right-2">
+            <div className="flex items-center gap-1 bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
+              <CheckCircle className="w-3 h-3" />
+              Submitted
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -105,92 +135,164 @@ const KYCApplicationViewer: React.FC<KYCApplicationViewerProps> = ({
           </div>
 
           {/* Personal Information */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Personal Information</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-6">
-              <div>
-                <Label>First Name</Label>
-                <Input value={user?.firstName || ''} disabled />
+          <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
+              <User className="w-5 h-5 text-blue-600" />
+              Personal Information
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2 text-sm font-medium text-gray-600">
+                  <User className="w-4 h-4" />
+                  First Name
+                </Label>
+                <div className="p-3 bg-gray-50 rounded-md border text-sm">
+                  {user?.firstName || 'Not provided'}
+                </div>
               </div>
-              <div>
-                <Label>Last Name</Label>
-                <Input value={user?.lastName || ''} disabled />
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2 text-sm font-medium text-gray-600">
+                  <User className="w-4 h-4" />
+                  Last Name
+                </Label>
+                <div className="p-3 bg-gray-50 rounded-md border text-sm">
+                  {user?.lastName || 'Not provided'}
+                </div>
               </div>
-              <div>
-                <Label>Email</Label>
-                <Input value={user?.email || ''} disabled />
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2 text-sm font-medium text-gray-600">
+                  <Mail className="w-4 h-4" />
+                  Email
+                </Label>
+                <div className="p-3 bg-gray-50 rounded-md border text-sm">
+                  {user?.email || 'Not provided'}
+                </div>
               </div>
-              <div>
-                <Label>Birth Date</Label>
-                <Input value={kyc.birthDate || 'Not provided'} disabled />
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2 text-sm font-medium text-gray-600">
+                  <Calendar className="w-4 h-4" />
+                  Birth Date
+                </Label>
+                <div className="p-3 bg-gray-50 rounded-md border text-sm">
+                  {kyc.birthDate || 'Not provided'}
+                </div>
               </div>
-              <div>
-                <Label>Gender</Label>
-                <Input value={kyc.gender || 'Not provided'} disabled />
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2 text-sm font-medium text-gray-600">
+                  <Users className="w-4 h-4" />
+                  Gender
+                </Label>
+                <div className="p-3 bg-gray-50 rounded-md border text-sm">
+                  {kyc.gender || 'Not provided'}
+                </div>
               </div>
-              <div>
-                <Label>Nationality</Label>
-                <Input value={kyc.nationality || 'Not provided'} disabled />
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2 text-sm font-medium text-gray-600">
+                  <Globe className="w-4 h-4" />
+                  Nationality
+                </Label>
+                <div className="p-3 bg-gray-50 rounded-md border text-sm">
+                  {kyc.nationality || 'Not provided'}
+                </div>
               </div>
-              <div>
-                <Label>Phone Number</Label>
-                <Input value={kyc.phoneNumber || 'Not provided'} disabled />
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2 text-sm font-medium text-gray-600">
+                  <Phone className="w-4 h-4" />
+                  Phone Number
+                </Label>
+                <div className="p-3 bg-gray-50 rounded-md border text-sm">
+                  {kyc.phoneNumber || 'Not provided'}
+                </div>
               </div>
-              <div className="md:col-span-2">
-                <Label>Address</Label>
-                <Input value={kyc.address || 'Not provided'} disabled />
+              <div className="space-y-2 md:col-span-2">
+                <Label className="flex items-center gap-2 text-sm font-medium text-gray-600">
+                  <MapPin className="w-4 h-4" />
+                  Address
+                </Label>
+                <div className="p-3 bg-gray-50 rounded-md border text-sm">
+                  {kyc.address || 'Not provided'}
+                </div>
               </div>
-              <div>
-                <Label>City</Label>
-                <Input value={kyc.city || 'Not provided'} disabled />
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2 text-sm font-medium text-gray-600">
+                  <MapPin className="w-4 h-4" />
+                  City
+                </Label>
+                <div className="p-3 bg-gray-50 rounded-md border text-sm">
+                  {kyc.city || 'Not provided'}
+                </div>
               </div>
-              <div>
-                <Label>State/Province</Label>
-                <Input value={kyc.state || 'Not provided'} disabled />
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2 text-sm font-medium text-gray-600">
+                  <MapPin className="w-4 h-4" />
+                  State/Province
+                </Label>
+                <div className="p-3 bg-gray-50 rounded-md border text-sm">
+                  {kyc.state || 'Not provided'}
+                </div>
               </div>
-              <div>
-                <Label>Zip Code</Label>
-                <Input value={kyc.zipCode || 'Not provided'} disabled />
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2 text-sm font-medium text-gray-600">
+                  <MapPin className="w-4 h-4" />
+                  Zip Code
+                </Label>
+                <div className="p-3 bg-gray-50 rounded-md border text-sm">
+                  {kyc.zipCode || 'Not provided'}
+                </div>
               </div>
             </div>
           </div>
 
           {/* ID Information */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Identification</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-              <div>
-                <Label>Government ID Type</Label>
-                <Input value={kyc.governmentIdType || 'Not provided'} disabled />
+          <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
+              <CreditCard className="w-5 h-5 text-green-600" />
+              Identification
+            </h3>
+
+            {/* Basic ID Info */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2 text-sm font-medium text-gray-600">
+                  <CreditCard className="w-4 h-4" />
+                  Government ID Type
+                </Label>
+                <div className="p-3 bg-gray-50 rounded-md border text-sm">
+                  {kyc.governmentIdType || 'Not provided'}
+                </div>
               </div>
-              <div>
-                <Label>ID Number</Label>
-                <Input value={kyc.governmentId || 'Not provided'} disabled />
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2 text-sm font-medium text-gray-600">
+                  <CreditCard className="w-4 h-4" />
+                  ID Number
+                </Label>
+                <div className="p-3 bg-gray-50 rounded-md border text-sm">
+                  {kyc.governmentId || 'Not provided'}
+                </div>
               </div>
             </div>
 
             {/* Document Images */}
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-8">
-              <ImagePreview
-                src={kyc.governmentIdFrontImage}
-                alt="Government ID Front"
-                label="ID Front"
-              />
-              <ImagePreview
-                src={kyc.governmentIdBackImage}
-                alt="Government ID Back"
-                label="ID Back"
-              />
-              <ImagePreview
-                src={kyc.selfieWithIdImage}
-                alt="Selfie with ID"
-                label="Selfie with ID"
-              />
-              <ImagePreview
-                src={kyc.proofOfBillingImage}
-                alt="Proof of Billing"
-                label="Proof of Billing"
-              />
+            <div className="space-y-4">
+              <h4 className="font-medium text-gray-800 mb-4">Submitted Documents</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <DocumentDisplay
+                  src={kyc.governmentIdFrontImage}
+                  label="Government ID (Front)"
+                  icon={CreditCard}
+                />
+                <DocumentDisplay
+                  src={kyc.governmentIdBackImage}
+                  label="Government ID (Back)"
+                  icon={CreditCard}
+                />
+                <DocumentDisplay src={kyc.selfieWithIdImage} label="Selfie with ID" icon={User} />
+                <DocumentDisplay
+                  src={kyc.proofOfBillingImage}
+                  label="Proof of Billing"
+                  icon={FileText}
+                />
+              </div>
             </div>
           </div>
 
