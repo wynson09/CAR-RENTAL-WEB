@@ -1,69 +1,19 @@
 'use client';
-import Link from 'next/link';
 import { useUserStore } from '@/store';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import {
-  CreditCard,
-  CheckCircle2,
-  XCircle,
-  ChevronRight,
-  User2,
-  Calendar,
-  FileText,
-  Bell,
-  Shield,
-  LifeBuoy,
-  Smartphone,
-  Key,
-  Trash,
-  Lock,
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { useEffect, useMemo, useState } from 'react';
 import { BookingFirebaseService, type BookingData } from '@/lib/firebase-booking-service';
-
-const Section = ({
-  title,
-  children,
-  href,
-  icon,
-}: {
-  title: string;
-  children: React.ReactNode;
-  href: string;
-  icon: React.ReactNode;
-}) => {
-  return (
-    <Link href={href} className="block">
-      <Card className="hover:border-primary/40 transition-colors">
-        <CardHeader className="pb-3">
-          <CardTitle className="flex items-center gap-2 text-base">
-            <span className="text-primary">{icon}</span>
-            {title}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="flex items-center justify-between">
-          <div className="text-sm text-muted-foreground">{children}</div>
-          <ChevronRight className="w-5 h-5 text-muted-foreground" />
-        </CardContent>
-      </Card>
-    </Link>
-  );
-};
+import {
+  AccountSidebar,
+  AccountOverview,
+  BookingsSection,
+  QuickActions,
+} from '@/components/my-account';
 
 export default function MyAccountPage() {
   const { user } = useUserStore();
   const [bookings, setBookings] = useState<BookingData[] | null>(null);
 
-  const userName = user?.name || 'Your name';
-  const userEmail = user?.email || '';
-  const userImage = user?.image || '';
-  const isVerified = user?.isVerified === true; // strict match to Firestore boolean
+  const isVerified = user?.isVerified === true;
   const kycStatus = user?.kycRecord?.status || 'not_submitted';
 
   // Compute profile completion heuristically
@@ -106,253 +56,56 @@ export default function MyAccountPage() {
     return bookings.filter((b) => ['completed', 'cancelled', 'refunded'].includes(b.status)).length;
   }, [bookings]);
 
+  const verificationStatus = {
+    isVerified,
+    kycStatus,
+  };
+
+  if (!user) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading account...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-5xl mx-auto pt-6 space-y-6">
-      {/* Header / Identity */}
-      <Card>
-        <CardContent className="p-4 sm:p-6">
-          <div className="flex items-start gap-4">
-            <Avatar className="h-14 w-14">
-              <AvatarImage src={userImage} alt={userName} />
-              <AvatarFallback className="bg-primary text-primary-foreground">
-                {userName.charAt(0).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="text-lg font-semibold truncate max-w-[220px] sm:max-w-none">
-                  {userName}
-                </h2>
-                {isVerified ? (
-                  <Badge className="bg-emerald-500 text-white gap-1">
-                    <CheckCircle2 className="w-4 h-4" /> Verified
-                  </Badge>
-                ) : (
-                  <Badge variant="outline" className="text-amber-600 border-amber-300 gap-1">
-                    <XCircle className="w-4 h-4" /> Not verified
-                  </Badge>
-                )}
-              </div>
-              <p className="text-sm text-muted-foreground truncate">{userEmail}</p>
-            </div>
-            {!isVerified && kycStatus === 'not_submitted' && (
-              <Link href="/user-profile/verify">
-                <Button size="sm" className="whitespace-nowrap">
-                  Verify now
-                </Button>
-              </Link>
-            )}
-            {!isVerified && kycStatus === 'rejected' && (
-              <Link href="/user-profile/verify">
-                <Button size="sm" variant="outline" className="whitespace-nowrap">
-                  Resubmit
-                </Button>
-              </Link>
-            )}
-          </div>
-          {/* Progress */}
-          <div className="mt-5 space-y-2">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Profile completion</span>
-              <span className="font-medium">{profileCompletion}%</span>
-            </div>
-            <Progress value={profileCompletion} />
-          </div>
-        </CardContent>
-      </Card>
+    <div className="h-full">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-foreground">My Account</h1>
+        <p className="text-muted-foreground mt-2">Manage your account, bookings, and preferences</p>
+      </div>
 
-      {/* Verification & Benefits */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Verification status & benefits</CardTitle>
-          <CardDescription>Complete your KYC to unlock member perks</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {isVerified ? (
-            <Alert color="success" variant="soft" className="items-start">
-              <div className="grow">
-                <AlertTitle className="mb-1">You're verified</AlertTitle>
-                <AlertDescription>
-                  You get a <span className="font-semibold">5% discount</span> on every rental and
-                  faster booking approval.
-                </AlertDescription>
-              </div>
-            </Alert>
-          ) : kycStatus === 'pending' ? (
-            <Alert color="info" variant="outline" className="items-start">
-              <div className="grow">
-                <AlertTitle className="mb-1">Verification under review</AlertTitle>
-                <AlertDescription>
-                  Your verification application is being reviewed. We'll notify you once it's
-                  approved.
-                </AlertDescription>
-              </div>
-            </Alert>
-          ) : kycStatus === 'rejected' ? (
-            <Alert color="destructive" variant="outline" className="items-start">
-              <div className="grow">
-                <AlertTitle className="mb-1">Verification rejected</AlertTitle>
-                <AlertDescription>
-                  Your verification was rejected. Please submit a new application with correct
-                  documents.
-                </AlertDescription>
-              </div>
-            </Alert>
-          ) : (
-            <Alert color="warning" variant="outline" className="items-start">
-              <div className="grow">
-                <AlertTitle className="mb-1">Not verified</AlertTitle>
-                <AlertDescription>
-                  Verify your account to enjoy a <span className="font-semibold">5% discount</span>{' '}
-                  on all rentals.
-                </AlertDescription>
-              </div>
-            </Alert>
-          )}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {/* Left Sidebar */}
+        <AccountSidebar
+          user={user}
+          profileCompletion={profileCompletion}
+          upcomingCount={upcomingCount}
+          pastCount={pastCount}
+          verificationStatus={verificationStatus}
+        />
 
-          <div className="grid sm:grid-cols-2 gap-3">
-            <Section title="Profile" href="/user-profile" icon={<User2 className="w-5 h-5" />}>
-              Manage your personal info, avatar, and phone/address
-            </Section>
-            <Section
-              title="Settings"
-              href="/user-profile/settings"
-              icon={<Shield className="w-5 h-5" />}
-            >
-              Update password and account preferences
-            </Section>
-          </div>
-        </CardContent>
-      </Card>
+        {/* Main Content Area */}
+        <div className="lg:col-span-3 space-y-6">
+          {/* Account Overview */}
+          <AccountOverview user={user} verificationStatus={verificationStatus} />
 
-      {/* Bookings Overview */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Bookings overview</CardTitle>
-          <CardDescription>Quick glance at your rentals</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid sm:grid-cols-3 gap-3">
-            <Card className="shadow-none border-dashed">
-              <CardHeader className="mb-1">
-                <CardTitle className="text-base">Upcoming</CardTitle>
-                <CardDescription>Next trips and active rentals</CardDescription>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <div className="text-2xl font-semibold">{bookings ? upcomingCount : '—'}</div>
-                <div className="mt-3">
-                  <Link href="/active-rentals">
-                    <Button size="sm" variant="outline">
-                      View active
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="shadow-none border-dashed">
-              <CardHeader className="mb-1">
-                <CardTitle className="text-base">Past</CardTitle>
-                <CardDescription>Completed and cancelled</CardDescription>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <div className="text-2xl font-semibold">{bookings ? pastCount : '—'}</div>
-                <div className="mt-3">
-                  <Link href="/previous-rentals">
-                    <Button size="sm" variant="outline">
-                      View history
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="shadow-none border-dashed">
-              <CardHeader className="mb-1">
-                <CardTitle className="text-base">New booking</CardTitle>
-                <CardDescription>Find a car and book</CardDescription>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <Link href="/start-a-booking">
-                  <Button size="sm">Start a booking</Button>
-                </Link>
-              </CardContent>
-            </Card>
-          </div>
-        </CardContent>
-      </Card>
+          {/* Bookings Section */}
+          <BookingsSection
+            upcomingCount={upcomingCount}
+            pastCount={pastCount}
+            isLoading={bookings === null}
+          />
 
-      {/* Payment & Billing */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Payment & billing</CardTitle>
-          <CardDescription>Manage methods and view invoices</CardDescription>
-        </CardHeader>
-        <CardContent className="grid sm:grid-cols-2 gap-3">
-          <Section
-            title="Payment methods"
-            href="/billing/payment-methods"
-            icon={<CreditCard className="w-5 h-5" />}
-          >
-            Add/remove cards and wallets
-          </Section>
-          <Section
-            title="Transactions"
-            href="/invoice-list"
-            icon={<FileText className="w-5 h-5" />}
-          >
-            Rental invoices & receipts
-          </Section>
-        </CardContent>
-      </Card>
-
-      {/* Notifications / Alerts */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Notifications</CardTitle>
-          <CardDescription>Reminders, payments, and offers</CardDescription>
-        </CardHeader>
-        <CardContent className="grid sm:grid-cols-3 gap-3">
-          <Section
-            title="Return reminders"
-            href="/active-rentals"
-            icon={<Calendar className="w-5 h-5" />}
-          >
-            Get notified about upcoming returns
-          </Section>
-          <Section title="Payment alerts" href="/invoice-list" icon={<Bell className="w-5 h-5" />}>
-            Pending or failed payments
-          </Section>
-          <Section title="Promotions" href="/dashboard" icon={<FileText className="w-5 h-5" />}>
-            Seasonal deals and discounts
-          </Section>
-        </CardContent>
-      </Card>
-
-      {/* Support / Help */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Support & help</CardTitle>
-          <CardDescription>We’re here to help</CardDescription>
-        </CardHeader>
-        <CardContent className="grid sm:grid-cols-3 gap-3">
-          <Section
-            title="Contact support"
-            href="/support-chat"
-            icon={<LifeBuoy className="w-5 h-5" />}
-          >
-            Chat, email, or hotline
-          </Section>
-          <Section title="FAQs" href="/react-email" icon={<User2 className="w-5 h-5" />}>
-            Browse the Help Center
-          </Section>
-          <Section
-            title="Report an issue"
-            href="/enhanced-chat"
-            icon={<Bell className="w-5 h-5" />}
-          >
-            Open a ticket
-          </Section>
-        </CardContent>
-      </Card>
+          {/* Quick Actions */}
+          <QuickActions />
+        </div>
+      </div>
     </div>
   );
 }
