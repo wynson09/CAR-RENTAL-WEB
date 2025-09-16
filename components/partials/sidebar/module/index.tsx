@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { cn, isLocationMatch, getDynamicPath, translate } from '@/lib/utils';
-import { menusConfig, userMenuConfig, ModernNavType } from '@/config/menus';
+import { menusConfig, userMenuConfig, ModernNavType, adminMenuConfig } from '@/config/menus';
 import SingleIconMenu from './single-icon-menu';
 import { useRouter, usePathname } from 'next/navigation';
 import { useSidebar, useThemeStore, useUserStore } from '@/store';
@@ -23,7 +23,7 @@ const ModuleSidebar = ({ trans }: { trans: any }) => {
   // Use user-specific menu for regular users, admin menu for admins
   const isAdmin = user?.role === 'admin' || user?.role === 'moderator';
   const menus = isAdmin
-    ? menusConfig?.sidebarNav?.modern || []
+    ? adminMenuConfig?.sidebarNav?.modern || []
     : userMenuConfig?.sidebarNav?.classic || []; // Use classic for users since modern might not exist in userMenuConfig
   const { subMenu, setSubmenu, collapsed, setCollapsed, sidebarBg } = useSidebar();
   const { isRtl } = useThemeStore();

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { cn, isLocationMatch } from '@/lib/utils';
 import { useSidebar, useThemeStore, useUserStore } from '@/store';
 import SidebarLogo from '../common/logo';
-import { menusConfig, userMenuConfig } from '@/config/menus';
+import { adminMenuConfig, menusConfig, userMenuConfig } from '@/config/menus';
 import MenuLabel from '../common/menu-label';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -20,7 +20,7 @@ const MobileSidebar = ({ className, trans }: { className?: string; trans: any })
   // Use user-specific menu for regular users, admin menu for admins
   const isAdmin = user?.role === 'admin' || user?.role === 'moderator';
   const menus = isAdmin
-    ? menusConfig?.sidebarNav?.classic || []
+    ? adminMenuConfig?.sidebarNav?.classic || []
     : userMenuConfig?.sidebarNav?.classic || [];
   const { collapsed } = useSidebar();
 
@@ -96,14 +96,10 @@ const MobileSidebar = ({ className, trans }: { className?: string; trans: any })
               <li key={`menu_key_${i}`}>
                 {/* single menu  */}
 
-                {!item.child && !item.isHeader && (
-                  <SingleMenuItem item={item} collapsed={collapsed} />
-                )}
+                {!item.child && <SingleMenuItem item={item} collapsed={collapsed} />}
 
                 {/* menu label */}
-                {item.isHeader && !item.child && !collapsed && (
-                  <MenuLabel item={item} trans={trans} />
-                )}
+                {!item.child && !collapsed && <MenuLabel item={item} trans={trans} />}
 
                 {/* sub menu */}
                 {item.child && (

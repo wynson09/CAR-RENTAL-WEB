@@ -310,24 +310,6 @@ export const CarCard = ({
                     : '1 day rental'}
                 </span>
                 <div className="flex items-center gap-2">
-                  {isVerifiedUser && (
-                    <div className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1">
-                      <svg
-                        className="w-3 h-3"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      VERIFIED
-                    </div>
-                  )}
                   {driveOption === 'with-driver' && (
                     <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1">
                       <svg
