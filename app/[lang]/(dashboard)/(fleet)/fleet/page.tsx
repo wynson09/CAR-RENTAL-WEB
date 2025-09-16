@@ -162,10 +162,12 @@ const FleetPage = () => {
     selectedTime,
     onTimeChange,
     placeholder = '--:-- --',
+    className = '',
   }: {
     selectedTime: string;
     onTimeChange: (time: string) => void;
     placeholder?: string;
+    className?: string;
   }) => {
     const parseTime = (timeStr: string) => {
       if (!timeStr) return { hour: '', minute: '', period: '' };
@@ -208,7 +210,8 @@ const FleetPage = () => {
             variant="outline"
             className={cn(
               'w-full justify-start text-left font-normal',
-              !selectedTime && 'text-muted-foreground'
+              !selectedTime && 'text-muted-foreground',
+              className
             )}
           >
             <Clock className="mr-2 h-4 w-4" />
