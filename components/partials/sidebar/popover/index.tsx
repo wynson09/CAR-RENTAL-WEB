@@ -12,15 +12,17 @@ import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { usePathname } from 'next/navigation';
 import AddBlock from '../common/add-block';
-import { userMenuConfig } from '@/config/menus';
+import { adminMenuConfig, userMenuConfig } from '@/config/menus';
 
 const PopoverSidebar = ({ trans }: { trans: string }) => {
   const { collapsed, sidebarBg } = useSidebar();
   const { layout, isRtl } = useThemeStore();
   const { user } = useUserStore();
-  // const userMenus = userMenuConfig?.sidebarNav?.classic || [];
-  // const adminMenus = adminMenuConfig?.sidebarNav?.classic|| [];
-  const menus = userMenuConfig?.sidebarNav?.classic || [];
+  const userMenus = userMenuConfig?.sidebarNav?.classic || [];
+  const adminMenus = adminMenuConfig?.sidebarNav?.classic || [];
+  // Use user-specific menu for regular users, admin menu for admins
+  const isAdmin = user?.role === 'admin' || user?.role === 'moderator';
+  const menus = isAdmin ? adminMenus : userMenus;
   const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null);
   const [activeMultiMenu, setMultiMenu] = useState<number | null>(null);
 

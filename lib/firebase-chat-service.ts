@@ -70,6 +70,8 @@ export interface PaginatedMessages {
   messages: ChatMessage[];
   lastDoc: QueryDocumentSnapshot<DocumentData> | null;
   hasMore: boolean;
+  // Oldest message timestamp in this page (for timestamp-based cursors)
+  cursorTimestamp: Timestamp | null;
 }
 
 export interface SpamPreventionState {
@@ -100,16 +102,15 @@ export class FirebaseChatService {
       const predictableId = `user_${userId}_admin`;
       const conversationRef = doc(db, CONVERSATIONS_COLLECTION, predictableId);
 
+      // For multi-admin support, we'll use shared 'admin' key for unread counts
+
       // Use a transaction to prevent race conditions
       return await runTransaction(db, async (transaction) => {
         const conversationSnap = await transaction.get(conversationRef);
 
         if (conversationSnap.exists()) {
-          console.log('Found existing conversation for user:', userId);
           return predictableId;
         }
-
-        console.log('Creating new conversation for user:', userId);
 
         // Check if messages already exist for this conversation ID
         const messagesQuery = query(
@@ -131,8 +132,8 @@ export class FirebaseChatService {
                 userAvatar: userAvatar || '',
               },
               {
-                userId: 'admin',
-                userName: 'Admin Support',
+                userId: 'admin', // Shared admin ID for all admins
+                userName: 'Support Team',
                 userRole: 'admin',
                 userAvatar: '',
               },
@@ -142,7 +143,7 @@ export class FirebaseChatService {
             lastMessageTimestamp: serverTimestamp() as Timestamp,
             unreadCount: {
               [userId]: 1, // User has 1 unread welcome message
-              admin: 0,
+              admin: 0, // Shared count for all admins
             },
             consecutiveUserMessages: 0, // Initialize spam prevention counter
             isActive: true,
@@ -157,8 +158,8 @@ export class FirebaseChatService {
           const welcomeMessageRef = doc(collection(db, MESSAGES_COLLECTION));
           const welcomeMessage: Omit<ChatMessage, 'id'> = {
             conversationId: predictableId,
-            senderId: 'admin',
-            senderName: 'Admin Support',
+            senderId: 'admin', // Shared admin ID
+            senderName: 'Support Team',
             senderRole: 'admin',
             senderAvatar: '',
             content:
@@ -256,7 +257,13 @@ export class FirebaseChatService {
       const docRef = await addDoc(collection(db, MESSAGES_COLLECTION), messageData);
 
       // Update conversation last message and spam prevention counter
-      await this.updateConversationLastMessage(conversationId, senderId, content, senderRole);
+      await this.updateConversationLastMessage(
+        conversationId,
+        senderId,
+        content,
+        senderRole,
+        messageType
+      );
 
       return docRef.id;
     } catch (error) {
@@ -270,7 +277,8 @@ export class FirebaseChatService {
     conversationId: string,
     senderId: string,
     content: string,
-    senderRole: 'user' | 'admin' | 'moderator'
+    senderRole: 'user' | 'admin' | 'moderator',
+    messageType: 'text' | 'image' | 'file' = 'text'
   ): Promise<void> {
     try {
       const conversationRef = doc(db, CONVERSATIONS_COLLECTION, conversationId);
@@ -279,8 +287,17 @@ export class FirebaseChatService {
       if (!conversationSnap.exists()) return;
 
       const conversationData = conversationSnap.data() as Conversation;
+
+      // Format last message based on type
+      let lastMessageDisplay = content;
+      if (messageType === 'image') {
+        lastMessageDisplay = '📷 Image';
+      } else if (messageType === 'file') {
+        lastMessageDisplay = '📎 File';
+      }
+
       let updateData: any = {
-        lastMessage: content,
+        lastMessage: lastMessageDisplay,
         lastMessageTimestamp: serverTimestamp(),
         updatedAt: serverTimestamp(),
       };
@@ -293,6 +310,17 @@ export class FirebaseChatService {
         // Reset consecutive user messages when admin responds
         updateData.consecutiveUserMessages = 0;
       }
+
+      // Increment unread count for all OTHER participants (not the sender)
+      const currentUnreadCount = conversationData.unreadCount || {};
+
+      conversationData.participants.forEach((participant) => {
+        if (participant.userId !== senderId) {
+          const currentCount = currentUnreadCount[participant.userId] || 0;
+          const newCount = currentCount + 1;
+          updateData[`unreadCount.${participant.userId}`] = newCount;
+        }
+      });
 
       await updateDoc(conversationRef, updateData);
     } catch (error) {
@@ -370,6 +398,10 @@ export class FirebaseChatService {
         messages,
         lastDoc: snapshot.docs.length > 0 ? snapshot.docs[snapshot.docs.length - 1] : null,
         hasMore,
+        cursorTimestamp:
+          snapshot.docs.length > 0
+            ? (snapshot.docs[snapshot.docs.length - 1].data() as any)?.timestamp || null
+            : null,
       };
     } catch (error) {
       console.error('Error getting initial messages:', error);
@@ -380,14 +412,28 @@ export class FirebaseChatService {
   // Get older messages for infinite scroll
   static async getOlderMessages(
     conversationId: string,
-    lastDoc: QueryDocumentSnapshot<DocumentData>
+    cursor: QueryDocumentSnapshot<DocumentData> | Timestamp | number | Date
   ): Promise<PaginatedMessages> {
     try {
+      // Determine the correct startAfter argument. When we do not have the
+      // previous page's DocumentSnapshot (e.g., when loading from cache), we
+      // fall back to using the oldest message Timestamp as the cursor.
+      const startAfterArg: any =
+        cursor && typeof (cursor as any).id === 'string' && (cursor as any).ref
+          ? cursor
+          : cursor instanceof Timestamp
+          ? cursor
+          : typeof cursor === 'number'
+          ? Timestamp.fromMillis(cursor)
+          : cursor instanceof Date
+          ? Timestamp.fromDate(cursor)
+          : cursor;
+
       const q = query(
         collection(db, MESSAGES_COLLECTION),
         where('conversationId', '==', conversationId),
         orderBy('timestamp', 'desc'),
-        startAfter(lastDoc),
+        startAfter(startAfterArg),
         limit(30)
       );
 
@@ -423,6 +469,10 @@ export class FirebaseChatService {
         messages,
         lastDoc: snapshot.docs.length > 0 ? snapshot.docs[snapshot.docs.length - 1] : null,
         hasMore,
+        cursorTimestamp:
+          snapshot.docs.length > 0
+            ? (snapshot.docs[snapshot.docs.length - 1].data() as any)?.timestamp || null
+            : null,
       };
     } catch (error) {
       console.error('Error getting older messages:', error);
@@ -631,9 +681,31 @@ export class FirebaseChatService {
 
       const querySnapshot = await getDocs(q);
 
+      // Update individual messages to mark as read
       const updatePromises = querySnapshot.docs.map((doc) => updateDoc(doc.ref, { isRead: true }));
-
       await Promise.all(updatePromises);
+
+      // ALWAYS reset unread count for this user in the conversation
+      const conversationRef = doc(db, CONVERSATIONS_COLLECTION, conversationId);
+
+      // Get user role to determine which key to reset
+      const userDoc = await getDoc(doc(db, 'users', userId));
+      const userData = userDoc.exists() ? userDoc.data() : null;
+      const userRole = userData?.role || 'user';
+
+      const updateData: any = {
+        updatedAt: serverTimestamp(),
+      };
+
+      if (userRole === 'admin' || userRole === 'moderator') {
+        // For admin/moderator: reset shared 'admin' key (all admins share one count)
+        updateData['unreadCount.admin'] = 0;
+      } else {
+        // For regular users: reset their specific user ID key
+        updateData[`unreadCount.${userId}`] = 0;
+      }
+
+      await updateDoc(conversationRef, updateData);
     } catch (error) {
       console.error('Error marking messages as read:', error);
     }

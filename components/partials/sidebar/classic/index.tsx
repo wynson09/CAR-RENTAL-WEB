@@ -1,9 +1,9 @@
 'use client';
 import React, { useState } from 'react';
 import { cn, isLocationMatch, getDynamicPath } from '@/lib/utils';
-import { useSidebar, useThemeStore } from '@/store';
+import { useSidebar, useThemeStore, useUserStore } from '@/store';
 import SidebarLogo from '../common/logo';
-import { menusConfig } from '@/config/menus';
+import { adminMenuConfig, menusConfig, userMenuConfig } from '@/config/menus';
 import MenuLabel from '../common/menu-label';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -14,9 +14,15 @@ import NestedSubMenu from '../common/nested-menus';
 import AddBlock from '../common/add-block';
 const ClassicSidebar = ({ trans }: { trans: string }) => {
   const { sidebarBg } = useSidebar();
+  const { user } = useUserStore();
   const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null);
   const [activeMultiMenu, setMultiMenu] = useState<number | null>(null);
-  const menus = menusConfig?.sidebarNav?.classic || [];
+
+  // Use user-specific menu for regular users, admin menu for admins
+  const isAdmin = user?.role === 'admin' || user?.role === 'moderator';
+  const menus = isAdmin
+    ? adminMenuConfig?.sidebarNav?.classic || []
+    : userMenuConfig?.sidebarNav?.classic || [];
   const { collapsed, setCollapsed } = useSidebar();
   const { isRtl } = useThemeStore();
   const [hovered, setHovered] = useState<boolean>(false);
@@ -99,14 +105,12 @@ const ClassicSidebar = ({ trans }: { trans: string }) => {
             <li key={`menu_key_${i}`}>
               {/* single menu  */}
 
-              {!item.child && !item.isHeader && (
+              {!item.child && (
                 <SingleMenuItem item={item} collapsed={collapsed} hovered={hovered} trans={trans} />
               )}
 
               {/* menu label */}
-              {item.isHeader && !item.child && (!collapsed || hovered) && (
-                <MenuLabel item={item} trans={trans} />
-              )}
+              {!item.child && (!collapsed || hovered) && <MenuLabel item={item} trans={trans} />}
 
               {/* sub menu */}
               {item.child && (

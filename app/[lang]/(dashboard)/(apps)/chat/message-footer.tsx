@@ -3,10 +3,12 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Icon } from '@iconify/react';
-import { Annoyed, SendHorizontal } from 'lucide-react';
+import { Annoyed, SendHorizontal, ImageIcon } from 'lucide-react';
 
 import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
+import { ImageUpload } from '@/components/ui/image-upload';
+import { useUserStore } from '@/store';
 import {
   Tooltip,
   TooltipArrow,
@@ -35,6 +37,7 @@ const MessageFooter = ({
   replayData: any;
 }) => {
   const [message, setMessage] = useState('');
+  const { user } = useUserStore();
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
     e.target.style.height = 'auto'; // Reset the height to auto to adjust
@@ -45,13 +48,21 @@ const MessageFooter = ({
     setMessage(message + emoji.native);
   };
 
+  const handleImageUpload = (imageUrl: string, fileName: string) => {
+    // Create an image message format
+    const imageMessage = `📷 ${fileName}: ${imageUrl}`;
+    handleSendMessage(imageMessage);
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleSendMessage(message);
-    setReply(false);
-    setMessage('');
+    if (!message.trim()) return;
 
-    console.log(replay, message, 'ami k');
+    const messageToSend = message.trim();
+    setMessage(''); // Clear input immediately for instant feedback
+    setReply(false);
+
+    handleSendMessage(messageToSend);
   };
   return (
     <>
@@ -72,7 +83,7 @@ const MessageFooter = ({
       )}
 
       <div
-        className="w-full flex items-end gap-1 lg:gap-4 lg:px-4 relative px-2 "
+        className="w-full flex items-end gap-1 lg:gap-4 lg:px-4 relative px-2 py-4 border-t border-default-200"
         style={{
           boxSizing: 'border-box',
         }}
@@ -184,7 +195,7 @@ const MessageFooter = ({
                 value={message}
                 onChange={handleChange}
                 placeholder="Type your message..."
-                className="bg-background border border-default-200 outline-none focus:border-primary  rounded-xl break-words pl-8  md:pl-3 px-3 flex-1 h-10 pt-2 p-1 pr-8 no-scrollbar "
+                className="bg-background border border-default-200 outline-none focus:border-primary  rounded-xl break-words pl-8  md:pl-3 px-3 flex-1 h-10 pt-2 p-1 pr-16 no-scrollbar "
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
@@ -199,19 +210,26 @@ const MessageFooter = ({
                 }}
               />
 
-              <Popover>
-                <PopoverTrigger asChild>
-                  <span className="absolute ltr:right-12 rtl:left-12 bottom-1.5 h-7 w-7 rounded-full cursor-pointer  ">
-                    <Annoyed className="w-6 h-6 text-primary" />
-                  </span>
-                </PopoverTrigger>
-                <PopoverContent
-                  side="top"
-                  className="w-fit p-0 shadow-none border-none bottom-0 rtl:left-5 ltr:-left-[110px]"
-                >
-                  <Picker data={data} onEmojiSelect={handleSelectEmoji} theme="light" />
-                </PopoverContent>
-              </Popover>
+              <div className="absolute ltr:right-12 rtl:left-12 bottom-1.5 flex items-center gap-1">
+                <ImageUpload
+                  onImageUpload={handleImageUpload}
+                  currentUserId={user?.uid || 'anonymous'}
+                  className="hover:bg-accent"
+                />
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <span className="h-7 w-7 rounded-full cursor-pointer flex items-center justify-center">
+                      <Annoyed className="w-6 h-6 text-primary" />
+                    </span>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    side="top"
+                    className="w-fit p-0 shadow-none border-none bottom-0 rtl:left-5 ltr:-left-[150px]"
+                  >
+                    <Picker data={data} onEmojiSelect={handleSelectEmoji} theme="light" />
+                  </PopoverContent>
+                </Popover>
+              </div>
               <Button
                 type="submit"
                 className="rounded-full bg-default-200 hover:bg-default-300 h-[42px] w-[42px] p-0 self-end"

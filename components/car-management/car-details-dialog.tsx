@@ -198,12 +198,15 @@ export const CarDetailsDialog = ({ car, onUpdateCar }: CarDetailsDialogProps) =>
               maxItems={15}
             />
 
-            <ImageUpload
-              label="Car Image"
-              value={editedCar.image}
-              onChange={(url) => setEditedCar({ ...editedCar, image: url })}
-              folder="car-images"
-            />
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Car Image</label>
+              <ImageUpload
+                onImageUpload={(url) => setEditedCar({ ...editedCar, image: url })}
+                currentUserId="car-admin"
+                storagePath="car-images"
+                className="w-full"
+              />
+            </div>
           </div>
 
           {/* Metadata */}

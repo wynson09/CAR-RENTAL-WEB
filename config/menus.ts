@@ -41,7 +41,13 @@ import {
   LucideIcon,
   CustomIcon,
   Mail,
+  User,
 } from '@/components/svg';
+
+import { IoCarSport } from 'react-icons/io5';
+import { FaAddressCard } from 'react-icons/fa';
+import { RxDashboard } from 'react-icons/rx';
+import { GiKeyCard } from 'react-icons/gi';
 
 export interface MenuItemProps {
   title: string;
@@ -58,62 +64,116 @@ export const userMenuConfig = {
   mainNav: [
     {
       title: 'Dashboard',
-      icon: DashBoard,
+      icon: RxDashboard, // Dashboard icon
       href: '/dashboard',
     },
     {
       title: 'Car Management',
-      icon: Cart,
+      icon: GiKeyCard, // Grid for management view
       child: [
         {
           title: 'Car Listings',
-          icon: Calendar,
           href: '/car-listings',
         },
         {
           title: 'Owned & Partner Cars',
-          icon: Cart,
           href: '/owned-partner-cars',
         },
       ],
     },
     {
       title: 'Bookings',
-      icon: Cart,
+      icon: IoCarSport, // Calendar for bookings
       child: [
         {
           title: 'Start a Booking',
-          icon: ClipBoard,
           href: '/start-a-booking',
         },
         {
           title: 'Active Rentals',
-          icon: ClipBoard,
           href: '/active-rentals',
         },
         {
           title: 'Previous Rentals',
-          icon: ClipBoard,
           href: '/previous-rentals',
         },
       ],
     },
     {
       title: 'Chat',
-      icon: Messages,
+      icon: Messages, // Messages for chat
       href: '/support-chat',
+    },
+    {
+      title: 'My Account',
+      icon: FaAddressCard, // User for account
+      href: '/my-account',
     },
   ],
   sidebarNav: {
     classic: [
       {
         title: 'Dashboard',
-        icon: DashBoard,
+        icon: RxDashboard, // Dashboard icon
         href: '/dashboard',
       },
       {
         title: 'Car Management',
-        icon: Cart,
+        icon: GiKeyCard, // Grid for management view
+        child: [
+          {
+            title: 'Car Listings',
+            icon: ListFill, // List for car listings
+            href: '/car-listings',
+          },
+          {
+            title: 'Owned & Partner Cars',
+            icon: Building, // Building for partnerships
+            href: '/owned-partner-cars',
+          },
+        ],
+      },
+      {
+        title: 'Bookings',
+        icon: IoCarSport, // Calendar for bookings
+        child: [
+          {
+            title: 'Start a Booking',
+            icon: ClipBoard, // Clipboard for new booking
+            href: '/start-a-booking',
+          },
+          {
+            title: 'Active Rentals',
+            icon: Monitor, // Monitor for active status
+            href: '/active-rentals',
+          },
+          {
+            title: 'Previous Rentals',
+            icon: Files, // Files for history
+            href: '/previous-rentals',
+          },
+        ],
+      },
+      {
+        title: 'Chat',
+        icon: Messages, // Messages for chat
+        href: '/support-chat',
+      },
+      {
+        title: 'My Account',
+        icon: FaAddressCard, // User for account
+        href: '/my-account',
+      },
+    ],
+    modern: [
+      {
+        title: 'Dashboard',
+        icon: RxDashboard,
+        href: '/dashboard',
+      },
+      {
+        title: 'Car Management',
+        icon: GiKeyCard,
         child: [
           {
             title: 'Car Listings',
@@ -129,7 +189,7 @@ export const userMenuConfig = {
       },
       {
         title: 'Bookings',
-        icon: Cart,
+        icon: IoCarSport,
         child: [
           {
             title: 'Start a Booking',
@@ -145,6 +205,98 @@ export const userMenuConfig = {
             title: 'Previous Rentals',
             icon: ClipBoard,
             href: '/previous-rentals',
+          },
+        ],
+      },
+      {
+        title: 'Chat',
+        icon: Messages,
+        href: '/support-chat',
+      },
+      {
+        title: 'My Account',
+        icon: FaAddressCard,
+        href: '/my-account',
+      },
+    ],
+  },
+};
+
+export const adminMenuConfig = {
+  mainNav: [
+    {
+      title: 'Dashboard',
+      icon: RxDashboard, // Dashboard icon
+      href: '/dashboard',
+    },
+    {
+      title: 'Car Management',
+      icon: GiKeyCard, // Grid for management view
+      child: [
+        {
+          title: 'Car Listings',
+          href: '/car-listings',
+        },
+        {
+          title: 'Owned & Partner Cars',
+          href: '/owned-partner-cars',
+        },
+      ],
+    },
+    {
+      title: 'Chat',
+      icon: Messages, // Messages for chat
+      href: '/support-chat',
+    },
+  ],
+  sidebarNav: {
+    classic: [
+      {
+        title: 'Dashboard',
+        icon: RxDashboard, // Dashboard icon
+        href: '/dashboard',
+      },
+      {
+        title: 'Car Management',
+        icon: GiKeyCard, // Grid for management view
+        child: [
+          {
+            title: 'Car Listings',
+            icon: ListFill, // List for car listings
+            href: '/car-listings',
+          },
+          {
+            title: 'Owned & Partner Cars',
+            icon: Building, // Building for partnerships
+            href: '/owned-partner-cars',
+          },
+        ],
+      },
+      {
+        title: 'Chat',
+        icon: Messages, // Messages for chat
+        href: '/support-chat',
+      },
+    ],
+    modern: [
+      {
+        title: 'Dashboard',
+        icon: RxDashboard,
+        href: '/dashboard',
+      },
+      {
+        title: 'Car Management',
+        icon: GiKeyCard,
+        child: [
+          {
+            title: 'Car Listings',
+            icon: Calendar,
+            href: '/car-listings',
+          },
+          {
+            title: 'Owned & Partner Cars',
+            icon: Cart,
+            href: '/owned-partner-cars',
           },
         ],
       },

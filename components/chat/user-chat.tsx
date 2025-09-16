@@ -25,16 +25,19 @@ export const UserChat = ({ className }: UserChatProps) => {
   }
 
   return (
-    <ChatWindow
-      chatId={`user_${user.uid}_admin`}
-      currentUserId={user.uid}
-      currentUserName={user.name}
-      currentUserRole="user"
-      currentUserAvatar={user.image}
-      title="Admin Support"
-      className={className}
-      isAdminView={false}
-    />
+    <Card className={cn('h-[calc(90vh-120px)] border rounded-xl shadow-lg', className)}>
+      <ChatWindow
+        chatId={`user_${user.uid}_admin`}
+        currentUserId={user.uid}
+        currentUserName={user.name}
+        currentUserRole="user"
+        currentUserAvatar={user.image}
+        title="Support Team"
+        className="h-full border-0 rounded-xl"
+        isAdminView={false}
+        hideHeader={false}
+      />
+    </Card>
   );
 };
 

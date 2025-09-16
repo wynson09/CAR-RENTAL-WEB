@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import Card from '@/components/ui/card-snippet';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -20,6 +20,7 @@ import { CalendarIcon, Clock } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { CarGrid, Car } from '@/components/fleet';
 import { CarFirebaseService } from '@/lib/firebase-car-service';
+import { Timestamp } from 'firebase/firestore';
 import { CarListing } from '@/data/car-listings-data';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
@@ -31,9 +32,8 @@ import {
 import { useUserStore } from '@/store';
 import { createDetailedPricing } from '@/lib/pricing-utils';
 
-// Cache for car data to avoid unnecessary fetches
-const carsCache = new Map<string, { data: Car[]; timestamp: number }>();
-const CARS_CACHE_DURATION = 10 * 60 * 1000; // 10 minutes cache
+// Session cache key
+const CARS_SESSION_CACHE_KEY = 'booking:cars';
 
 // Convert CarListing data to Car data format for fleet display
 const convertCarListingToCar = (carListing: CarListing): Car => {
@@ -52,12 +52,64 @@ const convertCarListingToCar = (carListing: CarListing): Car => {
     image: imageUrl,
     price: carListing.price,
     isPromo: carListing.isPromo,
+    // Ensure priority is present and numeric for sorting
+    ...({
+      priorityLevel:
+        typeof (carListing as any).priorityLevel === 'number'
+          ? (carListing as any).priorityLevel
+          : parseInt(String((carListing as any).priorityLevel), 10) || 0,
+    } as any),
     category: carListing.category,
     passengers: carListing.passengers,
     bags: carListing.bags,
     transmission: carListing.transmission,
     features: features,
+    // Keep a stable reference to the Firestore document id for merging updates
+    // (not part of the Car type, used internally only)
+    ...({ docId: carListing.id, updatedDate: carListing.updatedDate } as any),
   };
+};
+
+// Ensure a list has unique cars by stable key
+const uniqueByDocId = (items: Car[]): Car[] => {
+  const seen = new Set<string>();
+  const out: Car[] = [];
+  items.forEach((c: any) => {
+    const key = String(c.docId ?? c.id ?? c.name);
+    if (!seen.has(key)) {
+      seen.add(key);
+      out.push(c);
+    }
+  });
+  return out;
+};
+
+// Normalize a name by stripping promo emoji/whitespace and lowercasing
+const normalizeName = (name: string) => name.replace(/🔥/g, '').trim().toLowerCase();
+
+// Keep only one car per vehicle name; prefer promo, else latest updated
+const uniqueByVehicleName = (items: Car[]): Car[] => {
+  const map = new Map<string, any>();
+  items.forEach((c: any) => {
+    const key = normalizeName(c.name || '');
+    const existing = map.get(key);
+    if (!existing) {
+      map.set(key, c);
+      return;
+    }
+    const existingIsPromo = !!existing.isPromo;
+    const currentIsPromo = !!c.isPromo;
+    if (currentIsPromo && !existingIsPromo) {
+      map.set(key, c);
+      return;
+    }
+    const existingUpdated = existing.updatedDate?.getTime?.() || 0;
+    const currentUpdated = c.updatedDate?.getTime?.() || 0;
+    if (currentUpdated > existingUpdated) {
+      map.set(key, c);
+    }
+  });
+  return Array.from(map.values());
 };
 
 const BookingPage = () => {
@@ -75,6 +127,12 @@ const BookingPage = () => {
   const [pickUpAddress, setPickUpAddress] = useState('');
   const [returnAddress, setReturnAddress] = useState('');
 
+  // Validation errors state
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
+
+  // Helper function to check if field has error
+  const hasFieldError = (fieldName: string) => validationErrors.includes(fieldName);
+
   // Confirmation dialog state
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
@@ -87,35 +145,106 @@ const BookingPage = () => {
   // User store for verification status
   const { user } = useUserStore();
 
-  // Fetch cars from Firebase on component mount
+  // Helpers for session cache
+  const readCache = useCallback((): { cars: Car[]; lastUpdatedMs: number } | null => {
+    try {
+      const raw = sessionStorage.getItem(CARS_SESSION_CACHE_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  }, []);
+
+  const writeCache = useCallback((carsToStore: Car[]) => {
+    try {
+      const latest = carsToStore
+        .map((c: any) => c.updatedDate?.getTime?.() || 0)
+        .reduce((a, b) => Math.max(a, b), 0);
+      sessionStorage.setItem(
+        CARS_SESSION_CACHE_KEY,
+        JSON.stringify({ cars: carsToStore, lastUpdatedMs: latest })
+      );
+    } catch {}
+  }, []);
+
+  const cacheKey = useMemo(() => 'all_cars', []);
+
+  // Fetch cars; use cache first and attach realtime listener for updates
   useEffect(() => {
-    const fetchCars = async () => {
+    let unsubscribe: (() => void) | undefined;
+
+    const init = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        // Check cache first
-        const cacheKey = 'all_cars';
-        const cached = carsCache.get(cacheKey);
-        const now = Date.now();
-
-        if (cached && now - cached.timestamp < CARS_CACHE_DURATION) {
-          setCars(cached.data);
+        const cached = readCache();
+        if (cached && cached.cars.length > 0) {
+          const normalized = uniqueByVehicleName(uniqueByDocId(cached.cars));
+          normalized.sort((a: any, b: any) => (b.priorityLevel || 0) - (a.priorityLevel || 0));
+          setCars(normalized);
           setLoading(false);
+
+          const lastTs = cached.lastUpdatedMs ? Timestamp.fromMillis(cached.lastUpdatedMs) : null;
+          unsubscribe = CarFirebaseService.listenToCarsSince(
+            lastTs,
+            (changedCars) => {
+              if (!changedCars || changedCars.length === 0) return;
+              setCars((prev) => {
+                const map = new Map<string, any>();
+                prev.forEach((c: any) => map.set(String(c.docId ?? c.id), c));
+                changedCars.forEach((listing) => {
+                  const converted = convertCarListingToCar(listing as any);
+                  map.set(String((listing as any).id), converted);
+                });
+                const merged = uniqueByVehicleName(
+                  uniqueByDocId(Array.from(map.values()) as Car[])
+                );
+                // Sort strictly by priorityLevel (desc)
+                merged.sort((a: any, b: any) => (b.priorityLevel || 0) - (a.priorityLevel || 0));
+                writeCache(merged);
+                return merged;
+              });
+            },
+            (error) => {
+              console.error('Cars listener error:', error);
+            }
+          );
           return;
         }
 
+        // No cache → fetch once and then attach listener
         const carListings = await CarFirebaseService.getAllCars();
-        const convertedCars = carListings.map(convertCarListingToCar);
-
-        // Cache the results
-        carsCache.set(cacheKey, {
-          data: convertedCars,
-          timestamp: now,
-        });
-
+        const convertedCars = uniqueByVehicleName(
+          uniqueByDocId(carListings.map(convertCarListingToCar))
+        );
         setCars(convertedCars);
+        writeCache(convertedCars);
         toast.success(`Loaded ${convertedCars.length} vehicles`);
+
+        const lastTs = carListings[0]?.updatedDate ? (carListings[0].updatedDate as any) : null;
+        unsubscribe = CarFirebaseService.listenToCarsSince(
+          lastTs,
+          (changedCars) => {
+            if (!changedCars || changedCars.length === 0) return;
+            setCars((prev) => {
+              const map = new Map<string, any>();
+              prev.forEach((c: any) => map.set(String(c.docId ?? c.id), c));
+              changedCars.forEach((listing) => {
+                const converted = convertCarListingToCar(listing as any);
+                map.set(String((listing as any).id), converted);
+              });
+              const merged = uniqueByVehicleName(uniqueByDocId(Array.from(map.values()) as Car[]));
+              merged.sort((a: any, b: any) => (b.priorityLevel || 0) - (a.priorityLevel || 0));
+              writeCache(merged);
+              return merged;
+            });
+          },
+          (error) => {
+            console.error('Cars listener error:', error);
+          }
+        );
       } catch (err) {
         setError('Failed to load vehicles. Please try again.');
         toast.error('Failed to load vehicles');
@@ -125,8 +254,9 @@ const BookingPage = () => {
       }
     };
 
-    fetchCars();
-  }, []);
+    init();
+    return () => unsubscribe?.();
+  }, [cacheKey, readCache, writeCache]);
 
   const addressOptions = [
     { value: 'nacs-garage', label: 'Self Pick Up @ NACS Car Rental Garage' },
@@ -230,42 +360,84 @@ const BookingPage = () => {
   };
 
   const validateBookingForm = () => {
-    const errors = [];
+    const fieldErrors = [];
+    const messages = [];
 
     if (!destination.trim()) {
-      errors.push('Destination is required');
+      fieldErrors.push('destination');
+      messages.push('Destination is required');
     }
 
     if (!pickUpAddress) {
-      errors.push('Pickup address is required');
+      fieldErrors.push('pickUpAddress');
+      messages.push('Pickup address is required');
     }
 
     if (!pickupTime) {
-      errors.push('Pickup time is required');
+      fieldErrors.push('pickupTime');
+      messages.push('Pickup time is required');
     }
 
     if (!returnAddress) {
-      errors.push('Return address is required');
+      fieldErrors.push('returnAddress');
+      messages.push('Return address is required');
     }
 
     if (!returnTime) {
-      errors.push('Return time is required');
+      fieldErrors.push('returnTime');
+      messages.push('Return time is required');
     }
 
     if (!user?.uid) {
-      errors.push('Please sign in to make a booking');
+      messages.push('Please sign in to make a booking');
     }
 
     if (differenceInCalendarDays(returnDate, pickupDate) < 1) {
-      errors.push('Return date must be at least 1 day after pickup date');
+      messages.push('Return date must be at least 1 day after pickup date');
     }
 
-    if (errors.length > 0) {
-      errors.forEach((error) => toast.error(error));
+    if (messages.length > 0) {
+      setValidationErrors(fieldErrors);
+      messages.forEach((message) => toast.error(message));
+
+      // Scroll to first missing field
+      if (fieldErrors.length > 0) {
+        scrollToFirstError(fieldErrors[0]);
+      }
+
       return false;
     }
 
+    // Clear validation errors if all fields are valid
+    setValidationErrors([]);
     return true;
+  };
+
+  // Helper function to scroll to the first error field
+  const scrollToFirstError = (fieldName: string) => {
+    // Map field names to their element IDs or selectors
+    const fieldSelectors = {
+      destination: '#destination',
+      pickUpAddress: '[data-field="pickUpAddress"]',
+      pickupTime: '[data-field="pickupTime"]',
+      returnAddress: '[data-field="returnAddress"]',
+      returnTime: '[data-field="returnTime"]',
+    };
+
+    const selector = fieldSelectors[fieldName as keyof typeof fieldSelectors];
+    if (selector) {
+      // Use setTimeout to ensure the error state is rendered first
+      setTimeout(() => {
+        const element = document.querySelector(selector);
+        if (element) {
+          element.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'nearest',
+          });
+        }
+      }, 100);
+    }
   };
 
   const handleBookNow = (car: Car) => {
@@ -277,42 +449,16 @@ const BookingPage = () => {
     setIsConfirmationOpen(true);
   };
 
-  const handleRefreshData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      // Clear cache and fetch fresh data
-      const cacheKey = 'all_cars';
-      carsCache.delete(cacheKey);
-
-      const carListings = await CarFirebaseService.getAllCars();
-      const convertedCars = carListings.map(convertCarListingToCar);
-
-      // Update cache with fresh data
-      carsCache.set(cacheKey, {
-        data: convertedCars,
-        timestamp: Date.now(),
-      });
-
-      setCars(convertedCars);
-      toast.success(`Refreshed! Loaded ${convertedCars.length} vehicles`);
-    } catch (err) {
-      setError('Failed to refresh vehicles. Please try again.');
-      toast.error('Failed to refresh vehicles');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const DrumRollTimePicker = ({
     selectedTime,
     onTimeChange,
     placeholder = '--:-- --',
+    className = '',
   }: {
     selectedTime: string;
     onTimeChange: (time: string) => void;
     placeholder?: string;
+    className?: string;
   }) => {
     const parseTime = (timeStr: string) => {
       if (!timeStr) return { hour: '', minute: '', period: '' };
@@ -355,7 +501,8 @@ const BookingPage = () => {
             variant="outline"
             className={cn(
               'w-full justify-start text-left font-normal',
-              !selectedTime && 'text-muted-foreground'
+              !selectedTime && 'text-muted-foreground',
+              className
             )}
           >
             <Clock className="mr-2 h-4 w-4" />
@@ -474,14 +621,14 @@ const BookingPage = () => {
                 <div className="flex items-center gap-3">
                   <div
                     className={cn(
-                      'w-5 h-5 rounded-full border-2 flex items-center justify-center',
+                      'w-5 h-5 min-w-[20px] min-h-[20px] rounded-full border-2 flex items-center justify-center flex-shrink-0',
                       driveOption === 'self-drive'
                         ? 'border-blue-500 bg-blue-500'
                         : 'border-gray-300 dark:border-gray-600'
                     )}
                   >
                     {driveOption === 'self-drive' && (
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
+                      <div className="w-2 h-2 min-w-[8px] min-h-[8px] bg-white rounded-full"></div>
                     )}
                   </div>
                   <div>
@@ -521,14 +668,14 @@ const BookingPage = () => {
                 <div className="flex items-center gap-3">
                   <div
                     className={cn(
-                      'w-5 h-5 rounded-full border-2 flex items-center justify-center',
+                      'w-5 h-5 min-w-[20px] min-h-[20px] rounded-full border-2 flex items-center justify-center flex-shrink-0',
                       driveOption === 'with-driver'
                         ? 'border-green-500 bg-green-500'
                         : 'border-gray-300 dark:border-gray-600'
                     )}
                   >
                     {driveOption === 'with-driver' && (
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
+                      <div className="w-2 h-2 min-w-[8px] min-h-[8px] bg-white rounded-full"></div>
                     )}
                   </div>
                   <div>
@@ -591,10 +738,18 @@ const BookingPage = () => {
               id="destination"
               placeholder="Indicate your farthest destination (e.g., Manila, Cebu, Davao, etc.)"
               value={destination}
-              onChange={(e) => setDestination(e.target.value)}
+              onChange={(e) => {
+                setDestination(e.target.value);
+                // Clear validation error when user starts typing
+                if (hasFieldError('destination') && e.target.value.trim()) {
+                  setValidationErrors((prev) => prev.filter((error) => error !== 'destination'));
+                }
+              }}
               className={cn(
                 'min-h-[100px] resize-none transition-all duration-200',
-                destination
+                hasFieldError('destination')
+                  ? 'border-red-500 bg-red-50 dark:bg-red-950/20 dark:border-red-400 ring-1 ring-red-200 dark:ring-red-800'
+                  : destination
                   ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/20 dark:border-blue-400 ring-1 ring-blue-200 dark:ring-blue-800'
                   : 'hover:border-blue-300 focus:border-blue-500'
               )}
@@ -615,8 +770,26 @@ const BookingPage = () => {
                 <Label className="mb-3 block text-base font-medium text-gray-700 dark:text-gray-300">
                   Pick up Address <span className="text-red-500">*</span>
                 </Label>
-                <Select value={pickUpAddress} onValueChange={setPickUpAddress}>
-                  <SelectTrigger>
+                <Select
+                  value={pickUpAddress}
+                  onValueChange={(value) => {
+                    setPickUpAddress(value);
+                    // Clear validation error when user selects
+                    if (hasFieldError('pickUpAddress') && value) {
+                      setValidationErrors((prev) =>
+                        prev.filter((error) => error !== 'pickUpAddress')
+                      );
+                    }
+                  }}
+                >
+                  <SelectTrigger
+                    data-field="pickUpAddress"
+                    className={cn(
+                      hasFieldError('pickUpAddress')
+                        ? 'border-red-500 bg-red-50 dark:bg-red-950/20 dark:border-red-400 ring-1 ring-red-200 dark:ring-red-800'
+                        : ''
+                    )}
+                  >
                     <SelectValue placeholder="Select pickup location" />
                   </SelectTrigger>
                   <SelectContent>
@@ -661,11 +834,26 @@ const BookingPage = () => {
                 <Label className="mb-3 block text-base font-medium text-gray-700 dark:text-gray-300">
                   Pick up Time <span className="text-red-500">*</span>
                 </Label>
-                <DrumRollTimePicker
-                  selectedTime={pickupTime}
-                  onTimeChange={setPickupTime}
-                  placeholder="--:-- --"
-                />
+                <div data-field="pickupTime">
+                  <DrumRollTimePicker
+                    selectedTime={pickupTime}
+                    onTimeChange={(time) => {
+                      setPickupTime(time);
+                      // Clear validation error when user selects time
+                      if (hasFieldError('pickupTime') && time) {
+                        setValidationErrors((prev) =>
+                          prev.filter((error) => error !== 'pickupTime')
+                        );
+                      }
+                    }}
+                    placeholder="--:-- --"
+                    className={cn(
+                      hasFieldError('pickupTime')
+                        ? 'border-red-500 bg-red-50 dark:bg-red-950/20 dark:border-red-400 ring-1 ring-red-200 dark:ring-red-800'
+                        : ''
+                    )}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -683,8 +871,26 @@ const BookingPage = () => {
                 <Label className="mb-3 block text-base font-medium text-gray-700 dark:text-gray-300">
                   Return Address <span className="text-red-500">*</span>
                 </Label>
-                <Select value={returnAddress} onValueChange={setReturnAddress}>
-                  <SelectTrigger>
+                <Select
+                  value={returnAddress}
+                  onValueChange={(value) => {
+                    setReturnAddress(value);
+                    // Clear validation error when user selects
+                    if (hasFieldError('returnAddress') && value) {
+                      setValidationErrors((prev) =>
+                        prev.filter((error) => error !== 'returnAddress')
+                      );
+                    }
+                  }}
+                >
+                  <SelectTrigger
+                    data-field="returnAddress"
+                    className={cn(
+                      hasFieldError('returnAddress')
+                        ? 'border-red-500 bg-red-50 dark:bg-red-950/20 dark:border-red-400 ring-1 ring-red-200 dark:ring-red-800'
+                        : ''
+                    )}
+                  >
                     <SelectValue placeholder="Select return location" />
                   </SelectTrigger>
                   <SelectContent>
@@ -737,11 +943,26 @@ const BookingPage = () => {
                 <Label className="mb-3 block text-base font-medium text-gray-700 dark:text-gray-300">
                   Return Time <span className="text-red-500">*</span>
                 </Label>
-                <DrumRollTimePicker
-                  selectedTime={returnTime}
-                  onTimeChange={setReturnTime}
-                  placeholder="--:-- --"
-                />
+                <div data-field="returnTime">
+                  <DrumRollTimePicker
+                    selectedTime={returnTime}
+                    onTimeChange={(time) => {
+                      setReturnTime(time);
+                      // Clear validation error when user selects time
+                      if (hasFieldError('returnTime') && time) {
+                        setValidationErrors((prev) =>
+                          prev.filter((error) => error !== 'returnTime')
+                        );
+                      }
+                    }}
+                    placeholder="--:-- --"
+                    className={cn(
+                      hasFieldError('returnTime')
+                        ? 'border-red-500 bg-red-50 dark:bg-red-950/20 dark:border-red-400 ring-1 ring-red-200 dark:ring-red-800'
+                        : ''
+                    )}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -807,14 +1028,6 @@ const BookingPage = () => {
           </div>
         ) : (
           <div className="space-y-4">
-            {/* Refresh Button */}
-            <div className="flex justify-end">
-              <Button onClick={handleRefreshData} variant="outline" size="sm" disabled={loading}>
-                <CalendarIcon className="h-4 w-4 mr-2" />
-                Refresh Data
-              </Button>
-            </div>
-
             <ErrorBoundary>
               <CarGrid
                 cars={cars}

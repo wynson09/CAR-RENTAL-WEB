@@ -8,6 +8,9 @@ import {
   getDoc,
   query,
   orderBy,
+  where,
+  onSnapshot,
+  limit,
   serverTimestamp,
   Timestamp,
   FieldValue,
@@ -50,10 +53,10 @@ const convertCarListingToFirestoreDoc = (
 };
 
 export class CarFirebaseService {
-  // Get all cars
+  // Get all cars ordered strictly by priority (desc)
   static async getAllCars(): Promise<CarListing[]> {
     try {
-      const q = query(collection(db, CARS_COLLECTION), orderBy('createdDate', 'desc'));
+      const q = query(collection(db, CARS_COLLECTION), orderBy('priorityLevel', 'desc'));
       const querySnapshot = await getDocs(q);
 
       return querySnapshot.docs.map(convertFirestoreDocToCarListing);
@@ -182,6 +185,44 @@ export class CarFirebaseService {
     } catch (error) {
       console.error('Error fetching promotional cars:', error);
       throw new Error('Failed to fetch promotional cars');
+    }
+  }
+
+  // Listen to cars that were updated AFTER a given timestamp.
+  // If lastUpdated is null, we listen only to the most recent change to prime the stream.
+  static listenToCarsSince(
+    lastUpdated: Timestamp | null,
+    callback: (cars: CarListing[]) => void,
+    errorCallback: (error: any) => void
+  ): () => void {
+    try {
+      let q;
+      // Always listen by priority only (no updatedDate in sort). If lastUpdated is provided,
+      // we still use it to narrow the set but do not order by it.
+      if (lastUpdated) {
+        q = query(
+          collection(db, CARS_COLLECTION),
+          where('updatedDate', '>', lastUpdated),
+          orderBy('priorityLevel', 'desc')
+        );
+      } else {
+        q = query(collection(db, CARS_COLLECTION), orderBy('priorityLevel', 'desc'));
+      }
+
+      const unsubscribe = onSnapshot(
+        q,
+        (snapshot) => {
+          const cars = snapshot.docs.map(convertFirestoreDocToCarListing);
+          callback(cars);
+        },
+        errorCallback
+      );
+
+      return unsubscribe;
+    } catch (error) {
+      console.error('Setup cars listener error:', error);
+      errorCallback(error);
+      return () => {};
     }
   }
 }

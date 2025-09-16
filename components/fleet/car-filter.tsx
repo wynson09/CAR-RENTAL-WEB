@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 export type CarCategory = 'All' | 'Sedan' | 'SUV' | 'MPV' | 'Pickup' | 'Van' | 'Hatchback';
@@ -15,22 +14,21 @@ export const CarFilter = ({ selectedCategory, onCategoryChange, className }: Car
   const categories: CarCategory[] = ['All', 'Sedan', 'SUV', 'MPV', 'Pickup', 'Van', 'Hatchback'];
 
   return (
-    <div className={cn('flex flex-wrap gap-2 mb-6', className)}>
+    <div className={cn('flex flex-wrap gap-3 mb-8', className)}>
       {categories.map((category) => (
-        <Button
+        <button
           key={category}
-          variant={selectedCategory === category ? null : 'outline'}
-          size="sm"
           onClick={() => onCategoryChange(category)}
           className={cn(
-            'transition-all duration-200',
+            'px-6 py-3 rounded-full font-medium text-sm transition-all duration-300 transform hover:scale-105 active:scale-95',
+            'border-2 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
             selectedCategory === category
-              ? 'bg-blue-600 text-white hover:bg-blue-700'
-              : 'border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800'
+              ? 'bg-blue-600 border-blue-600 text-white shadow-lg hover:bg-blue-700 hover:border-blue-700'
+              : 'bg-white border-gray-200 text-gray-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:border-gray-500'
           )}
         >
           {category}
-        </Button>
+        </button>
       ))}
     </div>
   );

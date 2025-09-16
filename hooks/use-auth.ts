@@ -1,91 +1,139 @@
 'use client';
-import { useEffect, useCallback, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSession } from 'next-auth/react';
 import { useUserStore } from '@/store';
-import { fetchUserData } from '@/lib/user-actions';
+import { doc, onSnapshot, getDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { convertFirestoreTimestamps } from '@/lib/user-utils';
 
 export const useAuth = () => {
   const { data: session, status } = useSession();
-  const { user, setUser, setLoading, clearUser } = useUserStore();
-  const lastFetchedUserId = useRef<string | null>(null);
+  const { setUser, setLoading, clearUser } = useUserStore();
 
-  // Memoize store functions to prevent unnecessary re-renders
-  const stableFunctions = useRef({ setUser, setLoading, clearUser });
-  stableFunctions.current = { setUser, setLoading, clearUser };
+  // Keep stable refs for store setters so snapshot callback never changes
+  const stable = useRef({ setUser, setLoading, clearUser });
+  stable.current = { setUser, setLoading, clearUser };
 
-  const loadUserData = useCallback(
-    async (userId: string) => {
-      // Prevent duplicate calls for the same user
-      if (lastFetchedUserId.current === userId) {
-        return;
-      }
+  // Track one active listener per uid and the latest updatedAt we've applied
+  const unsubscribeRef = useRef<null | (() => void)>(null);
+  const subscribedUserIdRef = useRef<string | null>(null);
+  const lastUpdatedAtRef = useRef<number>(0);
 
-      // Check if we already have data for this user in the store
-      if (user && user.uid === userId) {
-        console.log('✅ User data already loaded from store:', user.email);
-        lastFetchedUserId.current = userId;
-        return;
-      }
+  const startUserListener = (uid: string) => {
+    // If already subscribed for this uid, do nothing
+    if (subscribedUserIdRef.current === uid && unsubscribeRef.current) {
+      stable.current.setLoading(false);
+      return;
+    }
 
-      console.log('🔄 Fetching user data from Firestore for:', userId);
-      lastFetchedUserId.current = userId;
-      stableFunctions.current.setLoading(true);
-
+    // Tear down any previous listener
+    if (unsubscribeRef.current) {
       try {
-        const userData = await fetchUserData(userId);
-        if (userData) {
-          console.log('✅ User data loaded from Firestore:', userData.email);
-          stableFunctions.current.setUser(userData);
-        } else {
-          console.warn('❌ User data not found in Firestore for UID:', userId);
-          console.warn('Email:', session?.user?.email);
-          stableFunctions.current.clearUser();
-          lastFetchedUserId.current = null;
+        unsubscribeRef.current();
+      } catch {}
+      unsubscribeRef.current = null;
+    }
+
+    subscribedUserIdRef.current = uid;
+    // Initialize lastUpdatedAt from current store state (if any)
+    try {
+      const current = (useUserStore.getState().user as any)?.updatedAt;
+      lastUpdatedAtRef.current = current?.getTime?.() || 0;
+    } catch {
+      lastUpdatedAtRef.current = 0;
+    }
+
+    stable.current.setLoading(true);
+
+    const userRef = doc(db, 'users', uid);
+
+    unsubscribeRef.current = onSnapshot(
+      userRef,
+      (snap) => {
+        try {
+          if (snap.exists()) {
+            const data = convertFirestoreTimestamps(snap.data());
+            const incomingUpdatedAt = (data as any)?.updatedAt?.getTime?.() || 0;
+
+            // Only update Zustand when server data is newer than what we applied
+            if (incomingUpdatedAt >= lastUpdatedAtRef.current) {
+              lastUpdatedAtRef.current = incomingUpdatedAt;
+              stable.current.setUser(data as any);
+            }
+          } else {
+            // Document missing — clear local user
+            lastUpdatedAtRef.current = 0;
+            stable.current.clearUser();
+          }
+        } finally {
+          stable.current.setLoading(false);
         }
-      } catch (error) {
-        console.error('❌ Error loading user data:', error);
-        stableFunctions.current.clearUser();
-        lastFetchedUserId.current = null;
-      } finally {
-        stableFunctions.current.setLoading(false);
+      },
+      async (error) => {
+        console.error('User snapshot error:', error);
+        // Fallback to one-time fetch so UI isn't blocked
+        try {
+          const once = await getDoc(userRef);
+          if (once.exists()) {
+            const data = convertFirestoreTimestamps(once.data());
+            lastUpdatedAtRef.current = (data as any)?.updatedAt?.getTime?.() || 0;
+            stable.current.setUser(data as any);
+          } else {
+            lastUpdatedAtRef.current = 0;
+            stable.current.clearUser();
+          }
+        } catch {
+          lastUpdatedAtRef.current = 0;
+          stable.current.clearUser();
+        } finally {
+          stable.current.setLoading(false);
+        }
       }
-    },
-    [user, session?.user?.email]
-  );
+    );
+  };
 
   useEffect(() => {
     if (status === 'loading') {
-      stableFunctions.current.setLoading(true);
+      stable.current.setLoading(true);
       return;
     }
 
     if (status === 'unauthenticated') {
-      console.log('🚪 User unauthenticated, clearing user data');
-      stableFunctions.current.clearUser();
-      lastFetchedUserId.current = null;
+      // Cleanup listener and clear state
+      if (unsubscribeRef.current) {
+        try {
+          unsubscribeRef.current();
+        } catch {}
+        unsubscribeRef.current = null;
+      }
+      subscribedUserIdRef.current = null;
+      lastUpdatedAtRef.current = 0;
+      stable.current.clearUser();
       return;
     }
 
     if (status === 'authenticated' && session?.user?.id) {
-      // Only load data if we don't have it or it's for a different user
-      const sessionUserId = session.user.id;
-      const needsRefresh = !user || user.uid !== sessionUserId;
-
-      if (needsRefresh) {
-        console.log('🔄 User authentication detected, checking data...');
-        loadUserData(sessionUserId);
-      } else {
-        console.log('✅ User data already available, skipping fetch');
-        stableFunctions.current.setLoading(false);
-      }
+      startUserListener(session.user.id);
     }
-  }, [session?.user?.id, status, loadUserData, user?.uid]);
+
+    // Cleanup on unmount
+    return () => {
+      if (unsubscribeRef.current) {
+        try {
+          unsubscribeRef.current();
+        } catch {}
+        unsubscribeRef.current = null;
+      }
+      subscribedUserIdRef.current = null;
+      lastUpdatedAtRef.current = 0;
+    };
+  }, [status, session?.user?.id]);
 
   return {
-    user,
+    user: useUserStore.getState().user,
     session,
     status,
     isLoading: status === 'loading' || useUserStore.getState().isLoading,
-    isAuthenticated: status === 'authenticated' && !!user,
+    isAuthenticated: status === 'authenticated' && !!useUserStore.getState().user,
   };
 };

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { cn, isLocationMatch, getDynamicPath, translate } from '@/lib/utils';
-import { menusConfig, ModernNavType } from '@/config/menus';
+import { menusConfig, userMenuConfig, ModernNavType, adminMenuConfig } from '@/config/menus';
 import SingleIconMenu from './single-icon-menu';
 import { useRouter, usePathname } from 'next/navigation';
-import { useSidebar, useThemeStore } from '@/store';
+import { useSidebar, useThemeStore, useUserStore } from '@/store';
 import MenuItem from './menu-item';
 import NestedMenus from './nested-menus';
 import Image from 'next/image';
@@ -18,7 +18,13 @@ import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const ModuleSidebar = ({ trans }: { trans: any }) => {
-  const menus = menusConfig?.sidebarNav?.modern || [];
+  const { user } = useUserStore();
+
+  // Use user-specific menu for regular users, admin menu for admins
+  const isAdmin = user?.role === 'admin' || user?.role === 'moderator';
+  const menus = isAdmin
+    ? adminMenuConfig?.sidebarNav?.modern || []
+    : userMenuConfig?.sidebarNav?.classic || []; // Use classic for users since modern might not exist in userMenuConfig
   const { subMenu, setSubmenu, collapsed, setCollapsed, sidebarBg } = useSidebar();
   const { isRtl } = useThemeStore();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);

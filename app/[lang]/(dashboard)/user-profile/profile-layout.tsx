@@ -15,6 +15,11 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
+  // Hide large profile header for verification flow and main profile page
+  if (location?.includes('/user-profile/verify') || location?.endsWith('/user-profile')) {
+    return <div className="mt-6">{children}</div>;
+  }
+
   return (
     <React.Fragment>
       <Header />

@@ -101,7 +101,9 @@ export interface KycRecord {
   governmentIdType: string;
   governmentIdFrontImage: string;
   governmentIdBackImage: string;
-  status: 'pending' | 'approved' | 'rejected';
+  proofOfBillingImage: string;
+  selfieWithIdImage: string;
+  status: 'pending' | 'approved' | 'rejected' | 'not_submitted';
   statusMessage: string;
   createdAt: Date;
   updatedAt: Date;

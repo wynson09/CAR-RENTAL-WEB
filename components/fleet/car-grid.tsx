@@ -52,6 +52,19 @@ export const CarGrid = ({
     });
   }, [cars, selectedCategory]);
 
+  // Priority-first sorting at render for safety
+  const sortedCars = useMemo(() => {
+    const list = [...filteredCars].map((c: any) => ({
+      ...c,
+      priorityLevel:
+        typeof c.priorityLevel === 'number'
+          ? c.priorityLevel
+          : parseInt(String(c.priorityLevel), 10) || 0,
+    }));
+    list.sort((a: any, b: any) => (b.priorityLevel || 0) - (a.priorityLevel || 0));
+    return list;
+  }, [filteredCars]);
+
   const handleCategoryChange = (category: CarCategory) => {
     setSelectedCategory(category);
   };
@@ -65,11 +78,14 @@ export const CarGrid = ({
 
       {/* Cars Grid */}
       <div
-        className={cn('grid gap-6 grid-cols-[repeat(auto-fill,minmax(380px,1fr))]', gridClassName)}
+        className={cn(
+          'flex flex-col gap-4 sm:grid sm:gap-6 sm:grid-cols-[repeat(auto-fill,minmax(380px,1fr))]',
+          gridClassName
+        )}
       >
-        {filteredCars.map((car) => (
+        {sortedCars.map((car) => (
           <CarCard
-            key={car.id}
+            key={(car as any).docId ?? car.id}
             car={car}
             pickupDate={pickupDate}
             returnDate={returnDate}

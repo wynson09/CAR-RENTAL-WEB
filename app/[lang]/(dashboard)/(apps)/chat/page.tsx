@@ -76,7 +76,43 @@ const ChatPage = () => {
   });
   const messageMutation = useMutation({
     mutationFn: sendMessage,
-    onSuccess: () => {
+    onMutate: async (newMessage) => {
+      // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+      await queryClient.cancelQueries({ queryKey: ['messages'] });
+
+      // Snapshot the previous value
+      const previousMessages = queryClient.getQueryData(['messages']);
+
+      // Optimistically update to the new value
+      queryClient.setQueryData(['messages'], (old: any) => {
+        if (!old) return old;
+
+        // Create optimistic message
+        const optimisticMessage = {
+          id: `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+          message: newMessage.message,
+          contact: newMessage.contact,
+          time: new Date().toISOString(),
+          avatar: '/images/avatar/avatar-7.jpg', // Default avatar
+          name: 'You',
+          isOptimistic: true, // Flag to identify optimistic messages
+        };
+
+        return {
+          ...old,
+          data: [...(old.data || []), optimisticMessage],
+        };
+      });
+
+      // Return a context object with the snapshotted value
+      return { previousMessages };
+    },
+    onError: (err, newMessage, context) => {
+      // If the mutation fails, use the context returned from onMutate to roll back
+      queryClient.setQueryData(['messages'], context?.previousMessages);
+    },
+    onSettled: () => {
+      // Always refetch after error or success to ensure server state
       queryClient.invalidateQueries({ queryKey: ['messages'] });
     },
   });

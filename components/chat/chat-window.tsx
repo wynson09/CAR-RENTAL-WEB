@@ -1,15 +1,32 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Send, MessageSquare, AlertCircle, ChevronUp, Loader2, AlertTriangle } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+  Send,
+  MessageSquare,
+  AlertCircle,
+  ChevronUp,
+  Loader2,
+  AlertTriangle,
+  Image as ImageIcon,
+  Annoyed,
+  Check,
+  CheckCheck,
+  Clock,
+  AlertOctagon,
+} from 'lucide-react';
+import { ImageUpload } from '@/components/ui/image-upload';
+import data from '@emoji-mart/data';
+import Picker from '@emoji-mart/react';
 import {
   FirebaseChatService,
   ChatMessage,
@@ -21,6 +38,7 @@ import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { Timestamp } from 'firebase/firestore';
+import avatar from '@/public/images/car-rental/avatar/support-team-avatar.png';
 
 interface ChatWindowProps {
   chatId: string;
@@ -31,6 +49,9 @@ interface ChatWindowProps {
   className?: string;
   title?: string;
   isAdminView?: boolean;
+  hideHeader?: boolean;
+  targetUserAvatar?: string;
+  targetUserName?: string;
 }
 
 export const ChatWindow = ({
@@ -42,6 +63,9 @@ export const ChatWindow = ({
   className,
   title = 'Chat',
   isAdminView = false,
+  hideHeader = false,
+  targetUserAvatar,
+  targetUserName,
 }: ChatWindowProps) => {
   // Core state
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -50,6 +74,9 @@ export const ChatWindow = ({
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Message states for better UX
+  const [failedMessages, setFailedMessages] = useState<Set<string>>(new Set());
 
   // Pagination state
   const [paginationData, setPaginationData] = useState<PaginatedMessages | null>(null);
@@ -66,6 +93,65 @@ export const ChatWindow = ({
 
   // Real-time listener state
   const [lastMessageTimestamp, setLastMessageTimestamp] = useState<Timestamp | null>(null);
+
+  // --- Lightweight session cache: only for this session, prevents refetches on navigation ---
+  type CachedThread = { messages: ChatMessage[]; lastMs: number };
+
+  const cacheKey = useMemo(() => {
+    // Distinguish admin vs user threads and user identity
+    return `support-chat:${chatId}:${currentUserRole}:${currentUserId}`;
+  }, [chatId, currentUserRole, currentUserId]);
+
+  const readCache = useCallback((): CachedThread | null => {
+    try {
+      const raw = sessionStorage.getItem('chat:cache');
+      if (!raw) return null;
+      const all: Record<string, CachedThread> = JSON.parse(raw);
+      const entry = all?.[cacheKey];
+      if (!entry || !Array.isArray(entry.messages)) return null;
+      return entry;
+    } catch {
+      return null;
+    }
+  }, [cacheKey]);
+
+  const writeCache = useCallback(
+    (messagesToStore: ChatMessage[]) => {
+      try {
+        const last = messagesToStore[messagesToStore.length - 1];
+        const lastMs = last?.timestamp?.toDate?.()?.getTime?.() ?? 0;
+        const raw = sessionStorage.getItem('chat:cache');
+        const all: Record<string, CachedThread> = raw ? JSON.parse(raw) : {};
+        all[cacheKey] = { messages: messagesToStore, lastMs };
+        sessionStorage.setItem('chat:cache', JSON.stringify(all));
+      } catch {
+        // ignore cache write failures
+      }
+    },
+    [cacheKey]
+  );
+
+  // Normalize various timestamp shapes into Firestore Timestamp for queries
+  const toFirestoreTimestamp = useCallback((ts: any): Timestamp | null => {
+    try {
+      if (!ts) return null;
+      if (typeof ts.toDate === 'function' && typeof ts.seconds === 'number') {
+        return ts as Timestamp;
+      }
+      if (typeof ts.seconds === 'number') {
+        return new Timestamp(ts.seconds, ts.nanoseconds || 0);
+      }
+      if (ts instanceof Date) {
+        return Timestamp.fromDate(ts);
+      }
+      if (typeof ts === 'number') {
+        return Timestamp.fromMillis(ts);
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  }, []);
 
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -118,7 +204,12 @@ export const ChatWindow = ({
 
   // Load older messages with smooth scroll position maintenance
   const loadOlderMessages = useCallback(async () => {
-    if (!paginationData?.lastDoc || isLoadingOlder || hasReachedFirstMessage()) return;
+    if (
+      (!paginationData?.lastDoc && !paginationData?.cursorTimestamp) ||
+      isLoadingOlder ||
+      hasReachedFirstMessage()
+    )
+      return;
 
     setIsLoadingOlder(true);
 
@@ -145,7 +236,7 @@ export const ChatWindow = ({
     try {
       const olderMessages = await FirebaseChatService.getOlderMessages(
         chatId,
-        paginationData.lastDoc
+        paginationData.lastDoc || paginationData.cursorTimestamp!
       );
 
       // Track newly loaded message IDs for animation
@@ -158,6 +249,7 @@ export const ChatWindow = ({
         messages: [...olderMessages.messages, ...(prev?.messages || [])],
         lastDoc: olderMessages.lastDoc,
         hasMore: olderMessages.hasMore,
+        cursorTimestamp: olderMessages.cursorTimestamp,
       }));
 
       // Clear animation tracking after animation completes
@@ -203,14 +295,14 @@ export const ChatWindow = ({
     } finally {
       setIsLoadingOlder(false);
     }
-  }, [chatId, paginationData?.lastDoc, hasReachedFirstMessage]);
+  }, [chatId, paginationData?.lastDoc, paginationData?.cursorTimestamp, hasReachedFirstMessage]);
 
   // Handle loading older messages when triggered by scroll
   useEffect(() => {
-    if (isLoadingOlder && paginationData?.lastDoc) {
+    if (isLoadingOlder && (paginationData?.lastDoc || paginationData?.cursorTimestamp)) {
       loadOlderMessages();
     }
-  }, [isLoadingOlder, loadOlderMessages, paginationData?.lastDoc]);
+  }, [isLoadingOlder, loadOlderMessages, paginationData?.lastDoc, paginationData?.cursorTimestamp]);
 
   // Auto-disable pagination when first message is loaded
   useEffect(() => {
@@ -239,39 +331,147 @@ export const ChatWindow = ({
           );
         }
 
+        // Try cache first to avoid an initial fetch when returning to the page
+        const cached = readCache();
+        if (cached && cached.messages.length > 0) {
+          setMessages(cached.messages);
+          // Initialize pagination using the oldest cached message timestamp so
+          // that scroll-up can fetch older messages even when loaded from cache
+          const oldest = cached.messages[0]?.timestamp;
+          const oldestTs = toFirestoreTimestamp(oldest || null);
+          setPaginationData({
+            messages: cached.messages,
+            lastDoc: null,
+            hasMore: true,
+            cursorTimestamp: oldestTs,
+          } as any);
+
+          // Scroll to bottom on load from cache
+          setTimeout(() => {
+            messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
+          }, 100);
+
+          // Listen only for messages newer than the cached last timestamp
+          const lastTs = toFirestoreTimestamp(
+            cached.messages[cached.messages.length - 1]?.timestamp || null
+          );
+          unsubscribeMessages = FirebaseChatService.listenToNewMessages(
+            conversationId,
+            lastTs,
+            (newMessages) => {
+              if (newMessages.length === 0) return;
+              setMessages((prevMessages) => {
+                // Separate optimistic and real messages
+                const optimisticMessages = prevMessages.filter((msg) => msg.id.startsWith('temp_'));
+                const realMessages = prevMessages.filter((msg) => !msg.id.startsWith('temp_'));
+
+                // Remove confirmed optimistic messages
+                const confirmedOptimisticIds: string[] = [];
+                optimisticMessages.forEach((optimisticMsg) => {
+                  const hasServerVersion = newMessages.find(
+                    (serverMsg) =>
+                      serverMsg.content.trim() === optimisticMsg.content.trim() &&
+                      serverMsg.senderId === optimisticMsg.senderId &&
+                      serverMsg.senderRole === optimisticMsg.senderRole
+                  );
+                  if (hasServerVersion) confirmedOptimisticIds.push(optimisticMsg.id);
+                });
+
+                const filteredOptimistic = optimisticMessages.filter(
+                  (msg) => !confirmedOptimisticIds.includes(msg.id)
+                );
+
+                const existingRealMessageIds = new Set(realMessages.map((msg) => msg.id));
+                const uniqueNewMessages = newMessages.filter(
+                  (msg) => !existingRealMessageIds.has(msg.id)
+                );
+
+                const merged = [...realMessages, ...uniqueNewMessages, ...filteredOptimistic];
+
+                // Final dedupe and sort
+                const seenIds = new Set();
+                const finalMessages = merged.filter((msg) => {
+                  if (seenIds.has(msg.id)) return false;
+                  seenIds.add(msg.id);
+                  return true;
+                });
+
+                finalMessages.sort((a, b) => {
+                  const timeA = a.timestamp?.toDate?.()?.getTime() || 0;
+                  const timeB = b.timestamp?.toDate?.()?.getTime() || 0;
+                  return timeA - timeB;
+                });
+
+                // Persist to cache
+                writeCache(finalMessages);
+
+                return finalMessages;
+              });
+
+              const latestNewMessage = newMessages[newMessages.length - 1];
+              setLastMessageTimestamp(latestNewMessage.timestamp);
+            },
+            (error) => {
+              console.error('New messages listener error:', error);
+              setError('Unable to load messages. Please refresh.');
+            }
+          );
+
+          // Keep conversation listener for spam-prevention (user role)
+          if (currentUserRole === 'user') {
+            unsubscribeConversation = FirebaseChatService.listenToUserConversation(
+              currentUserId,
+              (conv) => {
+                setConversation(conv);
+                if (conv) updateSpamState(conv);
+              },
+              (error) => {
+                console.error('Conversation listener error:', error);
+              }
+            );
+          }
+
+          setIsLoading(false);
+          return; // Skip initial fetch
+        }
+
         // Load initial messages with pagination
         const initialMessages = await FirebaseChatService.getInitialMessages(conversationId);
         setMessages(initialMessages.messages);
         setPaginationData(initialMessages);
+        // Persist to cache on fresh load
+        writeCache(initialMessages.messages);
+
+        // Don't auto-mark messages as read on load
+        // Messages will be marked as read when user actively engages (scrolls, sends message)
 
         // Scroll to bottom on initial load
         setTimeout(() => {
-          messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
+          try {
+            messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
+          } catch {}
         }, 100);
 
         // Set up real-time listener for NEW messages only (preserves pagination)
         const latestMessage = initialMessages.messages[initialMessages.messages.length - 1];
         unsubscribeMessages = FirebaseChatService.listenToNewMessages(
           conversationId,
-          latestMessage?.timestamp || null,
+          toFirestoreTimestamp(latestMessage?.timestamp || null),
           (newMessages) => {
             if (newMessages.length > 0) {
               setMessages((prevMessages) => {
-                // Remove any optimistic messages that have been confirmed
+                // Separate optimistic and real messages
                 const optimisticMessages = prevMessages.filter((msg) => msg.id.startsWith('temp_'));
                 const realMessages = prevMessages.filter((msg) => !msg.id.startsWith('temp_'));
 
-                // Find confirmed optimistic messages
+                // Find confirmed optimistic messages to remove
                 const confirmedOptimisticIds: string[] = [];
                 optimisticMessages.forEach((optimisticMsg) => {
                   const hasServerVersion = newMessages.find(
                     (serverMsg) =>
-                      serverMsg.content === optimisticMsg.content &&
+                      serverMsg.content.trim() === optimisticMsg.content.trim() &&
                       serverMsg.senderId === optimisticMsg.senderId &&
-                      Math.abs(
-                        (serverMsg.timestamp?.toDate?.()?.getTime() || 0) -
-                          (optimisticMsg.timestamp?.toDate?.()?.getTime() || 0)
-                      ) < 5000 // Within 5 seconds
+                      serverMsg.senderRole === optimisticMsg.senderRole
                   );
 
                   if (hasServerVersion) {
@@ -279,21 +479,40 @@ export const ChatWindow = ({
                   }
                 });
 
-                // Remove confirmed optimistic messages and add new real messages
+                // Remove confirmed optimistic messages
                 const filteredOptimistic = optimisticMessages.filter(
                   (msg) => !confirmedOptimisticIds.includes(msg.id)
                 );
 
-                const allMessages = [...realMessages, ...newMessages, ...filteredOptimistic];
+                // Filter out duplicate real messages (prevent duplicates from multiple listener calls)
+                const existingRealMessageIds = new Set(realMessages.map((msg) => msg.id));
+                const uniqueNewMessages = newMessages.filter(
+                  (msg) => !existingRealMessageIds.has(msg.id)
+                );
+
+                // Combine all messages
+                const allMessages = [...realMessages, ...uniqueNewMessages, ...filteredOptimistic];
+
+                // Final deduplication by ID (safety check)
+                const seenIds = new Set();
+                const finalMessages = allMessages.filter((msg) => {
+                  if (seenIds.has(msg.id)) {
+                    return false;
+                  }
+                  seenIds.add(msg.id);
+                  return true;
+                });
 
                 // Sort by timestamp
-                allMessages.sort((a, b) => {
+                finalMessages.sort((a, b) => {
                   const timeA = a.timestamp?.toDate?.()?.getTime() || 0;
                   const timeB = b.timestamp?.toDate?.()?.getTime() || 0;
                   return timeA - timeB;
                 });
 
-                return allMessages;
+                // Persist to cache on updates
+                writeCache(finalMessages);
+                return finalMessages;
               });
 
               // Update latest timestamp for future listeners
@@ -301,8 +520,8 @@ export const ChatWindow = ({
               setLastMessageTimestamp(latestNewMessage.timestamp);
             }
 
-            // Mark messages as read
-            FirebaseChatService.markMessagesAsRead(conversationId, currentUserId);
+            // Don't auto-mark messages as read anymore
+            // Messages will be marked as read when user actively engages
           },
           (error) => {
             console.error('New messages listener error:', error);
@@ -346,7 +565,15 @@ export const ChatWindow = ({
       unsubscribeMessages?.();
       unsubscribeConversation?.();
     };
-  }, [chatId, currentUserId, currentUserName, currentUserRole, currentUserAvatar]);
+  }, [
+    chatId,
+    currentUserId,
+    currentUserName,
+    currentUserRole,
+    currentUserAvatar,
+    readCache,
+    writeCache,
+  ]);
 
   // Update spam prevention state
   const updateSpamState = useCallback(
@@ -361,6 +588,13 @@ export const ChatWindow = ({
     [currentUserId]
   );
 
+  // Mark messages as read when actively engaging (works for both users and admins)
+  const markAsRead = useCallback(async () => {
+    if (chatId) {
+      await FirebaseChatService.markMessagesAsRead(chatId, currentUserId);
+    }
+  }, [chatId, currentUserId]);
+
   // Auto-scroll when new messages arrive (only if user is at bottom)
   useEffect(() => {
     if (hasScrolledToBottom && messages.length > 0) {
@@ -370,11 +604,77 @@ export const ChatWindow = ({
         setTimeout(() => {
           if (hasScrolledToBottom) {
             messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+            // Mark messages as read when user is viewing at bottom
+            markAsRead();
           }
         }, 100);
       }
     }
-  }, [messages, hasScrolledToBottom]);
+  }, [messages, hasScrolledToBottom, markAsRead]);
+
+  // Handle emoji selection (for @emoji-mart)
+  const handleEmojiSelect = (emoji: any) => {
+    setNewMessage((prev) => prev + emoji.native);
+  };
+
+  // Handle image upload
+  const handleImageUpload = async (imageUrl: string, fileName: string) => {
+    if (isSending) return;
+
+    // Check spam prevention for users
+    if (currentUserRole === 'user' && spamState.isBlocked) {
+      toast.error('Please wait for an admin response before sending more messages.');
+      return;
+    }
+
+    // Create optimistic message with unique ID
+    const optimisticMessage: ChatMessage = {
+      id: `temp_${currentUserId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      conversationId: chatId,
+      senderId: currentUserId,
+      senderName: currentUserName,
+      senderRole: currentUserRole,
+      senderAvatar: currentUserAvatar || '',
+      content: imageUrl,
+      messageType: 'image',
+      timestamp: { toDate: () => new Date() } as any,
+      isRead: false,
+      isEdited: false,
+    };
+
+    // Add message optimistically to UI IMMEDIATELY
+    setMessages((prev) => [...prev, optimisticMessage]);
+
+    // Scroll to bottom immediately and smoothly
+    requestAnimationFrame(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Mark messages as read asynchronously (don't block UI)
+    markAsRead().catch(console.error);
+
+    // Send to server in background
+    try {
+      await FirebaseChatService.sendMessage(
+        chatId,
+        currentUserId,
+        currentUserName,
+        currentUserRole,
+        imageUrl,
+        'image',
+        currentUserAvatar
+      );
+
+      toast.success('Image sent successfully');
+    } catch (error) {
+      console.error('Error sending image:', error);
+
+      // Mark message as failed instead of removing it
+      setFailedMessages((prev) => new Set([...prev, optimisticMessage.id]));
+
+      toast.error('Failed to send image. Tap message to retry.');
+    }
+  };
 
   // Send message with optimistic update
   const handleSendMessage = async () => {
@@ -387,12 +687,11 @@ export const ChatWindow = ({
     }
 
     const messageText = newMessage.trim();
-    setNewMessage(''); // Clear input immediately
-    setIsSending(true);
+    setNewMessage(''); // Clear input immediately for instant feedback
 
-    // Create optimistic message
+    // Create optimistic message with unique ID
     const optimisticMessage: ChatMessage = {
-      id: `temp_${Date.now()}_${Math.random()}`, // Temporary ID
+      id: `temp_${currentUserId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       conversationId: chatId,
       senderId: currentUserId,
       senderName: currentUserName,
@@ -400,12 +699,12 @@ export const ChatWindow = ({
       senderAvatar: currentUserAvatar || '',
       content: messageText,
       messageType: 'text',
-      timestamp: { toDate: () => new Date() } as any, // Temporary timestamp
+      timestamp: { toDate: () => new Date() } as any,
       isRead: false,
       isEdited: false,
     };
 
-    // Add message optimistically to UI
+    // Add message optimistically to UI IMMEDIATELY
     setMessages((prev) => [...prev, optimisticMessage]);
 
     // Scroll to bottom immediately and smoothly
@@ -413,6 +712,10 @@ export const ChatWindow = ({
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     });
 
+    // Mark messages as read asynchronously (don't block UI)
+    markAsRead().catch(console.error);
+
+    // Send to server in background
     try {
       await FirebaseChatService.sendMessage(
         chatId,
@@ -428,35 +731,102 @@ export const ChatWindow = ({
     } catch (error: any) {
       console.error('Error sending message:', error);
 
-      // Remove optimistic message on error
-      setMessages((prev) => prev.filter((msg) => msg.id !== optimisticMessage.id));
-
-      // Restore message to input
-      setNewMessage(messageText);
+      // Mark message as failed instead of removing it
+      setFailedMessages((prev) => new Set([...prev, optimisticMessage.id]));
 
       if (error.message?.includes('Spam prevention')) {
         toast.error('Please wait for an admin response before sending more messages.');
       } else {
-        toast.error('Failed to send message');
+        toast.error('Failed to send message. Tap message to retry.');
       }
-    } finally {
-      setIsSending(false);
+    }
+  };
+
+  // Retry failed message
+  const retryMessage = async (failedMessage: ChatMessage) => {
+    if (isSending) return;
+
+    // Remove from failed messages set
+    setFailedMessages((prev) => {
+      const newSet = new Set(prev);
+      newSet.delete(failedMessage.id);
+      return newSet;
+    });
+
+    try {
+      await FirebaseChatService.sendMessage(
+        chatId,
+        currentUserId,
+        currentUserName,
+        currentUserRole,
+        failedMessage.content,
+        failedMessage.messageType,
+        currentUserAvatar
+      );
+
+      toast.success('Message sent successfully');
+    } catch (error: any) {
+      console.error('Error retrying message:', error);
+      setFailedMessages((prev) => new Set([...prev, failedMessage.id]));
+      toast.error('Failed to send message again');
     }
   };
 
   // Handle key press
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey && !isSending) {
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
   };
 
-  // Format message time
+  // Format message time (robust against cached timestamp objects)
   const formatMessageTime = (timestamp: any) => {
     if (!timestamp) return '';
-    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-    return format(date, 'HH:mm');
+
+    try {
+      let date: Date;
+
+      // Firestore Timestamp instance
+      if (timestamp && typeof timestamp.toDate === 'function') {
+        try {
+          date = timestamp.toDate();
+        } catch {
+          // Fallback if toDate throws (rare)
+          if (typeof timestamp.seconds === 'number') {
+            const ms =
+              timestamp.seconds * 1000 + Math.floor((timestamp.nanoseconds || 0) / 1_000_000);
+            date = new Date(ms);
+          } else {
+            return '';
+          }
+        }
+      }
+      // Cached plain object with seconds/nanoseconds
+      else if (
+        timestamp &&
+        typeof timestamp === 'object' &&
+        typeof timestamp.seconds === 'number'
+      ) {
+        const ms = timestamp.seconds * 1000 + Math.floor((timestamp.nanoseconds || 0) / 1_000_000);
+        date = new Date(ms);
+      }
+      // Already a Date
+      else if (timestamp instanceof Date) {
+        date = timestamp;
+      }
+      // Number or ISO string
+      else if (typeof timestamp === 'number' || typeof timestamp === 'string') {
+        date = new Date(timestamp);
+      } else {
+        return '';
+      }
+
+      if (isNaN(date.getTime())) return '';
+      return format(date, 'hh:mm a');
+    } catch {
+      return '';
+    }
   };
 
   // Loading state
@@ -464,7 +834,7 @@ export const ChatWindow = ({
     return (
       <Card
         className={cn(
-          'h-[calc(90vh-120px)] flex items-center justify-center border border-gray-200 bg-white rounded-xl shadow-lg',
+          'h-[calc(70vh)] flex items-center justify-center border border-gray-200 bg-white rounded-xl shadow-lg',
           className
         )}
       >
@@ -477,52 +847,62 @@ export const ChatWindow = ({
   }
 
   return (
-    <Card
-      className={cn(
-        'h-[calc(90vh-120px)] flex flex-col border border-gray-200 bg-white rounded-xl shadow-lg',
-        className
-      )}
-    >
+    <Card className={cn('h-[calc(70vh)] flex flex-col rounded-xl shadow-lg', className)}>
       {/* Header with gradient background */}
-      <CardHeader className="pb-4 border-b bg-gradient-to-r from-blue-500 to-purple-600 rounded-t-xl">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Avatar className="h-10 w-10">
-              <AvatarFallback className="bg-white/20 text-white font-semibold text-sm">
-                {isAdminView ? 'U' : 'AS'}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-              <CardTitle className="text-lg font-semibold text-white">{title}</CardTitle>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                <span className="text-sm text-white/90">
-                  {isAdminView ? 'User Support' : 'Online'}
-                </span>
+      {!hideHeader && (
+        <CardHeader className="pb-4 border-b bg-gradient-to-r from-blue-500 to-purple-600 rounded-t-xl">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Avatar className="h-10 w-10 ring-2 ring-white/30">
+                {isAdminView ? (
+                  // For admin view, show the target user's avatar
+                  <>
+                    <AvatarImage src={targetUserAvatar} alt={targetUserName || 'User'} />
+                    <AvatarFallback className="bg-white/20 text-white font-semibold text-sm">
+                      {targetUserName
+                        ?.split(' ')
+                        .map((n) => n[0])
+                        .join('') || 'U'}
+                    </AvatarFallback>
+                  </>
+                ) : (
+                  // For user view, show support team avatar
+                  <>
+                    <AvatarImage src={avatar.src} alt="Support Team" className="bg-white" />
+                    <AvatarFallback className="bg-white/20 text-white font-semibold text-sm"></AvatarFallback>
+                  </>
+                )}
+              </Avatar>
+              <div className="flex-1">
+                <CardTitle className="text-lg font-semibold text-white">{title}</CardTitle>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                  <span className="text-sm text-white/90">Active now</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Spam prevention status in header */}
-          {currentUserRole === 'user' && spamState.consecutiveMessages >= 5 && (
-            <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2">
-              {spamState.isBlocked ? (
-                <>
-                  <div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></div>
-                  <span className="text-xs text-white font-medium">Awaiting admin response</span>
-                </>
-              ) : (
-                <>
-                  <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
-                  <span className="text-xs text-white font-medium">
-                    {7 - spamState.consecutiveMessages} messages left
-                  </span>
-                </>
-              )}
-            </div>
-          )}
-        </div>
-      </CardHeader>
+            {/* Spam prevention status in header */}
+            {currentUserRole === 'user' && spamState.consecutiveMessages >= 5 && (
+              <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2">
+                {spamState.isBlocked ? (
+                  <>
+                    <div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></div>
+                    <span className="text-xs text-white font-medium">Awaiting admin response</span>
+                  </>
+                ) : (
+                  <>
+                    <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                    <span className="text-xs text-white font-medium">
+                      {7 - spamState.consecutiveMessages} messages left
+                    </span>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        </CardHeader>
+      )}
 
       {/* Messages */}
       <CardContent className="flex-1 p-0 overflow-hidden">
@@ -587,13 +967,18 @@ export const ChatWindow = ({
                   <div className="space-y-4">
                     {messages.map((message, index) => {
                       const isOwn = message.senderId === currentUserId;
+                      // Determine if we should show a timestamp for this message
+                      // We show timestamps:
+                      // 1. For the first message in the conversation
+                      // 2. When there's a gap of more than 5 minutes between messages
+                      // This creates cleaner chat with timestamps only when time context is needed
                       const showTime =
                         index === 0 ||
                         (messages[index - 1] &&
                           Math.abs(
                             message.timestamp?.toDate?.()?.getTime() -
                               messages[index - 1].timestamp?.toDate?.()?.getTime()
-                          ) > 300000); // 5 minutes
+                          ) > 300000); // 5 minutes (300,000 ms)
 
                       const isNewlyLoaded = newlyLoadedMessageIds.has(message.id);
 
@@ -608,7 +993,7 @@ export const ChatWindow = ({
                         >
                           {showTime && (
                             <div className="text-center my-3">
-                              <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                              <span className="text-xs text-gray-500 px-2 py-1 rounded">
                                 {formatMessageTime(message.timestamp)}
                               </span>
                             </div>
@@ -634,33 +1019,84 @@ export const ChatWindow = ({
 
                             <div
                               className={cn(
-                                'rounded-lg px-3 py-2 text-sm break-words max-w-full',
-                                isOwn
-                                  ? 'bg-blue-500 text-white rounded-br-md'
-                                  : 'bg-gray-100 text-gray-900 rounded-bl-md',
+                                'rounded-2xl px-3 py-2 text-sm break-words max-w-full relative group',
+                                isOwn ? 'bg-primary/70 text-primary-foreground' : 'bg-default-200',
                                 // Add subtle opacity for optimistic messages
-                                message.id.startsWith('temp_') && 'opacity-70'
+                                message.id.startsWith('temp_') &&
+                                  !failedMessages.has(message.id) &&
+                                  'opacity-70',
+                                // Highlight failed messages
+                                failedMessages.has(message.id) &&
+                                  'bg-destructive/20 border border-destructive/30 cursor-pointer',
+                                failedMessages.has(message.id) &&
+                                  'hover:bg-destructive/30 transition-colors'
                               )}
+                              onClick={
+                                failedMessages.has(message.id)
+                                  ? () => retryMessage(message)
+                                  : undefined
+                              }
                             >
-                              {!isOwn && (
-                                <div className="flex items-center gap-2 mb-1">
-                                  <span className="font-medium text-xs text-gray-600">
-                                    {message.senderName}
-                                  </span>
-                                  {(message.senderRole === 'admin' ||
-                                    message.senderRole === 'moderator') && (
-                                    <Badge className="text-xs h-4 px-1 bg-green-500 text-white border-0">
-                                      {message.senderRole === 'admin' ? 'Admin' : 'Mod'}
-                                    </Badge>
+                              {message.messageType === 'image' ? (
+                                <div className="max-w-xs sm:max-w-sm">
+                                  <img
+                                    src={message.content}
+                                    alt="Shared image"
+                                    className="rounded-lg shadow-sm cursor-pointer hover:shadow-md transition-shadow w-full h-auto"
+                                    onLoad={() => {
+                                      // When image finishes loading, keep view at the very bottom
+                                      requestAnimationFrame(() => {
+                                        messagesEndRef.current?.scrollIntoView({
+                                          behavior: 'auto',
+                                        });
+                                      });
+                                    }}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      window.open(message.content, '_blank');
+                                    }}
+                                  />
+                                </div>
+                              ) : (
+                                <p className="whitespace-pre-wrap break-words">{message.content}</p>
+                              )}
+
+                              {/* Message status indicators */}
+                              {isOwn && (
+                                <div className="flex items-center gap-1 mt-1">
+                                  {message.isEdited && (
+                                    <span
+                                      className={cn(
+                                        'text-xs italic opacity-70',
+                                        isOwn ? 'text-primary-foreground/70' : 'text-default-500'
+                                      )}
+                                    >
+                                      Edited
+                                    </span>
                                   )}
+
+                                  <div className="ml-auto flex items-center">
+                                    {failedMessages.has(message.id) ? (
+                                      <div className="flex items-center gap-1 text-destructive">
+                                        <AlertOctagon className="h-3 w-3" />
+                                        <span className="text-xs">Tap to retry</span>
+                                      </div>
+                                    ) : message.id.startsWith('temp_') ? (
+                                      <Clock className="h-3 w-3 opacity-60" />
+                                    ) : (
+                                      <div className="flex items-center gap-0.5">
+                                        <CheckCheck className="h-3 w-3 opacity-60" />
+                                      </div>
+                                    )}
+                                  </div>
                                 </div>
                               )}
-                              <p className="whitespace-pre-wrap break-words">{message.content}</p>
-                              {message.isEdited && (
+
+                              {!isOwn && message.isEdited && (
                                 <span
                                   className={cn(
                                     'text-xs italic opacity-70 block mt-1',
-                                    isOwn ? 'text-blue-100' : 'text-gray-500'
+                                    'text-default-500'
                                   )}
                                 >
                                   Edited
@@ -680,39 +1116,84 @@ export const ChatWindow = ({
         )}
       </CardContent>
 
-      {/* Input */}
-      <div className="p-4 border-t bg-white rounded-b-xl">
-        <div className="flex gap-2">
-          <Input
-            placeholder={
-              spamState.isBlocked ? 'Waiting for admin response...' : 'Type your message...'
-            }
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
-            disabled={isSending || (currentUserRole === 'user' && spamState.isBlocked)}
-            className="flex-1 rounded-lg"
-          />
-          <Button
-            onClick={handleSendMessage}
-            disabled={
-              !newMessage.trim() || isSending || (currentUserRole === 'user' && spamState.isBlocked)
-            }
-            size="sm"
-            className="px-3 rounded-lg"
-          >
-            {isSending ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Send className="h-4 w-4" />
-            )}
-          </Button>
-        </div>
+      {/* Input - Using Template's Professional Design */}
+      <CardFooter className="flex-none flex-col px-0 py-4 border-t border-border">
+        <div
+          className="w-full flex items-end gap-1 lg:gap-4 lg:px-4 relative px-2"
+          style={{ boxSizing: 'border-box' }}
+        >
+          <div className="flex-none flex gap-1 absolute md:static top-0 left-1.5 z-10">
+            <div className="hidden lg:block">
+              <ImageUpload
+                onImageUpload={handleImageUpload}
+                currentUserId={currentUserId}
+                disabled={currentUserRole === 'user' && spamState.isBlocked}
+                className="h-10 w-10 rounded-full hover:bg-default-50 flex justify-center items-center"
+              />
+            </div>
+          </div>
+          <div className="flex-1">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSendMessage();
+              }}
+            >
+              <div className="flex gap-1 relative">
+                <textarea
+                  value={newMessage}
+                  onChange={(e) => {
+                    setNewMessage(e.target.value);
+                    e.target.style.height = 'auto';
+                    e.target.style.height = `${e.target.scrollHeight - 15}px`;
+                  }}
+                  placeholder={
+                    spamState.isBlocked ? 'Waiting for admin response...' : 'Type your message...'
+                  }
+                  className="bg-background border border-default-200 outline-none focus:border-primary rounded-xl break-words pl-8 md:pl-3 px-3 flex-1 h-10 pt-2 p-1 pr-8 no-scrollbar"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSendMessage();
+                    }
+                  }}
+                  style={{
+                    minHeight: '40px',
+                    maxHeight: '120px',
+                    overflowY: 'auto',
+                    resize: 'none',
+                  }}
+                  disabled={currentUserRole === 'user' && spamState.isBlocked}
+                />
 
-        <p className="text-xs text-muted-foreground mt-2">
-          Press Enter to send • Our support team typically responds within a few minutes
-        </p>
-      </div>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <span className="absolute ltr:right-12 rtl:left-12 bottom-1.5 h-7 w-7 rounded-full cursor-pointer">
+                      <Annoyed className="w-6 h-6 text-primary" />
+                    </span>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    side="top"
+                    className="w-fit p-0 shadow-none border-none bottom-0 rtl:left-5 ltr:-left-[110px]"
+                  >
+                    <Picker data={data} onEmojiSelect={handleEmojiSelect} theme="auto" />
+                  </PopoverContent>
+                </Popover>
+
+                <Button
+                  type="submit"
+                  className="rounded-full bg-default-200 hover:bg-default-300 h-[42px] w-[42px] p-0 self-end"
+                  disabled={
+                    !newMessage.trim() || (currentUserRole === 'user' && spamState.isBlocked)
+                  }
+                >
+                  <Send className="w-5 h-8 text-primary rtl:rotate-180" />
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </CardFooter>
     </Card>
   );
 };
