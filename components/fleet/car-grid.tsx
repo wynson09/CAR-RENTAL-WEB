@@ -78,7 +78,10 @@ export const CarGrid = ({
 
       {/* Cars Grid */}
       <div
-        className={cn('grid gap-6 grid-cols-[repeat(auto-fill,minmax(380px,1fr))]', gridClassName)}
+        className={cn(
+          'flex flex-col gap-4 sm:grid sm:gap-6 sm:grid-cols-[repeat(auto-fill,minmax(380px,1fr))]',
+          gridClassName
+        )}
       >
         {sortedCars.map((car) => (
           <CarCard

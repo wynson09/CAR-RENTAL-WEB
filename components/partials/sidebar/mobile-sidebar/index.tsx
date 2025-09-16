@@ -1,9 +1,9 @@
 'use client';
 import React, { useState } from 'react';
 import { cn, isLocationMatch } from '@/lib/utils';
-import { useSidebar, useThemeStore } from '@/store';
+import { useSidebar, useThemeStore, useUserStore } from '@/store';
 import SidebarLogo from '../common/logo';
-import { menusConfig } from '@/config/menus';
+import { menusConfig, userMenuConfig } from '@/config/menus';
 import MenuLabel from '../common/menu-label';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -13,9 +13,15 @@ import SubMenuHandler from './sub-menu-handler';
 import NestedSubMenu from '../common/nested-menus';
 const MobileSidebar = ({ className, trans }: { className?: string; trans: any }) => {
   const { sidebarBg, mobileMenu, setMobileMenu } = useSidebar();
+  const { user } = useUserStore();
   const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null);
   const [activeMultiMenu, setMultiMenu] = useState<number | null>(null);
-  const menus = menusConfig?.sidebarNav?.classic || [];
+
+  // Use user-specific menu for regular users, admin menu for admins
+  const isAdmin = user?.role === 'admin' || user?.role === 'moderator';
+  const menus = isAdmin
+    ? menusConfig?.sidebarNav?.classic || []
+    : userMenuConfig?.sidebarNav?.classic || [];
   const { collapsed } = useSidebar();
 
   const toggleSubmenu = (i: number) => {

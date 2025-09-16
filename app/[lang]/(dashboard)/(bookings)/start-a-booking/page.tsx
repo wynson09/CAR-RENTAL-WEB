@@ -127,6 +127,12 @@ const BookingPage = () => {
   const [pickUpAddress, setPickUpAddress] = useState('');
   const [returnAddress, setReturnAddress] = useState('');
 
+  // Validation errors state
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
+
+  // Helper function to check if field has error
+  const hasFieldError = (fieldName: string) => validationErrors.includes(fieldName);
+
   // Confirmation dialog state
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
@@ -354,42 +360,84 @@ const BookingPage = () => {
   };
 
   const validateBookingForm = () => {
-    const errors = [];
+    const fieldErrors = [];
+    const messages = [];
 
     if (!destination.trim()) {
-      errors.push('Destination is required');
+      fieldErrors.push('destination');
+      messages.push('Destination is required');
     }
 
     if (!pickUpAddress) {
-      errors.push('Pickup address is required');
+      fieldErrors.push('pickUpAddress');
+      messages.push('Pickup address is required');
     }
 
     if (!pickupTime) {
-      errors.push('Pickup time is required');
+      fieldErrors.push('pickupTime');
+      messages.push('Pickup time is required');
     }
 
     if (!returnAddress) {
-      errors.push('Return address is required');
+      fieldErrors.push('returnAddress');
+      messages.push('Return address is required');
     }
 
     if (!returnTime) {
-      errors.push('Return time is required');
+      fieldErrors.push('returnTime');
+      messages.push('Return time is required');
     }
 
     if (!user?.uid) {
-      errors.push('Please sign in to make a booking');
+      messages.push('Please sign in to make a booking');
     }
 
     if (differenceInCalendarDays(returnDate, pickupDate) < 1) {
-      errors.push('Return date must be at least 1 day after pickup date');
+      messages.push('Return date must be at least 1 day after pickup date');
     }
 
-    if (errors.length > 0) {
-      errors.forEach((error) => toast.error(error));
+    if (messages.length > 0) {
+      setValidationErrors(fieldErrors);
+      messages.forEach((message) => toast.error(message));
+
+      // Scroll to first missing field
+      if (fieldErrors.length > 0) {
+        scrollToFirstError(fieldErrors[0]);
+      }
+
       return false;
     }
 
+    // Clear validation errors if all fields are valid
+    setValidationErrors([]);
     return true;
+  };
+
+  // Helper function to scroll to the first error field
+  const scrollToFirstError = (fieldName: string) => {
+    // Map field names to their element IDs or selectors
+    const fieldSelectors = {
+      destination: '#destination',
+      pickUpAddress: '[data-field="pickUpAddress"]',
+      pickupTime: '[data-field="pickupTime"]',
+      returnAddress: '[data-field="returnAddress"]',
+      returnTime: '[data-field="returnTime"]',
+    };
+
+    const selector = fieldSelectors[fieldName as keyof typeof fieldSelectors];
+    if (selector) {
+      // Use setTimeout to ensure the error state is rendered first
+      setTimeout(() => {
+        const element = document.querySelector(selector);
+        if (element) {
+          element.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'nearest',
+          });
+        }
+      }, 100);
+    }
   };
 
   const handleBookNow = (car: Car) => {
@@ -399,35 +447,6 @@ const BookingPage = () => {
 
     setSelectedCar(car);
     setIsConfirmationOpen(true);
-  };
-
-  const handleRefreshData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      // Force-refresh: fetch fresh data and update session cache
-      const carListings = await CarFirebaseService.getAllCars();
-      const convertedCars = uniqueByVehicleName(
-        uniqueByDocId(carListings.map(convertCarListingToCar))
-      );
-      setCars(convertedCars);
-      sessionStorage.setItem(
-        CARS_SESSION_CACHE_KEY,
-        JSON.stringify({
-          cars: convertedCars,
-          lastUpdatedMs: convertedCars
-            .map((c: any) => c.updatedDate?.getTime?.() || 0)
-            .reduce((a: number, b: number) => Math.max(a, b), 0),
-        })
-      );
-      toast.success(`Refreshed! Loaded ${convertedCars.length} vehicles`);
-    } catch (err) {
-      setError('Failed to refresh vehicles. Please try again.');
-      toast.error('Failed to refresh vehicles');
-    } finally {
-      setLoading(false);
-    }
   };
 
   const DrumRollTimePicker = ({
@@ -599,14 +618,14 @@ const BookingPage = () => {
                 <div className="flex items-center gap-3">
                   <div
                     className={cn(
-                      'w-5 h-5 rounded-full border-2 flex items-center justify-center',
+                      'w-5 h-5 min-w-[20px] min-h-[20px] rounded-full border-2 flex items-center justify-center flex-shrink-0',
                       driveOption === 'self-drive'
                         ? 'border-blue-500 bg-blue-500'
                         : 'border-gray-300 dark:border-gray-600'
                     )}
                   >
                     {driveOption === 'self-drive' && (
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
+                      <div className="w-2 h-2 min-w-[8px] min-h-[8px] bg-white rounded-full"></div>
                     )}
                   </div>
                   <div>
@@ -646,14 +665,14 @@ const BookingPage = () => {
                 <div className="flex items-center gap-3">
                   <div
                     className={cn(
-                      'w-5 h-5 rounded-full border-2 flex items-center justify-center',
+                      'w-5 h-5 min-w-[20px] min-h-[20px] rounded-full border-2 flex items-center justify-center flex-shrink-0',
                       driveOption === 'with-driver'
                         ? 'border-green-500 bg-green-500'
                         : 'border-gray-300 dark:border-gray-600'
                     )}
                   >
                     {driveOption === 'with-driver' && (
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
+                      <div className="w-2 h-2 min-w-[8px] min-h-[8px] bg-white rounded-full"></div>
                     )}
                   </div>
                   <div>
@@ -716,10 +735,18 @@ const BookingPage = () => {
               id="destination"
               placeholder="Indicate your farthest destination (e.g., Manila, Cebu, Davao, etc.)"
               value={destination}
-              onChange={(e) => setDestination(e.target.value)}
+              onChange={(e) => {
+                setDestination(e.target.value);
+                // Clear validation error when user starts typing
+                if (hasFieldError('destination') && e.target.value.trim()) {
+                  setValidationErrors((prev) => prev.filter((error) => error !== 'destination'));
+                }
+              }}
               className={cn(
                 'min-h-[100px] resize-none transition-all duration-200',
-                destination
+                hasFieldError('destination')
+                  ? 'border-red-500 bg-red-50 dark:bg-red-950/20 dark:border-red-400 ring-1 ring-red-200 dark:ring-red-800'
+                  : destination
                   ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/20 dark:border-blue-400 ring-1 ring-blue-200 dark:ring-blue-800'
                   : 'hover:border-blue-300 focus:border-blue-500'
               )}
@@ -740,8 +767,26 @@ const BookingPage = () => {
                 <Label className="mb-3 block text-base font-medium text-gray-700 dark:text-gray-300">
                   Pick up Address <span className="text-red-500">*</span>
                 </Label>
-                <Select value={pickUpAddress} onValueChange={setPickUpAddress}>
-                  <SelectTrigger>
+                <Select
+                  value={pickUpAddress}
+                  onValueChange={(value) => {
+                    setPickUpAddress(value);
+                    // Clear validation error when user selects
+                    if (hasFieldError('pickUpAddress') && value) {
+                      setValidationErrors((prev) =>
+                        prev.filter((error) => error !== 'pickUpAddress')
+                      );
+                    }
+                  }}
+                >
+                  <SelectTrigger
+                    data-field="pickUpAddress"
+                    className={cn(
+                      hasFieldError('pickUpAddress')
+                        ? 'border-red-500 bg-red-50 dark:bg-red-950/20 dark:border-red-400 ring-1 ring-red-200 dark:ring-red-800'
+                        : ''
+                    )}
+                  >
                     <SelectValue placeholder="Select pickup location" />
                   </SelectTrigger>
                   <SelectContent>
@@ -786,11 +831,26 @@ const BookingPage = () => {
                 <Label className="mb-3 block text-base font-medium text-gray-700 dark:text-gray-300">
                   Pick up Time <span className="text-red-500">*</span>
                 </Label>
-                <DrumRollTimePicker
-                  selectedTime={pickupTime}
-                  onTimeChange={setPickupTime}
-                  placeholder="--:-- --"
-                />
+                <div data-field="pickupTime">
+                  <DrumRollTimePicker
+                    selectedTime={pickupTime}
+                    onTimeChange={(time) => {
+                      setPickupTime(time);
+                      // Clear validation error when user selects time
+                      if (hasFieldError('pickupTime') && time) {
+                        setValidationErrors((prev) =>
+                          prev.filter((error) => error !== 'pickupTime')
+                        );
+                      }
+                    }}
+                    placeholder="--:-- --"
+                    className={cn(
+                      hasFieldError('pickupTime')
+                        ? 'border-red-500 bg-red-50 dark:bg-red-950/20 dark:border-red-400 ring-1 ring-red-200 dark:ring-red-800'
+                        : ''
+                    )}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -808,8 +868,26 @@ const BookingPage = () => {
                 <Label className="mb-3 block text-base font-medium text-gray-700 dark:text-gray-300">
                   Return Address <span className="text-red-500">*</span>
                 </Label>
-                <Select value={returnAddress} onValueChange={setReturnAddress}>
-                  <SelectTrigger>
+                <Select
+                  value={returnAddress}
+                  onValueChange={(value) => {
+                    setReturnAddress(value);
+                    // Clear validation error when user selects
+                    if (hasFieldError('returnAddress') && value) {
+                      setValidationErrors((prev) =>
+                        prev.filter((error) => error !== 'returnAddress')
+                      );
+                    }
+                  }}
+                >
+                  <SelectTrigger
+                    data-field="returnAddress"
+                    className={cn(
+                      hasFieldError('returnAddress')
+                        ? 'border-red-500 bg-red-50 dark:bg-red-950/20 dark:border-red-400 ring-1 ring-red-200 dark:ring-red-800'
+                        : ''
+                    )}
+                  >
                     <SelectValue placeholder="Select return location" />
                   </SelectTrigger>
                   <SelectContent>
@@ -862,11 +940,26 @@ const BookingPage = () => {
                 <Label className="mb-3 block text-base font-medium text-gray-700 dark:text-gray-300">
                   Return Time <span className="text-red-500">*</span>
                 </Label>
-                <DrumRollTimePicker
-                  selectedTime={returnTime}
-                  onTimeChange={setReturnTime}
-                  placeholder="--:-- --"
-                />
+                <div data-field="returnTime">
+                  <DrumRollTimePicker
+                    selectedTime={returnTime}
+                    onTimeChange={(time) => {
+                      setReturnTime(time);
+                      // Clear validation error when user selects time
+                      if (hasFieldError('returnTime') && time) {
+                        setValidationErrors((prev) =>
+                          prev.filter((error) => error !== 'returnTime')
+                        );
+                      }
+                    }}
+                    placeholder="--:-- --"
+                    className={cn(
+                      hasFieldError('returnTime')
+                        ? 'border-red-500 bg-red-50 dark:bg-red-950/20 dark:border-red-400 ring-1 ring-red-200 dark:ring-red-800'
+                        : ''
+                    )}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -932,14 +1025,6 @@ const BookingPage = () => {
           </div>
         ) : (
           <div className="space-y-4">
-            {/* Refresh Button */}
-            <div className="flex justify-end">
-              <Button onClick={handleRefreshData} variant="outline" size="sm" disabled={loading}>
-                <CalendarIcon className="h-4 w-4 mr-2" />
-                Refresh Data
-              </Button>
-            </div>
-
             <ErrorBoundary>
               <CarGrid
                 cars={cars}

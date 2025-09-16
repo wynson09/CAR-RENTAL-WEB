@@ -239,12 +239,12 @@ export const CarCard = ({
   return (
     <div
       className={cn(
-        'bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group border border-gray-200 dark:border-gray-700',
+        'bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group border border-gray-200 dark:border-gray-700 flex flex-col h-full',
         className
       )}
     >
       {/* Car Image */}
-      <div className="h-64 relative bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
+      <div className="sm:h-64 h-48 relative bg-white flex items-center justify-center overflow-hidden">
         {/* Promotional badge */}
         {hasPromoBadge(car.name) && (
           <div className="absolute top-4 left-4 z-10 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-md shadow-lg animate-promo-badge border-2 border-white">
@@ -256,27 +256,58 @@ export const CarCard = ({
           src={car.image}
           alt={getCleanCarName(car.name)}
           fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          className="md:object-cover object-contain w-full h-full transition-transform duration-300 group-hover:scale-105"
           onError={handleImageError}
         />
       </div>
 
       {/* Car Details */}
-      <div className="p-4">
-        {/* Car Name */}
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 line-clamp-2">
-          {getCleanCarName(car.name)}
-        </h3>
+      <div className="p-4 flex flex-col flex-1">
+        {/* Content Area */}
+        <div className="flex-1">
+          {/* Car Name */}
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 line-clamp-2">
+            {getCleanCarName(car.name)}
+          </h3>
 
-        {/* Enhanced Pricing Information */}
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 rounded-lg p-4 mb-4 border border-blue-100 dark:border-gray-700">
-          {/* Header with Duration */}
-          {pickupDate && returnDate && (
+          {/* Verification Promotion */}
+          {!isVerifiedUser && (
+            <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3 mb-4">
+              <div className="flex items-center gap-2 text-amber-800 dark:text-amber-200">
+                <svg
+                  className="w-4 h-4 text-amber-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                  />
+                </svg>
+                <div className="text-sm">
+                  <span className="font-medium">Get 5% extra discount!</span>
+                  <span className="text-amber-700 dark:text-amber-300">
+                    {' '}
+                    Verify your account to unlock exclusive savings.
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Enhanced Pricing Information */}
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 rounded-lg p-4 mb-4 border border-blue-100 dark:border-gray-700 min-h-[200px] flex flex-col">
+            {/* Header with Duration */}
             <div className="flex items-center justify-between mb-3 pb-2 border-b border-blue-200 dark:border-gray-600">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  {dayDuration} day{dayDuration !== 1 ? 's' : ''} rental
+                  {pickupDate && returnDate
+                    ? `${dayDuration} day${dayDuration !== 1 ? 's' : ''} rental`
+                    : '1 day rental'}
                 </span>
                 <div className="flex items-center gap-2">
                   {isVerifiedUser && (
@@ -323,147 +354,180 @@ export const CarCard = ({
                 </div>
               )}
             </div>
-          )}
 
-          {/* Price Display */}
-          <div className="space-y-3">
-            {/* Original Price */}
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600 dark:text-gray-400">
-                {driveOption === 'with-driver'
-                  ? 'Car + Driver (per day):'
-                  : 'Base Price (per day):'}
-              </span>
-              <span
-                className={cn(
-                  'text-lg font-bold',
-                  pricing.hasDiscount
-                    ? 'text-gray-500 line-through'
-                    : 'text-blue-600 dark:text-blue-400'
-                )}
-              >
-                {formatPrice(pricing.originalPrice)}
-              </span>
-            </div>
-
-            {/* Driver Fee Breakdown (if with driver) */}
-            {driveOption === 'with-driver' && (
-              <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md p-2">
-                <div className="text-xs text-green-700 dark:text-green-300 space-y-1">
-                  <div className="flex justify-between">
-                    <span>Car Base Price:</span>
-                    <span>{formatPrice(extractPriceValue(car.price))}</span>
+            {/* Price Display - Consistent layout */}
+            <div className="flex-1 flex flex-col space-y-3">
+              {pricing.hasDiscount ? (
+                <>
+                  {/* Original Price */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      {driveOption === 'with-driver'
+                        ? 'Car + Driver (per day):'
+                        : 'Base Price (per day):'}
+                    </span>
+                    <span className="text-lg font-bold text-gray-500 line-through">
+                      {formatPrice(pricing.originalPrice)}
+                    </span>
                   </div>
-                  <div className="flex justify-between font-medium">
-                    <span>Professional Driver:</span>
-                    <span>+{formatPrice(DRIVER_FEE_PER_DAY)}</span>
+                </>
+              ) : (
+                /* Single Price Display for No Discount */
+                <>
+                  <div className="flex items-center justify-between py-2">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      {driveOption === 'with-driver'
+                        ? 'Car + Driver (per day):'
+                        : 'Price (per day):'}
+                    </span>
+                    <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                      {formatPrice(pricing.originalPrice)}
+                    </span>
+                  </div>
+                  {/* Spacer to maintain consistent card height */}
+                  <div className="flex-1 min-h-[60px] flex items-center justify-center">
+                    <div className="text-center text-gray-500 dark:text-gray-400">
+                      <div className="text-xs opacity-60">✨ Great value rental</div>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Driver Fee Breakdown (if with driver) */}
+              {driveOption === 'with-driver' && (
+                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md p-2">
+                  <div className="text-xs text-green-700 dark:text-green-300 space-y-1">
+                    <div className="flex justify-between">
+                      <span>Car Base Price:</span>
+                      <span>{formatPrice(extractPriceValue(car.price))}</span>
+                    </div>
+                    <div className="flex justify-between font-medium">
+                      <span>Professional Driver:</span>
+                      <span>+{formatPrice(DRIVER_FEE_PER_DAY)}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* Discount Breakdown */}
-            {pricing.hasDiscount && pricing.discountBreakdown.length > 0 && (
-              <div className="space-y-2">
-                <div className="text-xs font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-                    />
-                  </svg>
-                  Applied Discounts:
-                </div>
-                <div className="bg-white dark:bg-gray-800 rounded-md p-3 space-y-1.5 border border-gray-200 dark:border-gray-600">
-                  {pricing.discountBreakdown.map((discount, index) => (
-                    <div key={index} className="flex items-center justify-between text-xs">
-                      <div className="flex items-center gap-2">
-                        <div
-                          className={cn(
-                            'w-1.5 h-1.5 rounded-full',
-                            discount.type === 'promo' && 'bg-red-500',
-                            discount.type === 'base' && 'bg-blue-500',
-                            discount.type === 'duration' && 'bg-purple-500'
-                          )}
-                        ></div>
-                        <span className="text-gray-600 dark:text-gray-400">{discount.name}</span>
+              {/* Discount Section - Only show when there are discounts */}
+              {pricing.hasDiscount && (
+                <>
+                  {/* Discount Breakdown */}
+                  {pricing.discountBreakdown.length > 0 && (
+                    <div className="space-y-2">
+                      <div className="text-xs font-medium text-gray-600 dark:text-gray-400 flex items-center gap-1">
+                        <svg
+                          className="w-3 h-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+                          />
+                        </svg>
+                        Applied Discounts:
                       </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-green-600 dark:text-green-400 font-medium">
-                          -{discount.percentage.toFixed(1)}%
-                        </span>
-                        <span className="text-green-600 dark:text-green-400 font-bold">
-                          -{formatPrice(discount.amount)}
-                        </span>
+                      <div className="bg-white dark:bg-gray-800 rounded-md p-3 space-y-1.5 border border-gray-200 dark:border-gray-600">
+                        {pricing.discountBreakdown.map((discount, index) => (
+                          <div
+                            key={index}
+                            className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs"
+                          >
+                            <div className="flex items-center gap-2">
+                              <div
+                                className={cn(
+                                  'w-1.5 h-1.5 rounded-full',
+                                  discount.type === 'promo' && 'bg-red-500',
+                                  discount.type === 'base' && 'bg-blue-500',
+                                  discount.type === 'duration' && 'bg-purple-500'
+                                )}
+                              ></div>
+                              <span className="text-gray-600 dark:text-gray-400">
+                                {discount.name}
+                              </span>
+                            </div>
+                            <div className="flex justify-end text-right w-full sm:w-auto gap-2">
+                              <span className="text-green-600 dark:text-green-400 font-medium">
+                                -{discount.percentage.toFixed(1)}%
+                              </span>
+                              <span className="text-green-600 dark:text-green-400 font-bold">
+                                -{formatPrice(discount.amount)}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
-                  ))}
-                </div>
-              </div>
-            )}
+                  )}
 
-            {/* Final Price */}
-            {pricing.hasDiscount && (
-              <>
-                <div className="border-t border-blue-200 dark:border-gray-600 pt-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Your Price (per day):
-                    </span>
-                    <span className="text-xl font-bold text-green-600 dark:text-green-400">
-                      {formatPrice(pricing.discountedPrice)}
-                    </span>
+                  {/* Final Discounted Price */}
+                  <div className="border-t border-blue-200 dark:border-gray-600 pt-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Your Price (per day):
+                      </span>
+                      <span className="text-xl font-bold text-green-600 dark:text-green-400">
+                        {formatPrice(pricing.discountedPrice)}
+                      </span>
+                    </div>
                   </div>
-                </div>
 
-                {/* Total Savings Highlight */}
-                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md p-2">
-                  <div className="flex items-center justify-center gap-2 text-green-700 dark:text-green-300">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-                      />
-                    </svg>
-                    <span className="text-sm font-bold">
-                      Total Savings: {formatPrice(pricing.totalSavings)}
-                    </span>
+                  {/* Total Savings Highlight */}
+                  <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md p-2">
+                    <div className="flex items-center justify-center gap-2 text-green-700 dark:text-green-300">
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+                        />
+                      </svg>
+                      <span className="text-sm font-bold">
+                        Total Savings: {formatPrice(pricing.totalSavings)}
+                      </span>
+                    </div>
                   </div>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Car Specs */}
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4 text-base text-gray-600 dark:text-gray-400 border-y border-gray-200 dark:border-gray-700 py-4">
+            <div className="flex items-center gap-1">
+              <Users className="h-5 w-5 text-primary-500" />
+              <span>{car.passengers}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Briefcase className="h-5 w-5 text-primary-500" />
+              <span>{car.bags}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Settings className="h-5 w-5 text-primary-500" />
+              <span>{car.transmission}</span>
+            </div>
+          </div>
+
+          {/* Features */}
+          <div className="mb-4">
+            <div className="grid grid-cols-2 gap-1 text-sm text-gray-600 dark:text-gray-400">
+              {car.features.slice(0, 8).map((feature, index) => (
+                <div key={`${car.id}-feature-${index}`} className="flex items-center">
+                  <span className="w-1 h-1 bg-blue-500 rounded-full mr-2 flex-shrink-0" />
+                  <span className="truncate">{feature}</span>
                 </div>
-              </>
-            )}
-          </div>
-        </div>
-
-        {/* Car Specs */}
-        <div className="flex justify-center items-center gap-4 mb-4 text-base text-gray-600 dark:text-gray-400 border-y border-gray-200 dark:border-gray-700 py-4">
-          <div className="flex items-center gap-1">
-            <Users className="h-5 w-5 text-primary-500" />
-            <span>{car.passengers}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Briefcase className="h-5 w-5 text-primary-500" />
-            <span>{car.bags}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Settings className="h-5 w-5 text-primary-500" />
-            <span>{car.transmission}</span>
-          </div>
-        </div>
-
-        {/* Features */}
-        <div className="mb-4">
-          <div className="grid grid-cols-2 gap-1 text-sm text-gray-600 dark:text-gray-400">
-            {car.features.slice(0, 8).map((feature, index) => (
-              <div key={`${car.id}-feature-${index}`} className="flex items-center">
-                <span className="w-1 h-1 bg-blue-500 rounded-full mr-2 flex-shrink-0" />
-                <span className="truncate">{feature}</span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 
@@ -471,7 +535,7 @@ export const CarCard = ({
         <div className="grid grid-cols-2 gap-3">
           <Button
             variant="outline"
-            className="border-blue-600 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950 dark:border-blue-400 dark:text-blue-400"
+            className="border-blue-600 text-blue-600 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950 dark:border-blue-400 dark:text-blue-400"
             onClick={() => setIsQuotationOpen(true)}
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -11,6 +11,8 @@ import DashboardSelect from '@/components/dasboard-select';
 import TopTen from './components/top-ten';
 import TopPage from './components/top-page';
 import DatePickerWithRange from '@/components/date-picker-with-range';
+import UserDashboardView from './components/user-dashboard-view';
+import { useUserStore } from '@/store';
 
 interface DashboardPageViewProps {
   trans: {
@@ -18,6 +20,15 @@ interface DashboardPageViewProps {
   };
 }
 const DashboardPageView = ({ trans }: DashboardPageViewProps) => {
+  const { user } = useUserStore();
+
+  // Show user dashboard for regular users, admin dashboard for admins
+  const isAdmin = user?.role === 'admin' || user?.role === 'moderator';
+
+  if (!isAdmin) {
+    return <UserDashboardView trans={trans} />;
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center flex-wrap justify-between gap-4">
