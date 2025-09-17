@@ -493,9 +493,10 @@ export const carRentalServices = [
     title: 'Self Drive',
     description:
       'Explore at your own pace with our premium fleet of well-maintained vehicles. Perfect for adventurous travelers who prefer the freedom of driving themselves.',
-    features: ['GPS Navigation', '24/7 Support', 'Insurance Included', 'Flexible Booking'],
+    features: ['Well-Maintained Vehicles', '24/7 Support', 'Unlimited Mileage', 'Flexible Booking'],
     icon: 'heroicons:truck',
-    image: '/images/services/self-drive.webp', // You'll need to add these images
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/nacs-car-rental.firebasestorage.app/o/landing-page-assets%2Fservice%2Fself_drive_1758085443282.webp?alt=media&token=1e529301-fa9b-4284-aba4-896b33bdeaeb', // You'll need to add these images
     buttonColor: 'primary',
   },
   {
@@ -510,7 +511,8 @@ export const carRentalServices = [
       'Tour Guide Service',
     ],
     icon: 'heroicons:user-circle',
-    image: '/images/services/with-driver.webp',
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/nacs-car-rental.firebasestorage.app/o/landing-page-assets%2Fservice%2Fwith_driver_service_1758085580860.webp?alt=media&token=58bba970-41ee-4258-a7a4-8ddd47e27119',
     buttonColor: 'primary',
   },
   {
@@ -520,7 +522,8 @@ export const carRentalServices = [
       'Long-term vehicle solutions for businesses and individuals with flexible lease terms and maintenance packages.',
     features: ['Long-term Options', 'Maintenance Included', 'Fleet Management', 'Corporate Rates'],
     icon: 'heroicons:document-text',
-    image: '/images/services/leasing.webp',
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/nacs-car-rental.firebasestorage.app/o/landing-page-assets%2Fservice%2Fleasing_service_1758085596805.webp?alt=media&token=c7fa520f-659d-4981-8b19-c60c90af912d',
     buttonColor: 'primary',
   },
   {
@@ -530,7 +533,8 @@ export const carRentalServices = [
       'Discover the beauty of the Philippines with our guided tours and customized travel packages.',
     features: ['Guided Tours', 'Custom Packages', 'Multiple Destinations', 'All-Inclusive Options'],
     icon: 'heroicons:map-pin',
-    image: '/images/services/tours.webp',
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/nacs-car-rental.firebasestorage.app/o/landing-page-assets%2Fservice%2Ftour_service_1758085609525.webp?alt=media&token=af0cbb38-7b86-4271-9f8f-3e80b06b2b04',
     buttonColor: 'primary',
   },
 ];

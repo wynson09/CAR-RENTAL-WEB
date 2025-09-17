@@ -79,7 +79,7 @@ const ServiceButtonsPremium = () => {
         <CardContent className="p-0">
           <div className="flex flex-col lg:flex-row">
             {/* Image Section - Left */}
-            <div className="w-full lg:w-2/5 relative overflow-hidden min-h-[300px] lg:min-h-[400px] bg-gray-100">
+            <div className="w-full lg:w-2/5 relative overflow-hidden lg:min-h-[400px] bg-gray-100">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentService.id}
@@ -94,7 +94,7 @@ const ServiceButtonsPremium = () => {
                     alt={`${currentService.title} Service`}
                     width={600}
                     height={400}
-                    className="w-full h-full object-cover rounded-l-lg"
+                    className="w-full h-full object-cover"
                     quality={100}
                     priority={true}
                     unoptimized={false}
@@ -159,7 +159,7 @@ const ServiceButtonsPremium = () => {
                     <Button
                       size="lg"
                       variant="outline"
-                      className="border-primary/30 text-primary hover:bg-primary/5 px-8"
+                      className="border-primary/30 hover:bg-primary/5 px-8 text-blue-600 hover:text-blue-600"
                     >
                       <Icon icon="heroicons:information-circle" className="w-5 h-5 mr-2" />
                       Learn More

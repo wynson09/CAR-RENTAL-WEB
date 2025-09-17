@@ -244,6 +244,11 @@ export const adminMenuConfig = {
       ],
     },
     {
+      title: 'Landing Page Assets',
+      icon: Files, // Files for asset management
+      href: '/landing-page-assets',
+    },
+    {
       title: 'Chat',
       icon: Messages, // Messages for chat
       href: '/support-chat',
@@ -273,6 +278,11 @@ export const adminMenuConfig = {
         ],
       },
       {
+        title: 'Landing Page Assets',
+        icon: Files, // Files for asset management
+        href: '/landing-page-assets',
+      },
+      {
         title: 'Chat',
         icon: Messages, // Messages for chat
         href: '/support-chat',
@@ -299,6 +309,11 @@ export const adminMenuConfig = {
             href: '/owned-partner-cars',
           },
         ],
+      },
+      {
+        title: 'Landing Page Assets',
+        icon: Files,
+        href: '/landing-page-assets',
       },
       {
         title: 'Chat',
