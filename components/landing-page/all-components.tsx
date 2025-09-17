@@ -4,9 +4,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import { Badge } from '../ui/badge';
 import { Star } from 'lucide-react';
-
-// Import Swiper styles
-import 'swiper/css';
 const AllComponents = () => {
   const data = [
     'Drive with Ease',
@@ -26,7 +23,7 @@ const AllComponents = () => {
     'Discover More',
   ];
   return (
-    <section className="relative mb-10 py-16" id="features">
+    <section className="relative mb-10" id="features">
       <div className="space-y-6">
         <Swiper
           spaceBetween={8}
