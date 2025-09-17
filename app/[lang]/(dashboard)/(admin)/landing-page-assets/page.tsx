@@ -13,6 +13,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogTrigger,
 } from '@/components/ui/dialog';
 import {
@@ -256,6 +257,9 @@ const LandingPageAssetsManagement = () => {
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
               <DialogTitle>Upload New Asset</DialogTitle>
+              <DialogDescription>
+                Select an image and category. Supported formats: JPG, PNG, GIF, WebP. Max size 10MB.
+              </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
               <div>
@@ -409,7 +413,7 @@ const LandingPageAssetsManagement = () => {
                     className="w-4 h-4 mr-2"
                   />
                   {category}
-                  <Badge variant="secondary" className="ml-2">
+                  <Badge color="secondary" className="ml-2">
                     {assets[category as AssetFile['category']].length}
                   </Badge>
                 </TabsTrigger>
@@ -465,7 +469,8 @@ const LandingPageAssetsManagement = () => {
                                   <div className="flex space-x-2">
                                     <Button
                                       size="sm"
-                                      variant="secondary"
+                                      variant="soft"
+                                      color="secondary"
                                       onClick={() => handleCopyUrl(asset.url)}
                                       className="bg-white/90 hover:bg-white text-black"
                                     >
@@ -473,7 +478,8 @@ const LandingPageAssetsManagement = () => {
                                     </Button>
                                     <Button
                                       size="sm"
-                                      variant="destructive"
+                                      variant="soft"
+                                      color="destructive"
                                       onClick={() => handleDelete(asset)}
                                       className="bg-red-500/90 hover:bg-red-500"
                                     >

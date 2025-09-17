@@ -451,8 +451,8 @@ export const menus = [
     href: '#whyNacsCarRental',
   },
   {
-    title: 'Pricing',
-    href: '#pricing',
+    title: 'Fleet',
+    href: '#fleet',
   },
   {
     title: 'More',

@@ -35,10 +35,8 @@ const ensureFirebaseAuth = async (): Promise<void> => {
     return; // Already authenticated
   }
 
-  // If not authenticated with Firebase, we need to handle this
-  // For now, we'll rely on the Storage rules allowing any authenticated user
-  // In a production environment, you might want to implement a custom token system
-  console.warn('User not authenticated with Firebase Auth, relying on Storage rules');
+  // If not authenticated with Firebase, silently proceed.
+  // Storage rules allow uploads for your use case.
 };
 
 /**

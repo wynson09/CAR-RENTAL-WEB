@@ -11,7 +11,7 @@ import { useMounted } from '@/hooks/use-mounted';
 import LayoutLoader from '@/components/layout-loader';
 import AboutDashtail from './about-dashtail';
 import Faq from './faq';
-import PricingPlan from './pricing-plan';
+import FleetShowcase from './fleet-showcase';
 import AboutUs from './about-us';
 import Stats from './stats';
 import Contact from './contact';
@@ -28,14 +28,14 @@ const LandingPageView = () => {
       {/* <Stats /> */}
       <AllComponents />
       <ShowCase />
-      <ColorSchemas />
-      <ProjectTools />
-      <FigmaKit />
-      <AboutUs />
+      {/* <ColorSchemas /> */}
+      {/* <ProjectTools /> */}
+      {/* <FigmaKit /> */}
+      {/* <AboutUs /> */}
       <AboutDashtail />
       <Faq />
-      <PricingPlan />
-      <CustomProject />
+      <FleetShowcase />
+      {/* <CustomProject /> */}
       <Contact />
       <Footer />
     </div>
