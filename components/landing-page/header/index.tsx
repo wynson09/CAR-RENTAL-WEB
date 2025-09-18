@@ -29,8 +29,8 @@ const Header = () => {
         <div
           className={
             scroll
-              ? 'bg-card/50 dark:bg-card/70 backdrop-blur-lg z-50 shadow-sm fixed top-0 left-0 w-full py-3'
-              : 'fixed top-0 left-0 w-full py-3'
+              ? 'bg-card/50 dark:bg-card/70 backdrop-blur-lg z-[100] shadow-sm fixed top-0 left-0 w-full py-3'
+              : 'fixed top-0 left-0 w-full py-3 z-[100]'
           }
         >
           <nav className="container flex justify-between relative z-50">
