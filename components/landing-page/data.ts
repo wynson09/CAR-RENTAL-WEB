@@ -474,8 +474,8 @@ export const menus = [
         href: '/#',
       },
       {
-        title: 'Support',
-        href: 'https://codeshaperbd.freshdesk.com/support/login',
+        title: 'Contact Us',
+        href: '#contact',
       },
     ],
   },
