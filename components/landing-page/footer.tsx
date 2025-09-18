@@ -1,117 +1,206 @@
 'use client';
-import Image from 'next/image';
 import Link from 'next/link';
-import { SiteLogo } from '@/components/svg';
-import { Button } from '@/components/ui/button';
-import footerImage from '@/public/images/landing-page/footer.png';
-import facebook from '@/public/images/social/facebook-1.png';
-import dribble from '@/public/images/social/dribble-1.png';
-import linkedin from '@/public/images/social/linkedin-1.png';
-import github from '@/public/images/social/github-1.png';
-import behance from '@/public/images/social/behance-1.png';
-import twitter from '@/public/images/social/twitter-1.png';
-import youtube from '@/public/images/social/youtube.png';
+import { Icon } from '@iconify/react';
+import { NCRLogo } from '@/components/ui/ncr-logo';
 
 const Footer = () => {
-  const socials = [
+  const services = [
+    { name: 'Self Drive Rental', href: '#services' },
+    { name: 'With Driver Rental', href: '#services' },
+    { name: 'Van Rental', href: '#services' },
+    { name: 'SUV Rental', href: '#services' },
+    { name: 'MPV Rental', href: '#services' },
+    { name: 'Leasing Services', href: '#services' },
+  ];
+
+  const quicklinks = [
+    { name: 'Home', href: '#home' },
+    { name: 'About', href: '#whyNacsCarRental' },
+    { name: 'Services', href: '#services' },
+    { name: 'Fleet', href: '#fleet' },
+    { name: 'Contact Us', href: '#contact' },
+    { name: 'FAQ', href: '#faq' },
+  ];
+
+  const socialLinks = [
     {
-      icon: facebook,
-      href: 'https://www.facebook.com/Codeshaperbd/',
+      icon: 'ri:whatsapp-fill',
+      href: 'https://wa.me/639978219562',
+      color: 'hover:text-green-400',
     },
     {
-      icon: github,
-      href: 'https://github.com/Codeshaper-bd',
+      icon: 'ri:facebook-fill',
+      href: 'https://www.facebook.com/NacsCarRentalServices/',
+      color: 'hover:text-blue-400',
     },
     {
-      icon: linkedin,
-      href: 'https://www.linkedin.com/company/codeshaper/',
+      icon: 'ri:instagram-fill',
+      href: 'https://instagram.com/nacscarrental',
+      color: 'hover:text-pink-400',
     },
     {
-      icon: youtube,
-      href: 'https://www.youtube.com/@codeshaper4181',
-    },
-    {
-      icon: twitter,
-      href: 'https://twitter.com/codeshaperbd',
-    },
-    {
-      icon: dribble,
-      href: 'https://dribbble.com/codeshaperbd',
-    },
-    {
-      icon: behance,
-      href: 'https://www.behance.net/codeshaper',
+      icon: 'ri:linkedin-fill',
+      href: 'https://linkedin.com/company/nacscarrental',
+      color: 'hover:text-blue-500',
     },
   ];
+
   return (
-    <footer
-      className=" bg-cover bg-center bg-no-repeat relative before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-default-900/90 dark:before:bg-default-100"
-      style={{
-        background: `url(${footerImage.src})`,
-      }}
-    >
-      <div className="py-16 2xl:py-[120px]">
-        <div className="max-w-[700px] mx-auto flex flex-col items-center relative">
-          <Link href="/" className="inline-flex items-center gap-4 text-primary-foreground">
-            <SiteLogo className="w-[50px] h-[52px]" />
-            <span className="text-3xl font-semibold">DashTail</span>
-          </Link>
-          <p className="text-base leading-7 text-default-200 dark:text-default-600 text-center mt-3">
-            DashTail is a developer-friendly, ready-to-use admin template designed for building
-            attractive, scalable, and high-performing web applications, powered by the cutting-edge
-            technologies of Next.js and Tailwind CSS.
-          </p>
-          <div className="mt-9 flex justify-center flex-wrap gap-4">
-            <Button
-              asChild
-              variant="outline"
-              className="rounded text-primary-foreground border-primary"
-            >
-              <Link href="/dashboard" target="__blank">
-                View Demo
+    <footer className="bg-slate-900 text-white">
+      <div className="container mx-auto px-4 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Company Info Section */}
+          <div className="lg:col-span-1">
+            <div className="mb-6">
+              <Link href="/" className="inline-block">
+                <NCRLogo className="h-12 w-auto mb-4" />
               </Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              className="rounded text-primary-foreground border-primary"
-            >
-              <Link href="/docs/introduction">View Documentation</Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              className="rounded text-primary-foreground border-primary"
-            >
-              <Link href="https://1.envato.market/dashtail-regular" target="__blank">
-                Buy Now
-              </Link>
-            </Button>
+              <h3 className="text-xl font-bold text-primary mb-2">NACS CAR RENTAL</h3>
+            </div>
+            <p className="text-gray-300 leading-relaxed mb-6">
+              NACS Car Rental – Pagadian City’s newest and fastest-growing car rental service. We
+              provide short & long-term rentals, chauffeured rides, and corporate leasing —
+              delivering reliable, affordable, and hassle-free transportation for every need.
+            </p>
+            <div className="flex space-x-4">
+              {socialLinks.map((social, index) => (
+                <Link
+                  key={index}
+                  href={social.href}
+                  target="_blank"
+                  className={`text-gray-400 ${social.color} transition-colors duration-200`}
+                >
+                  <Icon icon={social.icon} className="w-6 h-6" />
+                </Link>
+              ))}
+            </div>
           </div>
-          <div className="mt-8 flex items-center justify-center flex-wrap gap-5">
-            {socials.map((item, index) => (
-              <Link href={item.href} key={`social-link-${index}`} target="_blank">
-                <Image src={item.icon} alt="social" width={30} height={30} priority={true} />
-              </Link>
-            ))}
+
+          {/* Services Section */}
+          <div>
+            <h4 className="text-lg font-semibold mb-6 text-white">Services</h4>
+            <ul className="space-y-3">
+              {services.map((service, index) => (
+                <li key={index}>
+                  <Link
+                    href={service.href}
+                    className="text-gray-300 hover:text-primary transition-colors duration-200 hover:underline"
+                  >
+                    {service.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Quicklinks Section */}
+          <div>
+            <h4 className="text-lg font-semibold mb-6 text-white">Quicklinks</h4>
+            <ul className="space-y-3">
+              {quicklinks.map((link, index) => (
+                <li key={index}>
+                  <Link
+                    href={link.href}
+                    className="text-gray-300 hover:text-primary transition-colors duration-200 hover:underline"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact Section */}
+          <div>
+            <h4 className="text-lg font-semibold mb-6 text-white">Contact</h4>
+            <div className="space-y-4">
+              {/* Business Hours */}
+              <div className="flex items-start space-x-3">
+                <Icon
+                  icon="heroicons:calendar-days"
+                  className="w-5 h-5 text-primary mt-1 flex-shrink-0"
+                />
+                <div>
+                  <p className="text-gray-300 font-medium">Monday - Saturday</p>
+                </div>
+              </div>
+
+              {/* Operating Hours */}
+              <div className="flex items-start space-x-3">
+                <Icon icon="heroicons:clock" className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                <div>
+                  <p className="text-gray-300">08:00 AM - 5:00 PM</p>
+                </div>
+              </div>
+
+              {/* Phone Numbers */}
+              <div className="space-y-2">
+                <div className="flex items-start space-x-3">
+                  <Icon
+                    icon="heroicons:phone"
+                    className="w-5 h-5 text-primary mt-1 flex-shrink-0"
+                  />
+                  <div>
+                    <Link
+                      href="tel:+639978219562"
+                      className="text-gray-300 hover:text-primary transition-colors duration-200"
+                    >
+                      +63 997 821 9562
+                    </Link>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-3">
+                  <Icon
+                    icon="heroicons:phone"
+                    className="w-5 h-5 text-primary mt-1 flex-shrink-0"
+                  />
+                  <div>
+                    <Link
+                      href="tel:+639194522011"
+                      className="text-gray-300 hover:text-primary transition-colors duration-200"
+                    >
+                      +63 919 452 2011
+                    </Link>
+                  </div>
+                </div>
+              </div>
+
+              {/* Location */}
+              <div className="flex items-start space-x-3">
+                <Icon
+                  icon="heroicons:map-pin"
+                  className="w-5 h-5 text-primary mt-1 flex-shrink-0"
+                />
+                <div>
+                  <p className="text-gray-300">Pagadian City, Zamboanga del Sur, Philippines</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="relative bg-default-900 dark:bg-default-50 py-6">
-        <div className="container flex flex-col text-center md:text-start md:flex-row gap-2">
-          <p className="text-primary-foreground flex-1 text-base xl:text-lg font-medium">
-            COPYRIGHT &copy; 2024 DashTail All rights Reserved
-          </p>
-          <p className="text-primary-foreground flex-none text-base font-medium">
-            Hand-crafted & Made by{' '}
-            <Link
-              href="https://codeshaper.net"
-              target="__blank"
-              className="text-primary hover:underline"
-            >
-              Codeshaper
-            </Link>
-          </p>
+
+        {/* Bottom Section */}
+        <div className="border-t border-gray-700 mt-12 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <p className="text-gray-400 text-sm">
+              Copyright © 2024 NACS Car Rental Services. All rights reserved.
+            </p>
+            <div className="flex space-x-6">
+              <Link
+                href="/privacy"
+                className="text-gray-400 hover:text-primary text-sm transition-colors duration-200"
+              >
+                Privacy Policy
+              </Link>
+              <Link
+                href="/terms"
+                className="text-gray-400 hover:text-primary text-sm transition-colors duration-200"
+              >
+                Terms of Service
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

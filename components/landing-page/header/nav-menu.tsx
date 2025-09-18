@@ -67,7 +67,6 @@ export default function NavMenu() {
                           title={childItem.title}
                           href={childItem.href}
                           childItem={childItem}
-                          target="_blank"
                         ></ListItem>
                       ))}
                     </div>

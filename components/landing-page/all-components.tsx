@@ -2,8 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
-import { Badge } from '../ui/badge';
-import { Star } from 'lucide-react';
+import 'swiper/css';
 const AllComponents = () => {
   const data = [
     'Drive with Ease',
@@ -30,7 +29,7 @@ const AllComponents = () => {
           slidesPerView="auto"
           centeredSlides={true}
           speed={3000}
-          loop={true}
+          loop={data.length >= 6}
           modules={[Autoplay]}
           grabCursor={true}
           autoplay={{
@@ -51,7 +50,7 @@ const AllComponents = () => {
           slidesPerView="auto"
           centeredSlides={true}
           speed={2000}
-          loop={true}
+          loop={data.length >= 6}
           modules={[Autoplay]}
           grabCursor={true}
           autoplay={{

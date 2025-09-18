@@ -6,16 +6,123 @@ import {
 } from '@/components/ui/accordion';
 import Link from 'next/link';
 
+// FAQ data structure
+const faqData = [
+  {
+    id: 'item-1',
+    question: 'How can I book a car?',
+    answer: (
+      <>
+        You can book directly through our website, by phone, or by messaging us on our{' '}
+        <Link href="https://facebook.com/nacscarrental" target="_blank" className="text-primary">
+          Facebook page
+        </Link>
+        . Our online booking system is available 24/7 for your convenience.
+      </>
+    ),
+  },
+  {
+    id: 'item-2',
+    question: 'What documents do I need to rent a car?',
+    answer: `You'll need a valid driver's license and partial or full payment to confirm your booking. Foreign renters may also need an International Driving Permit (IDP). For faster and easier booking, you can create an account on our website and complete your account verification.`,
+  },
+  {
+    id: 'item-3',
+    question: 'How far in advance should I book?',
+    answer: `We recommend booking at least 24 hours in advance, especially during peak seasons, to guarantee availability and ensure we have the perfect vehicle ready for your needs.`,
+  },
+  {
+    id: 'item-4',
+    question: 'Is fuel included in the rental fee?',
+    answer: `No, fuel is not included in the rental fee. Cars are provided with a set fuel level and must be returned at the same level. We'll show you the fuel gauge level during pickup for your reference.`,
+  },
+  {
+    id: 'item-5',
+    question: 'Do your vehicles have GPS?',
+    answer: `Some units may have built-in navigation, but we recommend using mobile navigation apps like Google Maps or Waze for the most up-to-date traffic and route information.`,
+  },
+  {
+    id: 'item-6',
+    question: 'What payment methods do you accept?',
+    answer: `We accept multiple payment methods for your convenience: cash, credit/debit cards, GCash, and bank transfers. Choose the method that works best for you.`,
+  },
+  {
+    id: 'item-7',
+    question: 'Is a deposit required?',
+    answer: `No, a deposit is not required. However, partial or full payment is required to confirm your booking and secure your chosen vehicle for the rental period.`,
+  },
+  {
+    id: 'item-8',
+    question: 'Are there any hidden charges?',
+    answer: `No, our pricing is completely transparent. Any additional charges, such as for damage or late returns, will be clearly explained before you confirm your booking.`,
+  },
+  {
+    id: 'item-9',
+    question: 'Do you offer discounts?',
+    answer: `Yes! We offer seasonal promos, long-term rental discounts, and group rates. Follow our social media pages for the latest deals and special offers.`,
+  },
+  {
+    id: 'item-10',
+    question: 'What happens if I get into an accident?',
+    answer: `Contact us immediately if you're involved in an accident. We'll assist you with roadside support and guide you through all necessary steps. Your safety is our top priority.`,
+  },
+  {
+    id: 'item-11',
+    question: 'Is smoking or eating allowed inside the vehicle?',
+    answer: `Smoking is strictly prohibited in all our vehicles. Eating is allowed, but customers are responsible for keeping the vehicle clean and may incur cleaning fees if necessary.`,
+  },
+  {
+    id: 'item-12',
+    question: 'Do you offer door-to-door delivery and pick-up?',
+    answer: `Yes, we provide convenient pickup and drop-off services within our service areas. This service is perfect for airport transfers and hotel deliveries.`,
+  },
+  {
+    id: 'item-13',
+    question: 'What if my flight or schedule changes?',
+    answer: `Just let us know as soon as possible. We'll adjust pickup and drop-off times whenever possible to accommodate your schedule changes.`,
+  },
+  {
+    id: 'item-14',
+    question: 'What happens if the car breaks down?',
+    answer: `We offer 24/7 roadside assistance for all our rental vehicles. If needed, a replacement vehicle will be provided to ensure your trip continues smoothly.`,
+  },
+  {
+    id: 'item-15',
+    question: 'What if I return the car late?',
+    answer: `Late returns may incur extra charges based on our hourly rates. Please inform us if you expect delays so we can assist you and potentially minimize additional costs.`,
+  },
+];
+
 const Faq = () => {
+  // Split FAQ data into two columns
+  const midPoint = Math.ceil(faqData.length / 2);
+  const leftColumnFaqs = faqData.slice(0, midPoint);
+  const rightColumnFaqs = faqData.slice(midPoint);
+
+  const renderFaqItem = (faq: (typeof faqData)[0]) => (
+    <AccordionItem
+      key={faq.id}
+      value={faq.id}
+      className="bg-background dark:bg-default-800 border border-default-200 dark:border-default-700 rounded-lg"
+    >
+      <AccordionTrigger className="text-base xl:text-lg text-left font-medium text-default-900 dark:text-default-100 hover:text-primary dark:hover:text-primary">
+        {faq.question}
+      </AccordionTrigger>
+      <AccordionContent className="text-sm xl:text-base text-default-700 dark:text-default-300">
+        {faq.answer}
+      </AccordionContent>
+    </AccordionItem>
+  );
+
   return (
-    <section className="py-16 2xl:py-[120px] bg-default-100">
+    <section className="py-16 2xl:py-[120px] bg-default-100" id="faq">
       <div className="container">
         <div className="max-w-[670px] mx-auto mb-14">
           <h2 className="text-center text-xl xl:text-3xl xl:leading-[46px] font-semibold text-default-900 mb-3">
             <span className="text-primary">FAQs</span>
           </h2>
-          <p className="text-base xl:leading-7 text-center text-default-700 ">
-            <strong> Got Questions?</strong> We've compiled a list of answers to your frequently
+          <p className="text-base xl:leading-7 text-center text-default-700">
+            <strong>Got Questions?</strong> We've compiled a list of answers to your frequently
             asked questions. If you can't find what you're looking for here, don't hesitate to reach
             out to us.
           </p>
@@ -24,146 +131,12 @@ const Faq = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-6">
           <div>
             <Accordion type="single" collapsible className="space-y-6">
-              <AccordionItem value="item-1" className="bg-background">
-                <AccordionTrigger className="text-base xl:text-lg text-left font-medium text-default-900">
-                  What is a Regular License?
-                </AccordionTrigger>
-                <AccordionContent className="text-sm xl:text-base text-default-700">
-                  A{' '}
-                  <Link
-                    href="https://themeforest.net/licenses/terms/regular"
-                    target="_blank"
-                    className="text-primary"
-                  >
-                    Regular License
-                  </Link>{' '}
-                  is designed for a single end-product that is free for end-users. This license is
-                  suitable for both personal and client projects. Note that each end-product or
-                  domain requires its own Regular License.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-2" className="bg-background">
-                <AccordionTrigger className="text-base xl:text-lg text-left font-medium text-default-900">
-                  Can you explain the Extended License?
-                </AccordionTrigger>
-                <AccordionContent className="text-sm xl:text-base text-default-700">
-                  An{' '}
-                  <Link
-                    href="https://themeforest.net/licenses/terms/extended"
-                    target="_blank"
-                    className="text-primary"
-                  >
-                    Extended License
-                  </Link>
-                  is needed for a single end-product that involves charging end-users, such as with
-                  a subscription model or in a marketplace. This applies to both your own projects
-                  and those developed for clients. Each end-product or domain usage demands a
-                  separate Extended License.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-3" className="bg-background">
-                <AccordionTrigger className="text-base xl:text-lg text-left font-medium text-default-900">
-                  Which license should I use for a SaaS application?
-                </AccordionTrigger>
-                <AccordionContent className="text-sm xl:text-base text-default-700">
-                  If your SaaS application charges users, you'll need an Extended License for each
-                  end product. Otherwise, a Regular License is adequate. You can learn more from{' '}
-                  <Link
-                    href="https://themeforest.net/licenses/faq#faq-section-regular-and-extended-licenses"
-                    target="_blank"
-                    className="text-primary"
-                  >
-                    Envato
-                  </Link>
-                  .
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-4" className="bg-background">
-                <AccordionTrigger className="text-base xl:text-lg text-left font-medium text-default-900">
-                  Do you provide design frames and GitHub access?
-                </AccordionTrigger>
-                <AccordionContent className="text-sm xl:text-base text-default-700">
-                  DashTail itself doesn’t include Figma design files automatically, but we're happy
-                  to provide them for free upon request. This allows for flexible customization
-                  within Figma. If you need GitHub access then you can ask our{' '}
-                  <Link
-                    href="https://codeshaperbd.freshdesk.com/support/login"
-                    target="_blank"
-                    className="text-primary"
-                  >
-                    support team
-                  </Link>
-                  . for GitHub access.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-5" className="bg-background">
-                <AccordionTrigger className="text-base xl:text-lg text-left font-medium text-default-900">
-                  What skills are needed to use DashTail?
-                </AccordionTrigger>
-                <AccordionContent className="text-sm xl:text-base text-default-700">
-                  Using DashTail effectively requires a foundational knowledge of front-end
-                  development, particularly with Tailwind and React for deeper customization. It's
-                  important to remember that DashTail is a front-end template; knowledge of back-end
-                  development is also necessary for full project development.
-                </AccordionContent>
-              </AccordionItem>
+              {leftColumnFaqs.map(renderFaqItem)}
             </Accordion>
           </div>
           <div>
             <Accordion type="single" collapsible className="space-y-6">
-              <AccordionItem value="item-1" className="bg-background">
-                <AccordionTrigger className="text-base xl:text-lg text-left font-medium text-default-900">
-                  How are updates and upgrades handled?
-                </AccordionTrigger>
-                <AccordionContent className="text-sm xl:text-base text-default-700">
-                  The latest DashTail version can always be downloaded from ThemeForest without any
-                  extra charge. Updates can be easily integrated by referring to our changelog and
-                  GitHub repository.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-2" className="bg-background">
-                <AccordionTrigger className="text-base xl:text-lg text-left font-medium text-default-900">
-                  What is your support policy?
-                </AccordionTrigger>
-                <AccordionContent className="text-sm xl:text-base text-default-700">
-                  We offer dedicated support through our portal, following Envato's item{' '}
-                  <Link
-                    href="https://themeforest.net/page/item_support_policy"
-                    target="_blank"
-                    className="text-primary"
-                  >
-                    support policy{' '}
-                  </Link>{' '}
-                  closely to provide timely and efficient help.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-3" className="bg-background">
-                <AccordionTrigger className="text-base xl:text-lg text-left font-medium text-default-900">
-                  Is DashTail worth the investment?
-                </AccordionTrigger>
-                <AccordionContent className="text-sm xl:text-base text-default-700">
-                  Absolutely. DashTail is meticulously crafted to streamline the development
-                  process, offering a seamless and efficient way to build your web UI. It's a
-                  worthwhile investment for any developer looking for quality and efficiency.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-4" className="bg-background">
-                <AccordionTrigger className="text-base xl:text-lg text-left font-medium text-default-900">
-                  How can I get help with DashTail?
-                </AccordionTrigger>
-                <AccordionContent className="text-sm xl:text-base text-default-700">
-                  For assistance, head over to our{' '}
-                  <Link
-                    href="https://codeshaperbd.freshdesk.com/support/login"
-                    target="_blank"
-                    className="text-primary"
-                  >
-                    support portal
-                  </Link>{' '}
-                  , register, and submit a ticket. Our dedicated support team is ready to tackle any
-                  issues you might face.
-                </AccordionContent>
-              </AccordionItem>
+              {rightColumnFaqs.map(renderFaqItem)}
             </Accordion>
           </div>
         </div>

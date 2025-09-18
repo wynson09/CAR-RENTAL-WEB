@@ -11,7 +11,7 @@ const ShowCase = () => {
           <p className="text-base leading-7 text-center text-default-700">
             Discover the freedom of travel with Nacs Car Rental — offering a wide range of vehicles
             for every journey. From self-drive adventures to chauffeured convenience, we&apos;ve got
-            the perfect ride for you anywhere in the Philippines.
+            the perfect ride for you anywhere in Mindanao.
           </p>
         </div>
 

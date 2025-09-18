@@ -143,9 +143,9 @@ const HeroEnhanced = () => {
                   asChild
                   variant="outline"
                   size="xl"
-                  className="border-primary/30 text-primary hover:bg-primary/5 shadow-md"
+                  className="border-primary/30 hover:bg-primary/5 px-8 text-blue-600 hover:text-blue-600"
                 >
-                  <Link href="#" className="flex items-center">
+                  <Link href="#fleet" className="flex items-center">
                     <Icon icon="heroicons:eye" className="w-5 h-5 mr-2" />
                     Browse Vehicles
                   </Link>
