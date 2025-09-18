@@ -34,9 +34,8 @@ const Header = () => {
           }
         >
           <nav className="container flex justify-between relative z-50">
-            <Link href="/" className="flex items-center gap-1">
-              <SiteLogo className="h-8 w-8  text-primary" />
-              <span className="text-primary-500 font-medium text-xl">DashTail</span>
+            <Link href="#home" className="flex items-center gap-1">
+              <NCRLogo className="h-auto w-16" />
             </Link>
 
             <div className="flex items-center gap-6">
@@ -88,9 +87,7 @@ const Header = () => {
                               )}
                               key={`child-item-${index}`}
                             >
-                              <a href={childItem.href} target="_blank">
-                                {childItem.title}
-                              </a>
+                              <a href={childItem.href}>{childItem.title}</a>
                             </li>
                           ))}
                         </ul>

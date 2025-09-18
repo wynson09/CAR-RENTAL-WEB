@@ -458,28 +458,24 @@ export const menus = [
     title: 'More',
     child: [
       {
-        title: 'Documentation',
-        href: '/docs/introduction',
+        title: 'FAQs',
+        href: '#faq',
       },
       {
-        title: 'Changelog',
-        href: '/docs/update-log',
+        title: 'Blog',
+        href: '/#',
       },
       {
-        title: 'Github Access',
-        href: 'https://codeshaperbd.freshdesk.com/support/login',
+        title: 'Discounts',
+        href: '/#',
       },
       {
-        title: 'Report a bug',
-        href: 'https://codeshaperbd.freshdesk.com/support/login',
+        title: 'Be our partner',
+        href: '/#',
       },
       {
         title: 'Support',
         href: 'https://codeshaperbd.freshdesk.com/support/login',
-      },
-      {
-        title: 'Hire Us',
-        href: 'https://codeshaper.net/',
       },
     ],
   },

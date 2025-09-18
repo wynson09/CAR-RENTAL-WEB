@@ -95,7 +95,7 @@ const CustomProject = () => {
             pauseOnMouseEnter: true,
             delay: 0,
           }}
-          loop={true}
+          loop={false}
           modules={[Autoplay]}
           grabCursor={true}
           breakpoints={{
@@ -150,7 +150,7 @@ const CustomProject = () => {
             delay: 0,
             reverseDirection: true,
           }}
-          loop={true}
+          loop={false}
           modules={[Autoplay]}
           grabCursor={true}
           breakpoints={{

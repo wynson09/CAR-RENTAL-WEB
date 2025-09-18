@@ -115,7 +115,7 @@ const Faq = () => {
   );
 
   return (
-    <section className="py-16 2xl:py-[120px] bg-default-100">
+    <section className="py-16 2xl:py-[120px] bg-default-100" id="faq">
       <div className="container">
         <div className="max-w-[670px] mx-auto mb-14">
           <h2 className="text-center text-xl xl:text-3xl xl:leading-[46px] font-semibold text-default-900 mb-3">
