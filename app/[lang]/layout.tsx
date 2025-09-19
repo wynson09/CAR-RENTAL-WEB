@@ -26,14 +26,16 @@ export default function RootLayout({
   params: { lang: string };
 }) {
   return (
-    <html lang={lang}>
-      <AuthProvider>
-        <TanstackProvider>
-          <Providers>
-            <DirectionProvider lang={lang}>{children}</DirectionProvider>
-          </Providers>
-        </TanstackProvider>
-      </AuthProvider>
+    <html lang={lang} suppressHydrationWarning>
+      <body className={inter.className} suppressHydrationWarning>
+        <AuthProvider>
+          <TanstackProvider>
+            <Providers>
+              <DirectionProvider lang={lang}>{children}</DirectionProvider>
+            </Providers>
+          </TanstackProvider>
+        </AuthProvider>
+      </body>
     </html>
   );
 }
