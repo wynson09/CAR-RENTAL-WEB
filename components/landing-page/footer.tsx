@@ -53,7 +53,7 @@ const Footer = () => {
           <div className="lg:col-span-1">
             <div className="mb-6">
               <Link href="/" className="inline-block">
-                <NCRLogo className="h-12 w-auto mb-4" />
+                <NCRLogo className="h-auto w-30 mb-4" />
               </Link>
               <h3 className="text-xl font-bold text-primary mb-2">NACS CAR RENTAL</h3>
             </div>

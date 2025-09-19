@@ -8,9 +8,11 @@ const SidebarLogo = ({ hovered }: { hovered?: boolean }) => {
   return (
     <div className="px-4 py-3">
       <div className=" flex items-center">
-        <div className="flex flex-1 items-center gap-x-3  ">
+        <div className="flex flex-1 items-center gap-x-3">
           {!collapsed || hovered ? (
-            <NCRLogo className="h-10 w-auto" width={120} height={32} />
+            <div className="w-20 h-auto">
+              <NCRLogo />
+            </div>
           ) : (
             <SiteLogo className="text-primary h-8 w-8" />
           )}

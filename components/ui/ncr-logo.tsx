@@ -8,9 +8,9 @@ interface NCRLogoProps {
 }
 
 export function NCRLogo({
-  className = 'h-30 w-30',
-  width = 100,
-  height = 100,
+  className = 'h-auto w-30',
+  width = 90,
+  height = 50,
   type = 'svg',
 }: NCRLogoProps) {
   if (type === 'webp') {
@@ -21,6 +21,7 @@ export function NCRLogo({
         width={width}
         height={height}
         className={className}
+        style={{ width: 'auto', height: 'auto' }}
         priority
       />
     );
@@ -33,6 +34,7 @@ export function NCRLogo({
       width={width}
       height={height}
       className={className}
+      style={{ width: 'auto', height: 'auto' }}
       priority
     />
   );

@@ -34,8 +34,8 @@ const Header = () => {
           }
         >
           <nav className="container flex justify-between relative z-50">
-            <Link href="#home" className="flex items-center gap-1">
-              <NCRLogo className="h-auto w-16" />
+            <Link href="#home" className="flex items-center gap-1 w-24 h-auto">
+              <NCRLogo />
             </Link>
 
             <div className="flex items-center gap-6">
@@ -115,8 +115,8 @@ const Header = () => {
     <div
       className={
         scroll
-          ? 'bg-card/50 backdrop-blur-lg shadow-xl z-30 dark:bg-card/70 fixed top-0 left-0 w-full py-3'
-          : ' z-30 fixed top-0 left-0 w-full py-3'
+          ? 'bg-card/50 backdrop-blur-lg shadow-xl z-30 dark:bg-card/70 fixed top-0 left-0 w-full py-2'
+          : ' z-30 fixed top-0 left-0 w-full py-2'
       }
     >
       <nav className="container flex justify-between">

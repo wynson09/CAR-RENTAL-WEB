@@ -1,7 +1,6 @@
 import React from 'react';
 import { Search } from 'lucide-react';
 import { SiteLogo } from '@/components/svg';
-import { NCRLogo } from '@/components/ui/ncr-logo';
 import Link from 'next/link';
 const horizontalHeader = ({ handleOpenSearch }: { handleOpenSearch: () => void }) => {
   return (
