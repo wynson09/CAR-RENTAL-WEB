@@ -256,6 +256,7 @@ export const CarCard = ({
           src={car.image}
           alt={getCleanCarName(car.name)}
           fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className="md:object-cover object-contain w-full h-full transition-transform duration-300 group-hover:scale-105"
           onError={handleImageError}
         />

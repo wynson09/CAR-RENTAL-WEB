@@ -21,7 +21,7 @@ const ImageViewer: React.FC<ImageViewerProps> = ({ viewingImage, onClose }) => {
           <DialogTitle>Document View</DialogTitle>
         </DialogHeader>
         <div className="relative w-full h-[70vh]">
-          <Image src={viewingImage} alt="Document" fill className="object-contain" />
+          <Image src={viewingImage} alt="Document" fill sizes="100vw" className="object-contain" />
         </div>
         <div className="flex gap-2">
           <Button asChild variant="outline">

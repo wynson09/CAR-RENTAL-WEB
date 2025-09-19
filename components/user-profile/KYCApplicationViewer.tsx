@@ -83,7 +83,13 @@ const KYCApplicationViewer: React.FC<KYCApplicationViewerProps> = ({
           <span className="text-sm font-medium text-gray-700">{label}</span>
         </div>
         <div className="relative w-full h-32 bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
-          <Image src={src} alt={label} fill className="object-cover" />
+          <Image
+            src={src}
+            alt={label}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-cover"
+          />
           {/* Status indicator overlay */}
           <div className="absolute top-2 right-2">
             <div className="flex items-center gap-1 bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
