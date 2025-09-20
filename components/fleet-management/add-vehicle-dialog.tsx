@@ -69,12 +69,20 @@ const initialVehicle: Omit<FleetVehicle, 'id'> = {
   },
 };
 
-export const AddVehicleDialog = ({ onAddVehicle, isLoading }: AddVehicleDialogProps) => {
+export const AddVehicleDialog = ({
+  onAddVehicle,
+  isLoading: externalLoading,
+}: AddVehicleDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [newVehicle, setNewVehicle] = useState<Omit<FleetVehicle, 'id'>>(initialVehicle);
   const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
+  const [isInternalLoading, setIsInternalLoading] = useState(false);
+
+  // Combine external and internal loading states
+  const isLoading = externalLoading || isInternalLoading;
 
   const handleSave = async () => {
+    setIsInternalLoading(true);
     try {
       let imageUrl = newVehicle.carDetails.image;
 
@@ -83,7 +91,7 @@ export const AddVehicleDialog = ({ onAddVehicle, isLoading }: AddVehicleDialogPr
         imageUrl = await uploadVehicleImage(selectedImageFile);
       }
 
-      onAddVehicle({
+      await onAddVehicle({
         ...newVehicle,
         carDetails: {
           ...newVehicle.carDetails,
@@ -100,10 +108,13 @@ export const AddVehicleDialog = ({ onAddVehicle, isLoading }: AddVehicleDialogPr
     } catch (error) {
       console.error('Error saving vehicle:', error);
       // Error handling will be done by the parent component
+    } finally {
+      setIsInternalLoading(false);
     }
   };
 
   const handleCancel = () => {
+    if (isLoading) return; // Prevent canceling during loading
     setNewVehicle(initialVehicle);
     setSelectedImageFile(null);
     setIsOpen(false);

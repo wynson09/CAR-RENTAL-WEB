@@ -14,6 +14,10 @@ import {
   serverTimestamp,
   Timestamp,
   FieldValue,
+  DocumentData,
+  UpdateData,
+  QueryDocumentSnapshot,
+  DocumentSnapshot,
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
@@ -90,11 +94,23 @@ interface FleetDocument
 }
 
 // Convert Firestore document to FleetVehicle
-const convertFirestoreDocToFleetVehicle = (doc: any): FleetVehicle => {
+const convertFirestoreDocToFleetVehicle = (
+  doc: QueryDocumentSnapshot<DocumentData> | DocumentSnapshot<DocumentData>
+): FleetVehicle => {
   const data = doc.data();
+  if (!data) {
+    throw new Error('Document data is undefined');
+  }
+
   return {
     id: doc.id,
-    ...data,
+    ownerUuid: data.ownerUuid,
+    ownerName: data.ownerName,
+    ownerType: data.ownerType,
+    carDetails: data.carDetails,
+    specifications: data.specifications,
+    pricing: data.pricing,
+    status: data.status,
     createdAt: data.createdAt?.toDate() || new Date(),
     updatedAt: data.updatedAt?.toDate() || new Date(),
     partnershipInfo: data.partnershipInfo
@@ -104,30 +120,29 @@ const convertFirestoreDocToFleetVehicle = (doc: any): FleetVehicle => {
           contractEndDate: data.partnershipInfo.contractEndDate?.toDate() || undefined,
         }
       : undefined,
-  };
+  } as FleetVehicle;
 };
 
 // Convert FleetVehicle to Firestore document
-const convertFleetVehicleToFirestoreDoc = (
-  vehicle: Omit<FleetVehicle, 'id'>
-): Omit<FleetDocument, 'createdAt' | 'updatedAt'> & {
-  createdAt?: FieldValue | Timestamp;
-  updatedAt: FieldValue;
-} => {
-  return {
+const convertFleetVehicleToFirestoreDoc = (vehicle: Omit<FleetVehicle, 'id'>): DocumentData => {
+  const doc: DocumentData = {
     ...vehicle,
     createdAt: vehicle.createdAt ? Timestamp.fromDate(vehicle.createdAt) : serverTimestamp(),
     updatedAt: serverTimestamp(),
-    partnershipInfo: vehicle.partnershipInfo
-      ? {
-          ...vehicle.partnershipInfo,
-          contractStartDate: Timestamp.fromDate(vehicle.partnershipInfo.contractStartDate),
-          contractEndDate: vehicle.partnershipInfo.contractEndDate
-            ? Timestamp.fromDate(vehicle.partnershipInfo.contractEndDate)
-            : undefined,
-        }
-      : undefined,
   };
+
+  // Only include partnershipInfo if it exists and is not undefined
+  if (vehicle.partnershipInfo) {
+    doc.partnershipInfo = {
+      ...vehicle.partnershipInfo,
+      contractStartDate: Timestamp.fromDate(vehicle.partnershipInfo.contractStartDate),
+      contractEndDate: vehicle.partnershipInfo.contractEndDate
+        ? Timestamp.fromDate(vehicle.partnershipInfo.contractEndDate)
+        : undefined,
+    };
+  }
+
+  return doc;
 };
 
 export class FleetFirebaseService {
@@ -182,14 +197,14 @@ export class FleetFirebaseService {
   ): Promise<void> {
     try {
       const docRef = doc(db, FLEET_COLLECTION, id);
-      const updateData = {
+      const updateData: UpdateData<DocumentData> = {
         ...updates,
         updatedAt: serverTimestamp(),
       };
 
-      // Handle partnershipInfo updates
+      // Handle partnershipInfo updates - only include if it exists
       if (updates.partnershipInfo) {
-        (updateData as any).partnershipInfo = {
+        updateData.partnershipInfo = {
           ...updates.partnershipInfo,
           contractStartDate: updates.partnershipInfo.contractStartDate
             ? Timestamp.fromDate(updates.partnershipInfo.contractStartDate)
@@ -199,6 +214,13 @@ export class FleetFirebaseService {
             : undefined,
         };
       }
+
+      // Remove any undefined values from updateData
+      Object.keys(updateData).forEach((key) => {
+        if (updateData[key] === undefined) {
+          delete updateData[key];
+        }
+      });
 
       await updateDoc(docRef, updateData);
       console.log('Vehicle updated successfully');
