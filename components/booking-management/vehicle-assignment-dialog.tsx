@@ -1,0 +1,365 @@
+'use client';
+
+import React, { useState } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
+import {
+  Search,
+  Car,
+  User,
+  Calendar,
+  CheckCircle,
+  Circle,
+  Building,
+  Gauge,
+  Users,
+  Luggage,
+  MapPin,
+} from 'lucide-react';
+import { BookingFirebaseService, BookingData } from '@/lib/firebase-booking-service';
+import { FleetVehicle } from '@/lib/firebase-fleet-service';
+import { toast } from 'sonner';
+
+interface VehicleAssignmentDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  booking: BookingData | null;
+  fleetVehicles: FleetVehicle[];
+  onVehicleAssigned: () => void;
+}
+
+export const VehicleAssignmentDialog: React.FC<VehicleAssignmentDialogProps> = ({
+  open,
+  onOpenChange,
+  booking,
+  fleetVehicles,
+  onVehicleAssigned,
+}) => {
+  const [selectedVehicleId, setSelectedVehicleId] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  // Filter available vehicles based on search and status
+  const availableVehicles = fleetVehicles.filter((vehicle) => {
+    const matchesSearch =
+      searchTerm === '' ||
+      vehicle.carDetails.make.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      vehicle.carDetails.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      vehicle.carDetails.color.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      vehicle.carDetails.plateNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      vehicle.ownerName.toLowerCase().includes(searchTerm.toLowerCase());
+
+    // Only show available vehicles
+    const isAvailable = vehicle.status.availability === 'available';
+
+    return matchesSearch && isAvailable;
+  });
+
+  const handleAssignVehicle = async () => {
+    if (!booking?.id || !selectedVehicleId) return;
+
+    const selectedVehicle = fleetVehicles.find((v) => v.id === selectedVehicleId);
+    if (!selectedVehicle) return;
+
+    setLoading(true);
+
+    try {
+      const assignedVehicle = {
+        vehicleId: selectedVehicle.id,
+        plateNumber: selectedVehicle.carDetails.plateNumber,
+        name: `${selectedVehicle.carDetails.make} ${selectedVehicle.carDetails.model}`,
+      };
+
+      await BookingFirebaseService.updateBookingStatus(
+        booking.id,
+        'reserved', // Update status to reserved when vehicle is assigned
+        assignedVehicle
+      );
+
+      onVehicleAssigned();
+      onOpenChange(false);
+      setSelectedVehicleId(null);
+      setSearchTerm('');
+    } catch (error) {
+      console.error('Error assigning vehicle:', error);
+      toast.error('Failed to assign vehicle');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getOwnerBadgeColor = (ownerType: string) => {
+    return ownerType === 'nacs' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800';
+  };
+
+  const formatCurrency = (amount: number) => {
+    return `₱${amount.toLocaleString()}`;
+  };
+
+  if (!booking) return null;
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent
+        className="max-w-6xl max-h-[90vh] overflow-hidden"
+        style={{ width: '98vw', maxWidth: '1400px' }}
+      >
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Car className="w-5 h-5" />
+            Assign Vehicle to Booking - {booking.id?.slice(-8)}
+          </DialogTitle>
+        </DialogHeader>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[70vh]">
+          {/* Booking Summary */}
+          <Card className="lg:col-span-1">
+            <CardContent className="p-4">
+              <h3 className="font-semibold mb-4">Booking Summary</h3>
+              <div className="space-y-3 text-sm">
+                <div>
+                  <Label className="text-muted-foreground">Requested Vehicle</Label>
+                  <p className="font-medium">{booking.selectedVehicles.name}</p>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Destination</Label>
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-muted-foreground" />
+                    <span>{booking.destination}</span>
+                  </div>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Duration</Label>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-muted-foreground" />
+                    <span>{booking.selectedVehicles.totalDuration} days</span>
+                  </div>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Dates</Label>
+                  <p>
+                    {new Date(booking.pickUpDate).toLocaleDateString()} to{' '}
+                    {new Date(booking.returnDate).toLocaleDateString()}
+                  </p>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Drive Option</Label>
+                  <p className="capitalize">{booking.driveOption.replace('-', ' ')}</p>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Total Amount</Label>
+                  <p className="font-medium text-lg">
+                    {formatCurrency(booking.selectedVehicles.totalAmount)}
+                  </p>
+                </div>
+              </div>
+
+              {booking.assignedVehicle && (
+                <>
+                  <Separator className="my-4" />
+                  <div>
+                    <Label className="text-muted-foreground">Currently Assigned</Label>
+                    <div className="mt-2 p-3 bg-green-50 border border-green-200 rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <Car className="w-4 h-4 text-green-600" />
+                        <div>
+                          <p className="font-medium text-green-800">
+                            {booking.assignedVehicle.name}
+                          </p>
+                          <p className="text-sm text-green-600">
+                            {booking.assignedVehicle.plateNumber}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Vehicle Selection */}
+          <div className="lg:col-span-2 flex flex-col">
+            {/* Search */}
+            <div className="mb-4">
+              <Label htmlFor="search">Search Available Vehicles</Label>
+              <div className="relative mt-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                <Input
+                  id="search"
+                  placeholder="Search by make, model, color, plate number, or owner..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+            </div>
+
+            {/* Vehicle List */}
+            <ScrollArea className="flex-1">
+              <div className="space-y-3">
+                {availableVehicles.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Car className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                    <p>No available vehicles found</p>
+                    {searchTerm && <p className="text-sm">Try adjusting your search terms</p>}
+                  </div>
+                ) : (
+                  availableVehicles.map((vehicle) => (
+                    <Card
+                      key={vehicle.id}
+                      className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
+                        selectedVehicleId === vehicle.id
+                          ? 'ring-2 ring-primary bg-primary/5'
+                          : 'hover:bg-muted/50'
+                      }`}
+                      onClick={() => setSelectedVehicleId(vehicle.id)}
+                    >
+                      <CardContent className="p-4">
+                        <div className="flex items-start gap-4">
+                          {/* Vehicle Image */}
+                          <div className="w-20 h-16 bg-muted rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
+                            {vehicle.carDetails.image ? (
+                              <img
+                                src={vehicle.carDetails.image}
+                                alt={`${vehicle.carDetails.make} ${vehicle.carDetails.model}`}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <Car className="w-8 h-8 text-muted-foreground" />
+                            )}
+                          </div>
+
+                          {/* Vehicle Details */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-start justify-between mb-2">
+                              <div>
+                                <h4 className="font-semibold text-lg">
+                                  {vehicle.carDetails.make} {vehicle.carDetails.model}{' '}
+                                  {vehicle.carDetails.year}
+                                </h4>
+                                <p className="text-sm text-muted-foreground">
+                                  {vehicle.carDetails.color} • {vehicle.carDetails.plateNumber}
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                {selectedVehicleId === vehicle.id ? (
+                                  <CheckCircle className="w-5 h-5 text-primary" />
+                                ) : (
+                                  <Circle className="w-5 h-5 text-muted-foreground" />
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Owner and Category */}
+                            <div className="flex gap-2 mb-3">
+                              <Badge className={getOwnerBadgeColor(vehicle.ownerType)}>
+                                <Building className="w-3 h-3 mr-1" />
+                                {vehicle.ownerType === 'nacs' ? 'NACS' : 'Partner'}
+                              </Badge>
+                              <Badge variant="outline">{vehicle.specifications.category}</Badge>
+                            </div>
+
+                            {/* Owner Name */}
+                            <div className="flex items-center gap-2 mb-3">
+                              <User className="w-4 h-4 text-muted-foreground" />
+                              <span className="text-sm font-medium">{vehicle.ownerName}</span>
+                            </div>
+
+                            {/* Specifications */}
+                            <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
+                              <div className="flex items-center gap-1">
+                                <Users className="w-4 h-4" />
+                                <span>{vehicle.specifications.passengers}</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Luggage className="w-4 h-4" />
+                                <span>{vehicle.specifications.bags}</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Gauge className="w-4 h-4" />
+                                <span>{vehicle.specifications.transmission}</span>
+                              </div>
+                            </div>
+
+                            {/* Pricing and Condition */}
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="text-lg font-semibold">
+                                  {formatCurrency(vehicle.pricing.dailyRate)}/day
+                                </p>
+                                <p className="text-sm text-muted-foreground">
+                                  {vehicle.pricing.currency}
+                                </p>
+                              </div>
+                              <Badge
+                                variant="outline"
+                                className={
+                                  vehicle.status.condition === 'excellent'
+                                    ? 'bg-green-50 text-green-700 border-green-200'
+                                    : vehicle.status.condition === 'good'
+                                    ? 'bg-blue-50 text-blue-700 border-blue-200'
+                                    : 'bg-yellow-50 text-yellow-700 border-yellow-200'
+                                }
+                              >
+                                {vehicle.status.condition}
+                              </Badge>
+                            </div>
+
+                            {/* Features */}
+                            {vehicle.specifications.features.length > 0 && (
+                              <div className="mt-3">
+                                <div className="flex flex-wrap gap-1">
+                                  {vehicle.specifications.features
+                                    .slice(0, 3)
+                                    .map((feature, index) => (
+                                      <Badge key={index} color="secondary" className="text-xs">
+                                        {feature}
+                                      </Badge>
+                                    ))}
+                                  {vehicle.specifications.features.length > 3 && (
+                                    <Badge color="secondary" className="text-xs">
+                                      +{vehicle.specifications.features.length - 3} more
+                                    </Badge>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))
+                )}
+              </div>
+            </ScrollArea>
+
+            {/* Action Buttons */}
+            <div className="flex justify-end gap-3 pt-4 border-t">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  onOpenChange(false);
+                  setSelectedVehicleId(null);
+                  setSearchTerm('');
+                }}
+                disabled={loading}
+              >
+                Cancel
+              </Button>
+              <Button onClick={handleAssignVehicle} disabled={!selectedVehicleId || loading}>
+                {loading ? 'Assigning...' : 'Assign Vehicle'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};

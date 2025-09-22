@@ -73,6 +73,7 @@ export interface Extension {
 }
 
 export interface BookingData {
+  id?: string; // Document ID from Firestore
   renterId: string;
   driveOption: 'self-drive' | 'with-driver';
   driverPerDay?: number; // Only present for 'with-driver' bookings
@@ -356,6 +357,48 @@ export class BookingFirebaseService {
       }
     } catch (error) {
       throw new Error('Failed to fetch booking extensions from database');
+    }
+  }
+
+  // Update a booking (admin function for booking management)
+  static async updateBooking(bookingId: string, updateData: Partial<BookingData>): Promise<void> {
+    try {
+      const docRef = doc(db, BOOKINGS_COLLECTION, bookingId);
+      await updateDoc(docRef, {
+        ...updateData,
+        updatedAt: serverTimestamp(),
+      });
+    } catch (error) {
+      throw new Error('Failed to update booking in database');
+    }
+  }
+
+  // Set up real-time listener for all bookings (admin function)
+  static setupAllBookingsListener(
+    callback: (bookings: BookingData[]) => void,
+    errorCallback: (error: any) => void
+  ): () => void {
+    try {
+      const q = query(collection(db, BOOKINGS_COLLECTION), orderBy('createdAt', 'desc'));
+
+      const unsubscribe = onSnapshot(
+        q,
+        (snapshot) => {
+          const bookings = snapshot.docs.map(convertFirestoreDocToBooking);
+          callback(bookings);
+        },
+        (error) => {
+          console.error('Real-time all bookings listener error:', error);
+          errorCallback(error);
+        }
+      );
+
+      return unsubscribe;
+    } catch (error) {
+      console.error('Setup all bookings listener error:', error);
+      errorCallback(error);
+      // Return a no-op function if setup fails
+      return () => {};
     }
   }
 

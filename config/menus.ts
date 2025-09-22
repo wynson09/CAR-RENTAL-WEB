@@ -244,6 +244,16 @@ export const adminMenuConfig = {
       ],
     },
     {
+      title: 'Booking Management',
+      icon: ClipBoard, // Clipboard for booking management
+      child: [
+        {
+          title: 'Processing Bookings',
+          href: '/processing-bookings',
+        },
+      ],
+    },
+    {
       title: 'Landing Page Assets',
       icon: Files, // Files for asset management
       href: '/landing-page-assets',
@@ -278,6 +288,17 @@ export const adminMenuConfig = {
         ],
       },
       {
+        title: 'Booking Management',
+        icon: ClipBoard, // Clipboard for booking management
+        child: [
+          {
+            title: 'Processing Bookings',
+            icon: Monitor, // Monitor for processing status
+            href: '/processing-bookings',
+          },
+        ],
+      },
+      {
         title: 'Landing Page Assets',
         icon: Files, // Files for asset management
         href: '/landing-page-assets',
@@ -307,6 +328,17 @@ export const adminMenuConfig = {
             title: 'Owned & Partner Cars',
             icon: Cart,
             href: '/owned-partner-cars',
+          },
+        ],
+      },
+      {
+        title: 'Booking Management',
+        icon: ClipBoard,
+        child: [
+          {
+            title: 'Processing Bookings',
+            icon: Monitor,
+            href: '/processing-bookings',
           },
         ],
       },
