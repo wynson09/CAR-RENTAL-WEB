@@ -376,20 +376,6 @@ export const EditBookingDialog: React.FC<EditBookingDialogProps> = ({
 
                 {/* Destination and ZDS */}
                 <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="destination">Destination</Label>
-                    <div className="relative">
-                      <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                      <Input
-                        id="destination"
-                        placeholder="Enter destination"
-                        value={formData.destination}
-                        onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
-                        className="pl-10"
-                      />
-                    </div>
-                  </div>
-
                   <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
                     <div>
                       <Label htmlFor="withInZDS" className="font-medium">
@@ -408,6 +394,20 @@ export const EditBookingDialog: React.FC<EditBookingDialogProps> = ({
                         setFormData({ ...formData, withInZDS: checked })
                       }
                     />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="destination">Destination</Label>
+                    <div className="relative">
+                      <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                      <Input
+                        id="destination"
+                        placeholder="Enter destination"
+                        value={formData.destination}
+                        onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
+                        className="pl-10"
+                      />
+                    </div>
                   </div>
                 </div>
 

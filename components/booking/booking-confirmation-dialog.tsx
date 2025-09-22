@@ -47,6 +47,8 @@ export interface BookingFormData {
   driveOption: 'self-drive' | 'with-driver';
   driverPerDay?: number; // Only used for 'with-driver' option
   withInZDS?: boolean; // Within Zamboanga Del Sur flag
+  pickupPagadianDetails?: string; // Specific location within Pagadian area for pickup
+  returnPagadianDetails?: string; // Specific location within Pagadian area for return
 }
 
 interface BookingConfirmationDialogProps {
@@ -134,6 +136,7 @@ export const BookingConfirmationDialog = ({
           returnDate: format(bookingData.returnDate, 'yyyy-MM-dd'),
           returnTime: bookingData.returnTime,
           status: 'processing' as const,
+          bookingSource: 'website' as const,
         },
         selectedVehicles: {
           vehicleUrl: car.image, // Using car image URL as vehicleUrl for better identification
@@ -225,13 +228,22 @@ export const BookingConfirmationDialog = ({
     return time || '--:-- --';
   };
 
-  const getAddressLabel = (address: string) => {
+  const getAddressLabel = (address: string, pagadianDetails?: string) => {
     const addressLabels: Record<string, string> = {
-      'nacs-garage': 'NACS Car Rental Garage',
+      'nacs-garage': 'Self Pick Up @ NACS Car Rental Garage',
+      'nacs-garage-return': 'Self Return @ NACS Car Rental Garage',
       'pagadian-airport': 'Pagadian Airport',
       'pagadian-area': 'Pagadian Area',
     };
-    return addressLabels[address] || address;
+
+    const baseLabel = addressLabels[address] || address;
+
+    // If it's Pagadian Area and we have specific details, append them
+    if (address === 'pagadian-area' && pagadianDetails?.trim()) {
+      return `${baseLabel} - ${pagadianDetails}`;
+    }
+
+    return baseLabel;
   };
 
   return (
@@ -334,7 +346,12 @@ export const BookingConfirmationDialog = ({
                     Pickup
                   </h4>
                   <div className="space-y-1 text-sm">
-                    <div>{getAddressLabel(bookingData.pickUpAddress)}</div>
+                    <div>
+                      {getAddressLabel(
+                        bookingData.pickUpAddress,
+                        bookingData.pickupPagadianDetails
+                      )}
+                    </div>
                     <div className="flex items-center gap-3">
                       <span className="flex items-center gap-1">
                         <CalendarIcon className="h-3 w-3" />
@@ -355,7 +372,12 @@ export const BookingConfirmationDialog = ({
                     Return
                   </h4>
                   <div className="space-y-1 text-sm">
-                    <div>{getAddressLabel(bookingData.returnAddress)}</div>
+                    <div>
+                      {getAddressLabel(
+                        bookingData.returnAddress,
+                        bookingData.returnPagadianDetails
+                      )}
+                    </div>
                     <div className="flex items-center gap-3">
                       <span className="flex items-center gap-1">
                         <CalendarIcon className="h-3 w-3" />

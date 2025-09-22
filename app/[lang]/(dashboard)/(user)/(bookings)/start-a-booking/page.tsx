@@ -127,7 +127,9 @@ const BookingPage = () => {
   const [returnTime, setReturnTime] = useState('');
   const [driveOption, setDriveOption] = useState<'self-drive' | 'with-driver'>('self-drive');
   const [pickUpAddress, setPickUpAddress] = useState('');
-  const [returnAddress, setReturnAddress] = useState('');
+  const [returnAddress, setReturnAddress] = useState('nacs-garage-return'); // Default to NACS garage return
+  const [pickupPagadianDetails, setPickupPagadianDetails] = useState(''); // For specific Pagadian area location
+  const [returnPagadianDetails, setReturnPagadianDetails] = useState(''); // For specific Pagadian area location
   const [withInZDS, setWithInZDS] = useState(false);
 
   // Validation errors state
@@ -261,8 +263,14 @@ const BookingPage = () => {
     return () => unsubscribe?.();
   }, [cacheKey, readCache, writeCache]);
 
-  const addressOptions = [
+  const pickupAddressOptions = [
     { value: 'nacs-garage', label: 'Self Pick Up @ NACS Car Rental Garage' },
+    { value: 'pagadian-airport', label: 'Pagadian Airport' },
+    { value: 'pagadian-area', label: 'Pagadian Area' },
+  ];
+
+  const returnAddressOptions = [
+    { value: 'nacs-garage-return', label: 'Self Return @ NACS Car Rental Garage' },
     { value: 'pagadian-airport', label: 'Pagadian Airport' },
     { value: 'pagadian-area', label: 'Pagadian Area' },
   ];
@@ -427,6 +435,12 @@ const BookingPage = () => {
       messages.push('Pickup address is required');
     }
 
+    // Validate Pagadian area details if Pagadian area is selected for pickup
+    if (pickUpAddress === 'pagadian-area' && !pickupPagadianDetails.trim()) {
+      fieldErrors.push('pickupPagadianDetails');
+      messages.push('Please specify the pickup location within Pagadian area');
+    }
+
     if (!pickupTime) {
       fieldErrors.push('pickupTime');
       messages.push('Pickup time is required');
@@ -435,6 +449,12 @@ const BookingPage = () => {
     if (!returnAddress) {
       fieldErrors.push('returnAddress');
       messages.push('Return address is required');
+    }
+
+    // Validate Pagadian area details if Pagadian area is selected for return
+    if (returnAddress === 'pagadian-area' && !returnPagadianDetails.trim()) {
+      fieldErrors.push('returnPagadianDetails');
+      messages.push('Please specify the return location within Pagadian area');
     }
 
     if (!returnTime) {
@@ -473,8 +493,10 @@ const BookingPage = () => {
     const fieldSelectors = {
       destination: '#destination',
       pickUpAddress: '[data-field="pickUpAddress"]',
+      pickupPagadianDetails: '[data-field="pickupPagadianDetails"]',
       pickupTime: '[data-field="pickupTime"]',
       returnAddress: '[data-field="returnAddress"]',
+      returnPagadianDetails: '[data-field="returnPagadianDetails"]',
       returnTime: '[data-field="returnTime"]',
     };
 
@@ -780,37 +802,6 @@ const BookingPage = () => {
             </div>
           </div>
 
-          {/* Destination */}
-          <div>
-            <Label
-              htmlFor="destination"
-              className="mb-3 block text-base font-semibold text-gray-800 dark:text-gray-200"
-            >
-              Destination <span className="text-red-500">*</span>
-            </Label>
-            <Textarea
-              id="destination"
-              placeholder="Indicate your farthest destination (e.g., Manila, Cebu, Davao, etc.)"
-              value={destination}
-              onChange={(e) => {
-                setDestination(e.target.value);
-                // Clear validation error when user starts typing
-                if (hasFieldError('destination') && e.target.value.trim()) {
-                  setValidationErrors((prev) => prev.filter((error) => error !== 'destination'));
-                }
-              }}
-              className={cn(
-                'min-h-[100px] resize-none transition-all duration-200',
-                hasFieldError('destination')
-                  ? 'border-red-500 bg-red-50 dark:bg-red-950/20 dark:border-red-400 ring-1 ring-red-200 dark:ring-red-800'
-                  : destination
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/20 dark:border-blue-400 ring-1 ring-blue-200 dark:ring-blue-800'
-                  : 'hover:border-blue-300 focus:border-blue-500'
-              )}
-              rows={4}
-            />
-          </div>
-
           {/* Within Zamboanga Del Sur Option */}
           <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 rounded-xl p-6 border border-green-200 dark:border-green-800">
             <div className="flex items-center justify-between">
@@ -840,6 +831,37 @@ const BookingPage = () => {
             </div>
           </div>
 
+          {/* Destination */}
+          <div>
+            <Label
+              htmlFor="destination"
+              className="mb-3 block text-base font-semibold text-gray-800 dark:text-gray-200"
+            >
+              Destination <span className="text-red-500">*</span>
+            </Label>
+            <Textarea
+              id="destination"
+              placeholder="Indicate your farthest destination"
+              value={destination}
+              onChange={(e) => {
+                setDestination(e.target.value);
+                // Clear validation error when user starts typing
+                if (hasFieldError('destination') && e.target.value.trim()) {
+                  setValidationErrors((prev) => prev.filter((error) => error !== 'destination'));
+                }
+              }}
+              className={cn(
+                'min-h-[100px] resize-none transition-all duration-200',
+                hasFieldError('destination')
+                  ? 'border-red-500 bg-red-50 dark:bg-red-950/20 dark:border-red-400 ring-1 ring-red-200 dark:ring-red-800'
+                  : destination
+                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/20 dark:border-blue-400 ring-1 ring-blue-200 dark:ring-blue-800'
+                  : 'hover:border-blue-300 focus:border-blue-500'
+              )}
+              rows={4}
+            />
+          </div>
+
           {/* Pickup Section */}
           <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3 mb-6">
@@ -857,6 +879,10 @@ const BookingPage = () => {
                   value={pickUpAddress}
                   onValueChange={(value) => {
                     setPickUpAddress(value);
+                    // Clear Pagadian details if not selecting Pagadian area
+                    if (value !== 'pagadian-area') {
+                      setPickupPagadianDetails('');
+                    }
                     // Clear validation error when user selects
                     if (hasFieldError('pickUpAddress') && value) {
                       setValidationErrors((prev) =>
@@ -876,13 +902,43 @@ const BookingPage = () => {
                     <SelectValue placeholder="Select pickup location" />
                   </SelectTrigger>
                   <SelectContent>
-                    {addressOptions.map((option) => (
+                    {pickupAddressOptions.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
+
+                {/* Conditional input for Pagadian Area pickup details */}
+                {pickUpAddress === 'pagadian-area' && (
+                  <div className="mt-3">
+                    <Label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Specific Location in Pagadian Area <span className="text-red-500">*</span>
+                    </Label>
+                    <input
+                      type="text"
+                      data-field="pickupPagadianDetails"
+                      placeholder="Enter specific address or landmark"
+                      value={pickupPagadianDetails}
+                      onChange={(e) => {
+                        setPickupPagadianDetails(e.target.value);
+                        // Clear validation error when user types
+                        if (hasFieldError('pickupPagadianDetails') && e.target.value.trim()) {
+                          setValidationErrors((prev) =>
+                            prev.filter((error) => error !== 'pickupPagadianDetails')
+                          );
+                        }
+                      }}
+                      className={cn(
+                        'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+                        hasFieldError('pickupPagadianDetails')
+                          ? 'border-red-500 bg-red-50 dark:bg-red-950/20 dark:border-red-400 ring-1 ring-red-200 dark:ring-red-800'
+                          : 'hover:border-blue-300 focus:border-blue-500'
+                      )}
+                    />
+                  </div>
+                )}
               </div>
 
               <div>
@@ -907,6 +963,8 @@ const BookingPage = () => {
                       mode="single"
                       selected={pickupDate}
                       onSelect={(date) => setPickupDate(date || new Date())}
+                      month={pickupDate}
+                      onMonthChange={setPickupDate}
                       initialFocus
                     />
                   </PopoverContent>
@@ -958,6 +1016,10 @@ const BookingPage = () => {
                   value={returnAddress}
                   onValueChange={(value) => {
                     setReturnAddress(value);
+                    // Clear Pagadian details if not selecting Pagadian area
+                    if (value !== 'pagadian-area') {
+                      setReturnPagadianDetails('');
+                    }
                     // Clear validation error when user selects
                     if (hasFieldError('returnAddress') && value) {
                       setValidationErrors((prev) =>
@@ -977,13 +1039,43 @@ const BookingPage = () => {
                     <SelectValue placeholder="Select return location" />
                   </SelectTrigger>
                   <SelectContent>
-                    {addressOptions.map((option) => (
+                    {returnAddressOptions.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
+
+                {/* Conditional input for Pagadian Area return details */}
+                {returnAddress === 'pagadian-area' && (
+                  <div className="mt-3">
+                    <Label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Specific Location in Pagadian Area <span className="text-red-500">*</span>
+                    </Label>
+                    <input
+                      type="text"
+                      data-field="returnPagadianDetails"
+                      placeholder="Enter specific address or landmark"
+                      value={returnPagadianDetails}
+                      onChange={(e) => {
+                        setReturnPagadianDetails(e.target.value);
+                        // Clear validation error when user types
+                        if (hasFieldError('returnPagadianDetails') && e.target.value.trim()) {
+                          setValidationErrors((prev) =>
+                            prev.filter((error) => error !== 'returnPagadianDetails')
+                          );
+                        }
+                      }}
+                      className={cn(
+                        'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+                        hasFieldError('returnPagadianDetails')
+                          ? 'border-red-500 bg-red-50 dark:bg-red-950/20 dark:border-red-400 ring-1 ring-red-200 dark:ring-red-800'
+                          : 'hover:border-blue-300 focus:border-blue-500'
+                      )}
+                    />
+                  </div>
+                )}
               </div>
 
               <div>
@@ -1016,6 +1108,8 @@ const BookingPage = () => {
                           setReturnDate(tomorrow);
                         }
                       }}
+                      month={returnDate}
+                      onMonthChange={setReturnDate}
                       initialFocus
                     />
                   </PopoverContent>
@@ -1147,6 +1241,10 @@ const BookingPage = () => {
             driveOption,
             driverPerDay: driveOption === 'with-driver' ? 750 : undefined,
             withInZDS,
+            pickupPagadianDetails:
+              pickUpAddress === 'pagadian-area' ? pickupPagadianDetails : undefined,
+            returnPagadianDetails:
+              returnAddress === 'pagadian-area' ? returnPagadianDetails : undefined,
           }}
           pricingDetails={calculatePricingDetails(selectedCar)}
         />
