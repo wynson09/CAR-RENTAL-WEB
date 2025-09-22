@@ -5,6 +5,7 @@ import Card from '@/components/ui/card-snippet';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
 import {
   Select,
   SelectContent,
@@ -30,7 +31,8 @@ import {
   BookingFormData,
 } from '@/components/booking/booking-confirmation-dialog';
 import { useUserStore } from '@/store';
-import { createDetailedPricing } from '@/lib/pricing-utils';
+import { calculateBookingPricing, PricingCalculationResult } from '@/lib/pricing-utils';
+import { DetailedPricingData } from '@/components/pricing/detailed-price-breakdown';
 
 // Session cache key
 const CARS_SESSION_CACHE_KEY = 'booking:cars';
@@ -126,6 +128,7 @@ const BookingPage = () => {
   const [driveOption, setDriveOption] = useState<'self-drive' | 'with-driver'>('self-drive');
   const [pickUpAddress, setPickUpAddress] = useState('');
   const [returnAddress, setReturnAddress] = useState('');
+  const [withInZDS, setWithInZDS] = useState(false);
 
   // Validation errors state
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
@@ -286,31 +289,77 @@ const BookingPage = () => {
   // Driver fee per day (matching CarCard)
   const DRIVER_FEE_PER_DAY = 750;
 
-  const calculatePricingDetails = (car: Car) => {
+  // Convert PricingCalculationResult to DetailedPricingData format
+  const convertToDetailedPricingData = (
+    result: PricingCalculationResult,
+    totalDays: number,
+    basePricePerDay: number,
+    discounts: any[]
+  ): DetailedPricingData => {
+    const driverFeePerDay = driveOption === 'with-driver' ? DRIVER_FEE_PER_DAY : 0;
+    const driverSubtotal = driverFeePerDay * totalDays;
+
+    // Convert discounts to DetailedPricingData format
+    const convertedDiscounts = discounts.map((discount) => ({
+      label: discount.label,
+      type: discount.type,
+      percent: discount.percent,
+      amountPerDay: discount.amount / totalDays,
+      totalAmount: discount.amount,
+      applied: discount.applied,
+    }));
+
+    // Add ZDS discount if applicable (fixed ₱200 per day discount)
+    if (result.zdsDiscount > 0) {
+      // ZDS discount is ₱200 per day, so calculate percentage based on per-day base price
+      const zdsAmountPerDay = 200; // ₱200 per day
+      const zdsPercentage = (zdsAmountPerDay / basePricePerDay) * 100;
+      convertedDiscounts.push({
+        label: 'Within Zamboanga Del Sur',
+        type: 'zds_discount',
+        percent: zdsPercentage,
+        amountPerDay: zdsAmountPerDay,
+        totalAmount: result.zdsDiscount,
+        applied: true,
+      });
+    }
+
+    const subtotalBeforeDiscounts =
+      basePricePerDay * totalDays + result.driverCost + result.extraChargesTotal;
+
+    return {
+      basePricePerDay: basePricePerDay, // Use original base price, not adjusted
+      totalDays,
+      baseSubtotal: basePricePerDay * totalDays, // Use original subtotal
+      driverFeePerDay: driverFeePerDay > 0 ? driverFeePerDay : undefined,
+      driverSubtotal: driverFeePerDay > 0 ? driverSubtotal : undefined,
+      discounts: convertedDiscounts,
+      extraCharges: [], // Can be extended based on business rules
+      subtotalBeforeDiscounts,
+      totalDiscounts: result.discountsTotal + result.zdsDiscount,
+      totalSavings: result.discountsTotal + result.zdsDiscount,
+      finalTotal: result.finalTotal,
+    };
+  };
+
+  const calculatePricingDetails = (car: Car): DetailedPricingData => {
     const totalDays = Math.max(1, differenceInCalendarDays(returnDate, pickupDate));
     const basePricePerDay = parseInt(car.price.replace(/[^0-9]/g, ''));
     const isVerifiedUser = user?.isVerified ?? false;
 
-    if (basePricePerDay === 0) {
-      return createDetailedPricing({
-        basePricePerDay: 0,
-        totalDays,
-        driverFeePerDay: 0,
-        discounts: [],
-        extraCharges: [],
-      });
-    }
-
-    // Build discounts array for detailed pricing
+    // Build discounts array for new pricing calculation
     const discounts = [];
+
+    // Calculate discount amounts
+    const vehicleSubtotal = basePricePerDay * totalDays;
 
     // Verified User Discount (5% off vehicle rental)
     if (isVerifiedUser && DISCOUNT_CONFIG.VERIFIED_USER > 0) {
       discounts.push({
         label: 'Verified User Discount',
         type: 'verified_user',
-        percentageOff: DISCOUNT_CONFIG.VERIFIED_USER * 100,
-        appliedTo: 'vehicle' as const,
+        percent: DISCOUNT_CONFIG.VERIFIED_USER * 100,
+        amount: vehicleSubtotal * DISCOUNT_CONFIG.VERIFIED_USER,
         applied: true,
       });
     }
@@ -320,8 +369,8 @@ const BookingPage = () => {
       discounts.push({
         label: 'Promotional Vehicle',
         type: 'promo_vehicle',
-        percentageOff: DISCOUNT_CONFIG.PROMO_CAR * 100,
-        appliedTo: 'vehicle' as const,
+        percent: DISCOUNT_CONFIG.PROMO_CAR * 100,
+        amount: vehicleSubtotal * DISCOUNT_CONFIG.PROMO_CAR,
         applied: true,
       });
     }
@@ -343,20 +392,25 @@ const BookingPage = () => {
       discounts.push({
         label: durationLabel,
         type: 'duration',
-        percentageOff: additionalDiscount * 100,
-        appliedTo: 'vehicle' as const,
+        percent: additionalDiscount * 100,
+        amount: vehicleSubtotal * additionalDiscount,
         applied: true,
       });
     }
 
-    // Create detailed pricing with proper per-day calculations
-    return createDetailedPricing({
-      basePricePerDay,
-      totalDays,
-      driverFeePerDay: driveOption === 'with-driver' ? DRIVER_FEE_PER_DAY : 0,
+    // Use new pricing calculation function
+    const result = calculateBookingPricing({
+      basePrice: basePricePerDay,
+      totalDuration: totalDays,
+      withInZDS,
+      driveOption,
+      driverPerDay: driveOption === 'with-driver' ? DRIVER_FEE_PER_DAY : 0,
       discounts,
       extraCharges: [], // Can be extended based on business rules
     });
+
+    // Convert to DetailedPricingData format for the dialog
+    return convertToDetailedPricingData(result, totalDays, basePricePerDay, discounts);
   };
 
   const validateBookingForm = () => {
@@ -757,6 +811,35 @@ const BookingPage = () => {
             />
           </div>
 
+          {/* Within Zamboanga Del Sur Option */}
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 rounded-xl p-6 border border-green-200 dark:border-green-800">
+            <div className="flex items-center justify-between">
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-3 h-3 bg-green-600 rounded-full"></div>
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                    Within Zamboanga Del Sur
+                  </h3>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                  Are you traveling within Zamboanga Del Sur province?
+                </p>
+                <p className="text-sm font-medium text-green-700 dark:text-green-400">
+                  {withInZDS
+                    ? '✅ ₱200 discount will be applied to your booking!'
+                    : '💡 Toggle on to get ₱200 off your base price'}
+                </p>
+              </div>
+              <div className="ml-4">
+                <Switch
+                  checked={withInZDS}
+                  onCheckedChange={setWithInZDS}
+                  className="data-[state=checked]:bg-green-600"
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Pickup Section */}
           <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3 mb-6">
@@ -1037,6 +1120,7 @@ const BookingPage = () => {
                 returnDate={returnDate}
                 driveOption={driveOption}
                 defaultCategory="All"
+                withInZDS={withInZDS}
               />
             </ErrorBoundary>
           </div>
@@ -1062,6 +1146,7 @@ const BookingPage = () => {
             returnTime,
             driveOption,
             driverPerDay: driveOption === 'with-driver' ? 750 : undefined,
+            withInZDS,
           }}
           pricingDetails={calculatePricingDetails(selectedCar)}
         />

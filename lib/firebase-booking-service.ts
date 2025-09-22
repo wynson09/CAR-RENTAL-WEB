@@ -72,11 +72,20 @@ export interface Extension {
   extendedAt: any; // Firestore timestamp
 }
 
-export interface BookingData {
-  id?: string; // Document ID from Firestore
+export interface RenterInformation {
   renterId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  address: string;
+}
+
+export interface BookingDetails {
+  bookingId: string;
   driveOption: 'self-drive' | 'with-driver';
   driverPerDay?: number; // Only present for 'with-driver' bookings
+  withInZDS: boolean; // if within ZDS, this is true, otherwise false and baseprice is minus 200
   destination: string;
   pickUpAddress: string;
   pickUpDate: string;
@@ -84,19 +93,20 @@ export interface BookingData {
   returnAddress: string;
   returnDate: string;
   returnTime: string;
+  status: 'processing' | 'reserved' | 'cancelled' | 'completed' | 'ongoing' | 'refunded';
+  bookingSource: 'website' | 'app';
+}
+
+export interface BookingData {
+  id?: string; // Document ID from Firestore
+  renterInformation: RenterInformation;
+  bookingDetails: BookingDetails;
   selectedVehicles: SelectedVehicle;
   payment?: Payment; // Payment tracking information
   extensions?: Extension[]; // Array of booking extensions
-  status: 'processing' | 'reserved' | 'cancelled' | 'completed' | 'ongoing' | 'refunded';
   assignedVehicle?: AssignedVehicle;
   createdAt?: any;
   updatedAt?: any;
-}
-
-// Firebase document interface
-interface BookingDocument extends Omit<BookingData, 'createdAt' | 'updatedAt'> {
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
 }
 
 // Convert Firestore document to BookingData
@@ -224,14 +234,25 @@ export class BookingFirebaseService {
   // Update booking status
   static async updateBookingStatus(
     bookingId: string,
-    status: BookingData['status'],
+    status: BookingData['bookingDetails']['status'],
     assignedVehicle?: AssignedVehicle
   ): Promise<void> {
     try {
       const docRef = doc(db, BOOKINGS_COLLECTION, bookingId);
       const updateData: any = {
-        status,
         updatedAt: serverTimestamp(),
+      };
+
+      // Get current booking to preserve structure
+      const bookingDoc = await getDoc(doc(db, BOOKINGS_COLLECTION, bookingId));
+      if (!bookingDoc.exists()) {
+        throw new Error('Booking not found');
+      }
+
+      const currentData = bookingDoc.data();
+      updateData.bookingDetails = {
+        ...currentData.bookingDetails,
+        status,
       };
 
       if (assignedVehicle) {
@@ -249,7 +270,7 @@ export class BookingFirebaseService {
     try {
       const allBookings = await this.getUserBookings(userId);
       const activeBookings = allBookings.filter((booking) =>
-        ['processing', 'reserved', 'ongoing'].includes(booking.status)
+        ['processing', 'reserved', 'ongoing'].includes(booking.bookingDetails.status)
       );
       return activeBookings;
     } catch (error) {
@@ -280,11 +301,13 @@ export class BookingFirebaseService {
   }
 
   // Get bookings by status (admin function)
-  static async getBookingsByStatus(status: BookingData['status']): Promise<BookingData[]> {
+  static async getBookingsByStatus(
+    status: BookingData['bookingDetails']['status']
+  ): Promise<BookingData[]> {
     try {
       const q = query(
         collection(db, BOOKINGS_COLLECTION),
-        where('status', '==', status),
+        where('bookingDetails.status', '==', status),
         orderBy('createdAt', 'desc')
       );
       const querySnapshot = await getDocs(q);

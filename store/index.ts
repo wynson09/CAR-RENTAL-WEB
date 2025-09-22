@@ -115,6 +115,8 @@ export interface UserData {
   lastName: string;
   name: string;
   email: string;
+  phone?: string;
+  address?: string;
   image?: string;
   role: 'user' | 'admin' | 'moderator';
   userViolation: string[];

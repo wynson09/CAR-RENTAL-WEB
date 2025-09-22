@@ -1,203 +1,170 @@
-import { DetailedPricingData } from '@/components/pricing/detailed-price-breakdown';
+import { SelectedVehicle } from './firebase-booking-service';
 
-export interface BasicPricingData {
+export interface PricingCalculationInput {
   basePrice: number;
-  totalDays: number;
-  discounts: {
+  totalDuration: number;
+  withInZDS: boolean;
+  driveOption: 'self-drive' | 'with-driver';
+  driverPerDay?: number;
+  extraCharges?: Array<{ label: string; type: string; amount: number }>;
+  discounts?: Array<{
     label: string;
     type: string;
     percent: number;
     amount: number;
     applied: boolean;
-  }[];
-  extraCharges: {
-    label: string;
-    type: string;
-    amount: number;
-  }[];
-  totalAmount: number;
-  totalSavings: number;
+  }>;
 }
 
-export interface BookingPricingOptions {
-  driverFeePerDay?: number;
-  includeDriverInCalculation?: boolean;
+export interface PricingCalculationResult {
+  adjustedBasePrice: number; // Base price after ZDS adjustment
+  baseTotalAmount: number; // Adjusted base price * duration
+  driverCost: number;
+  extraChargesTotal: number;
+  discountsTotal: number;
+  finalTotal: number;
+  zdsDiscount: number; // Amount discounted for ZDS
 }
 
 /**
- * Converts basic pricing data to detailed pricing format
+ * Calculate pricing for a booking with ZDS (Zamboanga Del Sur) logic
+ * If withInZDS is true, subtract ₱200 from the base price before calculations
  */
-export const convertToDetailedPricing = (
-  basicPricing: BasicPricingData,
-  options: BookingPricingOptions = {}
-): DetailedPricingData => {
-  const { driverFeePerDay = 0, includeDriverInCalculation = false } = options;
+export function calculateBookingPricing(input: PricingCalculationInput): PricingCalculationResult {
+  const {
+    basePrice,
+    totalDuration,
+    withInZDS,
+    driveOption,
+    driverPerDay = 0,
+    extraCharges = [],
+    discounts = [],
+  } = input;
 
-  const basePricePerDay = basicPricing.basePrice;
-  const totalDays = basicPricing.totalDays;
-  const baseSubtotal = basePricePerDay * totalDays;
+  // Apply ZDS discount to base price
+  const zdsDiscount = withInZDS ? 200 : 0;
+  const adjustedBasePrice = Math.max(0, basePrice - zdsDiscount); // Ensure price doesn't go negative
 
-  // Driver fee calculations
-  const hasDriverFee = driverFeePerDay > 0;
-  const driverSubtotal = hasDriverFee ? driverFeePerDay * totalDays : 0;
+  // Calculate base total with adjusted price
+  const baseTotalAmount = adjustedBasePrice * totalDuration;
 
-  // Convert discounts to detailed format
-  const detailedDiscounts = basicPricing.discounts.map((discount) => ({
-    label: discount.label,
-    type: discount.type,
-    percent: discount.percent,
-    amountPerDay: discount.amount / totalDays, // Calculate per-day discount
-    totalAmount: discount.amount,
-    applied: discount.applied,
-  }));
+  // Calculate driver cost
+  const driverCost = driveOption === 'with-driver' ? driverPerDay * totalDuration : 0;
 
-  // Convert extra charges to detailed format
-  const detailedExtraCharges = basicPricing.extraCharges.map((charge) => ({
-    label: charge.label,
-    type: charge.type,
-    amountPerDay: charge.amount / totalDays, // Assume extra charges are also per-day based
-    totalAmount: charge.amount,
-  }));
+  // Calculate extra charges total
+  const extraChargesTotal = extraCharges.reduce((sum, charge) => sum + charge.amount, 0);
 
-  // Calculate totals
-  const extraChargesTotal = detailedExtraCharges.reduce(
-    (sum, charge) => sum + charge.totalAmount,
-    0
-  );
-  const subtotalBeforeDiscounts = baseSubtotal + driverSubtotal + extraChargesTotal;
-  const totalDiscounts = detailedDiscounts
-    .filter((d) => d.applied)
-    .reduce((sum, discount) => sum + discount.totalAmount, 0);
+  // Calculate discounts total
+  const discountsTotal = discounts
+    .filter((discount) => discount.applied)
+    .reduce((sum, discount) => sum + discount.amount, 0);
 
-  const finalTotal = subtotalBeforeDiscounts - totalDiscounts;
+  // Calculate final total
+  const finalTotal = Math.max(0, baseTotalAmount + driverCost + extraChargesTotal - discountsTotal);
 
   return {
-    basePricePerDay,
-    totalDays,
-    baseSubtotal,
-    driverFeePerDay: hasDriverFee ? driverFeePerDay : undefined,
-    driverSubtotal: hasDriverFee ? driverSubtotal : undefined,
-    discounts: detailedDiscounts,
-    extraCharges: detailedExtraCharges,
-    subtotalBeforeDiscounts,
-    totalDiscounts,
-    totalSavings: totalDiscounts,
+    adjustedBasePrice,
+    baseTotalAmount,
+    driverCost,
+    extraChargesTotal,
+    discountsTotal,
     finalTotal,
+    zdsDiscount,
   };
-};
+}
 
 /**
- * Creates detailed pricing data from scratch with proper per-day calculations
+ * Update SelectedVehicle with new pricing calculation
  */
-export const createDetailedPricing = (params: {
-  basePricePerDay: number;
-  totalDays: number;
+export function updateSelectedVehiclePricing(
+  selectedVehicle: SelectedVehicle,
+  withInZDS: boolean,
+  driveOption: 'self-drive' | 'with-driver',
+  driverPerDay?: number
+): SelectedVehicle {
+  const pricingResult = calculateBookingPricing({
+    basePrice: selectedVehicle.basePrice,
+    totalDuration: selectedVehicle.totalDuration,
+    withInZDS,
+    driveOption,
+    driverPerDay,
+    extraCharges: selectedVehicle.extraCharges,
+    discounts: selectedVehicle.discounts,
+  });
+
+  return {
+    ...selectedVehicle,
+    pricePerDay: pricingResult.adjustedBasePrice,
+    totalAmount: pricingResult.finalTotal,
+  };
+}
+
+/**
+ * Format currency for display
+ */
+export function formatCurrency(amount: number): string {
+  return `₱${amount.toLocaleString()}`;
+}
+
+/**
+ * Get ZDS pricing explanation text
+ */
+export function getZDSPricingExplanation(withInZDS: boolean, zdsDiscount: number): string {
+  if (withInZDS && zdsDiscount > 0) {
+    return `Within Zamboanga Del Sur - ${formatCurrency(zdsDiscount)} discount applied`;
+  }
+  return '';
+}
+
+/**
+ * Legacy function for compatibility with existing code
+ * @deprecated Use calculateBookingPricing instead
+ */
+export function createDetailedPricing(params: {
+  basePricePerDay?: number;
+  totalDays?: number;
   driverFeePerDay?: number;
-  discounts?: {
-    label: string;
-    type: string;
-    percentageOff: number; // The percentage discount (e.g., 10 for 10%)
-    appliedTo: 'vehicle' | 'total' | 'driver'; // What the discount applies to
-    applied: boolean;
-  }[];
-  extraCharges?: {
-    label: string;
-    type: string;
-    amountPerDay?: number;
-    totalAmount?: number;
-  }[];
-}): DetailedPricingData => {
+  discounts?: any[];
+  extraCharges?: any[];
+  withInZDS?: boolean;
+}) {
   const {
-    basePricePerDay,
-    totalDays,
+    basePricePerDay = 0,
+    totalDays = 1,
     driverFeePerDay = 0,
     discounts = [],
     extraCharges = [],
+    withInZDS = false,
   } = params;
 
-  const baseSubtotal = basePricePerDay * totalDays;
-  const hasDriverFee = driverFeePerDay > 0;
-  const driverSubtotal = hasDriverFee ? driverFeePerDay * totalDays : 0;
-
-  // Process extra charges
-  const processedExtraCharges = extraCharges.map((charge) => ({
-    label: charge.label,
-    type: charge.type,
-    amountPerDay: charge.amountPerDay || (charge.totalAmount ? charge.totalAmount / totalDays : 0),
-    totalAmount: charge.totalAmount || (charge.amountPerDay ? charge.amountPerDay * totalDays : 0),
-  }));
-
-  const extraChargesTotal = processedExtraCharges.reduce(
-    (sum, charge) => sum + charge.totalAmount,
-    0
-  );
-  const subtotalBeforeDiscounts = baseSubtotal + driverSubtotal + extraChargesTotal;
-
-  // Process discounts with proper per-day calculations
-  const processedDiscounts = discounts.map((discount) => {
-    let discountBase = 0;
-
-    switch (discount.appliedTo) {
-      case 'vehicle':
-        discountBase = baseSubtotal;
-        break;
-      case 'driver':
-        discountBase = driverSubtotal;
-        break;
-      case 'total':
-        discountBase = subtotalBeforeDiscounts;
-        break;
-    }
-
-    const totalAmount = (discountBase * discount.percentageOff) / 100;
-    const amountPerDay = totalAmount / totalDays;
-
-    return {
-      label: discount.label,
-      type: discount.type,
-      percent: discount.percentageOff,
-      amountPerDay,
-      totalAmount,
-      applied: discount.applied,
-    };
+  const result = calculateBookingPricing({
+    basePrice: basePricePerDay,
+    totalDuration: totalDays,
+    withInZDS,
+    driveOption: driverFeePerDay > 0 ? 'with-driver' : 'self-drive',
+    driverPerDay: driverFeePerDay,
+    extraCharges: extraCharges.map((charge) => ({
+      label: charge.label || '',
+      type: charge.type || '',
+      amount: charge.amount || 0,
+    })),
+    discounts: discounts.map((discount) => ({
+      label: discount.label || '',
+      type: discount.type || '',
+      percent: discount.percentageOff || 0,
+      amount: discount.amount || 0,
+      applied: discount.applied || false,
+    })),
   });
 
-  const totalDiscounts = processedDiscounts
-    .filter((d) => d.applied)
-    .reduce((sum, discount) => sum + discount.totalAmount, 0);
-
-  const finalTotal = subtotalBeforeDiscounts - totalDiscounts;
-
   return {
-    basePricePerDay,
+    basePrice: result.adjustedBasePrice,
     totalDays,
-    baseSubtotal,
-    driverFeePerDay: hasDriverFee ? driverFeePerDay : undefined,
-    driverSubtotal: hasDriverFee ? driverSubtotal : undefined,
-    discounts: processedDiscounts,
-    extraCharges: processedExtraCharges,
-    subtotalBeforeDiscounts,
-    totalDiscounts,
-    totalSavings: totalDiscounts,
-    finalTotal,
+    subtotal: result.baseTotalAmount,
+    driverCost: result.driverCost,
+    finalTotal: result.finalTotal,
+    extraCharges: extraCharges,
+    discounts: discounts,
+    zdsDiscount: result.zdsDiscount,
   };
-};
-
-/**
- * Format currency for consistent display
- */
-export const formatCurrency = (amount: number): string => {
-  return new Intl.NumberFormat('en-PH', {
-    style: 'currency',
-    currency: 'PHP',
-    minimumFractionDigits: 0,
-  }).format(amount);
-};
-
-/**
- * Calculate savings percentage
- */
-export const calculateSavingsPercentage = (originalPrice: number, finalPrice: number): number => {
-  if (originalPrice <= 0) return 0;
-  return ((originalPrice - finalPrice) / originalPrice) * 100;
-};
+}

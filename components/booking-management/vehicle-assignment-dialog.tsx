@@ -76,11 +76,16 @@ export const VehicleAssignmentDialog: React.FC<VehicleAssignmentDialogProps> = (
         name: `${selectedVehicle.carDetails.make} ${selectedVehicle.carDetails.model}`,
       };
 
-      await BookingFirebaseService.updateBookingStatus(
-        booking.id,
-        'reserved', // Update status to reserved when vehicle is assigned
-        assignedVehicle
-      );
+      // Update booking with assigned vehicle and status
+      const updateData = {
+        bookingDetails: {
+          ...booking.bookingDetails,
+          status: 'reserved' as const, // Update status to reserved when vehicle is assigned
+        },
+        assignedVehicle,
+      };
+
+      await BookingFirebaseService.updateBooking(booking.id, updateData);
 
       onVehicleAssigned();
       onOpenChange(false);
@@ -131,7 +136,16 @@ export const VehicleAssignmentDialog: React.FC<VehicleAssignmentDialogProps> = (
                   <Label className="text-muted-foreground">Destination</Label>
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4 text-muted-foreground" />
-                    <span>{booking.destination}</span>
+                    <div>
+                      <span>{booking.bookingDetails.destination}</span>
+                      {booking.bookingDetails.withInZDS && (
+                        <div className="flex items-center gap-1 mt-1">
+                          <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">
+                            Within ZDS - ₱200 off
+                          </span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div>
@@ -144,13 +158,21 @@ export const VehicleAssignmentDialog: React.FC<VehicleAssignmentDialogProps> = (
                 <div>
                   <Label className="text-muted-foreground">Dates</Label>
                   <p>
-                    {new Date(booking.pickUpDate).toLocaleDateString()} to{' '}
-                    {new Date(booking.returnDate).toLocaleDateString()}
+                    {new Date(booking.bookingDetails.pickUpDate).toLocaleDateString()} to{' '}
+                    {new Date(booking.bookingDetails.returnDate).toLocaleDateString()}
                   </p>
                 </div>
                 <div>
                   <Label className="text-muted-foreground">Drive Option</Label>
-                  <p className="capitalize">{booking.driveOption.replace('-', ' ')}</p>
+                  <p className="capitalize">
+                    {booking.bookingDetails.driveOption.replace('-', ' ')}
+                  </p>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Customer</Label>
+                  <p>
+                    {booking.renterInformation.firstName} {booking.renterInformation.lastName}
+                  </p>
                 </div>
                 <div>
                   <Label className="text-muted-foreground">Total Amount</Label>

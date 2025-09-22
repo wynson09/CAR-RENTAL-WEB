@@ -16,6 +16,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Switch } from '@/components/ui/switch';
 import { CalendarDays, MapPin, Clock, User, Car, DollarSign } from 'lucide-react';
 import { BookingFirebaseService, BookingData } from '@/lib/firebase-booking-service';
 import { toast } from 'sonner';
@@ -35,7 +36,7 @@ export const EditBookingDialog: React.FC<EditBookingDialogProps> = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    status: '' as BookingData['status'],
+    status: '' as BookingData['bookingDetails']['status'],
     destination: '',
     pickUpAddress: '',
     returnAddress: '',
@@ -43,20 +44,34 @@ export const EditBookingDialog: React.FC<EditBookingDialogProps> = ({
     pickUpTime: '',
     returnDate: '',
     returnTime: '',
+    withInZDS: false,
+    // Renter information
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    address: '',
   });
 
   // Initialize form data when booking changes
   useEffect(() => {
     if (booking) {
       setFormData({
-        status: booking.status,
-        destination: booking.destination,
-        pickUpAddress: booking.pickUpAddress,
-        returnAddress: booking.returnAddress,
-        pickUpDate: booking.pickUpDate,
-        pickUpTime: booking.pickUpTime,
-        returnDate: booking.returnDate,
-        returnTime: booking.returnTime,
+        status: booking.bookingDetails.status,
+        destination: booking.bookingDetails.destination,
+        pickUpAddress: booking.bookingDetails.pickUpAddress,
+        returnAddress: booking.bookingDetails.returnAddress,
+        pickUpDate: booking.bookingDetails.pickUpDate,
+        pickUpTime: booking.bookingDetails.pickUpTime,
+        returnDate: booking.bookingDetails.returnDate,
+        returnTime: booking.bookingDetails.returnTime,
+        withInZDS: booking.bookingDetails.withInZDS,
+        // Renter information
+        firstName: booking.renterInformation.firstName,
+        lastName: booking.renterInformation.lastName,
+        email: booking.renterInformation.email,
+        phone: booking.renterInformation.phone,
+        address: booking.renterInformation.address,
       });
     }
   }, [booking]);
@@ -68,7 +83,31 @@ export const EditBookingDialog: React.FC<EditBookingDialogProps> = ({
     setLoading(true);
 
     try {
-      await BookingFirebaseService.updateBooking(booking.id, formData);
+      // Prepare the update data with the new schema structure
+      const updateData = {
+        renterInformation: {
+          renterId: booking.renterInformation.renterId, // Keep existing renterId
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          address: formData.address,
+        },
+        bookingDetails: {
+          ...booking.bookingDetails,
+          status: formData.status,
+          destination: formData.destination,
+          pickUpAddress: formData.pickUpAddress,
+          returnAddress: formData.returnAddress,
+          pickUpDate: formData.pickUpDate,
+          pickUpTime: formData.pickUpTime,
+          returnDate: formData.returnDate,
+          returnTime: formData.returnTime,
+          withInZDS: formData.withInZDS,
+        },
+      };
+
+      await BookingFirebaseService.updateBooking(booking.id, updateData);
       onBookingUpdated();
       onOpenChange(false);
     } catch (error) {
@@ -79,7 +118,7 @@ export const EditBookingDialog: React.FC<EditBookingDialogProps> = ({
     }
   };
 
-  const getStatusColor = (status: BookingData['status']) => {
+  const getStatusColor = (status: BookingData['bookingDetails']['status']) => {
     switch (status) {
       case 'processing':
         return 'bg-yellow-100 text-yellow-800';
@@ -135,20 +174,31 @@ export const EditBookingDialog: React.FC<EditBookingDialogProps> = ({
                 </div>
                 <div>
                   <Label className="text-muted-foreground">Current Status</Label>
-                  <Badge className={`${getStatusColor(booking.status)} capitalize mt-1`}>
-                    {booking.status}
+                  <Badge
+                    className={`${getStatusColor(booking.bookingDetails.status)} capitalize mt-1`}
+                  >
+                    {booking.bookingDetails.status}
                   </Badge>
                 </div>
                 <div>
-                  <Label className="text-muted-foreground">Customer ID</Label>
+                  <Label className="text-muted-foreground">Customer</Label>
                   <div className="flex items-center gap-2">
                     <User className="w-4 h-4 text-muted-foreground" />
-                    <span className="font-mono">{booking.renterId}</span>
+                    <div>
+                      <p className="font-medium">
+                        {booking.renterInformation.firstName} {booking.renterInformation.lastName}
+                      </p>
+                      <p className="text-sm text-muted-foreground font-mono">
+                        {booking.renterInformation.renterId}
+                      </p>
+                    </div>
                   </div>
                 </div>
                 <div>
                   <Label className="text-muted-foreground">Drive Option</Label>
-                  <p className="capitalize">{booking.driveOption.replace('-', ' ')}</p>
+                  <p className="capitalize">
+                    {booking.bookingDetails.driveOption.replace('-', ' ')}
+                  </p>
                 </div>
                 <div>
                   <Label className="text-muted-foreground">Created</Label>
@@ -246,7 +296,7 @@ export const EditBookingDialog: React.FC<EditBookingDialogProps> = ({
                   <Label htmlFor="status">Booking Status</Label>
                   <Select
                     value={formData.status}
-                    onValueChange={(value: BookingData['status']) =>
+                    onValueChange={(value: BookingData['bookingDetails']['status']) =>
                       setFormData({ ...formData, status: value })
                     }
                   >
@@ -266,17 +316,97 @@ export const EditBookingDialog: React.FC<EditBookingDialogProps> = ({
 
                 <Separator />
 
-                {/* Destination */}
-                <div>
-                  <Label htmlFor="destination">Destination</Label>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                    <Input
-                      id="destination"
-                      placeholder="Enter destination"
-                      value={formData.destination}
-                      onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
-                      className="pl-10"
+                {/* Renter Information */}
+                <div className="space-y-4">
+                  <h3 className="font-medium">Renter Information</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="firstName">First Name</Label>
+                      <Input
+                        id="firstName"
+                        placeholder="Enter first name"
+                        value={formData.firstName}
+                        onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="lastName">Last Name</Label>
+                      <Input
+                        id="lastName"
+                        placeholder="Enter last name"
+                        value={formData.lastName}
+                        onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="email">Email</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="Enter email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="phone">Phone</Label>
+                      <Input
+                        id="phone"
+                        placeholder="Enter phone number"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="renterAddress">Renter Address</Label>
+                    <Textarea
+                      id="renterAddress"
+                      placeholder="Enter renter address"
+                      value={formData.address}
+                      onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                      rows={2}
+                    />
+                  </div>
+                </div>
+
+                <Separator />
+
+                {/* Destination and ZDS */}
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="destination">Destination</Label>
+                    <div className="relative">
+                      <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                      <Input
+                        id="destination"
+                        placeholder="Enter destination"
+                        value={formData.destination}
+                        onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
+                        className="pl-10"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                    <div>
+                      <Label htmlFor="withInZDS" className="font-medium">
+                        Within Zamboanga Del Sur
+                      </Label>
+                      <p className="text-sm text-muted-foreground">
+                        {formData.withInZDS
+                          ? '₱200 discount will be applied to the base price'
+                          : 'No ZDS discount applied'}
+                      </p>
+                    </div>
+                    <Switch
+                      id="withInZDS"
+                      checked={formData.withInZDS}
+                      onCheckedChange={(checked) =>
+                        setFormData({ ...formData, withInZDS: checked })
+                      }
                     />
                   </div>
                 </div>

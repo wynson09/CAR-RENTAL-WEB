@@ -219,7 +219,7 @@ export const DetailedPriceBreakdown = ({
                       {discount.label}
                     </span>
                     <Badge variant="outline" className="ml-2 text-green-600 border-green-600">
-                      {discount.percent}% OFF
+                      {discount.percent.toFixed(1)}% OFF
                     </Badge>
                   </div>
                   <span className="font-bold text-green-700 dark:text-green-300">

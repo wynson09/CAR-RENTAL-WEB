@@ -15,6 +15,7 @@ interface CarGridProps {
   pickupDate?: Date;
   returnDate?: Date;
   driveOption?: 'self-drive' | 'with-driver';
+  withInZDS?: boolean;
 }
 
 export const CarGrid = ({
@@ -27,6 +28,7 @@ export const CarGrid = ({
   defaultCategory = 'All',
   className,
   gridClassName,
+  withInZDS = false,
 }: CarGridProps) => {
   const [selectedCategory, setSelectedCategory] = useState<CarCategory>(defaultCategory);
 
@@ -91,6 +93,7 @@ export const CarGrid = ({
             returnDate={returnDate}
             driveOption={driveOption}
             onBookNow={onBookNow}
+            withInZDS={withInZDS}
           />
         ))}
       </div>

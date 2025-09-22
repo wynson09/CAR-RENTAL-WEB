@@ -46,6 +46,7 @@ interface CarCardProps {
   pickupDate?: Date;
   returnDate?: Date;
   driveOption?: 'self-drive' | 'with-driver';
+  withInZDS?: boolean;
 }
 
 // Constants for discount configuration
@@ -86,7 +87,8 @@ const calculatePricing = (
   isPromo: boolean,
   dayDuration: number,
   isVerifiedUser: boolean = false,
-  driveOption: 'self-drive' | 'with-driver' = 'self-drive'
+  driveOption: 'self-drive' | 'with-driver' = 'self-drive',
+  withInZDS: boolean = false
 ): PricingResult => {
   const originalPrice = extractPriceValue(basePrice);
 
@@ -115,6 +117,19 @@ const calculatePricing = (
       type: 'base',
     });
     runningPrice -= discountAmount;
+  }
+
+  // Zamboanga Del Sur Discount (₱200 off base price)
+  if (withInZDS) {
+    const zdsDiscountAmount = 200;
+    const zdsPercentage = (zdsDiscountAmount / originalPrice) * 100;
+    discountBreakdown.push({
+      name: 'Within Zamboanga Del Sur',
+      percentage: zdsPercentage, // Calculate actual percentage
+      amount: zdsDiscountAmount,
+      type: 'base',
+    });
+    runningPrice -= zdsDiscountAmount;
   }
 
   // Promotional Car Discount
@@ -204,6 +219,7 @@ export const CarCard = ({
   pickupDate,
   returnDate,
   driveOption = 'self-drive',
+  withInZDS = false,
 }: CarCardProps) => {
   // Get user verification status from Zustand store
   const { user } = useUserStore();
@@ -221,8 +237,9 @@ export const CarCard = ({
   }, [pickupDate, returnDate]);
 
   const pricing = useMemo(
-    () => calculatePricing(car.price, car.isPromo, dayDuration, isVerifiedUser, driveOption),
-    [car.price, car.isPromo, dayDuration, isVerifiedUser, driveOption]
+    () =>
+      calculatePricing(car.price, car.isPromo, dayDuration, isVerifiedUser, driveOption, withInZDS),
+    [car.price, car.isPromo, dayDuration, isVerifiedUser, driveOption, withInZDS]
   );
 
   const handleBookNow = () => {

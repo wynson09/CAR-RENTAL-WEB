@@ -4,8 +4,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Car, PricingResult, DiscountItem } from './car-card';
 import { format, differenceInCalendarDays } from 'date-fns';
-import { DetailedPriceBreakdown } from '@/components/pricing/detailed-price-breakdown';
-import { createDetailedPricing } from '@/lib/pricing-utils';
+import {
+  DetailedPriceBreakdown,
+  DetailedPricingData,
+} from '@/components/pricing/detailed-price-breakdown';
+import { calculateBookingPricing } from '@/lib/pricing-utils';
 
 interface QuotationDialogProps {
   isOpen: boolean;
@@ -15,6 +18,7 @@ interface QuotationDialogProps {
   returnDate?: Date;
   driveOption: 'self-drive' | 'with-driver';
   pricing: PricingResult;
+  withInZDS?: boolean;
 }
 
 export const QuotationDialog = ({
@@ -25,6 +29,7 @@ export const QuotationDialog = ({
   returnDate,
   driveOption,
   pricing,
+  withInZDS = false,
 }: QuotationDialogProps) => {
   if (!pickupDate || !returnDate) {
     return null;
@@ -32,13 +37,74 @@ export const QuotationDialog = ({
 
   const dayDuration = Math.max(1, differenceInCalendarDays(returnDate, pickupDate));
 
-  // Calculate pricing details
-  const carBasePrice = pricing.originalPrice;
+  // Extract base price from car price string
+  const basePricePerDay = parseInt(car.price.replace(/[^0-9]/g, '')) || 0;
   const driverFeePerDay = driveOption === 'with-driver' ? 750 : 0;
-  const totalDriverFee = driverFeePerDay * dayDuration;
-  const totalCarPrice = pricing.discountedPrice * dayDuration;
-  const totalOriginalPrice = (carBasePrice + driverFeePerDay) * dayDuration;
-  const totalSavings = pricing.totalSavings * dayDuration;
+
+  // Convert car card discounts to new pricing format
+  const discounts = pricing.discountBreakdown.map((discount) => ({
+    label: discount.name,
+    type: discount.type,
+    percent: discount.percentage,
+    amount: discount.amount * dayDuration, // Convert per-day amount to total
+    applied: true,
+  }));
+
+  // Check if ZDS discount is present in the discounts
+  const hasZDSDiscount = discounts.some((d) => d.label === 'Within Zamboanga Del Sur');
+
+  // Calculate pricing using new system
+  const pricingResult = calculateBookingPricing({
+    basePrice: basePricePerDay,
+    totalDuration: dayDuration,
+    withInZDS: hasZDSDiscount || withInZDS,
+    driveOption,
+    driverPerDay: driverFeePerDay,
+    discounts: discounts.filter((d) => d.label !== 'Within Zamboanga Del Sur'), // ZDS handled separately
+    extraCharges: [],
+  });
+
+  // Convert discounts to DetailedPricingData format, including ZDS if present
+  const convertedDiscounts = discounts
+    .filter((d) => d.label !== 'Within Zamboanga Del Sur') // Regular discounts
+    .map((discount) => ({
+      label: discount.label,
+      type: discount.type,
+      percent: discount.percent,
+      amountPerDay: discount.amount / dayDuration,
+      totalAmount: discount.amount,
+      applied: discount.applied,
+    }));
+
+  // Add ZDS discount if present
+  if (pricingResult.zdsDiscount > 0) {
+    // ZDS discount is ₱200 per day, so calculate percentage based on per-day base price
+    const zdsAmountPerDay = 200; // ₱200 per day
+    const zdsPercentage = (zdsAmountPerDay / basePricePerDay) * 100;
+    convertedDiscounts.push({
+      label: 'Within Zamboanga Del Sur',
+      type: 'zds_discount',
+      percent: zdsPercentage,
+      amountPerDay: zdsAmountPerDay,
+      totalAmount: pricingResult.zdsDiscount,
+      applied: true,
+    });
+  }
+
+  // Convert to DetailedPricingData format
+  const detailedPricing: DetailedPricingData = {
+    basePricePerDay,
+    totalDays: dayDuration,
+    baseSubtotal: basePricePerDay * dayDuration,
+    driverFeePerDay: driverFeePerDay > 0 ? driverFeePerDay : undefined,
+    driverSubtotal: driverFeePerDay > 0 ? driverFeePerDay * dayDuration : undefined,
+    discounts: convertedDiscounts,
+    extraCharges: [],
+    subtotalBeforeDiscounts: basePricePerDay * dayDuration + driverFeePerDay * dayDuration,
+    totalDiscounts: pricingResult.discountsTotal + pricingResult.zdsDiscount,
+    totalSavings: pricingResult.discountsTotal + pricingResult.zdsDiscount,
+    finalTotal: pricingResult.finalTotal,
+  };
 
   const quotationNumber = `QT-${Date.now().toString().slice(-6)}`;
   const currentDate = new Date();
@@ -249,19 +315,7 @@ export const QuotationDialog = ({
 
             {/* Detailed Pricing Breakdown */}
             <DetailedPriceBreakdown
-              pricing={createDetailedPricing({
-                basePricePerDay: pricing.originalPrice,
-                totalDays: dayDuration,
-                driverFeePerDay: driveOption === 'with-driver' ? driverFeePerDay : 0,
-                discounts: pricing.discountBreakdown.map((discount) => ({
-                  label: discount.name,
-                  type: discount.type,
-                  percentageOff: discount.percentage,
-                  appliedTo: 'vehicle',
-                  applied: true,
-                })),
-                extraCharges: [],
-              })}
+              pricing={detailedPricing}
               vehicleName={car.name}
               showHeader={true}
               compact={false}

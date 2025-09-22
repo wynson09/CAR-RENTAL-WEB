@@ -49,7 +49,7 @@ const ProcessingBookingsPage = () => {
       (bookingsData) => {
         // Filter only processing bookings
         const processingBookings = bookingsData.filter(
-          (booking) => booking.status === 'processing'
+          (booking) => booking.bookingDetails.status === 'processing'
         );
         setBookings(processingBookings);
         setLoading(false);
@@ -85,9 +85,11 @@ const ProcessingBookingsPage = () => {
       filtered = filtered.filter(
         (booking) =>
           booking.selectedVehicles.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          booking.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          booking.renterId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          booking.id?.toLowerCase().includes(searchTerm.toLowerCase())
+          booking.bookingDetails.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          booking.renterInformation.renterId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          booking.id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          booking.renterInformation.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          booking.renterInformation.lastName.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
@@ -216,7 +218,9 @@ const ProcessingBookingsPage = () => {
                           <div>
                             <p className="font-medium">{booking.selectedVehicles.name}</p>
                             <p className="text-sm text-muted-foreground">
-                              {booking.driveOption === 'with-driver' ? 'With Driver' : 'Self Drive'}
+                              {booking.bookingDetails.driveOption === 'with-driver'
+                                ? 'With Driver'
+                                : 'Self Drive'}
                             </p>
                           </div>
                         </div>
@@ -224,22 +228,39 @@ const ProcessingBookingsPage = () => {
                       <TableCell>
                         <div className="flex items-center gap-2">
                           <User className="w-4 h-4 text-muted-foreground" />
-                          <span className="font-mono text-sm">{booking.renterId.slice(-8)}</span>
+                          <div>
+                            <p className="font-medium text-sm">
+                              {booking.renterInformation.firstName}{' '}
+                              {booking.renterInformation.lastName}
+                            </p>
+                            <p className="text-xs text-muted-foreground font-mono">
+                              {booking.renterInformation.renterId.slice(-8)}
+                            </p>
+                          </div>
                         </div>
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
                           <MapPin className="w-4 h-4 text-muted-foreground" />
-                          <span>{booking.destination}</span>
+                          <div>
+                            <span>{booking.bookingDetails.destination}</span>
+                            {booking.bookingDetails.withInZDS && (
+                              <div className="flex items-center gap-1 mt-1">
+                                <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">
+                                  Within ZDS
+                                </span>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2 text-sm">
                           <Calendar className="w-4 h-4 text-muted-foreground" />
                           <div>
-                            <p>{formatDate(booking.pickUpDate)}</p>
+                            <p>{formatDate(booking.bookingDetails.pickUpDate)}</p>
                             <p className="text-muted-foreground">
-                              to {formatDate(booking.returnDate)}
+                              to {formatDate(booking.bookingDetails.returnDate)}
                             </p>
                           </div>
                         </div>

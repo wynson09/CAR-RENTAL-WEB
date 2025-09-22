@@ -46,6 +46,7 @@ export interface BookingFormData {
   returnTime: string;
   driveOption: 'self-drive' | 'with-driver';
   driverPerDay?: number; // Only used for 'with-driver' option
+  withInZDS?: boolean; // Within Zamboanga Del Sur flag
 }
 
 interface BookingConfirmationDialogProps {
@@ -102,21 +103,43 @@ export const BookingConfirmationDialog = ({
       // Prepare booking data for Firebase (avoiding undefined values)
       const totalAmount = pricingDetails.finalTotal || 0;
 
+      // Calculate pricing with ZDS logic
+      const basePrice = parseInt(car.price.replace(/[^0-9]/g, '')) || 0;
+      const withInZDS = bookingData.withInZDS || false; // Assume this comes from the booking form
+      const adjustedBasePrice = withInZDS ? Math.max(0, basePrice - 200) : basePrice;
+      const adjustedTotalAmount = withInZDS
+        ? Math.max(0, totalAmount - 200 * pricingDetails.totalDays)
+        : totalAmount;
+
       const baseBookingData = {
-        renterId: user.uid,
-        driveOption: bookingData.driveOption,
-        destination: bookingData.destination.trim(),
-        pickUpAddress: bookingData.pickUpAddress,
-        pickUpDate: format(bookingData.pickUpDate, 'yyyy-MM-dd'),
-        pickUpTime: bookingData.pickUpTime,
-        returnAddress: bookingData.returnAddress,
-        returnDate: format(bookingData.returnDate, 'yyyy-MM-dd'),
-        returnTime: bookingData.returnTime,
+        renterInformation: {
+          renterId: user.uid,
+          firstName: user.firstName || '', // Assume these come from user profile
+          lastName: user.lastName || '',
+          email: user.email || '',
+          phone: user.phone || '',
+          address: user.address || '',
+        },
+        bookingDetails: {
+          bookingId: '', // Will be set by Firebase
+          driveOption: bookingData.driveOption,
+          driverPerDay:
+            bookingData.driveOption === 'with-driver' ? bookingData.driverPerDay || 0 : undefined,
+          withInZDS: withInZDS,
+          destination: bookingData.destination.trim(),
+          pickUpAddress: bookingData.pickUpAddress,
+          pickUpDate: format(bookingData.pickUpDate, 'yyyy-MM-dd'),
+          pickUpTime: bookingData.pickUpTime,
+          returnAddress: bookingData.returnAddress,
+          returnDate: format(bookingData.returnDate, 'yyyy-MM-dd'),
+          returnTime: bookingData.returnTime,
+          status: 'processing' as const,
+        },
         selectedVehicles: {
           vehicleUrl: car.image, // Using car image URL as vehicleUrl for better identification
           name: car.name,
-          basePrice: parseInt(car.price.replace(/[^0-9]/g, '')) || 0,
-          pricePerDay: parseInt(car.price.replace(/[^0-9]/g, '')) || 0,
+          basePrice: basePrice,
+          pricePerDay: adjustedBasePrice,
           totalDuration: pricingDetails.totalDays,
           extraCharges: (pricingDetails.extraCharges || []).map((charge) => ({
             label: charge.label,
@@ -130,26 +153,18 @@ export const BookingConfirmationDialog = ({
             amount: discount.totalAmount,
             applied: discount.applied,
           })),
-          totalAmount: totalAmount,
+          totalAmount: adjustedTotalAmount,
         },
         payment: {
-          totalAmount: totalAmount,
+          totalAmount: adjustedTotalAmount,
           paid: 0, // No payment made yet
-          balance: totalAmount,
+          balance: adjustedTotalAmount,
           status: 'unpaid' as const,
         },
         extensions: [], // Initialize empty extensions array
-        status: 'processing' as const,
       };
 
-      // Only add driverPerDay if it's a with-driver booking
-      const firebaseBookingData: Omit<BookingData, 'createdAt' | 'updatedAt'> =
-        bookingData.driveOption === 'with-driver'
-          ? {
-              ...baseBookingData,
-              driverPerDay: bookingData.driverPerDay || 750,
-            }
-          : baseBookingData;
+      const firebaseBookingData: Omit<BookingData, 'createdAt' | 'updatedAt'> = baseBookingData;
 
       console.log('Booking data prepared:', firebaseBookingData);
 
