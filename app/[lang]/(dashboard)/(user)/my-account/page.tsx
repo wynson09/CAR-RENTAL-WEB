@@ -48,12 +48,16 @@ export default function MyAccountPage() {
 
   const upcomingCount = useMemo(() => {
     if (!bookings) return 0;
-    return bookings.filter((b) => ['processing', 'reserved', 'ongoing'].includes(b.status)).length;
+    return bookings.filter((b) =>
+      ['processing', 'reserved', 'ongoing'].includes(b.bookingDetails.status)
+    ).length;
   }, [bookings]);
 
   const pastCount = useMemo(() => {
     if (!bookings) return 0;
-    return bookings.filter((b) => ['completed', 'cancelled', 'refunded'].includes(b.status)).length;
+    return bookings.filter((b) =>
+      ['completed', 'cancelled', 'refunded'].includes(b.bookingDetails.status)
+    ).length;
   }, [bookings]);
 
   const verificationStatus = {

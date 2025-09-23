@@ -193,7 +193,10 @@ export class BookingFirebaseService {
   // Get all bookings for a user
   static async getUserBookings(userId: string): Promise<BookingData[]> {
     try {
-      const q = query(collection(db, BOOKINGS_COLLECTION), where('renterId', '==', userId));
+      const q = query(
+        collection(db, BOOKINGS_COLLECTION),
+        where('renterInformation.renterId', '==', userId)
+      );
       const querySnapshot = await getDocs(q);
 
       const bookings = querySnapshot.docs.map(convertFirestoreDocToBooking);
@@ -218,7 +221,10 @@ export class BookingFirebaseService {
     errorCallback: (error: any) => void
   ): () => void {
     try {
-      const q = query(collection(db, BOOKINGS_COLLECTION), where('renterId', '==', userId));
+      const q = query(
+        collection(db, BOOKINGS_COLLECTION),
+        where('renterInformation.renterId', '==', userId)
+      );
 
       const unsubscribe = onSnapshot(
         q,
@@ -246,6 +252,20 @@ export class BookingFirebaseService {
       errorCallback(error);
       // Return a no-op function if setup fails
       return () => {};
+    }
+  }
+
+  // Cancel a booking (update status to cancelled)
+  static async cancelBooking(bookingId: string): Promise<void> {
+    try {
+      const bookingRef = doc(db, BOOKINGS_COLLECTION, bookingId);
+      await updateDoc(bookingRef, {
+        'bookingDetails.status': 'cancelled',
+        updatedAt: serverTimestamp(),
+      });
+    } catch (error) {
+      console.error('Error cancelling booking:', error);
+      throw new Error('Failed to cancel booking');
     }
   }
 

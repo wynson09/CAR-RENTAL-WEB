@@ -29,7 +29,17 @@ import {
   User,
   Phone,
   AlertCircle,
+  Trash2,
+  Loader2,
 } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 type ViewMode = 'table' | 'grid';
 
@@ -42,8 +52,9 @@ const ActiveRentalsPage = () => {
   const [activeBookings, setActiveBookings] = useState<BookingData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<ViewMode>('table');
-  // Removed isRefreshing state
+  const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [isCancelling, setIsCancelling] = useState<string | null>(null); // booking ID being cancelled
+  const [showCancelDialog, setShowCancelDialog] = useState<string | null>(null); // booking ID for confirmation
 
   // Memoized active statuses to ensure consistency
   const activeStatuses = useMemo(() => ['processing', 'reserved', 'ongoing'], []);
@@ -64,7 +75,7 @@ const ActiveRentalsPage = () => {
           (allBookings) => {
             // Filter for active bookings in real-time
             const activeBookings = allBookings.filter((booking) =>
-              activeStatuses.includes(booking.status)
+              activeStatuses.includes(booking.bookingDetails?.status)
             );
 
             setActiveBookings(activeBookings);
@@ -135,7 +146,7 @@ const ActiveRentalsPage = () => {
 
   // Manual refresh functionality removed
 
-  const getStatusBadgeColor = (status: BookingData['status']) => {
+  const getStatusBadgeColor = (status: BookingData['bookingDetails']['status']) => {
     switch (status) {
       case 'processing':
         return 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200';
@@ -163,6 +174,96 @@ const ActiveRentalsPage = () => {
 
   const handleViewDetails = (booking: BookingData) => {
     router.push(`/booking-complete?bookingId=${(booking as any).id}`);
+  };
+
+  const handleCancelBooking = async (bookingId: string) => {
+    setIsCancelling(bookingId);
+    try {
+      await BookingFirebaseService.cancelBooking(bookingId);
+      toast.success('Booking cancelled successfully');
+      setShowCancelDialog(null);
+    } catch (error) {
+      console.error('Error cancelling booking:', error);
+      toast.error('Failed to cancel booking. Please try again.');
+    } finally {
+      setIsCancelling(null);
+    }
+  };
+
+  const canCancelBooking = (booking: BookingData) => {
+    return booking.bookingDetails.status === 'processing';
+  };
+
+  // Cancel confirmation dialog
+  const CancelConfirmationDialog = () => {
+    const booking = activeBookings.find((b) => (b as any).id === showCancelDialog);
+    if (!booking) return null;
+
+    return (
+      <Dialog open={!!showCancelDialog} onOpenChange={() => setShowCancelDialog(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <AlertCircle className="h-5 w-5 text-red-600" />
+              Cancel Booking
+            </DialogTitle>
+            <DialogDescription>
+              Are you sure you want to cancel your booking for {booking.selectedVehicles.name}? This
+              action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span>Vehicle:</span>
+                  <span className="font-medium">{booking.selectedVehicles.name}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Destination:</span>
+                  <span className="font-medium">{booking.bookingDetails.destination}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Pickup Date:</span>
+                  <span className="font-medium">
+                    {formatDate(booking.bookingDetails.pickUpDate)}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Total Amount:</span>
+                  <span className="font-medium">
+                    {formatCurrency(booking.selectedVehicles.totalAmount)}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowCancelDialog(null)}>
+              Keep Booking
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => handleCancelBooking(showCancelDialog!)}
+              disabled={isCancelling === showCancelDialog}
+              className="text-red-600 hover:text-red-700 border-red-300 hover:border-red-400"
+            >
+              {isCancelling === showCancelDialog ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Cancelling...
+                </>
+              ) : (
+                <>
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Cancel Booking
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    );
   };
 
   // Loading skeleton
@@ -254,16 +355,16 @@ const ActiveRentalsPage = () => {
                 <div>
                   <p className="font-medium">{booking.selectedVehicles.name}</p>
                   <p className="text-sm text-muted-foreground">
-                    {booking.driveOption.replace('-', ' ')}
+                    {booking.bookingDetails.driveOption.replace('-', ' ')}
                   </p>
                 </div>
               </div>
             </TableCell>
             <TableCell>
               <div>
-                <p className="font-medium">{booking.destination}</p>
+                <p className="font-medium">{booking.bookingDetails.destination}</p>
                 <p className="text-sm text-muted-foreground">
-                  {getAddressLabel(booking.pickUpAddress)}
+                  {getAddressLabel(booking.bookingDetails.pickUpAddress)}
                 </p>
               </div>
             </TableCell>
@@ -275,14 +376,16 @@ const ActiveRentalsPage = () => {
               {formatCurrency(booking.selectedVehicles.totalAmount)}
             </TableCell>
             <TableCell>
-              <Badge className={cn('capitalize', getStatusBadgeColor(booking.status))}>
-                {booking.status}
+              <Badge
+                className={cn('capitalize', getStatusBadgeColor(booking.bookingDetails.status))}
+              >
+                {booking.bookingDetails.status}
               </Badge>
             </TableCell>
             <TableCell>
               <div className="text-sm">
-                <div>{formatDate(booking.pickUpDate)}</div>
-                <div className="text-muted-foreground">{booking.pickUpTime}</div>
+                <div>{formatDate(booking.bookingDetails.pickUpDate)}</div>
+                <div className="text-muted-foreground">{booking.bookingDetails.pickUpTime}</div>
               </div>
             </TableCell>
             <TableCell>
@@ -290,6 +393,21 @@ const ActiveRentalsPage = () => {
                 <Button variant="outline" size="sm" onClick={() => handleViewDetails(booking)}>
                   View Details
                 </Button>
+                {canCancelBooking(booking) && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowCancelDialog((booking as any).id)}
+                    className="text-red-600 hover:text-red-700 hover:border-red-300"
+                    disabled={isCancelling === (booking as any).id}
+                  >
+                    {isCancelling === (booking as any).id ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Trash2 className="h-4 w-4" />
+                    )}
+                  </Button>
+                )}
                 <Button variant="outline" size="sm" onClick={handleChatSupport}>
                   <MessageCircle className="h-4 w-4" />
                 </Button>
@@ -321,8 +439,13 @@ const ActiveRentalsPage = () => {
                 <div>
                   <CardTitle className="mb-2">{booking.selectedVehicles.name}</CardTitle>
                   <div className="flex items-center gap-2">
-                    <Badge className={cn('capitalize', getStatusBadgeColor(booking.status))}>
-                      {booking.status}
+                    <Badge
+                      className={cn(
+                        'capitalize',
+                        getStatusBadgeColor(booking.bookingDetails.status)
+                      )}
+                    >
+                      {booking.bookingDetails.status}
                     </Badge>
                   </div>
                 </div>
@@ -345,7 +468,7 @@ const ActiveRentalsPage = () => {
                   <div className="space-y-2 text-sm">
                     <div>
                       <span className="text-gray-500">Destination:</span>
-                      <div className="font-medium">{booking.destination}</div>
+                      <div className="font-medium">{booking.bookingDetails.destination}</div>
                     </div>
                     <div>
                       <span className="text-gray-500">Duration:</span>
@@ -357,7 +480,7 @@ const ActiveRentalsPage = () => {
                     <div>
                       <span className="text-gray-500">Drive Option:</span>
                       <div className="font-medium capitalize">
-                        {booking.driveOption.replace('-', ' ')}
+                        {booking.bookingDetails.driveOption.replace('-', ' ')}
                       </div>
                     </div>
                   </div>
@@ -372,15 +495,15 @@ const ActiveRentalsPage = () => {
                     Pickup
                   </h4>
                   <div className="text-sm space-y-1">
-                    <div>{getAddressLabel(booking.pickUpAddress)}</div>
+                    <div>{getAddressLabel(booking.bookingDetails.pickUpAddress)}</div>
                     <div className="flex items-center gap-3">
                       <span className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
-                        {formatDate(booking.pickUpDate)}
+                        {formatDate(booking.bookingDetails.pickUpDate)}
                       </span>
                       <span className="flex items-center gap-1">
                         <Clock className="h-3 w-3" />
-                        {booking.pickUpTime}
+                        {booking.bookingDetails.pickUpTime}
                       </span>
                     </div>
                   </div>
@@ -392,15 +515,15 @@ const ActiveRentalsPage = () => {
                     Return
                   </h4>
                   <div className="text-sm space-y-1">
-                    <div>{getAddressLabel(booking.returnAddress)}</div>
+                    <div>{getAddressLabel(booking.bookingDetails.returnAddress)}</div>
                     <div className="flex items-center gap-3">
                       <span className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
-                        {formatDate(booking.returnDate)}
+                        {formatDate(booking.bookingDetails.returnDate)}
                       </span>
                       <span className="flex items-center gap-1">
                         <Clock className="h-3 w-3" />
-                        {booking.returnTime}
+                        {booking.bookingDetails.returnTime}
                       </span>
                     </div>
                   </div>
@@ -441,6 +564,26 @@ const ActiveRentalsPage = () => {
                   <Button className="w-full" onClick={() => handleViewDetails(booking)}>
                     View Full Details
                   </Button>
+                  {canCancelBooking(booking) && (
+                    <Button
+                      variant="outline"
+                      className="w-full text-red-600 hover:text-red-700 border-red-300 hover:border-red-400"
+                      onClick={() => setShowCancelDialog((booking as any).id)}
+                      disabled={isCancelling === (booking as any).id}
+                    >
+                      {isCancelling === (booking as any).id ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          Cancelling...
+                        </>
+                      ) : (
+                        <>
+                          <Trash2 className="h-4 w-4 mr-2" />
+                          Cancel Booking
+                        </>
+                      )}
+                    </Button>
+                  )}
                   <Button variant="outline" className="w-full" onClick={handleChatSupport}>
                     <MessageCircle className="h-4 w-4 mr-2" />
                     Contact Support
@@ -523,6 +666,9 @@ const ActiveRentalsPage = () => {
           Showing {activeBookings.length} active rental{activeBookings.length !== 1 ? 's' : ''}
         </div>
       )}
+
+      {/* Cancel Confirmation Dialog */}
+      <CancelConfirmationDialog />
     </div>
   );
 };

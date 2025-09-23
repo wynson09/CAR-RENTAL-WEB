@@ -121,9 +121,11 @@ const UserDashboardView = ({ trans }: UserDashboardViewProps) => {
   const bookingStats = useMemo(() => {
     if (!bookings) return { active: 0, upcoming: 0, completed: 0, total: 0 };
 
-    const active = bookings.filter((b) => b.status === 'ongoing').length;
-    const upcoming = bookings.filter((b) => ['processing', 'reserved'].includes(b.status)).length;
-    const completed = bookings.filter((b) => b.status === 'completed').length;
+    const active = bookings.filter((b) => b.bookingDetails.status === 'ongoing').length;
+    const upcoming = bookings.filter((b) =>
+      ['processing', 'reserved'].includes(b.bookingDetails.status)
+    ).length;
+    const completed = bookings.filter((b) => b.bookingDetails.status === 'completed').length;
 
     return {
       active,
@@ -136,7 +138,7 @@ const UserDashboardView = ({ trans }: UserDashboardViewProps) => {
   // Get active rental
   const activeRental = useMemo(() => {
     if (!bookings) return null;
-    return bookings.find((b) => b.status === 'ongoing') || null;
+    return bookings.find((b) => b.bookingDetails.status === 'ongoing') || null;
   }, [bookings]);
 
   // Get upcoming booking
@@ -144,11 +146,15 @@ const UserDashboardView = ({ trans }: UserDashboardViewProps) => {
     if (!bookings) return null;
     return (
       bookings
-        .filter((b) => ['processing', 'reserved'].includes(b.status))
+        .filter((b) => ['processing', 'reserved'].includes(b.bookingDetails.status))
         .sort((a, b) => {
           // BookingData uses pickUpDate, not startDate
-          const dateA = a.pickUpDate ? new Date(a.pickUpDate) : new Date();
-          const dateB = b.pickUpDate ? new Date(b.pickUpDate) : new Date();
+          const dateA = a.bookingDetails.pickUpDate
+            ? new Date(a.bookingDetails.pickUpDate)
+            : new Date();
+          const dateB = b.bookingDetails.pickUpDate
+            ? new Date(b.bookingDetails.pickUpDate)
+            : new Date();
           return dateA.getTime() - dateB.getTime();
         })[0] || null
     );
@@ -245,7 +251,7 @@ const UserDashboardView = ({ trans }: UserDashboardViewProps) => {
                     'Vehicle'}
                 </p>
                 <p className="text-sm text-orange-600 dark:text-orange-300 mt-1">
-                  Return by: {formatDate(activeRental.returnDate)}
+                  Return by: {formatDate(activeRental.bookingDetails.returnDate)}
                 </p>
               </div>
               <Link href="/active-rentals">
@@ -339,11 +345,11 @@ const UserDashboardView = ({ trans }: UserDashboardViewProps) => {
                         'Vehicle'}
                     </h3>
                     <p className="text-sm text-muted-foreground mt-1">
-                      {formatDate(upcomingBooking.pickUpDate)} -{' '}
-                      {formatDate(upcomingBooking.returnDate)}
+                      {formatDate(upcomingBooking.bookingDetails.pickUpDate)} -{' '}
+                      {formatDate(upcomingBooking.bookingDetails.returnDate)}
                     </p>
                     <Badge variant="soft" className="mt-2">
-                      {upcomingBooking.status}
+                      {upcomingBooking.bookingDetails.status}
                     </Badge>
                   </div>
                   <Link href="/active-rentals">
@@ -437,11 +443,13 @@ const UserDashboardView = ({ trans }: UserDashboardViewProps) => {
                             'Vehicle'}
                         </h4>
                         <p className="text-sm text-muted-foreground">
-                          {formatDate(booking.pickUpDate)}
+                          {formatDate(booking.bookingDetails.pickUpDate)}
                         </p>
                       </div>
-                      <Badge variant={booking.status === 'completed' ? 'soft' : 'outline'}>
-                        {booking.status}
+                      <Badge
+                        variant={booking.bookingDetails.status === 'completed' ? 'soft' : 'outline'}
+                      >
+                        {booking.bookingDetails.status}
                       </Badge>
                     </div>
                   ))}
