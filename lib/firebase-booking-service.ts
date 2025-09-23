@@ -82,7 +82,6 @@ export interface RenterInformation {
 }
 
 export interface BookingDetails {
-  bookingId: string;
   driveOption: 'self-drive' | 'with-driver';
   driverPerDay?: number; // Only present for 'with-driver' bookings
   withInZDS: boolean; // if within ZDS, this is true, otherwise false and baseprice is minus 200
@@ -93,6 +92,8 @@ export interface BookingDetails {
   returnAddress: string;
   returnDate: string;
   returnTime: string;
+  pickupPagadianDetails?: string; // Specific location within Pagadian area for pickup
+  returnPagadianDetails?: string; // Specific location within Pagadian area for return
   status: 'processing' | 'reserved' | 'cancelled' | 'completed' | 'ongoing' | 'refunded';
   bookingSource: 'website' | 'app';
 }
@@ -138,21 +139,54 @@ export class BookingFirebaseService {
     }
   }
 
+  // Helper function to remove undefined values from objects
+  private static cleanUndefinedValues(obj: any): any {
+    if (obj === null || obj === undefined || typeof obj !== 'object') {
+      return obj;
+    }
+
+    if (Array.isArray(obj)) {
+      return obj.map((item) => this.cleanUndefinedValues(item));
+    }
+
+    const cleaned: any = {};
+    for (const [key, value] of Object.entries(obj)) {
+      if (value !== undefined) {
+        cleaned[key] = this.cleanUndefinedValues(value);
+      }
+    }
+    return cleaned;
+  }
+
   // Create a new booking
   static async createBooking(
     bookingData: Omit<BookingData, 'createdAt' | 'updatedAt'>
   ): Promise<string> {
     try {
+      console.log('Creating booking with data:', bookingData);
+
+      // Clean undefined values to prevent Firebase errors
+      const cleanedBookingData = this.cleanUndefinedValues(bookingData);
+
       const bookingDoc = {
-        ...bookingData,
+        ...cleanedBookingData,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       };
 
+      console.log('Final booking document:', bookingDoc);
+
       const docRef = await addDoc(collection(db, BOOKINGS_COLLECTION), bookingDoc);
+      console.log('Booking created with doc ID:', docRef.id);
       return docRef.id;
     } catch (error) {
-      throw new Error('Failed to create booking in database');
+      console.error('Detailed error in createBooking:', error);
+      console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+      throw new Error(
+        `Failed to create booking in database: ${
+          error instanceof Error ? error.message : 'Unknown error'
+        }`
+      );
     }
   }
 

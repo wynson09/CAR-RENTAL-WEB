@@ -116,17 +116,19 @@ export const BookingConfirmationDialog = ({
       const baseBookingData = {
         renterInformation: {
           renterId: user.uid,
-          firstName: user.firstName || '', // Assume these come from user profile
+          firstName: user.firstName || '',
           lastName: user.lastName || '',
           email: user.email || '',
-          phone: user.phone || '',
-          address: user.address || '',
+          phone: user.kycRecord?.phoneNumber || '',
+          address: user.kycRecord?.address
+            ? `${user.kycRecord.address}, ${user.kycRecord.city}, ${user.kycRecord.state}`
+            : '',
         },
         bookingDetails: {
-          bookingId: '', // Will be set by Firebase
           driveOption: bookingData.driveOption,
-          driverPerDay:
-            bookingData.driveOption === 'with-driver' ? bookingData.driverPerDay || 0 : undefined,
+          ...(bookingData.driveOption === 'with-driver' && {
+            driverPerDay: bookingData.driverPerDay || 750,
+          }),
           withInZDS: withInZDS,
           destination: bookingData.destination.trim(),
           pickUpAddress: bookingData.pickUpAddress,
@@ -135,6 +137,12 @@ export const BookingConfirmationDialog = ({
           returnAddress: bookingData.returnAddress,
           returnDate: format(bookingData.returnDate, 'yyyy-MM-dd'),
           returnTime: bookingData.returnTime,
+          ...(bookingData.pickupPagadianDetails?.trim() && {
+            pickupPagadianDetails: bookingData.pickupPagadianDetails.trim(),
+          }),
+          ...(bookingData.returnPagadianDetails?.trim() && {
+            returnPagadianDetails: bookingData.returnPagadianDetails.trim(),
+          }),
           status: 'processing' as const,
           bookingSource: 'website' as const,
         },
@@ -170,6 +178,20 @@ export const BookingConfirmationDialog = ({
       const firebaseBookingData: Omit<BookingData, 'createdAt' | 'updatedAt'> = baseBookingData;
 
       console.log('Booking data prepared:', firebaseBookingData);
+
+      // Validate required fields before saving
+      if (!firebaseBookingData.renterInformation.renterId) {
+        throw new Error('User ID is required');
+      }
+      if (!firebaseBookingData.bookingDetails.destination.trim()) {
+        throw new Error('Destination is required');
+      }
+      if (!firebaseBookingData.bookingDetails.pickUpAddress) {
+        throw new Error('Pickup address is required');
+      }
+      if (!firebaseBookingData.bookingDetails.returnAddress) {
+        throw new Error('Return address is required');
+      }
 
       // Save to Firebase
       console.log('Saving to Firebase...');
