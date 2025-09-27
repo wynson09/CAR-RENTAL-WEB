@@ -72,11 +72,7 @@ export const BookingConfirmationDialog = ({
   const pathname = usePathname();
 
   const handleConfirmBooking = async () => {
-    console.log('Starting booking confirmation process...');
-    console.log('User:', user);
-
     if (!user?.uid) {
-      console.error('User not authenticated');
       toast.error('Please sign in to make a booking');
       return;
     }
@@ -100,8 +96,6 @@ export const BookingConfirmationDialog = ({
     setIsConfirming(true);
 
     try {
-      console.log('Preparing booking data...');
-
       // Prepare booking data for Firebase (avoiding undefined values)
       const totalAmount = pricingDetails.finalTotal || 0;
 
@@ -177,8 +171,6 @@ export const BookingConfirmationDialog = ({
 
       const firebaseBookingData: Omit<BookingData, 'createdAt' | 'updatedAt'> = baseBookingData;
 
-      console.log('Booking data prepared:', firebaseBookingData);
-
       // Validate required fields before saving
       if (!firebaseBookingData.renterInformation.renterId) {
         throw new Error('User ID is required');
@@ -194,10 +186,7 @@ export const BookingConfirmationDialog = ({
       }
 
       // Save to Firebase
-      console.log('Saving to Firebase...');
       const bookingId = await BookingFirebaseService.createBooking(firebaseBookingData);
-
-      console.log('Booking created successfully with ID:', bookingId);
       toast.success('Booking submitted successfully!');
       onClose();
 

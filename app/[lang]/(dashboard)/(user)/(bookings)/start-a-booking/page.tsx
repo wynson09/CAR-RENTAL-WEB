@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, Suspense } from 'react';
 import Card from '@/components/ui/card-snippet';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -26,13 +26,27 @@ import { CarListing } from '@/data/car-listings-data';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 import ErrorBoundary from '@/components/error-boundary';
-import {
-  BookingConfirmationDialog,
-  BookingFormData,
-} from '@/components/booking/booking-confirmation-dialog';
+import dynamic from 'next/dynamic';
+import { BookingFormData } from '@/components/booking/booking-confirmation-dialog';
+
+const BookingConfirmationDialog = dynamic(
+  () =>
+    import('@/components/booking/booking-confirmation-dialog').then((mod) => ({
+      default: mod.BookingConfirmationDialog,
+    })),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex items-center justify-center p-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+    ),
+  }
+);
 import { useUserStore } from '@/store';
 import { calculateBookingPricing, PricingCalculationResult } from '@/lib/pricing-utils';
 import { DetailedPricingData } from '@/components/pricing/detailed-price-breakdown';
+import { createDiscountBreakdown, calculateFinalPrice } from '@/lib/dynamic-pricing';
 
 // Session cache key
 const CARS_SESSION_CACHE_KEY = 'booking:cars';
@@ -307,15 +321,17 @@ const BookingPage = () => {
     const driverFeePerDay = driveOption === 'with-driver' ? DRIVER_FEE_PER_DAY : 0;
     const driverSubtotal = driverFeePerDay * totalDays;
 
-    // Convert discounts to DetailedPricingData format
-    const convertedDiscounts = discounts.map((discount) => ({
-      label: discount.label,
-      type: discount.type,
-      percent: discount.percent,
-      amountPerDay: discount.amount / totalDays,
-      totalAmount: discount.amount,
-      applied: discount.applied,
-    }));
+    // Convert discounts to DetailedPricingData format, excluding ZDS discount (following quotation dialog approach)
+    const convertedDiscounts = discounts
+      .filter((d) => d.label !== 'Within Zamboanga Del Sur') // Regular discounts
+      .map((discount) => ({
+        label: discount.label,
+        type: discount.type,
+        percent: discount.percent,
+        amountPerDay: discount.amount / totalDays,
+        totalAmount: discount.amount,
+        applied: discount.applied,
+      }));
 
     // Add ZDS discount if applicable (fixed ₱200 per day discount)
     if (result.zdsDiscount > 0) {
@@ -350,76 +366,50 @@ const BookingPage = () => {
     };
   };
 
-  const calculatePricingDetails = (car: Car): DetailedPricingData => {
-    const totalDays = Math.max(1, differenceInCalendarDays(returnDate, pickupDate));
-    const basePricePerDay = parseInt(car.price.replace(/[^0-9]/g, ''));
-    const isVerifiedUser = user?.isVerified ?? false;
+  const calculatePricingDetails = useCallback(
+    (car: Car): DetailedPricingData => {
+      const totalDays = Math.max(1, differenceInCalendarDays(returnDate, pickupDate));
+      const basePricePerDay = parseInt(car.price.replace(/[^0-9]/g, ''));
+      const isVerifiedUser = user?.isVerified ?? false;
+      const driverFeePerDay = driveOption === 'with-driver' ? DRIVER_FEE_PER_DAY : 0;
 
-    // Build discounts array for new pricing calculation
-    const discounts = [];
+      // Use dynamic pricing system to get discount breakdown
+      const discountBreakdown = createDiscountBreakdown(
+        basePricePerDay,
+        totalDays,
+        car.isPromo,
+        isVerifiedUser,
+        withInZDS
+      );
 
-    // Calculate discount amounts
-    const vehicleSubtotal = basePricePerDay * totalDays;
-
-    // Verified User Discount (5% off vehicle rental)
-    if (isVerifiedUser && DISCOUNT_CONFIG.VERIFIED_USER > 0) {
-      discounts.push({
-        label: 'Verified User Discount',
-        type: 'verified_user',
-        percent: DISCOUNT_CONFIG.VERIFIED_USER * 100,
-        amount: vehicleSubtotal * DISCOUNT_CONFIG.VERIFIED_USER,
+      // Convert car card discounts to new pricing format (similar to quotation dialog)
+      const discounts = discountBreakdown.map((discount) => ({
+        label: discount.name,
+        type: discount.type,
+        percent: discount.percentage,
+        amount: discount.amount * totalDays, // Convert per-day amount to total
         applied: true,
+      }));
+
+      // Check if ZDS discount is present in the discounts
+      const hasZDSDiscount = discounts.some((d) => d.label === 'Within Zamboanga Del Sur');
+
+      // Use new pricing calculation function (following quotation dialog approach)
+      const result = calculateBookingPricing({
+        basePrice: basePricePerDay, // Use original base price, not discounted price
+        totalDuration: totalDays,
+        withInZDS: hasZDSDiscount || withInZDS, // Pass ZDS flag correctly
+        driveOption,
+        driverPerDay: driverFeePerDay,
+        discounts: discounts.filter((d) => d.label !== 'Within Zamboanga Del Sur'), // ZDS handled separately
+        extraCharges: [], // Can be extended based on business rules
       });
-    }
 
-    // Promotional Car Discount (10% off vehicle rental)
-    if (car.isPromo && DISCOUNT_CONFIG.PROMO_CAR > 0) {
-      discounts.push({
-        label: 'Promotional Vehicle',
-        type: 'promo_vehicle',
-        percent: DISCOUNT_CONFIG.PROMO_CAR * 100,
-        amount: vehicleSubtotal * DISCOUNT_CONFIG.PROMO_CAR,
-        applied: true,
-      });
-    }
-
-    // Duration-based Discount
-    const durationTier = DISCOUNT_CONFIG.DURATION_TIERS.find((tier) => totalDays <= tier.maxDays);
-    const additionalDiscount = durationTier?.additionalDiscount ?? 0;
-
-    if (additionalDiscount > 0) {
-      let durationLabel = 'Extended Rental';
-
-      if (totalDays <= 3) durationLabel = 'Short-term Rental (2-3 days)';
-      else if (totalDays <= 7) durationLabel = 'Weekly Rental (4-7 days)';
-      else if (totalDays <= 14) durationLabel = 'Bi-weekly Rental (8-14 days)';
-      else if (totalDays <= 21) durationLabel = 'Long-term Rental (15-21 days)';
-      else if (totalDays <= 29) durationLabel = 'Monthly Rental (22-29 days)';
-      else durationLabel = 'Extended Monthly Rental (30+ days)';
-
-      discounts.push({
-        label: durationLabel,
-        type: 'duration',
-        percent: additionalDiscount * 100,
-        amount: vehicleSubtotal * additionalDiscount,
-        applied: true,
-      });
-    }
-
-    // Use new pricing calculation function
-    const result = calculateBookingPricing({
-      basePrice: basePricePerDay,
-      totalDuration: totalDays,
-      withInZDS,
-      driveOption,
-      driverPerDay: driveOption === 'with-driver' ? DRIVER_FEE_PER_DAY : 0,
-      discounts,
-      extraCharges: [], // Can be extended based on business rules
-    });
-
-    // Convert to DetailedPricingData format for the dialog
-    return convertToDetailedPricingData(result, totalDays, basePricePerDay, discounts);
-  };
+      // Convert to DetailedPricingData format for the dialog
+      return convertToDetailedPricingData(result, totalDays, basePricePerDay, discounts);
+    },
+    [returnDate, pickupDate, user?.isVerified, driveOption, withInZDS]
+  );
 
   const validateBookingForm = () => {
     const fieldErrors = [];
@@ -515,6 +505,12 @@ const BookingPage = () => {
       }, 100);
     }
   };
+
+  // Pre-calculate pricing details for selected car to avoid conditional hooks
+  const selectedCarPricingDetails = useMemo(() => {
+    if (!selectedCar) return null;
+    return calculatePricingDetails(selectedCar);
+  }, [selectedCar, calculatePricingDetails]);
 
   const handleBookNow = (car: Car) => {
     if (!validateBookingForm()) {
@@ -1222,7 +1218,7 @@ const BookingPage = () => {
       </Card>
 
       {/* Booking Confirmation Dialog */}
-      {selectedCar && (
+      {selectedCar && selectedCarPricingDetails && (
         <BookingConfirmationDialog
           isOpen={isConfirmationOpen}
           onClose={() => {
@@ -1246,7 +1242,7 @@ const BookingPage = () => {
             returnPagadianDetails:
               returnAddress === 'pagadian-area' ? returnPagadianDetails : undefined,
           }}
-          pricingDetails={calculatePricingDetails(selectedCar)}
+          pricingDetails={selectedCarPricingDetails}
         />
       )}
     </div>

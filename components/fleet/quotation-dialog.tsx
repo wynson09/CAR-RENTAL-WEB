@@ -9,6 +9,7 @@ import {
   DetailedPricingData,
 } from '@/components/pricing/detailed-price-breakdown';
 import { calculateBookingPricing } from '@/lib/pricing-utils';
+import { createDiscountBreakdown, calculateFinalPrice } from '@/lib/dynamic-pricing';
 
 interface QuotationDialogProps {
   isOpen: boolean;

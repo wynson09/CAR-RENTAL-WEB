@@ -1,4 +1,5 @@
 import { SelectedVehicle } from './firebase-booking-service';
+import { calculateFinalPrice, ZDS_DISCOUNT_AMOUNT } from './dynamic-pricing';
 
 export interface PricingCalculationInput {
   basePrice: number;
@@ -41,8 +42,8 @@ export function calculateBookingPricing(input: PricingCalculationInput): Pricing
     discounts = [],
   } = input;
 
-  // Apply ZDS discount to base price
-  const zdsDiscount = withInZDS ? 200 : 0;
+  // Apply ZDS discount to base price using new dynamic pricing
+  const zdsDiscount = withInZDS ? ZDS_DISCOUNT_AMOUNT : 0;
   const adjustedBasePrice = Math.max(0, basePrice - zdsDiscount); // Ensure price doesn't go negative
 
   // Calculate base total with adjusted price

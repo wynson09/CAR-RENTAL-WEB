@@ -8,6 +8,12 @@ import { differenceInCalendarDays } from 'date-fns';
 import { useMemo, useState } from 'react';
 import { useUserStore } from '@/store';
 import { QuotationDialog } from './quotation-dialog';
+import {
+  calculateDynamicPricing,
+  createDiscountBreakdown,
+  calculateFinalPrice,
+  BASE_PRICE,
+} from '@/lib/dynamic-pricing';
 
 export interface Car {
   id: number;
@@ -26,7 +32,7 @@ export interface DiscountItem {
   name: string;
   percentage: number;
   amount: number;
-  type: 'base' | 'promo' | 'duration';
+  type: 'base' | 'promo' | 'duration' | 'verified';
 }
 
 export interface PricingResult {
@@ -81,6 +87,7 @@ const extractPriceValue = (priceString: string): number => {
 
 /**
  * Calculates pricing information including discounts based on rental duration
+ * Now uses dynamic pricing system based on user-defined price ranges
  */
 const calculatePricing = (
   basePrice: string,
@@ -104,76 +111,31 @@ const calculatePricing = (
     };
   }
 
-  const discountBreakdown: DiscountItem[] = [];
-  let runningPrice = originalPrice;
+  // Use dynamic pricing system to get discount breakdown
+  const discountBreakdown = createDiscountBreakdown(
+    originalPrice,
+    dayDuration,
+    isPromo,
+    isVerifiedUser,
+    withInZDS
+  );
 
-  // Verified User Discount (only if user is verified)
-  if (isVerifiedUser && DISCOUNT_CONFIG.VERIFIED_USER > 0) {
-    const discountAmount = originalPrice * DISCOUNT_CONFIG.VERIFIED_USER;
-    discountBreakdown.push({
-      name: 'Verified User Discount',
-      percentage: DISCOUNT_CONFIG.VERIFIED_USER * 100,
-      amount: discountAmount,
-      type: 'base',
-    });
-    runningPrice -= discountAmount;
-  }
+  // Calculate final price using dynamic pricing
+  const finalPricePerDay = calculateFinalPrice(
+    originalPrice,
+    dayDuration,
+    isPromo,
+    isVerifiedUser,
+    withInZDS
+  );
 
-  // Zamboanga Del Sur Discount (₱200 off base price)
-  if (withInZDS) {
-    const zdsDiscountAmount = 200;
-    const zdsPercentage = (zdsDiscountAmount / originalPrice) * 100;
-    discountBreakdown.push({
-      name: 'Within Zamboanga Del Sur',
-      percentage: zdsPercentage, // Calculate actual percentage
-      amount: zdsDiscountAmount,
-      type: 'base',
-    });
-    runningPrice -= zdsDiscountAmount;
-  }
-
-  // Promotional Car Discount
-  if (isPromo && DISCOUNT_CONFIG.PROMO_CAR > 0) {
-    const discountAmount = originalPrice * DISCOUNT_CONFIG.PROMO_CAR;
-    discountBreakdown.push({
-      name: 'Promotional Vehicle',
-      percentage: DISCOUNT_CONFIG.PROMO_CAR * 100,
-      amount: discountAmount,
-      type: 'promo',
-    });
-    runningPrice -= discountAmount;
-  }
-
-  // Duration-based Discount
-  const durationTier = DISCOUNT_CONFIG.DURATION_TIERS.find((tier) => dayDuration <= tier.maxDays);
-  const additionalDiscount = durationTier?.additionalDiscount ?? 0;
-
-  if (additionalDiscount > 0) {
-    const discountAmount = originalPrice * additionalDiscount;
-    let durationLabel = 'Extended Rental';
-
-    if (dayDuration <= 3) durationLabel = 'Short-term Rental (1-3 days)';
-    else if (dayDuration <= 7) durationLabel = 'Weekly Rental (4-7 days)';
-    else if (dayDuration <= 14) durationLabel = 'Bi-weekly Rental (8-14 days)';
-    else if (dayDuration <= 21) durationLabel = 'Long-term Rental (15-21 days)';
-    else if (dayDuration <= 29) durationLabel = 'Monthly Rental (22-29 days)';
-    else durationLabel = 'Extended Monthly Rental (30+ days)';
-
-    discountBreakdown.push({
-      name: durationLabel,
-      percentage: additionalDiscount * 100,
-      amount: discountAmount,
-      type: 'duration',
-    });
-    runningPrice -= discountAmount;
-  }
+  // Calculate total savings from discounts
+  const totalSavings = discountBreakdown.reduce((sum, discount) => sum + discount.amount, 0);
+  const totalDiscount = totalSavings / originalPrice;
 
   // Add driver fee if with-driver option is selected
   const driverFee = driveOption === 'with-driver' ? DRIVER_FEE_PER_DAY : 0;
-  const finalPriceWithDriver = runningPrice + driverFee;
-
-  const totalSavings = originalPrice - runningPrice;
-  const totalDiscount = totalSavings / originalPrice;
+  const finalPriceWithDriver = finalPricePerDay + driverFee;
 
   return {
     originalPrice: originalPrice + driverFee, // Show total original price including driver if selected
@@ -181,7 +143,12 @@ const calculatePricing = (
     totalDiscount: totalSavings / originalPrice, // Keep discount percentage based on car price only
     dayDuration,
     hasDiscount: totalSavings > 0,
-    discountBreakdown,
+    discountBreakdown: discountBreakdown.map((discount) => ({
+      name: discount.name,
+      percentage: discount.percentage,
+      amount: discount.amount,
+      type: discount.type as 'base' | 'promo' | 'duration' | 'verified',
+    })),
     totalSavings,
   };
 };
@@ -306,7 +273,7 @@ export const CarCard = ({
                   />
                 </svg>
                 <div className="text-sm">
-                  <span className="font-medium">Get 5% extra discount!</span>
+                  <span className="font-medium">Get ₱500 extra discount!</span>
                   <span className="text-amber-700 dark:text-amber-300">
                     {' '}
                     Verify your account to unlock exclusive savings.
@@ -442,7 +409,8 @@ export const CarCard = ({
                                 className={cn(
                                   'w-1.5 h-1.5 rounded-full',
                                   discount.type === 'promo' && 'bg-red-500',
-                                  discount.type === 'base' && 'bg-blue-500',
+                                  discount.type === 'verified' && 'bg-blue-500',
+                                  discount.type === 'base' && 'bg-green-500',
                                   discount.type === 'duration' && 'bg-purple-500'
                                 )}
                               ></div>

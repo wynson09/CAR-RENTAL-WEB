@@ -163,8 +163,6 @@ export class BookingFirebaseService {
     bookingData: Omit<BookingData, 'createdAt' | 'updatedAt'>
   ): Promise<string> {
     try {
-      console.log('Creating booking with data:', bookingData);
-
       // Clean undefined values to prevent Firebase errors
       const cleanedBookingData = this.cleanUndefinedValues(bookingData);
 
@@ -174,14 +172,10 @@ export class BookingFirebaseService {
         updatedAt: serverTimestamp(),
       };
 
-      console.log('Final booking document:', bookingDoc);
-
       const docRef = await addDoc(collection(db, BOOKINGS_COLLECTION), bookingDoc);
-      console.log('Booking created with doc ID:', docRef.id);
       return docRef.id;
     } catch (error) {
-      console.error('Detailed error in createBooking:', error);
-      console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+      console.error('Error creating booking:', error);
       throw new Error(
         `Failed to create booking in database: ${
           error instanceof Error ? error.message : 'Unknown error'

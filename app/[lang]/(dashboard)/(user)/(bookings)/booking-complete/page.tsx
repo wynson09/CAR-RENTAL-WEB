@@ -481,7 +481,7 @@ const BookingCompletePage = () => {
                             className="flex justify-between items-center text-sm text-green-700 dark:text-green-300"
                           >
                             <span>
-                              {discount.label} ({discount.percent}% off)
+                              {discount.label} ({discount.percent.toFixed(1)}% off)
                             </span>
                             <span className="font-medium">-{formatCurrency(discount.amount)}</span>
                           </div>
