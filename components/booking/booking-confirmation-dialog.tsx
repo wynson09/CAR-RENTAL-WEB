@@ -96,16 +96,10 @@ export const BookingConfirmationDialog = ({
     setIsConfirming(true);
 
     try {
-      // Prepare booking data for Firebase (avoiding undefined values)
+      // Use the correct pricing data that's already calculated
       const totalAmount = pricingDetails.finalTotal || 0;
-
-      // Calculate pricing with ZDS logic
       const basePrice = parseInt(car.price.replace(/[^0-9]/g, '')) || 0;
-      const withInZDS = bookingData.withInZDS || false; // Assume this comes from the booking form
-      const adjustedBasePrice = withInZDS ? Math.max(0, basePrice - 200) : basePrice;
-      const adjustedTotalAmount = withInZDS
-        ? Math.max(0, totalAmount - 200 * pricingDetails.totalDays)
-        : totalAmount;
+      const withInZDS = bookingData.withInZDS || false;
 
       const baseBookingData = {
         renterInformation: {
@@ -144,7 +138,7 @@ export const BookingConfirmationDialog = ({
           vehicleUrl: car.image, // Using car image URL as vehicleUrl for better identification
           name: car.name,
           basePrice: basePrice,
-          pricePerDay: adjustedBasePrice,
+          pricePerDay: pricingDetails.basePricePerDay, // Use the correct price per day from pricing details
           totalDuration: pricingDetails.totalDays,
           extraCharges: (pricingDetails.extraCharges || []).map((charge) => ({
             label: charge.label,
@@ -155,15 +149,15 @@ export const BookingConfirmationDialog = ({
             label: discount.label,
             type: discount.type,
             percent: discount.percent,
-            amount: discount.totalAmount,
+            amount: discount.totalAmount, // Total amount for the entire duration
             applied: discount.applied,
           })),
-          totalAmount: adjustedTotalAmount,
+          totalAmount: totalAmount, // Use the correct final total from pricing details
         },
         payment: {
-          totalAmount: adjustedTotalAmount,
+          totalAmount: totalAmount, // Use the correct final total from pricing details
           paid: 0, // No payment made yet
-          balance: adjustedTotalAmount,
+          balance: totalAmount, // Use the correct final total from pricing details
           status: 'unpaid' as const,
         },
         extensions: [], // Initialize empty extensions array

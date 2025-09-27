@@ -88,7 +88,7 @@ export const QuotationDialog = ({
       type: 'location',
       percent: zdsPercentage,
       amountPerDay: zdsAmountPerDay,
-      totalAmount: pricingResult.zdsDiscount,
+      totalAmount: pricingResult.zdsDiscount, // This is now the correct total amount
       applied: true,
     });
   }

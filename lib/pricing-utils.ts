@@ -45,8 +45,9 @@ export function calculateBookingPricing(input: PricingCalculationInput): Pricing
   } = input;
 
   // Apply ZDS discount to base price using dynamic pricing
-  const zdsDiscount = withInZDS ? getZDSDiscountAmount(isPromo) : 0;
-  const adjustedBasePrice = Math.max(0, basePrice - zdsDiscount); // Ensure price doesn't go negative
+  const zdsDiscountPerDay = withInZDS ? getZDSDiscountAmount(isPromo) : 0;
+  const zdsDiscount = zdsDiscountPerDay * totalDuration; // Total ZDS discount for all days
+  const adjustedBasePrice = Math.max(0, basePrice - zdsDiscountPerDay); // Ensure price doesn't go negative
 
   // Calculate base total with adjusted price
   const baseTotalAmount = adjustedBasePrice * totalDuration;
