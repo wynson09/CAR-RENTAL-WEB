@@ -32,7 +32,7 @@ export interface DiscountItem {
   name: string;
   percentage: number;
   amount: number;
-  type: 'base' | 'promo' | 'duration' | 'verified';
+  type: 'base' | 'promo' | 'duration' | 'verified' | 'location';
 }
 
 export interface PricingResult {
@@ -147,7 +147,7 @@ const calculatePricing = (
       name: discount.name,
       percentage: discount.percentage,
       amount: discount.amount,
-      type: discount.type as 'base' | 'promo' | 'duration' | 'verified',
+      type: discount.type as 'base' | 'promo' | 'duration' | 'verified' | 'location',
     })),
     totalSavings,
   };
@@ -411,7 +411,8 @@ export const CarCard = ({
                                   discount.type === 'promo' && 'bg-red-500',
                                   discount.type === 'verified' && 'bg-blue-500',
                                   discount.type === 'base' && 'bg-green-500',
-                                  discount.type === 'duration' && 'bg-purple-500'
+                                  discount.type === 'duration' && 'bg-purple-500',
+                                  discount.type === 'location' && 'bg-orange-500'
                                 )}
                               ></div>
                               <span className="text-gray-600 dark:text-gray-400">

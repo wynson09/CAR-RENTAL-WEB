@@ -399,6 +399,7 @@ const BookingPage = () => {
         basePrice: basePricePerDay, // Use original base price, not discounted price
         totalDuration: totalDays,
         withInZDS: hasZDSDiscount || withInZDS, // Pass ZDS flag correctly
+        isPromo: car.isPromo, // Pass promo status for dynamic ZDS discount
         driveOption,
         driverPerDay: driverFeePerDay,
         discounts: discounts.filter((d) => d.label !== 'Within Zamboanga Del Sur'), // ZDS handled separately
@@ -813,8 +814,8 @@ const BookingPage = () => {
                 </p>
                 <p className="text-sm font-medium text-green-700 dark:text-green-400">
                   {withInZDS
-                    ? '✅ ₱200 discount will be applied to your booking!'
-                    : '💡 Toggle on to get ₱200 off your base price'}
+                    ? '✅ ZDS discount will be applied to your booking!'
+                    : '💡 Toggle on to get ₱100 (regular cars) or ₱200 (promo cars) off your base price'}
                 </p>
               </div>
               <div className="ml-4">

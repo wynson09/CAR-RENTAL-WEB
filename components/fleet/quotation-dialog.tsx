@@ -59,6 +59,7 @@ export const QuotationDialog = ({
     basePrice: basePricePerDay,
     totalDuration: dayDuration,
     withInZDS: hasZDSDiscount || withInZDS,
+    isPromo: car.isPromo, // Pass promo status for dynamic ZDS discount
     driveOption,
     driverPerDay: driverFeePerDay,
     discounts: discounts.filter((d) => d.label !== 'Within Zamboanga Del Sur'), // ZDS handled separately
@@ -79,12 +80,12 @@ export const QuotationDialog = ({
 
   // Add ZDS discount if present
   if (pricingResult.zdsDiscount > 0) {
-    // ZDS discount is ₱200 per day, so calculate percentage based on per-day base price
-    const zdsAmountPerDay = 200; // ₱200 per day
+    // ZDS discount is dynamic based on car type
+    const zdsAmountPerDay = car.isPromo ? 200 : 100; // ₱200 for promo, ₱100 for regular
     const zdsPercentage = (zdsAmountPerDay / basePricePerDay) * 100;
     convertedDiscounts.push({
       label: 'Within Zamboanga Del Sur',
-      type: 'zds_discount',
+      type: 'location',
       percent: zdsPercentage,
       amountPerDay: zdsAmountPerDay,
       totalAmount: pricingResult.zdsDiscount,

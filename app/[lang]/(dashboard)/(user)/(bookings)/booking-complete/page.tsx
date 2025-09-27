@@ -408,7 +408,17 @@ const BookingCompletePage = () => {
                       <div className="bg-green-100 dark:bg-green-900/20 p-2 rounded border border-green-300 dark:border-green-700">
                         <div className="flex justify-between items-center text-green-700 dark:text-green-300">
                           <span className="text-xs font-medium">🏡 ZDS Local Discount:</span>
-                          <span className="font-bold">-₱200/day</span>
+                          <span className="font-bold">
+                            -
+                            {formatCurrency(
+                              // Check if car name contains promo indicators for dynamic ZDS amount
+                              booking.selectedVehicles.name.includes('🔥') ||
+                                booking.selectedVehicles.name.toLowerCase().includes('promo')
+                                ? 200
+                                : 100
+                            )}
+                            /day
+                          </span>
                         </div>
                         <p className="text-xs text-green-600 dark:text-green-400 mt-1">
                           Special rate for Zamboanga Del Sur destinations

@@ -1,10 +1,11 @@
 import { SelectedVehicle } from './firebase-booking-service';
-import { calculateFinalPrice, ZDS_DISCOUNT_AMOUNT } from './dynamic-pricing';
+import { calculateFinalPrice, getZDSDiscountAmount } from './dynamic-pricing';
 
 export interface PricingCalculationInput {
   basePrice: number;
   totalDuration: number;
   withInZDS: boolean;
+  isPromo?: boolean; // Added to determine ZDS discount amount
   driveOption: 'self-drive' | 'with-driver';
   driverPerDay?: number;
   extraCharges?: Array<{ label: string; type: string; amount: number }>;
@@ -29,21 +30,22 @@ export interface PricingCalculationResult {
 
 /**
  * Calculate pricing for a booking with ZDS (Zamboanga Del Sur) logic
- * If withInZDS is true, subtract ₱200 from the base price before calculations
+ * If withInZDS is true, subtract ₱100 (regular) or ₱200 (promo) from the base price before calculations
  */
 export function calculateBookingPricing(input: PricingCalculationInput): PricingCalculationResult {
   const {
     basePrice,
     totalDuration,
     withInZDS,
+    isPromo = false,
     driveOption,
     driverPerDay = 0,
     extraCharges = [],
     discounts = [],
   } = input;
 
-  // Apply ZDS discount to base price using new dynamic pricing
-  const zdsDiscount = withInZDS ? ZDS_DISCOUNT_AMOUNT : 0;
+  // Apply ZDS discount to base price using dynamic pricing
+  const zdsDiscount = withInZDS ? getZDSDiscountAmount(isPromo) : 0;
   const adjustedBasePrice = Math.max(0, basePrice - zdsDiscount); // Ensure price doesn't go negative
 
   // Calculate base total with adjusted price

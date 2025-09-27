@@ -22,9 +22,17 @@ export interface DynamicPricingResult {
 
 // Base price configuration
 export const BASE_PRICE = 3500;
-export const ZDS_DISCOUNT_AMOUNT = 100;
+export const ZDS_DISCOUNT_AMOUNT_REGULAR = 100; // For regular cars
+export const ZDS_DISCOUNT_AMOUNT_PROMO = 200; // For promo cars
 export const VERIFIED_USER_DISCOUNT = 500;
 export const PROMO_VEHICLE_DISCOUNT = 100;
+
+/**
+ * Gets the appropriate ZDS discount amount based on car type
+ */
+export function getZDSDiscountAmount(isPromo: boolean): number {
+  return isPromo ? ZDS_DISCOUNT_AMOUNT_PROMO : ZDS_DISCOUNT_AMOUNT_REGULAR;
+}
 
 // Price ranges based on user requirements
 export const PRICE_RANGES: PriceRange[] = [
@@ -81,8 +89,8 @@ export function calculateDynamicPricing(
       targetPrice: originalPrice,
       discountPercentage: 0,
       discountAmount: 0,
-      zdsDiscountAmount: withInZDS ? ZDS_DISCOUNT_AMOUNT : 0,
-      finalPrice: originalPrice - (withInZDS ? ZDS_DISCOUNT_AMOUNT : 0),
+      zdsDiscountAmount: withInZDS ? getZDSDiscountAmount(isPromo) : 0,
+      finalPrice: originalPrice - (withInZDS ? getZDSDiscountAmount(isPromo) : 0),
       priceCategory: 'Standard Pricing',
     };
   }
@@ -95,8 +103,8 @@ export function calculateDynamicPricing(
       targetPrice: originalPrice,
       discountPercentage: 0,
       discountAmount: 0,
-      zdsDiscountAmount: withInZDS ? ZDS_DISCOUNT_AMOUNT : 0,
-      finalPrice: originalPrice - (withInZDS ? ZDS_DISCOUNT_AMOUNT : 0),
+      zdsDiscountAmount: withInZDS ? getZDSDiscountAmount(isPromo) : 0,
+      finalPrice: originalPrice - (withInZDS ? getZDSDiscountAmount(isPromo) : 0),
       priceCategory: 'Standard Pricing',
     };
   }
@@ -104,8 +112,8 @@ export function calculateDynamicPricing(
   // Get base target price (before ZDS discount)
   let targetPrice = isPromo ? priceRange.promoPrice : priceRange.regularPrice;
 
-  // Apply ZDS discount if applicable (subtract ₱100 from the price range)
-  const zdsDiscountAmount = withInZDS ? ZDS_DISCOUNT_AMOUNT : 0;
+  // Apply ZDS discount if applicable (subtract ₱100/₱200 from the price range)
+  const zdsDiscountAmount = withInZDS ? getZDSDiscountAmount(isPromo) : 0;
   const finalPrice = targetPrice - zdsDiscountAmount;
 
   // Calculate total discount from original price to final price
@@ -193,9 +201,9 @@ export function createDiscountBreakdown(
     }
   }
 
-  // 4. ZDS Discount (₱100 off)
+  // 4. ZDS Discount (₱100 for regular, ₱200 for promo)
   if (withInZDS) {
-    const zdsDiscountAmount = ZDS_DISCOUNT_AMOUNT;
+    const zdsDiscountAmount = getZDSDiscountAmount(isPromo);
     const zdsDiscountPercentage = (zdsDiscountAmount / originalPrice) * 100;
 
     discountBreakdown.push({
