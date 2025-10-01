@@ -8,9 +8,9 @@ const SidebarLogo = ({ hovered }: { hovered?: boolean }) => {
   return (
     <div className="px-4 py-3">
       <div className=" flex items-center">
-        <div className="flex flex-1 items-center gap-x-3">
+        <div className="flex flex-1 items-center justify-center jus gap-x-3">
           {!collapsed || hovered ? (
-            <div className="w-20 h-auto">
+            <div className="w-32 h-auto">
               <NCRLogo />
             </div>
           ) : (

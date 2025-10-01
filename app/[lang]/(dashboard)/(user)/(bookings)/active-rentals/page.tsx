@@ -173,7 +173,7 @@ const ActiveRentalsPage = () => {
   };
 
   const handleViewDetails = (booking: BookingData) => {
-    router.push(`/booking-complete?bookingId=${(booking as any).id}`);
+    router.push(`/booking/${(booking as any).id}`);
   };
 
   const handleCancelBooking = async (bookingId: string) => {

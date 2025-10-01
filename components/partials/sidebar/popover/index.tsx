@@ -3,12 +3,10 @@ import React, { useState } from 'react';
 
 import { cn, isLocationMatch, getDynamicPath } from '@/lib/utils';
 import SidebarLogo from '../common/logo';
-import MenuLabel from '../common/menu-label';
 import SingleMenuItem from './single-menu-item';
 import SubMenuHandler from './sub-menu-handler';
 import NestedSubMenu from '../common/nested-menus';
 import { useSidebar, useThemeStore, useUserStore } from '@/store';
-import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { usePathname } from 'next/navigation';
 import AddBlock from '../common/add-block';
@@ -87,7 +85,6 @@ const PopoverSidebar = ({ trans }: { trans: string }) => {
         ></div>
       )}
       <SidebarLogo />
-      <Separator />
       <ScrollArea
         className={cn('sidebar-menu  h-[calc(100%-80px)] ', {
           'px-4': !collapsed,

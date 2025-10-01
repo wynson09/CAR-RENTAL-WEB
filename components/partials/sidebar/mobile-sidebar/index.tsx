@@ -5,7 +5,6 @@ import { useSidebar, useThemeStore, useUserStore } from '@/store';
 import SidebarLogo from '../common/logo';
 import { adminMenuConfig, menusConfig, userMenuConfig } from '@/config/menus';
 import MenuLabel from '../common/menu-label';
-import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { usePathname } from 'next/navigation';
 import SingleMenuItem from './single-menu-item';
