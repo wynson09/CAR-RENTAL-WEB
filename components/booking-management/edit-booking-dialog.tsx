@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import {
   Select,
   SelectContent,
@@ -17,7 +19,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
-import { CalendarDays, MapPin, Clock, User, Car, DollarSign } from 'lucide-react';
+import { MapPin, Clock, User, Car, DollarSign, Save, X, CalendarIcon } from 'lucide-react';
+import { TimePicker } from '@/components/booking/time-picker';
+import { cn } from '@/lib/utils';
+import { format } from 'date-fns';
+import Image from 'next/image';
 import { BookingFirebaseService, BookingData } from '@/lib/firebase-booking-service';
 import { toast } from 'sonner';
 
@@ -40,9 +46,9 @@ export const EditBookingDialog: React.FC<EditBookingDialogProps> = ({
     destination: '',
     pickUpAddress: '',
     returnAddress: '',
-    pickUpDate: '',
+    pickUpDate: new Date(),
     pickUpTime: '',
-    returnDate: '',
+    returnDate: new Date(),
     returnTime: '',
     withInZDS: false,
     // Renter information
@@ -61,10 +67,10 @@ export const EditBookingDialog: React.FC<EditBookingDialogProps> = ({
         destination: booking.bookingDetails.destination,
         pickUpAddress: booking.bookingDetails.pickUpAddress,
         returnAddress: booking.bookingDetails.returnAddress,
-        pickUpDate: booking.bookingDetails.pickUpDate,
-        pickUpTime: booking.bookingDetails.pickUpTime,
-        returnDate: booking.bookingDetails.returnDate,
-        returnTime: booking.bookingDetails.returnTime,
+        pickUpDate: new Date(booking.bookingDetails.pickUpDate),
+        pickUpTime: booking.bookingDetails.pickUpTime || '',
+        returnDate: new Date(booking.bookingDetails.returnDate),
+        returnTime: booking.bookingDetails.returnTime || '',
         withInZDS: booking.bookingDetails.withInZDS,
         // Renter information
         firstName: booking.renterInformation.firstName,
@@ -99,9 +105,9 @@ export const EditBookingDialog: React.FC<EditBookingDialogProps> = ({
           destination: formData.destination,
           pickUpAddress: formData.pickUpAddress,
           returnAddress: formData.returnAddress,
-          pickUpDate: formData.pickUpDate,
+          pickUpDate: formData.pickUpDate.toISOString().split('T')[0], // Convert Date to YYYY-MM-DD string
           pickUpTime: formData.pickUpTime,
-          returnDate: formData.returnDate,
+          returnDate: formData.returnDate.toISOString().split('T')[0], // Convert Date to YYYY-MM-DD string
           returnTime: formData.returnTime,
           withInZDS: formData.withInZDS,
         },
@@ -142,7 +148,16 @@ export const EditBookingDialog: React.FC<EditBookingDialogProps> = ({
   };
 
   const formatDate = (dateStr: string) => {
-    return new Date(dateStr).toLocaleDateString();
+    return new Date(dateStr).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short', // This will give us "Sep" instead of "September"
+      day: 'numeric',
+    });
+  };
+
+  const formatDateTime = (dateStr: string, timeStr: string) => {
+    const formattedDate = formatDate(dateStr);
+    return `${formattedDate} at ${timeStr}`;
   };
 
   if (!booking) return null;
@@ -153,20 +168,30 @@ export const EditBookingDialog: React.FC<EditBookingDialogProps> = ({
         className="max-w-4xl max-h-[90vh] overflow-y-auto"
         style={{ width: '98vw', maxWidth: '1400px' }}
       >
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Car className="w-5 h-5" />
-            Edit Booking - {booking.id?.slice(-8)}
+        <DialogHeader className="pb-6">
+          <DialogTitle className="flex items-center gap-3 text-xl">
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <Car className="w-5 h-5 text-primary" />
+            </div>
+            <div>
+              <span>Edit Booking</span>
+              <p className="text-sm font-normal text-muted-foreground mt-1">
+                Booking ID: {booking.id?.slice(-8)}
+              </p>
+            </div>
           </DialogTitle>
         </DialogHeader>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Booking Information */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Booking Information</CardTitle>
+          <Card className="border-0 shadow-sm">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <div className="w-2 h-6 bg-primary rounded-full"></div>
+                Booking Information
+              </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
                   <Label className="text-muted-foreground">Booking ID</Label>
@@ -202,17 +227,11 @@ export const EditBookingDialog: React.FC<EditBookingDialogProps> = ({
                 </div>
                 <div>
                   <Label className="text-muted-foreground">Created</Label>
-                  <div className="flex items-center gap-2">
-                    <CalendarDays className="w-4 h-4 text-muted-foreground" />
-                    <span>{formatDate(booking.createdAt)}</span>
-                  </div>
+                  <span>{formatDate(booking.createdAt)}</span>
                 </div>
                 <div>
                   <Label className="text-muted-foreground">Last Updated</Label>
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-muted-foreground" />
-                    <span>{formatDate(booking.updatedAt)}</span>
-                  </div>
+                  <span>{formatDate(booking.updatedAt)}</span>
                 </div>
               </div>
 
@@ -220,16 +239,35 @@ export const EditBookingDialog: React.FC<EditBookingDialogProps> = ({
 
               {/* Vehicle Information */}
               <div>
-                <Label className="text-muted-foreground">Selected Vehicle</Label>
-                <div className="mt-2 p-3 bg-muted/50 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <Car className="w-5 h-5 text-muted-foreground" />
-                    <div>
-                      <p className="font-medium">{booking.selectedVehicles.name}</p>
-                      <p className="text-sm text-muted-foreground">
+                <Label className="text-xs text-muted-foreground uppercase tracking-wide">
+                  Selected Vehicle
+                </Label>
+                <div className="mt-3 p-4 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg">
+                  <div className="flex items-center gap-4">
+                    <Image
+                      src={
+                        booking.selectedVehicles.vehicleUrl || '/images/all-img/comming-soon.png'
+                      }
+                      alt={booking.selectedVehicles.name}
+                      width={64}
+                      height={64}
+                      className="rounded-lg object-contain bg-white p-2"
+                      placeholder="blur"
+                      blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Crect width='100%25' height='100%25' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='12' fill='%239ca3af'%3ECar%3C/text%3E%3C/svg%3E"
+                    />
+                    <div className="flex-1">
+                      <p className="font-semibold text-purple-900">
+                        {booking.selectedVehicles.name}
+                      </p>
+                      <p className="text-sm text-purple-700 mt-1">
                         {formatCurrency(booking.selectedVehicles.pricePerDay)}/day •{' '}
                         {booking.selectedVehicles.totalDuration} days
                       </p>
+                      <div className="mt-2">
+                        <span className="inline-flex items-center px-2 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded-full">
+                          Total: {formatCurrency(booking.selectedVehicles.totalAmount)}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -238,25 +276,42 @@ export const EditBookingDialog: React.FC<EditBookingDialogProps> = ({
               {/* Payment Information */}
               {booking.payment && (
                 <div>
-                  <Label className="text-muted-foreground">Payment Details</Label>
-                  <div className="mt-2 p-3 bg-muted/50 rounded-lg space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>Total Amount:</span>
-                      <span className="font-medium">
-                        {formatCurrency(booking.payment.totalAmount)}
-                      </span>
+                  <Label className="text-xs text-muted-foreground uppercase tracking-wide">
+                    Payment Details
+                  </Label>
+                  <div className="mt-3 p-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg">
+                    <div className="grid grid-cols-3 gap-3">
+                      <div className="text-center p-3 bg-blue-100 border border-blue-200 rounded-lg">
+                        <p className="text-xs text-blue-600 font-medium">Total Amount</p>
+                        <p className="font-bold text-lg text-blue-700 mt-1">
+                          {formatCurrency(booking.payment.totalAmount)}
+                        </p>
+                      </div>
+                      <div className="text-center p-3 bg-green-100 border border-green-200 rounded-lg">
+                        <p className="text-xs text-green-600 font-medium">Paid</p>
+                        <p className="font-bold text-lg text-green-700 mt-1">
+                          {formatCurrency(booking.payment.paid)}
+                        </p>
+                      </div>
+                      <div className="text-center p-3 bg-orange-100 border border-orange-200 rounded-lg">
+                        <p className="text-xs text-orange-600 font-medium">Balance</p>
+                        <p className="font-bold text-lg text-orange-700 mt-1">
+                          {formatCurrency(booking.payment.balance)}
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span>Paid:</span>
-                      <span className="font-medium">{formatCurrency(booking.payment.paid)}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span>Balance:</span>
-                      <span className="font-medium">{formatCurrency(booking.payment.balance)}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span>Status:</span>
-                      <Badge variant="outline" className="text-xs">
+                    <div className="mt-4 pt-3 border-t border-green-200 flex justify-between items-center">
+                      <span className="text-sm font-medium text-green-800">Payment Status:</span>
+                      <Badge
+                        variant="outline"
+                        className={`text-xs capitalize ${
+                          booking.payment.status === 'paid'
+                            ? 'border-green-500 text-green-700 bg-green-50'
+                            : booking.payment.status === 'unpaid'
+                            ? 'border-orange-500 text-orange-700 bg-orange-50'
+                            : 'border-gray-500 text-gray-700 bg-gray-50'
+                        }`}
+                      >
                         {booking.payment.status}
                       </Badge>
                     </div>
@@ -285,31 +340,36 @@ export const EditBookingDialog: React.FC<EditBookingDialogProps> = ({
           </Card>
 
           {/* Edit Form */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Edit Booking Details</CardTitle>
+          <Card className="border-0 shadow-sm">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <div className="w-2 h-6 bg-primary rounded-full"></div>
+                Edit Booking Details
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Status Update */}
-                <div>
-                  <Label htmlFor="status">Booking Status</Label>
+                <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
+                  <Label htmlFor="status" className="text-sm font-medium text-blue-900">
+                    Booking Status
+                  </Label>
                   <Select
                     value={formData.status}
                     onValueChange={(value: BookingData['bookingDetails']['status']) =>
                       setFormData({ ...formData, status: value })
                     }
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="mt-2 border-blue-200 focus:border-blue-400">
                       <SelectValue placeholder="Select status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="processing">Processing</SelectItem>
-                      <SelectItem value="reserved">Reserved</SelectItem>
-                      <SelectItem value="ongoing">Ongoing</SelectItem>
-                      <SelectItem value="completed">Completed</SelectItem>
-                      <SelectItem value="cancelled">Cancelled</SelectItem>
-                      <SelectItem value="refunded">Refunded</SelectItem>
+                      <SelectItem value="processing">🔄 Processing</SelectItem>
+                      <SelectItem value="reserved">📅 Reserved</SelectItem>
+                      <SelectItem value="ongoing">🚗 Ongoing</SelectItem>
+                      <SelectItem value="completed">✅ Completed</SelectItem>
+                      <SelectItem value="cancelled">❌ Cancelled</SelectItem>
+                      <SelectItem value="refunded">💰 Refunded</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -438,56 +498,123 @@ export const EditBookingDialog: React.FC<EditBookingDialogProps> = ({
                 <Separator />
 
                 {/* Date and Time */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="pickUpDate">Pick-up Date</Label>
-                    <Input
-                      id="pickUpDate"
-                      type="date"
-                      value={formData.pickUpDate}
-                      onChange={(e) => setFormData({ ...formData, pickUpDate: e.target.value })}
-                    />
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 pb-2 border-b border-gray-200">
+                    <Clock className="w-4 h-4 text-primary" />
+                    <h3 className="font-semibold text-gray-900">Schedule</h3>
                   </div>
-                  <div>
-                    <Label htmlFor="pickUpTime">Pick-up Time</Label>
-                    <Input
-                      id="pickUpTime"
-                      type="time"
-                      value={formData.pickUpTime}
-                      onChange={(e) => setFormData({ ...formData, pickUpTime: e.target.value })}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="returnDate">Return Date</Label>
-                    <Input
-                      id="returnDate"
-                      type="date"
-                      value={formData.returnDate}
-                      onChange={(e) => setFormData({ ...formData, returnDate: e.target.value })}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="returnTime">Return Time</Label>
-                    <Input
-                      id="returnTime"
-                      type="time"
-                      value={formData.returnTime}
-                      onChange={(e) => setFormData({ ...formData, returnTime: e.target.value })}
-                    />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                        Pick up Date <span className="text-red-500">*</span>
+                      </Label>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant={'outline'}
+                            className={cn(
+                              'w-full justify-start text-left font-normal p-3 border border-gray-300 rounded-lg bg-white focus:border-blue-400 focus:ring-1 focus:ring-blue-400',
+                              !formData.pickUpDate && 'text-muted-foreground'
+                            )}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {formData.pickUpDate ? (
+                              format(formData.pickUpDate, 'PPP')
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0">
+                          <Calendar
+                            mode="single"
+                            selected={formData.pickUpDate}
+                            onSelect={(date) =>
+                              setFormData({ ...formData, pickUpDate: date || new Date() })
+                            }
+                            month={formData.pickUpDate}
+                            onMonthChange={(date) => setFormData({ ...formData, pickUpDate: date })}
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                    <div>
+                      <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                        Pick up Time <span className="text-red-500">*</span>
+                      </Label>
+                      <TimePicker
+                        selectedTime={formData.pickUpTime}
+                        onTimeChange={(time) => setFormData({ ...formData, pickUpTime: time })}
+                        placeholder="--:-- --"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                        Return Date <span className="text-red-500">*</span>
+                      </Label>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant={'outline'}
+                            className={cn(
+                              'w-full justify-start text-left font-normal p-3 border border-gray-300 rounded-lg bg-white focus:border-blue-400 focus:ring-1 focus:ring-blue-400',
+                              !formData.returnDate && 'text-muted-foreground'
+                            )}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {formData.returnDate ? (
+                              format(formData.returnDate, 'PPP')
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0">
+                          <Calendar
+                            mode="single"
+                            selected={formData.returnDate}
+                            onSelect={(date) =>
+                              setFormData({ ...formData, returnDate: date || new Date() })
+                            }
+                            month={formData.returnDate}
+                            onMonthChange={(date) => setFormData({ ...formData, returnDate: date })}
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                    <div>
+                      <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                        Return Time <span className="text-red-500">*</span>
+                      </Label>
+                      <TimePicker
+                        selectedTime={formData.returnTime}
+                        onTimeChange={(time) => setFormData({ ...formData, returnTime: time })}
+                        placeholder="--:-- --"
+                      />
+                    </div>
                   </div>
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex justify-end gap-3 pt-4">
+                <div className="flex justify-end gap-3 pt-6 border-t border-gray-200">
                   <Button
                     type="button"
                     variant="outline"
                     onClick={() => onOpenChange(false)}
                     disabled={loading}
+                    className="px-6"
                   >
+                    <X className="w-4 h-4 mr-2" />
                     Cancel
                   </Button>
-                  <Button type="submit" disabled={loading}>
+                  <Button
+                    type="submit"
+                    disabled={loading}
+                    className="px-6 bg-primary hover:bg-primary/90"
+                  >
+                    <Save className="w-4 h-4 mr-2" />
                     {loading ? 'Updating...' : 'Update Booking'}
                   </Button>
                 </div>

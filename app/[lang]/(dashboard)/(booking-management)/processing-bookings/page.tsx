@@ -13,7 +13,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { CalendarDays, Search, Edit, Car, User, MapPin, Calendar, Clock } from 'lucide-react';
+import { Search, Edit, Car, Clock } from 'lucide-react';
+import Image from 'next/image';
 import { BookingFirebaseService, BookingData } from '@/lib/firebase-booking-service';
 import { FleetFirebaseService, FleetVehicle } from '@/lib/firebase-fleet-service';
 import { useUserStore } from '@/store';
@@ -107,7 +108,11 @@ const ProcessingBookingsPage = () => {
   };
 
   const formatDate = (dateStr: string) => {
-    return new Date(dateStr).toLocaleDateString();
+    return new Date(dateStr).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
   };
 
   const formatCurrency = (amount: number) => {
@@ -197,13 +202,11 @@ const ProcessingBookingsPage = () => {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Booking ID</TableHead>
                     <TableHead>Vehicle</TableHead>
                     <TableHead>Customer</TableHead>
                     <TableHead>Destination</TableHead>
                     <TableHead>Dates</TableHead>
                     <TableHead>Amount</TableHead>
-                    <TableHead>Created</TableHead>
                     <TableHead>Assigned Vehicle</TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>
@@ -211,10 +214,20 @@ const ProcessingBookingsPage = () => {
                 <TableBody>
                   {filteredBookings.map((booking) => (
                     <TableRow key={booking.id}>
-                      <TableCell className="font-mono text-sm">{booking.id?.slice(-8)}</TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Car className="w-4 h-4 text-muted-foreground" />
+                        <div className="flex items-center gap-3">
+                          <Image
+                            src={
+                              booking.selectedVehicles.vehicleUrl ||
+                              '/images/all-img/comming-soon.png'
+                            }
+                            alt={booking.selectedVehicles.name}
+                            width={48}
+                            height={48}
+                            className="rounded-lg object-contain bg-gray-100"
+                            placeholder="blur"
+                            blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Crect width='100%25' height='100%25' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='12' fill='%239ca3af'%3ECar%3C/text%3E%3C/svg%3E"
+                          />
                           <div>
                             <p className="font-medium">{booking.selectedVehicles.name}</p>
                             <p className="text-sm text-muted-foreground">
@@ -226,43 +239,34 @@ const ProcessingBookingsPage = () => {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-2">
-                          <User className="w-4 h-4 text-muted-foreground" />
-                          <div>
-                            <p className="font-medium text-sm">
-                              {booking.renterInformation.firstName}{' '}
-                              {booking.renterInformation.lastName}
-                            </p>
-                            <p className="text-xs text-muted-foreground font-mono">
-                              {booking.renterInformation.renterId.slice(-8)}
-                            </p>
-                          </div>
+                        <div>
+                          <p className="font-medium text-sm">
+                            {booking.renterInformation.firstName}{' '}
+                            {booking.renterInformation.lastName}
+                          </p>
+                          <p className="text-xs text-muted-foreground font-mono">
+                            {booking.renterInformation.renterId.slice(-8)}
+                          </p>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-2">
-                          <MapPin className="w-4 h-4 text-muted-foreground" />
-                          <div>
-                            <span>{booking.bookingDetails.destination}</span>
-                            {booking.bookingDetails.withInZDS && (
-                              <div className="flex items-center gap-1 mt-1">
-                                <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">
-                                  Within ZDS
-                                </span>
-                              </div>
-                            )}
-                          </div>
+                        <div>
+                          <span>{booking.bookingDetails.destination}</span>
+                          {booking.bookingDetails.withInZDS && (
+                            <div className="flex items-center gap-1 mt-1">
+                              <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">
+                                Within ZDS
+                              </span>
+                            </div>
+                          )}
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-2 text-sm">
-                          <Calendar className="w-4 h-4 text-muted-foreground" />
-                          <div>
-                            <p>{formatDate(booking.bookingDetails.pickUpDate)}</p>
-                            <p className="text-muted-foreground">
-                              to {formatDate(booking.bookingDetails.returnDate)}
-                            </p>
-                          </div>
+                        <div className="text-sm">
+                          <p>{formatDate(booking.bookingDetails.pickUpDate)}</p>
+                          <p className="text-muted-foreground">
+                            to {formatDate(booking.bookingDetails.returnDate)}
+                          </p>
                         </div>
                       </TableCell>
                       <TableCell>
@@ -273,12 +277,6 @@ const ProcessingBookingsPage = () => {
                           <p className="text-sm text-muted-foreground">
                             {booking.selectedVehicles.totalDuration} day(s)
                           </p>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2 text-sm">
-                          <CalendarDays className="w-4 h-4 text-muted-foreground" />
-                          <span>{formatDate(booking.createdAt)}</span>
                         </div>
                       </TableCell>
                       <TableCell>
